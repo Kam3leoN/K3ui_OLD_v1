@@ -449,7 +449,7 @@ export interface ComponentDefaultOptions {
  * @description Paramètres d'initialisation du gestionnaire d'icônes
  */
 export const DEFAULT_ICON_CONFIG: IconManagerConfig = {
-    basePath: '/k3ui-docs/assets/icons/',
+    basePath: '/assets/icons/',
     debounceDelay: 10,
     enableCache: true,
     mutationObserverRoot: null,

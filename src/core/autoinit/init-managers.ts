@@ -86,6 +86,11 @@ export function initManagers(options: Partial<AutoInitOptions> = {}): void {
         const iconConfig = (iconManagerOpts && Object.keys(iconManagerOpts).length > 0)
             ? { ...DEFAULT_ICON_CONFIG, ...iconManagerOpts }
             : { ...DEFAULT_ICON_CONFIG };
+        const userSetBasePath =
+            !!iconManagerOpts && Object.prototype.hasOwnProperty.call(iconManagerOpts, 'basePath');
+        if (!userSetBasePath) {
+            iconConfig.basePath = IconManager.resolveAssetsBasePath();
+        }
         if (mergedOptions.iconMutationObserverRoot !== undefined) {
             iconConfig.mutationObserverRoot = mergedOptions.iconMutationObserverRoot;
         }

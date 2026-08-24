@@ -103,7 +103,7 @@ export class IconManager {
     private static logger: LoggerManager | null = null;
 
     private static config: IconManagerResolvedConfig = {
-        basePath: '/k3ui-docs/assets/icons/',
+        basePath: '/assets/icons/',
         debounceDelay: 10,
         enableCache: true,
         mutationObserverRoot: null,
@@ -185,6 +185,37 @@ export class IconManager {
     // ============================================================================
     // API PUBLIQUE
     // ============================================================================
+
+    /**
+     * Résout le dossier des SVG à partir du script k3ui (WAMP sous /k3ui-docs, site à la racine, etc.).
+     */
+    static resolveAssetsBasePath(): string {
+        if (typeof window === 'undefined' || typeof document === 'undefined') {
+            return '/assets/icons/';
+        }
+
+        const scripts = document.querySelectorAll('script[src*="k3ui"]');
+        for (let i = 0; i < scripts.length; i++) {
+            const src = (scripts[i] as HTMLScriptElement).src;
+            if (!src) {
+                continue;
+            }
+            try {
+                const url = new URL(src, window.location.href);
+                const dir = url.pathname.replace(/\/[^/]+\.js$/i, '');
+                const root = dir.replace(/\/js$/i, '');
+                return `${url.origin}${root}/assets/icons/`;
+            } catch {
+                /* script suivant */
+            }
+        }
+
+        if (window.location.pathname.includes('/k3ui-docs')) {
+            return '/k3ui-docs/assets/icons/';
+        }
+
+        return '/assets/icons/';
+    }
 
     /**
      * Configure le gestionnaire d'icônes

@@ -410,5 +410,23 @@ describe('IconManager', () => {
             expect(typeof exists).toBe('boolean');
         });
     });
+
+    describe('resolveAssetsBasePath', () => {
+        test('dérive /assets/icons/ depuis le script k3ui à la racine du site', () => {
+            const script = document.createElement('script');
+            script.src = 'https://k3ui-docs.vercel.app/js/k3ui.min.js';
+            document.head.appendChild(script);
+
+            expect(IconManager.resolveAssetsBasePath()).toBe('https://k3ui-docs.vercel.app/assets/icons/');
+        });
+
+        test('conserve le préfixe /k3ui-docs en local WAMP', () => {
+            const script = document.createElement('script');
+            script.src = 'http://localhost/k3ui-docs/js/k3ui.min.js';
+            document.head.appendChild(script);
+
+            expect(IconManager.resolveAssetsBasePath()).toBe('http://localhost/k3ui-docs/assets/icons/');
+        });
+    });
 });
 
