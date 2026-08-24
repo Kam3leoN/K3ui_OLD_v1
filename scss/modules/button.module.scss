@@ -1,0 +1,724 @@
+/**
+ * @fileoverview Module Button Material Design 3 Expressive
+ * @description Classes CSS pour le composant Button conforme aux spécifications Material Design 3 'You' Expressive
+ * Shape morph (pressed/selected) est automatique — pas d'attribut data-morph / shape-morph
+ * @see https://m3.material.io/components/buttons/overview
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/button.token' as button;
+@use '../mixins/button.mixin' as btn;
+@use '../mixins/state.mixin' as state;
+@use '../tokens/theme.token' as theme;
+@use '../tokens/radius.token' as radius;
+@use '../tokens/motion.token' as motion;
+@use '../tokens/elevation.token' as elevation;
+@use '../tokens/opacity.token' as opacity;
+
+$btn-effects-dur: motion.spring-duration(effects, fast);
+$btn-effects-ease: motion.spring-easing(effects, fast);
+$btn-spatial-fast-dur: motion.spring-duration(spatial, fast);
+$btn-spatial-fast-ease: motion.spring-easing(spatial, fast);
+$btn-spatial-default-dur: motion.spring-duration(spatial, default);
+$btn-spatial-default-ease: motion.spring-easing(spatial, default);
+
+// ============================================================================
+// BASE BUTTON
+// ============================================================================
+
+/**
+ * Classe de base pour les boutons
+ * Supporte à la fois .btn et .button pour compatibilité
+ */
+.btn,
+.button {
+  @include btn.btn-base;
+
+  // Taille par défaut est Small
+  @include btn.btn-size-sm;
+
+  // Press/release morph géré par JS (.pressing / .releasing) — pas de :active direct
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__label {
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+// ============================================================================
+// BUTTON TYPES
+// ============================================================================
+
+.btn--filled,
+.button--filled {
+  @include btn.btn-filled;
+}
+
+.btn--tonal,
+.button--tonal {
+  @include btn.btn-filled-tonal;
+}
+
+.btn--elevated,
+.button--elevated {
+  @include btn.btn-elevated;
+}
+
+.btn--outlined,
+.button--outlined {
+  @include btn.btn-outlined;
+}
+
+.btn--text,
+.button--text {
+  @include btn.btn-text;
+}
+
+// ============================================================================
+// BUTTON SIZES
+// ============================================================================
+
+// XS / XSmall
+.btn.btn--xs,
+.button.button--xs,
+.btn.btn--xsmall,
+.button.button--xsmall {
+  @include btn.btn-size-xs;
+  min-height: 0;
+}
+
+// SM / Small
+.btn.btn--sm,
+.button.button--sm,
+.btn.btn--small,
+.button.button--small {
+  @include btn.btn-size-sm;
+  min-height: 0;
+}
+
+// MD / Medium
+.btn.btn--md,
+.button.button--md,
+.btn.btn--medium,
+.button.button--medium {
+  @include btn.btn-size-md;
+}
+
+// LG / Large
+.btn.btn--lg,
+.button.button--lg,
+.btn.btn--large,
+.button.button--large {
+  @include btn.btn-size-lg;
+}
+
+// XL / XLarge
+.btn.btn--xl,
+.button.button--xl,
+.btn.btn--xlarge,
+.button.button--xlarge {
+  @include btn.btn-size-xl;
+}
+
+// ============================================================================
+// BUTTON SHAPES — Rayons initiaux par taille (M3 Expressive)
+// ============================================================================
+
+/**
+ * Boutons rounded (pill) — border radius selon la taille
+ * Transition border-radius pour morph automatique à :active et .btn--selected
+ */
+.btn.btn--xs.btn--rounded,
+.button.button--xs.button--rounded,
+.btn.btn--xsmall.btn--rounded,
+.button.button--xsmall.button--rounded,
+.btn--rounded.btn--xs,
+.button--rounded.button--xs,
+.btn--rounded.btn--xsmall,
+.button--rounded.button--xsmall {
+  border-radius: button.$md-comp-button-rounded-initial-xs-radius;
+  transition: border-radius button.$md-comp-button-shape-morph-duration button.$md-comp-button-shape-morph-easing;
+}
+
+.btn.btn--sm.btn--rounded,
+.button.button--sm.button--rounded,
+.btn.btn--small.btn--rounded,
+.button.button--small.button--rounded,
+.btn--rounded.btn--sm,
+.button--rounded.button--sm,
+.btn--rounded.btn--small,
+.button--rounded.button--small {
+  border-radius: button.$md-comp-button-rounded-initial-sm-radius;
+  transition: border-radius button.$md-comp-button-shape-morph-duration button.$md-comp-button-shape-morph-easing;
+}
+
+.btn.btn--md.btn--rounded,
+.button.button--md.button--rounded,
+.btn.btn--medium.btn--rounded,
+.button.button--medium.button--rounded,
+.btn--rounded.btn--md,
+.button--rounded.button--md,
+.btn--rounded.btn--medium,
+.button--rounded.button--medium {
+  border-radius: button.$md-comp-button-rounded-initial-md-radius;
+  transition: border-radius button.$md-comp-button-shape-morph-duration button.$md-comp-button-shape-morph-easing;
+}
+
+.btn.btn--lg.btn--rounded,
+.button.button--lg.button--rounded,
+.btn.btn--large.btn--rounded,
+.button.button--large.button--rounded,
+.btn--rounded.btn--lg,
+.button--rounded.button--lg,
+.btn--rounded.btn--large,
+.button--rounded.button--large {
+  border-radius: button.$md-comp-button-rounded-initial-lg-radius;
+  transition: border-radius button.$md-comp-button-shape-morph-duration button.$md-comp-button-shape-morph-easing;
+}
+
+.btn.btn--xl.btn--rounded,
+.button.button--xl.button--rounded,
+.btn.btn--xlarge.btn--rounded,
+.button.button--xlarge.button--rounded,
+.btn--rounded.btn--xl,
+.button--rounded.button--xl,
+.btn--rounded.btn--xlarge,
+.button--rounded.button--xlarge {
+  border-radius: button.$md-comp-button-rounded-initial-xl-radius;
+  transition: border-radius button.$md-comp-button-shape-morph-duration button.$md-comp-button-shape-morph-easing;
+}
+
+/**
+ * Boutons square — border radius selon la taille
+ */
+.btn.btn--xs.btn--square,
+.button.button--xs.button--square,
+.btn.btn--xsmall.btn--square,
+.button.button--xsmall.button--square,
+.btn--square.btn--xs,
+.button--square.button--xs,
+.btn--square.btn--xsmall,
+.button--square.button--xsmall {
+  border-radius: button.$md-comp-button-square-initial-xs-radius;
+  transition: border-radius button.$md-comp-button-shape-morph-duration button.$md-comp-button-shape-morph-easing;
+}
+
+.btn.btn--sm.btn--square,
+.button.button--sm.button--square,
+.btn.btn--small.btn--square,
+.button.button--small.button--square,
+.btn--square.btn--sm,
+.button--square.button--sm,
+.btn--square.btn--small,
+.button--square.button--small {
+  border-radius: button.$md-comp-button-square-initial-sm-radius;
+  transition: border-radius button.$md-comp-button-shape-morph-duration button.$md-comp-button-shape-morph-easing;
+}
+
+.btn.btn--md.btn--square,
+.button.button--md.button--square,
+.btn.btn--medium.btn--square,
+.button.button--medium.button--square,
+.btn--square.btn--md,
+.button--square.button--md,
+.btn--square.btn--medium,
+.button--square.button--medium {
+  border-radius: button.$md-comp-button-square-initial-md-radius;
+  transition: border-radius button.$md-comp-button-shape-morph-duration button.$md-comp-button-shape-morph-easing;
+}
+
+.btn.btn--lg.btn--square,
+.button.button--lg.button--square,
+.btn.btn--large.btn--square,
+.button.button--large.button--square,
+.btn--square.btn--lg,
+.button--square.button--lg,
+.btn--square.btn--large,
+.button--square.button--large {
+  border-radius: button.$md-comp-button-square-initial-lg-radius;
+  transition: border-radius button.$md-comp-button-shape-morph-duration button.$md-comp-button-shape-morph-easing;
+}
+
+.btn.btn--xl.btn--square,
+.button.button--xl.button--square,
+.btn.btn--xlarge.btn--square,
+.button.button--xlarge.button--square,
+.btn--square.btn--xl,
+.button--square.button--xl,
+.btn--square.btn--xlarge,
+.button--square.button--xlarge {
+  border-radius: button.$md-comp-button-square-initial-xl-radius;
+  transition: border-radius button.$md-comp-button-shape-morph-duration button.$md-comp-button-shape-morph-easing;
+}
+
+// ============================================================================
+// SQUARE SHAPE MORPH — @keyframes squircle (M3 Expressive)
+// ============================================================================
+// Square → pill avec étape intermédiaire squircle (overshoot 60%) pour effet organique
+// Par taille pour que le squircle corresponde à la hauteur du bouton
+
+/* XS: square=4px → squircle overshoot → pill=16px */
+@keyframes btn-square-to-pill-xs {
+  0%   { border-radius: 4px; }
+  60%  { border-radius: 18px; }
+  100% { border-radius: 16px; }
+}
+@keyframes btn-pill-to-square-xs {
+  0%   { border-radius: 16px; }
+  60%  { border-radius: 2px; }
+  100% { border-radius: 4px; }
+}
+
+/* SM: square=8px → pill=20px */
+@keyframes btn-square-to-pill-sm {
+  0%   { border-radius: 8px; }
+  60%  { border-radius: 24px; }
+  100% { border-radius: 20px; }
+}
+@keyframes btn-pill-to-square-sm {
+  0%   { border-radius: 20px; }
+  60%  { border-radius: 4px; }
+  100% { border-radius: 8px; }
+}
+
+/* MD: square=10px → pill=28px */
+@keyframes btn-square-to-pill-md {
+  0%   { border-radius: 10px; }
+  60%  { border-radius: 34px; }
+  100% { border-radius: 28px; }
+}
+@keyframes btn-pill-to-square-md {
+  0%   { border-radius: 28px; }
+  60%  { border-radius: 5px; }
+  100% { border-radius: 10px; }
+}
+
+/* LG: square=16px → pill=48px */
+@keyframes btn-square-to-pill-lg {
+  0%   { border-radius: 16px; }
+  60%  { border-radius: 58px; }
+  100% { border-radius: 48px; }
+}
+@keyframes btn-pill-to-square-lg {
+  0%   { border-radius: 48px; }
+  60%  { border-radius: 8px; }
+  100% { border-radius: 16px; }
+}
+
+/* XL: square=20px → pill=68px */
+@keyframes btn-square-to-pill-xl {
+  0%   { border-radius: 20px; }
+  60%  { border-radius: 82px; }
+  100% { border-radius: 68px; }
+}
+@keyframes btn-pill-to-square-xl {
+  0%   { border-radius: 68px; }
+  60%  { border-radius: 10px; }
+  100% { border-radius: 20px; }
+}
+
+/* Press: square → pill (animation) */
+.btn.btn--square.pressing.btn--xs,
+.button.button--square.pressing.button--xs,
+.btn.btn--square.pressing.btn--xsmall,
+.button.button--square.pressing.button--xsmall {
+  animation: btn-square-to-pill-xs $btn-spatial-fast-dur $btn-spatial-fast-ease forwards;
+}
+.btn.btn--square.pressing.btn--sm,
+.button.button--square.pressing.button--sm,
+.btn.btn--square.pressing.btn--small,
+.button.button--square.pressing.button--small {
+  animation: btn-square-to-pill-sm $btn-spatial-fast-dur $btn-spatial-fast-ease forwards;
+}
+.btn.btn--square.pressing.btn--md,
+.button.button--square.pressing.button--md,
+.btn.btn--square.pressing.btn--medium,
+.button.button--square.pressing.button--medium {
+  animation: btn-square-to-pill-md $btn-spatial-fast-dur $btn-spatial-fast-ease forwards;
+}
+.btn.btn--square.pressing.btn--lg,
+.button.button--square.pressing.button--lg,
+.btn.btn--square.pressing.btn--large,
+.button.button--square.pressing.button--large {
+  animation: btn-square-to-pill-lg $btn-spatial-fast-dur $btn-spatial-fast-ease forwards;
+}
+.btn.btn--square.pressing.btn--xl,
+.button.button--square.pressing.button--xl,
+.btn.btn--square.pressing.btn--xlarge,
+.button.button--square.pressing.button--xlarge {
+  animation: btn-square-to-pill-xl $btn-spatial-fast-dur $btn-spatial-fast-ease forwards;
+}
+
+/* Release: pill → square (animation) */
+.btn.btn--square.releasing.btn--xs,
+.button.button--square.releasing.button--xs,
+.btn.btn--square.releasing.btn--xsmall,
+.button.button--square.releasing.button--xsmall {
+  animation: btn-pill-to-square-xs $btn-spatial-default-dur $btn-spatial-default-ease forwards;
+}
+.btn.btn--square.releasing.btn--sm,
+.button.button--square.releasing.button--sm,
+.btn.btn--square.releasing.btn--small,
+.button.button--square.releasing.button--small {
+  animation: btn-pill-to-square-sm $btn-spatial-default-dur $btn-spatial-default-ease forwards;
+}
+.btn.btn--square.releasing.btn--md,
+.button.button--square.releasing.button--md,
+.btn.btn--square.releasing.btn--medium,
+.button.button--square.releasing.button--medium {
+  animation: btn-pill-to-square-md $btn-spatial-default-dur $btn-spatial-default-ease forwards;
+}
+.btn.btn--square.releasing.btn--lg,
+.button.button--square.releasing.button--lg,
+.btn.btn--square.releasing.btn--large,
+.button.button--square.releasing.button--large {
+  animation: btn-pill-to-square-lg $btn-spatial-default-dur $btn-spatial-default-ease forwards;
+}
+.btn.btn--square.releasing.btn--xl,
+.button.button--square.releasing.button--xl,
+.btn.btn--square.releasing.btn--xlarge,
+.button.button--square.releasing.button--xlarge {
+  animation: btn-pill-to-square-xl $btn-spatial-default-dur $btn-spatial-default-ease forwards;
+}
+
+/* Round: press via CSS transition (pas d'animation keyframes).
+   M3 Expressive spec: pressed = state layer + shape morph only, pas de scale. */
+.btn.btn--rounded.pressing,
+.button.button--rounded.pressing {
+  border-radius: button.$md-comp-button-pressed-xs-radius !important;
+}
+
+// ============================================================================
+// PLAYGROUND — animation forme round ↔ square avec squircle (évite angles à 0)
+// Même logique que ButtonIcon : étape intermédiaire, pas de passage par 0.
+// ============================================================================
+
+$btn-pg-easing: $btn-spatial-fast-ease;
+$btn-pg-dur: $btn-spatial-fast-dur;
+
+/* Rounded → Square : pill → squircle → square */
+@keyframes btn-playground-round-to-square-xs {
+  0%   { border-radius: button.$md-comp-button-rounded-initial-xs-radius; }
+  50%  { border-radius: 12px; }
+  100% { border-radius: button.$md-comp-button-square-initial-xs-radius; }
+}
+@keyframes btn-playground-round-to-square-sm {
+  0%   { border-radius: button.$md-comp-button-rounded-initial-sm-radius; }
+  50%  { border-radius: 24px; }
+  100% { border-radius: button.$md-comp-button-square-initial-sm-radius; }
+}
+@keyframes btn-playground-round-to-square-md {
+  0%   { border-radius: button.$md-comp-button-rounded-initial-md-radius; }
+  50%  { border-radius: 34px; }
+  100% { border-radius: button.$md-comp-button-square-initial-md-radius; }
+}
+@keyframes btn-playground-round-to-square-lg {
+  0%   { border-radius: button.$md-comp-button-rounded-initial-lg-radius; }
+  50%  { border-radius: 58px; }
+  100% { border-radius: button.$md-comp-button-square-initial-lg-radius; }
+}
+@keyframes btn-playground-round-to-square-xl {
+  0%   { border-radius: button.$md-comp-button-rounded-initial-xl-radius; }
+  50%  { border-radius: 82px; }
+  100% { border-radius: button.$md-comp-button-square-initial-xl-radius; }
+}
+
+/* Square → Rounded : square → squircle → pill */
+@keyframes btn-playground-square-to-round-xs {
+  0%   { border-radius: button.$md-comp-button-square-initial-xs-radius; }
+  50%  { border-radius: 12px; }
+  100% { border-radius: button.$md-comp-button-rounded-initial-xs-radius; }
+}
+@keyframes btn-playground-square-to-round-sm {
+  0%   { border-radius: button.$md-comp-button-square-initial-sm-radius; }
+  50%  { border-radius: 24px; }
+  100% { border-radius: button.$md-comp-button-rounded-initial-sm-radius; }
+}
+@keyframes btn-playground-square-to-round-md {
+  0%   { border-radius: button.$md-comp-button-square-initial-md-radius; }
+  50%  { border-radius: 34px; }
+  100% { border-radius: button.$md-comp-button-rounded-initial-md-radius; }
+}
+@keyframes btn-playground-square-to-round-lg {
+  0%   { border-radius: button.$md-comp-button-square-initial-lg-radius; }
+  50%  { border-radius: 58px; }
+  100% { border-radius: button.$md-comp-button-rounded-initial-lg-radius; }
+}
+@keyframes btn-playground-square-to-round-xl {
+  0%   { border-radius: button.$md-comp-button-square-initial-xl-radius; }
+  50%  { border-radius: 82px; }
+  100% { border-radius: button.$md-comp-button-rounded-initial-xl-radius; }
+}
+
+.btn.btn--shape-to-square.btn--xs,
+.button.button--shape-to-square.button--xs,
+.btn.btn--shape-to-square.btn--xsmall,
+.button.button--shape-to-square.button--xsmall {
+  animation: btn-playground-round-to-square-xs $btn-pg-dur $btn-pg-easing forwards;
+}
+.btn.btn--shape-to-square.btn--sm,
+.button.button--shape-to-square.button--sm,
+.btn.btn--shape-to-square.btn--small,
+.button.button--shape-to-square.button--small {
+  animation: btn-playground-round-to-square-sm $btn-pg-dur $btn-pg-easing forwards;
+}
+.btn.btn--shape-to-square.btn--md,
+.button.button--shape-to-square.button--md,
+.btn.btn--shape-to-square.btn--medium,
+.button.button--shape-to-square.button--medium {
+  animation: btn-playground-round-to-square-md $btn-pg-dur $btn-pg-easing forwards;
+}
+.btn.btn--shape-to-square.btn--lg,
+.button.button--shape-to-square.button--lg,
+.btn.btn--shape-to-square.btn--large,
+.button.button--shape-to-square.button--large {
+  animation: btn-playground-round-to-square-lg $btn-pg-dur $btn-pg-easing forwards;
+}
+.btn.btn--shape-to-square.btn--xl,
+.button.button--shape-to-square.button--xl,
+.btn.btn--shape-to-square.btn--xlarge,
+.button.button--shape-to-square.button--xlarge {
+  animation: btn-playground-round-to-square-xl $btn-pg-dur $btn-pg-easing forwards;
+}
+
+.btn.btn--shape-to-round.btn--xs,
+.button.button--shape-to-round.button--xs,
+.btn.btn--shape-to-round.btn--xsmall,
+.button.button--shape-to-round.button--xsmall {
+  animation: btn-playground-square-to-round-xs $btn-pg-dur $btn-pg-easing forwards;
+}
+.btn.btn--shape-to-round.btn--sm,
+.button.button--shape-to-round.button--sm,
+.btn.btn--shape-to-round.btn--small,
+.button.button--shape-to-round.button--small {
+  animation: btn-playground-square-to-round-sm $btn-pg-dur $btn-pg-easing forwards;
+}
+.btn.btn--shape-to-round.btn--md,
+.button.button--shape-to-round.button--md,
+.btn.btn--shape-to-round.btn--medium,
+.button.button--shape-to-round.button--medium {
+  animation: btn-playground-square-to-round-md $btn-pg-dur $btn-pg-easing forwards;
+}
+.btn.btn--shape-to-round.btn--lg,
+.button.button--shape-to-round.button--lg,
+.btn.btn--shape-to-round.btn--large,
+.button.button--shape-to-round.button--large {
+  animation: btn-playground-square-to-round-lg $btn-pg-dur $btn-pg-easing forwards;
+}
+.btn.btn--shape-to-round.btn--xl,
+.button.button--shape-to-round.button--xl,
+.btn.btn--shape-to-round.btn--xlarge,
+.button.button--shape-to-round.button--xlarge {
+  animation: btn-playground-square-to-round-xl $btn-pg-dur $btn-pg-easing forwards;
+}
+
+// ============================================================================
+// SHAPE MORPH — .btn--selected / .button--selected (et .selected)
+// ============================================================================
+
+/** Rounded selected → 8px */
+.btn.btn--rounded.btn--selected,
+.button.button--rounded.button--selected,
+.btn.btn--rounded.selected,
+.button.button--rounded.selected {
+  border-radius: button.$md-comp-button-selected-rounded-xs-radius !important;
+}
+
+/** Square selected → pill (100px) */
+.btn.btn--square.btn--selected,
+.button.button--square.button--selected,
+.btn.btn--square.selected,
+.button.button--square.selected {
+  border-radius: button.$md-comp-button-selected-square-radius !important;
+}
+
+// ============================================================================
+// ÉTATS TOGGLE — selected / unselected (variantes de couleur)
+// Spec M3: Elevated/Filled/Tonal/Outlined — container + icon & label par état
+// ============================================================================
+
+/* Elevated: default/unselected = Surface container low + Primary ; selected = Primary + On primary */
+.btn--elevated.btn--unselected,
+.button--elevated.button--unselected {
+  background-color: var(--md-sys-color-surface-container-low, theme.$md-sys-color-surface-container-low-light);
+  color: var(--md-sys-color-primary, theme.$md-sys-color-primary-light);
+  box-shadow: elevation.$md-sys-elevation-level1;
+}
+
+.btn--elevated.btn--selected,
+.button--elevated.button--selected,
+.btn--elevated.selected,
+.button--elevated.selected {
+  background-color: var(--md-sys-color-primary, theme.$md-sys-color-primary-light);
+  color: var(--md-sys-color-on-primary, theme.$md-sys-color-on-primary-light);
+  box-shadow: elevation.$md-sys-elevation-level1;
+}
+
+/* Filled: default = Primary + On primary ; unselected = Surface container + On surface variant ; selected = Primary + On primary */
+.btn--filled.btn--selected,
+.button--filled.button--selected,
+.btn--filled.selected,
+.button--filled.selected {
+  background-color: var(--md-sys-color-primary, theme.$md-sys-color-primary-light);
+  color: var(--md-sys-color-on-primary, theme.$md-sys-color-on-primary-light);
+}
+
+.btn--filled.btn--unselected,
+.button--filled.button--unselected {
+  background-color: var(--md-sys-color-surface-container, theme.$md-sys-color-surface-container-light);
+  color: var(--md-sys-color-on-surface-variant, theme.$md-sys-color-on-surface-variant-light);
+  box-shadow: none;
+}
+
+/* Tonal: default/unselected = Secondary container + On secondary container ; selected = Secondary + On secondary */
+.btn--tonal.btn--selected,
+.button--tonal.button--selected,
+.btn--tonal.selected,
+.button--tonal.selected {
+  background-color: var(--md-sys-color-secondary, theme.$md-sys-color-secondary-light);
+  color: var(--md-sys-color-on-secondary, theme.$md-sys-color-on-secondary-light);
+  box-shadow: elevation.$md-sys-elevation-level0;
+}
+
+.btn--tonal.btn--unselected,
+.button--tonal.button--unselected {
+  background-color: var(--md-sys-color-secondary-container, theme.$md-sys-color-secondary-container-light);
+  color: var(--md-sys-color-on-secondary-container, theme.$md-sys-color-on-secondary-container-light);
+}
+
+/* Outlined: default/unselected = Outline (border) + On surface variant ; selected = Inverse surface + Inverse on surface */
+.btn--outlined.btn--selected,
+.button--outlined.button--selected,
+.btn--outlined.selected,
+.button--outlined.selected {
+  background-color: var(--md-sys-color-inverse-surface, theme.$md-sys-color-inverse-surface-light);
+  color: var(--md-sys-color-on-inverse-surface, theme.$md-sys-color-inverse-on-surface-light);
+  border-color: var(--md-sys-color-inverse-surface, theme.$md-sys-color-inverse-surface-light);
+}
+
+.btn--outlined.btn--unselected,
+.button--outlined.button--unselected {
+  background-color: transparent;
+  color: var(--md-sys-color-on-surface-variant, theme.$md-sys-color-on-surface-variant-light);
+  border-color: var(--md-sys-color-outline, theme.$md-sys-color-outline-light);
+}
+
+// ============================================================================
+// PADDING OVERRIDE — XS/SM (16dp recommandé, 24dp déprécié)
+// ============================================================================
+
+.btn.btn--xs.btn--padding-16,
+.button.button--xs.button--padding-16,
+.btn.btn--xsmall.btn--padding-16,
+.button.button--xsmall.button--padding-16,
+.btn.btn--sm.btn--padding-16,
+.button.button--sm.button--padding-16,
+.btn.btn--small.btn--padding-16,
+.button.button--small.button--padding-16 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.btn.btn--xs.btn--padding-24,
+.button.button--xs.button--padding-24,
+.btn.btn--xsmall.btn--padding-24,
+.button.button--xsmall.button--padding-24,
+.btn.btn--sm.btn--padding-24,
+.button.button--sm.button--padding-24,
+.btn.btn--small.btn--padding-24,
+.button.button--small.button--padding-24 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+// ============================================================================
+// LOADING STATE
+// ============================================================================
+
+.btn--loading,
+.button--loading {
+  position: relative;
+  color: transparent;
+  pointer-events: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: -0.625rem 0 0 -0.625rem;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: button-spinner 0.6s linear infinite;
+  }
+}
+
+@keyframes button-spinner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// ============================================================================
+// RTL SUPPORT
+// ============================================================================
+
+[dir='rtl'] {
+  .btn__icon:first-child,
+  .button__icon:first-child {
+    margin-right: 0;
+    margin-left: 0.5rem;
+  }
+}
+
+// ============================================================================
+// PRINT STYLES
+// ============================================================================
+
+@media print {
+  .btn,
+  .button {
+    box-shadow: none !important;
+
+    &::before {
+      display: none;
+    }
+  }
+}
+
+// ============================================================================
+// HIGH CONTRAST MODE
+// ============================================================================
+
+@media (prefers-contrast: high) {
+  .btn,
+  .button {
+    border: 1px solid currentColor;
+  }
+
+  .btn--text,
+  .button--text {
+    border: 2px solid currentColor;
+  }
+}
+
+// ============================================================================
+// REDUCED MOTION
+// ============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .button {
+    animation: none !important;
+  }
+}

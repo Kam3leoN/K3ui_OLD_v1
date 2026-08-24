@@ -1,0 +1,197 @@
+/**
+ * @fileoverview Mixins pour ScrollSpy (ScrollSpy)
+ * @description Mixins Material Design 3 pour le sommaire de page
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/scrollspy.token' as scrollspy;
+@use '../tokens/motion.token' as motion;
+
+/**
+ * Overline du TOC
+ */
+@mixin scrollspy-overline {
+  display: block;
+  margin: 0 0 4px;
+  padding: 0 scrollspy.$scrollspy-item-padding-x;
+  font-size: scrollspy.$scrollspy-overline-size;
+  line-height: scrollspy.$scrollspy-overline-line-height;
+  font-weight: scrollspy.$scrollspy-overline-weight;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: scrollspy.$scrollspy-color-overline;
+}
+
+/**
+ * Titre de page du TOC
+ */
+@mixin scrollspy-title {
+  margin: 0 0 16px;
+  padding: 0 scrollspy.$scrollspy-item-padding-x;
+  font-size: scrollspy.$scrollspy-title-size;
+  line-height: scrollspy.$scrollspy-title-line-height;
+  font-weight: scrollspy.$scrollspy-title-weight;
+  color: scrollspy.$scrollspy-color-title;
+}
+
+/**
+ * Lien d'item TOC avec state layer M3 (::after)
+ */
+@mixin scrollspy-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: scrollspy.$scrollspy-touch-target-min;
+  padding: scrollspy.$scrollspy-item-padding-y scrollspy.$scrollspy-item-padding-x;
+  border-radius: scrollspy.$scrollspy-item-radius;
+  color: scrollspy.$scrollspy-color-item;
+  font-size: scrollspy.$scrollspy-item-font-size;
+  line-height: scrollspy.$scrollspy-item-line-height;
+  font-weight: scrollspy.$scrollspy-item-weight;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  z-index: 1;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: scrollspy.$scrollspy-color-hover-bg;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity scrollspy.$scrollspy-pill-transition-duration scrollspy.$scrollspy-pill-transition-easing,
+      background-color scrollspy.$scrollspy-pill-transition-duration scrollspy.$scrollspy-pill-transition-easing;
+    z-index: -1;
+  }
+
+  &:hover:not(&--active) {
+    color: scrollspy.$scrollspy-color-hover-text;
+
+    &::after {
+      opacity: 1;
+    }
+  }
+
+  &:active:not(&--active)::after {
+    opacity: 1;
+    background: var(--md-sys-color-secondary-container-hover, scrollspy.$scrollspy-color-hover-bg);
+  }
+
+  &:focus-visible {
+    outline: 2px solid scrollspy.$scrollspy-color-focus;
+    outline-offset: 2px;
+  }
+
+  &--active {
+    color: scrollspy.$scrollspy-color-item-active;
+    font-weight: scrollspy.$scrollspy-item-weight-active;
+
+    &:hover::after {
+      background: var(--md-sys-color-on-primary);
+      opacity: scrollspy.$scrollspy-state-hover-opacity;
+    }
+
+    &:active::after {
+      background: var(--md-sys-color-on-primary);
+      opacity: scrollspy.$scrollspy-state-pressed-opacity;
+    }
+  }
+}
+
+/**
+ * Pilule glissante active
+ */
+@mixin scrollspy-pill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-radius: scrollspy.$scrollspy-item-radius;
+  background: scrollspy.$scrollspy-color-pill-bg;
+  pointer-events: none;
+  z-index: 0;
+  transform: translateY(0);
+  height: 0;
+  transition:
+    transform scrollspy.$scrollspy-pill-transition-duration scrollspy.$scrollspy-pill-transition-easing,
+    height scrollspy.$scrollspy-pill-transition-duration scrollspy.$scrollspy-pill-transition-easing;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+/**
+ * Indicateur de progression vertical
+ */
+@mixin scrollspy-progress-track {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: scrollspy.$scrollspy-progress-width;
+  background: rgba(var(--md-sys-color-outline-variant-rgb, 128, 128, 128), 0.3);
+  border-radius: scrollspy.$scrollspy-progress-width;
+  overflow: hidden;
+}
+
+@mixin scrollspy-progress-fill {
+  width: 100%;
+  height: calc(var(--scrollspy-progress, 0) * 100%);
+  background: scrollspy.$scrollspy-color-progress;
+  border-radius: inherit;
+  transition: height scrollspy.$scrollspy-progress-transition-duration scrollspy.$scrollspy-progress-transition-easing;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+/**
+ * Conteneur sticky desktop
+ */
+@mixin scrollspy-sticky {
+  position: sticky;
+  top: var(--scrollspy-sticky-top, #{scrollspy.$scrollspy-offset-default}px);
+  align-self: flex-start;
+  z-index: scrollspy.$scrollspy-z-sticky;
+}
+
+/**
+ * Drawer mobile (panneau + overlay)
+ */
+@mixin scrollspy-drawer-panel {
+  position: fixed;
+  inset: auto 0 0 0;
+  max-height: 70vh;
+  padding: 16px 0 24px;
+  background: var(--md-sys-color-surface-container-low);
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.12);
+  z-index: scrollspy.$scrollspy-z-drawer;
+  transform: translateY(100%);
+  transition: transform scrollspy.$scrollspy-drawer-transition-duration scrollspy.$scrollspy-drawer-transition-easing;
+  overflow-y: auto;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+@mixin scrollspy-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(var(--md-sys-color-scrim-rgb, 0, 0, 0), 0.32);
+  z-index: scrollspy.$scrollspy-z-overlay;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity scrollspy.$scrollspy-drawer-transition-duration scrollspy.$scrollspy-drawer-transition-easing;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}

@@ -1,0 +1,479 @@
+/**
+ * Select Mixins
+ * Mixins pour le composant Select selon le pattern K3UI
+ */
+
+@use '../tokens/select.token' as select;
+@use '../tokens/motion.token' as motion;
+@use './motion.mixin' as motionmix;
+@use '../tokens/state.token' as state;
+@use '../tokens/elevation.token' as elevation;
+
+// ============================================================================
+// SELECT MIXINS
+// ============================================================================
+
+/**
+ * Mixin pour le style de base du select
+ */
+@mixin select-base {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  min-width: select.$select-min-width;
+  max-width: select.$select-max-width;
+}
+
+/**
+ * Mixin pour le wrapper du select
+ */
+@mixin select-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: select.$select-height;
+  background-color: select.$select-background;
+  border: 1px solid select.$select-border;
+  border-radius: select.$select-border-radius;
+  @include motionmix.transition-form(
+    select.$select-transition-duration,
+    select.$select-transition-timing
+  );
+  
+  &:hover:not(.disabled) {
+    border-color: select.$select-border-hover;
+    box-shadow: select.$select-shadow-hover;
+  }
+  
+  &:focus-within {
+    border-color: select.$select-border-focus;
+    box-shadow: select.$select-shadow-focus;
+    outline: none;
+  }
+  
+  &.disabled {
+    background-color: select.$select-background-disabled;
+    border-color: select.$select-border-disabled;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  
+  &.error {
+    border-color: select.$select-border-error;
+    
+    .select-caret {
+      fill: select.$select-border-error;
+    }
+  }
+  
+  &.success {
+    border-color: select.$select-success-color;
+    
+    .select-caret {
+      fill: select.$select-success-color;
+    }
+  }
+}
+
+/**
+ * Mixin pour l'input du select
+ */
+@mixin select-input {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  padding: select.$select-padding;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: select.$select-text;
+  font-family: select.$select-font-family;
+  font-size: select.$select-font-size;
+  font-weight: select.$select-font-weight;
+  line-height: select.$select-line-height;
+  letter-spacing: select.$select-letter-spacing;
+  cursor: pointer;
+  user-select: none;
+  
+  &:disabled {
+    color: select.$select-text-disabled;
+    cursor: not-allowed;
+  }
+  
+  &::placeholder {
+    color: select.$select-text-placeholder;
+  }
+}
+
+/**
+ * Mixin pour l'icône caret
+ */
+@mixin select-caret {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: select.$select-icon-size;
+  height: select.$select-icon-size;
+  fill: select.$select-caret-color;
+  pointer-events: none;
+  @include motionmix.transition-properties(
+    (fill, transform, color),
+    select.$select-transition-duration,
+    select.$select-transition-timing
+  );
+  
+  .select-wrapper:hover:not(.disabled) & {
+    fill: select.$select-caret-color-hover;
+  }
+  
+  .select-wrapper:focus-within & {
+    fill: select.$select-caret-color-focus;
+    transform: translateY(-50%) rotate(180deg);
+  }
+  
+  .select-wrapper.disabled & {
+    fill: select.$select-caret-color-disabled;
+  }
+}
+
+/**
+ * Mixin pour le menu du select
+ */
+@mixin select-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: select.$select-menu-z-index;
+  max-height: select.$select-menu-max-height;
+  min-width: select.$select-menu-min-width;
+  background-color: select.$select-background;
+  border: 1px solid select.$select-border;
+  border-radius: select.$select-border-radius;
+  box-shadow: select.$select-shadow-menu;
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-0.5rem);
+  @include motionmix.transition-overlay(
+    select.$select-transition-duration,
+    select.$select-transition-timing
+  );
+  
+  // Quand display: block est appliqué par le JS
+  &[style*="display: block"] {
+    display: block !important;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  // Classe active pour compatibilité
+  &.active {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  // Scrollbar personnalisée
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: select.$select-border;
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb:hover {
+    background: select.$select-border-hover;
+  }
+}
+
+/**
+ * Mixin pour les options du select
+ */
+@mixin select-option {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: select.$select-padding;
+  background-color: select.$select-option-background;
+  color: select.$select-option-text;
+  text-decoration: none;
+  cursor: pointer;
+  @include motionmix.transition-surface(
+    select.$select-transition-duration,
+    select.$select-transition-timing
+  );
+  border: none;
+  outline: none;
+  
+  &:hover:not(.disabled) {
+    background-color: select.$select-option-background-hover;
+    color: select.$select-option-text-hover;
+  }
+  
+  &:focus-visible {
+    background-color: select.$select-option-background-focus;
+    outline: 2px solid select.$select-focus-ring-color;
+    outline-offset: -2px;
+  }
+  
+  &.selected {
+    background-color: select.$select-option-background-selected;
+    color: select.$select-option-text-selected;
+    font-weight: 600;
+  }
+  
+  &.disabled {
+    color: select.$select-option-text-disabled;
+    cursor: not-allowed;
+    background-color: transparent;
+    opacity: 0.6;
+  }
+}
+
+/**
+ * Mixin pour les groupes d'options
+ */
+@mixin select-optgroup {
+  background-color: select.$select-optgroup-background;
+  color: select.$select-optgroup-text;
+  font-weight: 600;
+  font-size: select.$select-label-font-size;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid select.$select-optgroup-border;
+  cursor: default;
+  
+  & + .select-option {
+    padding-left: 2rem;
+  }
+}
+
+/**
+ * Mixin pour les checkboxes dans les selects multiples
+ */
+@mixin select-checkbox {
+  margin-right: 0.5rem;
+  
+  input[type="checkbox"] {
+    margin: 0;
+    margin-right: 0.5rem;
+    accent-color: select.$select-border-focus;
+  }
+}
+
+/**
+ * Mixin pour les icônes dans les options
+ */
+@mixin select-option-icon {
+  width: select.$select-icon-size;
+  height: select.$select-icon-size;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+  border-radius: 0.25rem;
+  object-fit: cover;
+}
+
+/**
+ * Mixin pour l'état de focus du select
+ */
+@mixin select-focus {
+  .select-wrapper:focus-within {
+    @include state.focus-ring;
+  }
+}
+
+/**
+ * Mixin pour l'état d'erreur du select
+ */
+@mixin select-error {
+  .select-wrapper.error {
+    border-color: select.$select-border-error;
+    
+    .select-caret {
+      fill: select.$select-border-error;
+    }
+  }
+}
+
+/**
+ * Mixin pour l'état de succès du select
+ */
+@mixin select-success {
+  .select-wrapper.success {
+    border-color: select.$select-success-color;
+    
+    .select-caret {
+      fill: select.$select-success-color;
+    }
+  }
+}
+
+/**
+ * Mixin pour la taille du select
+ */
+@mixin select-size($size: 'medium') {
+  @if $size == 'small' {
+    min-height: 2.5rem;
+    padding: select.$select-padding-small;
+    font-size: 0.875rem;
+    
+    .select-caret {
+      width: select.$select-icon-size-small;
+      height: select.$select-icon-size-small;
+    }
+  } @else if $size == 'large' {
+    min-height: 3.5rem;
+    padding: select.$select-padding-large;
+    font-size: 1.125rem;
+    
+    .select-caret {
+      width: select.$select-icon-size-large;
+      height: select.$select-icon-size-large;
+    }
+  } @else {
+    min-height: select.$select-height;
+    padding: select.$select-padding;
+    font-size: select.$select-font-size;
+    
+    .select-caret {
+      width: select.$select-icon-size;
+      height: select.$select-icon-size;
+    }
+  }
+}
+
+/**
+ * Mixin pour la variante du select
+ */
+@mixin select-variant($variant: 'outlined') {
+  @if $variant == 'filled' {
+    background-color: select.$select-background;
+    border: none;
+    border-bottom: 2px solid select.$select-border;
+    border-radius: 0;
+    
+    &:focus-within {
+      border-bottom-color: select.$select-border-focus;
+    }
+  } @else if $variant == 'underlined' {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid select.$select-border;
+    border-radius: 0;
+    
+    &:focus-within {
+      border-bottom-color: select.$select-border-focus;
+    }
+  } @else {
+    // outlined (défaut)
+    background-color: select.$select-background;
+    border: 1px solid select.$select-border;
+    border-radius: select.$select-border-radius;
+  }
+}
+
+/**
+ * Mixin pour le label du select
+ */
+@mixin select-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: select.$select-text;
+  font-family: select.$select-font-family;
+  font-size: select.$select-label-font-size;
+  font-weight: select.$select-label-font-weight;
+  line-height: select.$select-label-line-height;
+  
+  .select-wrapper.disabled + & {
+    color: select.$select-text-disabled;
+  }
+}
+
+/**
+ * Mixin pour le texte d'aide/erreur
+ */
+@mixin select-helper-text {
+  margin-top: 0.25rem;
+  font-family: select.$select-font-family;
+  font-size: select.$select-helper-font-size;
+  font-weight: select.$select-helper-font-weight;
+  line-height: select.$select-helper-line-height;
+  color: select.$select-text-disabled;
+  
+  &.error {
+    color: select.$select-error-color;
+  }
+  
+  &.success {
+    color: select.$select-success-color;
+  }
+}
+
+/**
+ * Mixin pour les animations du menu
+ */
+@mixin select-menu-animation {
+  @keyframes select-menu-enter {
+    from {
+      opacity: 0;
+      transform: translateY(-0.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes select-menu-exit {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-0.5rem);
+    }
+  }
+  
+  &.entering {
+    animation: select-menu-enter select.$select-transition-duration select.$select-transition-timing;
+  }
+  
+  &.exiting {
+    animation: select-menu-exit select.$select-transition-duration select.$select-transition-timing;
+  }
+}
+
+/**
+ * Mixin responsive pour le select
+ */
+@mixin select-responsive {
+  @media (max-width: 768px) {
+    .select-wrapper {
+      .select-menu {
+        max-height: 12rem;
+        left: 0.5rem;
+        right: 0.5rem;
+        width: auto;
+      }
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .select-wrapper {
+      .select-menu {
+        max-height: 10rem;
+      }
+    }
+  }
+}

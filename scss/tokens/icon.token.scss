@@ -1,0 +1,75 @@
+/**
+ * @file icon.token.scss
+ * @description Tailles glyphe icônes — **M3 Expressive Icon Button uniquement** (même source que les boutons icône).
+ * IconManager ne dimensionne pas en JS ; le SCSS est la seule source de vérité.
+ *
+ * @see https://m3.material.io/components/icon-buttons/specs
+ * @see ./button-icon.token.scss (md-comp-icon-button-*-icon-size)
+ *
+ * Clés autorisées sur `i[name][size]` / `.k3ui-icon[size]` : xs | sm | md | lg | xl
+ * — alignées sur les glyphes officiels : 20 / 24 / 24 / 32 / 40 dp (1rem = 16px).
+ */
+
+@use 'sass:map';
+@use 'button-icon.token' as bibtn;
+
+// Glyphes = tokens Icon Button Expressive (une seule échelle)
+$md-sys-icon-sizes: (
+  'xs': bibtn.$md-comp-icon-button-xs-icon-size,
+  'sm': bibtn.$md-comp-icon-button-sm-icon-size,
+  'md': bibtn.$md-comp-icon-button-md-icon-size,
+  'lg': bibtn.$md-comp-icon-button-lg-icon-size,
+  'xl': bibtn.$md-comp-icon-button-xl-icon-size,
+) !default;
+
+/** Sans attribut `size` : medium (24dp) — baseline grille M3. */
+$md-sys-icon-size-default: bibtn.$md-comp-icon-button-md-icon-size !default;
+
+// Couleurs d'icônes
+$md-sys-icon-color-primary: var(--md-sys-color-primary) !default;
+$md-sys-icon-color-on-primary: var(--md-sys-color-on-primary) !default;
+$md-sys-icon-color-secondary: var(--md-sys-color-secondary) !default;
+$md-sys-icon-color-on-secondary: var(--md-sys-color-on-secondary) !default;
+$md-sys-icon-color-tertiary: var(--md-sys-color-tertiary) !default;
+$md-sys-icon-color-on-tertiary: var(--md-sys-color-on-tertiary) !default;
+$md-sys-icon-color-surface: var(--md-sys-color-on-surface) !default;
+$md-sys-icon-color-error: var(--md-sys-color-error) !default;
+$md-sys-icon-color-on-error: var(--md-sys-color-on-error) !default;
+$md-sys-icon-color-disabled: var(--md-sys-color-on-surface-variant) !default;
+
+// États d'icônes
+$md-sys-icon-disabled-opacity: 0.38 !default;
+$md-sys-icon-hover-opacity: 0.8 !default;
+$md-sys-icon-opacity-disabled: 0.38 !default;
+
+// Transitions (réutilise les tokens motion existants)
+$md-sys-icon-transition-duration: var(--md-sys-motion-effects-fast-duration) !default;
+$md-sys-icon-transition-timing: var(--md-sys-motion-effects-fast-easing) !default;
+
+// Animations d'icônes
+$md-sys-icon-animation-spin-duration: 1s !default;
+$md-sys-icon-animation-pulse-duration: 1s !default;
+$md-sys-icon-animation-bounce-duration: 1s !default;
+$md-sys-icon-animation-shake-duration: 0.5s !default;
+$md-sys-icon-animation-fade-duration: 0.3s !default;
+
+// États interactifs
+$md-sys-icon-hover-scale: 1.1 !default;
+$md-sys-icon-hover-rotate: 15deg !default;
+$md-sys-icon-click-scale: 0.95 !default;
+$md-sys-icon-glow-blur: 4px !default;
+
+// Grid d'icônes (bibliothèque d'icônes)
+$md-sys-icon-grid-columns-mobile: 3 !default;
+$md-sys-icon-grid-columns-tablet: 6 !default;
+$md-sys-icon-grid-columns-desktop: 9 !default;
+$md-sys-icon-grid-columns-large: 9 !default;
+$md-sys-icon-grid-gap: 1rem !default;
+$md-sys-icon-grid-item-padding: 1rem !default;
+$md-sys-icon-grid-item-radius: 8px !default;
+$md-sys-icon-grid-icon-size: map.get($md-sys-icon-sizes, 'lg') !default;
+$md-sys-icon-grid-icon-size-mobile: map.get($md-sys-icon-sizes, 'md') !default;
+$md-sys-icon-grid-label-size: 0.75rem !default;
+$md-sys-icon-grid-label-size-mobile: 0.6875rem !default;
+$md-sys-icon-grid-hover-elevation: 0 2px 8px rgba(0, 0, 0, 0.1) !default;
+$md-sys-icon-grid-hover-transform: translateY(-2px) !default;

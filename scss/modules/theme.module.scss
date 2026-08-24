@@ -1,0 +1,707 @@
+/**
+ * @file theme.module.scss
+ * @description Module utilitaire générant les classes de thème Material Design 3 Expressive
+ * @see https://m3.material.io/foundations/color/the-color-system/color-roles-and-states
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use '../mixins/theme.mixin' as theme;
+@use '../tokens/theme.token' as tokens;
+@use '../tokens/motion.token' as motion;
+
+// ============================================================================
+// APPLICATION AUTOMATIQUE DU THÈME
+// ============================================================================
+
+/**
+ * Tokens motion (une seule fois) + thème par défaut (prefers-color-scheme)
+ */
+:root {
+  @include motion.emit-motion-css-properties();
+}
+
+@include theme.auto-theme();
+
+/**
+ * Surcharge explicite via ThemeManager / DynamicColor (runtime)
+ * Priorité sur :root:not([data-theme]) + prefers-color-scheme
+ */
+html[data-theme='light'] {
+  color-scheme: light;
+  @include theme.color-scheme('light');
+  // Alias legacy non aligné sur le nom MD3
+  --k3ui-color-surface-variant: var(--md-sys-color-surface-variant);
+}
+
+html[data-theme='dark'] {
+  color-scheme: dark;
+  @include theme.color-scheme('dark');
+  --k3ui-color-surface-variant: var(--md-sys-color-surface-variant);
+}
+
+/**
+ * Schéma motion Standard (produits utilitaires) — remplace Expressive par défaut
+ * @see https://m3.material.io/styles/motion/overview
+ */
+html[data-motion-scheme='standard'] {
+  @include motion.emit-motion-scheme-standard();
+}
+
+// ============================================================================
+// CLASSES UTILITAIRES POUR LES THÈMES
+// ============================================================================
+
+/**
+ * Classe pour forcer le thème clair
+ */
+.theme-light {
+  @include theme.theme-light();
+}
+
+/**
+ * Classe pour forcer le thème sombre
+ */
+.theme-dark {
+  @include theme.theme-dark();
+}
+
+// ============================================================================
+// RÈGLES SPÉCIFIQUES POUR LE MODE PLEIN ÉCRAN
+// ============================================================================
+
+/**
+ * Forcer le thème en mode plein écran (:is regroupe les préfixes vendeurs)
+ */
+:is(:fullscreen, :-webkit-full-screen, :-moz-full-screen, :-ms-fullscreen) .theme-light {
+  @include theme.theme-light();
+  background-color: var(--md-sys-color-surface) !important;
+  color: var(--md-sys-color-on-surface) !important;
+}
+
+:is(:fullscreen, :-webkit-full-screen, :-moz-full-screen, :-ms-fullscreen) .theme-dark {
+  @include theme.theme-dark();
+  background-color: var(--md-sys-color-surface) !important;
+  color: var(--md-sys-color-on-surface) !important;
+}
+
+:is(:fullscreen, :-webkit-full-screen, :-moz-full-screen, :-ms-fullscreen)[data-theme='light'] {
+  @include theme.theme-light();
+  background-color: var(--md-sys-color-surface) !important;
+  color: var(--md-sys-color-on-surface) !important;
+}
+
+:is(:fullscreen, :-webkit-full-screen, :-moz-full-screen, :-ms-fullscreen)[data-theme='dark'] {
+  @include theme.theme-dark();
+  background-color: var(--md-sys-color-surface) !important;
+  color: var(--md-sys-color-on-surface) !important;
+}
+
+// ============================================================================
+// CLASSES UTILITAIRES POUR LES COULEURS DE SURFACE
+// ============================================================================
+
+/**
+ * Classes pour les couleurs de surface
+ */
+.surface {
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  --k3ui-field-outlined-notch-bg: var(--md-sys-color-surface);
+}
+
+.surface-dim {
+  background-color: var(--md-sys-color-surface-dim);
+  color: var(--md-sys-color-on-surface);
+  --k3ui-field-outlined-notch-bg: var(--md-sys-color-surface-dim);
+}
+
+.surface-bright {
+  background-color: var(--md-sys-color-surface-bright);
+  color: var(--md-sys-color-on-surface);
+  --k3ui-field-outlined-notch-bg: var(--md-sys-color-surface-bright);
+}
+
+.surface-container-lowest {
+  background-color: var(--md-sys-color-surface-container-lowest);
+  color: var(--md-sys-color-on-surface);
+  --k3ui-field-outlined-notch-bg: var(--md-sys-color-surface-container-lowest);
+}
+
+.surface-container-low {
+  background-color: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface);
+  --k3ui-field-outlined-notch-bg: var(--md-sys-color-surface-container-low);
+}
+
+.surface-container {
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+  --k3ui-field-outlined-notch-bg: var(--md-sys-color-surface-container);
+}
+
+.surface-container-high {
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  --k3ui-field-outlined-notch-bg: var(--md-sys-color-surface-container-high);
+}
+
+.surface-container-highest {
+  background-color: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-on-surface);
+  --k3ui-field-outlined-notch-bg: var(--md-sys-color-surface-container-highest);
+}
+
+// ============================================================================
+// CLASSES UTILITAIRES POUR LES COULEURS PRIMAIRES
+// ============================================================================
+
+/**
+ * Classes pour les couleurs primaires
+ */
+.primary {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.primary-container {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.text-primary {
+  color: var(--md-sys-color-primary);
+}
+
+.text-on-primary {
+  color: var(--md-sys-color-on-primary);
+}
+
+.text-primary-container {
+  color: var(--md-sys-color-primary-container);
+}
+
+.text-on-primary-container {
+  color: var(--md-sys-color-on-primary-container);
+}
+
+// ============================================================================
+// CLASSES UTILITAIRES POUR LES COULEURS SECONDAIRES
+// ============================================================================
+
+/**
+ * Classes pour les couleurs secondaires
+ */
+.secondary {
+  background-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
+}
+
+.secondary-container {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.text-secondary {
+  color: var(--md-sys-color-secondary);
+}
+
+.text-on-secondary {
+  color: var(--md-sys-color-on-secondary);
+}
+
+.text-secondary-container {
+  color: var(--md-sys-color-secondary-container);
+}
+
+.text-on-secondary-container {
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+// ============================================================================
+// CLASSES UTILITAIRES POUR LES COULEURS TERTIAIRES
+// ============================================================================
+
+/**
+ * Classes pour les couleurs tertiaires
+ */
+.tertiary {
+  background-color: var(--md-sys-color-tertiary);
+  color: var(--md-sys-color-on-tertiary);
+}
+
+.tertiary-container {
+  background-color: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+.text-tertiary {
+  color: var(--md-sys-color-tertiary);
+}
+
+.text-on-tertiary {
+  color: var(--md-sys-color-on-tertiary);
+}
+
+.text-tertiary-container {
+  color: var(--md-sys-color-tertiary-container);
+}
+
+.text-on-tertiary-container {
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+// ============================================================================
+// CLASSES UTILITAIRES POUR LES COULEURS D'ERREUR
+// ============================================================================
+
+/**
+ * Classes pour les couleurs d'erreur
+ */
+.error {
+  background-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+}
+
+.error-container {
+  background-color: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+}
+
+.text-error {
+  color: var(--md-sys-color-error);
+}
+
+.text-on-error {
+  color: var(--md-sys-color-on-error);
+}
+
+.text-error-container {
+  color: var(--md-sys-color-error-container);
+}
+
+.text-on-error-container {
+  color: var(--md-sys-color-on-error-container);
+}
+
+// ============================================================================
+// CLASSES UTILITAIRES POUR LES OUTLINES
+// ============================================================================
+
+/**
+ * Classes pour les couleurs d'outline
+ */
+.outline {
+  border-color: var(--md-sys-color-outline);
+}
+
+.outline-variant {
+  border-color: var(--md-sys-color-outline-variant);
+}
+
+.text-outline {
+  color: var(--md-sys-color-outline);
+}
+
+.text-outline-variant {
+  color: var(--md-sys-color-outline-variant);
+}
+
+// ============================================================================
+// CLASSES UTILITAIRES POUR LES COULEURS INVERSE
+// ============================================================================
+
+/**
+ * Classes pour les couleurs inverse
+ */
+.inverse-surface {
+  background-color: var(--md-sys-color-inverse-surface);
+  color: var(--md-sys-color-inverse-on-surface);
+}
+
+.text-inverse-surface {
+  color: var(--md-sys-color-inverse-surface);
+}
+
+.text-inverse-on-surface {
+  color: var(--md-sys-color-inverse-on-surface);
+}
+
+.text-inverse-primary {
+  color: var(--md-sys-color-inverse-primary);
+}
+
+// ============================================================================
+// CLASSES UTILITAIRES POUR LES ÉTATS
+// ============================================================================
+
+/**
+ * Classes pour les états d'interaction
+ */
+.state-hover {
+  @include theme.state-layer('hover');
+}
+
+.state-focus {
+  @include theme.state-layer('focus');
+}
+
+.state-pressed {
+  @include theme.state-layer('pressed');
+}
+
+.state-dragged {
+  @include theme.state-layer('dragged');
+}
+
+/**
+ * Classes pour les états désactivés
+ */
+.disabled-content {
+  @include theme.disabled-state('content');
+}
+
+.disabled-container {
+  @include theme.disabled-state('container');
+}
+
+// ============================================================================
+// CLASSES UTILITAIRES POUR LES OMBRES ET SCRIM
+// ============================================================================
+
+/**
+ * Classes pour les ombres et scrim
+ */
+.shadow {
+  box-shadow: 0 0 0 1px var(--md-sys-color-shadow);
+}
+
+.scrim {
+  background-color: var(--md-sys-color-scrim);
+}
+
+.surface-tint {
+  background-color: var(--md-sys-color-surface-tint);
+}
+
+// ============================================================================
+// CLASSES UTILITAIRES POUR LES ALERTES (TOAST, NOTIFICATIONS)
+// ============================================================================
+
+/**
+ * Classes pour les couleurs d'alerte
+ */
+.alert-success {
+  background-color: var(--md-sys-alert-success);
+  color: var(--md-sys-alert-on-success);
+}
+
+.alert-error {
+  background-color: var(--md-sys-alert-danger);
+  color: var(--md-sys-alert-on-danger);
+}
+
+.alert-warning {
+  background-color: var(--md-sys-alert-warning);
+  color: var(--md-sys-alert-on-warning);
+}
+
+.alert-info {
+  background-color: var(--md-sys-alert-info);
+  color: var(--md-sys-alert-on-info);
+}
+
+.alert-default {
+  background-color: var(--md-sys-alert-default);
+  color: var(--md-sys-alert-on-default);
+}
+
+// Les classes de texte d'alerte ont été déplacées vers toast.module.scss 
+
+// ============================================================================
+// ANIMATIONS DE TRANSITION DE THÈME
+// ============================================================================
+
+/**
+ * Classe pour les transitions de thème
+ */
+.theme-transitioning {
+  * {
+    transition:
+      background-color motion.$md-sys-motion-expressive-effects-slow-duration motion.$md-sys-motion-expressive-effects-slow-easing,
+      color motion.$md-sys-motion-expressive-effects-slow-duration motion.$md-sys-motion-expressive-effects-slow-easing,
+      border-color motion.$md-sys-motion-expressive-effects-slow-duration motion.$md-sys-motion-expressive-effects-slow-easing,
+      box-shadow motion.$md-sys-motion-expressive-effects-slow-duration motion.$md-sys-motion-expressive-effects-slow-easing;
+  }
+}
+
+// ============================================================================
+// CLASSES UTILITAIRES AVANCÉES
+// ============================================================================
+
+/**
+ * Classes pour les boutons avec thème
+ */
+.btn-primary {
+  @include theme.primary-button();
+}
+
+.btn-primary-dark {
+  @include theme.primary-button('dark');
+}
+
+.btn-secondary {
+  @include theme.secondary-button();
+}
+
+.btn-secondary-dark {
+  @include theme.secondary-button('dark');
+}
+
+.btn-error {
+  @include theme.error-button();
+}
+
+.btn-error-dark {
+  @include theme.error-button('dark');
+}
+
+/**
+ * Classes pour les conteneurs avec thème
+ */
+.container-surface {
+  @include theme.surface-container();
+}
+
+.container-surface-dark {
+  @include theme.surface-container('surface-container', 'dark');
+}
+
+.container-surface-dim {
+  @include theme.surface-container('surface-dim');
+}
+
+.container-surface-bright {
+  @include theme.surface-container('surface-bright');
+}
+
+.container-surface-lowest {
+  @include theme.surface-container('surface-container-lowest');
+}
+
+.container-surface-low {
+  @include theme.surface-container('surface-container-low');
+}
+
+.container-surface-high {
+  @include theme.surface-container('surface-container-high');
+}
+
+.container-surface-highest {
+  @include theme.surface-container('surface-container-highest');
+}
+
+/**
+ * Classes pour les couleurs de surface avec fallback
+ */
+.bg-surface {
+  @include theme.surface-color();
+}
+
+.bg-surface-dark {
+  @include theme.surface-color('surface', 'dark');
+}
+
+.bg-surface-dim {
+  @include theme.surface-color('surface-dim');
+}
+
+.bg-surface-bright {
+  @include theme.surface-color('surface-bright');
+}
+
+.bg-surface-container {
+  @include theme.surface-color('surface-container');
+}
+
+.bg-surface-container-lowest {
+  @include theme.surface-color('surface-container-lowest');
+}
+
+.bg-surface-container-low {
+  @include theme.surface-color('surface-container-low');
+}
+
+.bg-surface-container-high {
+  @include theme.surface-color('surface-container-high');
+}
+
+.bg-surface-container-highest {
+  @include theme.surface-color('surface-container-highest');
+}
+
+.bg-primary {
+  @include theme.surface-color('primary');
+}
+
+.bg-primary-container {
+  @include theme.surface-color('primary-container');
+}
+
+.bg-secondary {
+  @include theme.surface-color('secondary');
+}
+
+.bg-secondary-container {
+  @include theme.surface-color('secondary-container');
+}
+
+.bg-tertiary {
+  @include theme.surface-color('tertiary');
+}
+
+.bg-tertiary-container {
+  @include theme.surface-color('tertiary-container');
+}
+
+.bg-error {
+  @include theme.surface-color('error');
+}
+
+.bg-error-container {
+  @include theme.surface-color('error-container');
+}
+
+/**
+ * Classes pour les couleurs de texte avec fallback
+ */
+.text-on-surface {
+  @include theme.theme-text-color();
+}
+
+.text-on-surface-dark {
+  @include theme.theme-text-color('on-surface', 'dark');
+}
+
+.text-on-surface-variant {
+  @include theme.theme-text-color('on-surface-variant');
+}
+
+.text-primary {
+  @include theme.theme-text-color('primary');
+}
+
+.text-on-primary {
+  @include theme.theme-text-color('on-primary');
+}
+
+.text-primary-container {
+  @include theme.theme-text-color('primary-container');
+}
+
+.text-on-primary-container {
+  @include theme.theme-text-color('on-primary-container');
+}
+
+.text-secondary {
+  @include theme.theme-text-color('secondary');
+}
+
+.text-on-secondary {
+  @include theme.theme-text-color('on-secondary');
+}
+
+.text-secondary-container {
+  @include theme.theme-text-color('secondary-container');
+}
+
+.text-on-secondary-container {
+  @include theme.theme-text-color('on-secondary-container');
+}
+
+.text-tertiary {
+  @include theme.theme-text-color('tertiary');
+}
+
+.text-on-tertiary {
+  @include theme.theme-text-color('on-tertiary');
+}
+
+.text-tertiary-container {
+  @include theme.theme-text-color('tertiary-container');
+}
+
+.text-on-tertiary-container {
+  @include theme.theme-text-color('on-tertiary-container');
+}
+
+.text-error {
+  @include theme.theme-text-color('error');
+}
+
+.text-on-error {
+  @include theme.theme-text-color('on-error');
+}
+
+.text-error-container {
+  @include theme.theme-text-color('error-container');
+}
+
+.text-on-error-container {
+  @include theme.theme-text-color('on-error-container');
+}
+
+.text-outline {
+  @include theme.theme-text-color('outline');
+}
+
+.text-outline-variant {
+  @include theme.theme-text-color('outline-variant');
+}
+
+.text-inverse-surface {
+  @include theme.theme-text-color('inverse-surface');
+}
+
+.text-inverse-on-surface {
+  @include theme.theme-text-color('inverse-on-surface');
+}
+
+.text-inverse-primary {
+  @include theme.theme-text-color('inverse-primary');
+}
+
+/**
+ * Classes pour les couleurs de bordure avec fallback
+ */
+.border-outline {
+  @include theme.theme-border-color();
+}
+
+.border-outline-dark {
+  @include theme.theme-border-color('outline', 'dark');
+}
+
+.border-outline-variant {
+  @include theme.theme-border-color('outline-variant');
+}
+
+.border-primary {
+  @include theme.theme-border-color('primary');
+}
+
+.border-secondary {
+  @include theme.theme-border-color('secondary');
+}
+
+.border-tertiary {
+  @include theme.theme-border-color('tertiary');
+}
+
+.border-error {
+  @include theme.theme-border-color('error');
+}
+
+// Les classes d'alerte ont été déplacées vers toast.module.scss
+
+// Les classes de texte d'alerte avec fallback ont été déplacées vers toast.module.scss 

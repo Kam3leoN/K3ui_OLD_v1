@@ -1,0 +1,1085 @@
+/**
+ * @file datepicker.module.scss
+ * @description Module principal pour le composant Datepicker K3UI - Basé sur Material Design 3 Expressive
+ * @see https://m3.material.io/components/date-pickers/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use 'sass:math';
+@use '../tokens/datepicker.token' as datepicker;
+@use '../tokens/motion.token' as motion;
+@use '../tokens/spacing.token' as spacing;
+@use '../tokens/elevation.token' as elevation;
+@use '../tokens/typography.token' as typo;
+@use '../mixins/datepicker.mixin' as datepicker-mixin;
+@use '../mixins/motion.mixin' as motion-mixin;
+@use '../mixins/state.mixin' as state-mixin;
+@use '../mixins/typography.mixin' as typo-mixin;
+
+// ============================================================================
+// CONTAINER PRINCIPAL
+// ============================================================================
+
+.datepicker {
+    @include datepicker-mixin.datepicker-container;
+
+    * {
+        box-sizing: border-box;
+    }
+}
+
+// ============================================================================
+// INPUT FIELD
+// ============================================================================
+
+.datepicker__input-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: spacing.$md-sys-spacing-xl;
+}
+
+.datepicker__input {
+    @include datepicker-mixin.datepicker-input;
+}
+
+.datepicker__input:disabled {
+    @include state-mixin.state-disabled;
+}
+
+.datepicker__label {
+    position: absolute;
+    left: datepicker.$datepicker-calendar-padding;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--md-sys-color-surface);
+    padding: 0 spacing.$md-sys-spacing-xs;
+    @include typo-mixin.typography('body-large');
+    color: var(--md-sys-color-on-surface-variant);
+    pointer-events: none;
+    transition: top datepicker.$datepicker-transition-duration datepicker.$datepicker-transition-easing,
+        font-size datepicker.$datepicker-transition-duration datepicker.$datepicker-transition-easing,
+        color datepicker.$datepicker-transition-duration datepicker.$datepicker-transition-easing,
+        transform datepicker.$datepicker-transition-duration datepicker.$datepicker-transition-easing;
+    user-select: none;
+}
+
+.datepicker__input:focus + .datepicker__label,
+.datepicker__input:not(:placeholder-shown) + .datepicker__label {
+    top: spacing.$md-sys-spacing-sm;
+    @include typo-mixin.typography('label-medium');
+    color: var(--md-sys-color-primary);
+}
+
+.datepicker__input:disabled + .datepicker__label {
+    @include state-mixin.state-disabled;
+}
+
+.datepicker__icon-button {
+    position: absolute;
+    right: math.div(datepicker.$datepicker-calendar-padding, 2);
+    top: 50%;
+    transform: translateY(-50%);
+    min-width: 48px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: datepicker.$datepicker-button-radius;
+    cursor: pointer;
+    color: var(--md-sys-color-on-surface-variant);
+    @include state-mixin.state-hover;
+    transition: background-color datepicker.$datepicker-transition-duration datepicker.$datepicker-transition-easing;
+
+    svg,
+    .k3ui-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    &:focus-visible {
+        outline: datepicker.$datepicker-focus-ring-width solid var(--md-sys-color-primary);
+        outline-offset: datepicker.$datepicker-focus-ring-offset;
+    }
+
+    &:disabled {
+        @include state-mixin.state-disabled;
+    }
+}
+
+.datepicker__helper-text {
+    @include typo-mixin.typography('label-medium');
+    color: var(--md-sys-color-on-surface-variant);
+    margin-top: spacing.$md-sys-spacing-xs;
+    margin-left: datepicker.$datepicker-calendar-padding;
+
+    &--error {
+        color: var(--md-sys-color-error);
+    }
+}
+
+// ============================================================================
+// BACKDROP & MODAL
+// ============================================================================
+
+.datepicker__backdrop {
+    @include datepicker-mixin.datepicker-backdrop;
+}
+
+.datepicker__modal {
+    @include datepicker-mixin.datepicker-modal;
+}
+
+// ============================================================================
+// HEADER
+// ============================================================================
+
+.datepicker__header {
+    @include datepicker-mixin.datepicker-header;
+    // MD3 Expressive: padding top 16px, horizontal 24px - override le mixin
+    padding: datepicker.$datepicker-header-padding-top datepicker.$datepicker-header-padding-horizontal !important;
+    padding-bottom: datepicker.$datepicker-calendar-padding-bottom; // 32px selon MD3
+    // Hauteur minimale selon MD3 Expressive
+    min-height: datepicker.$datepicker-header-height;
+    // Harmonisation: Même couleur que le contenu du calendrier
+    background-color: var(--md-sys-color-surface) !important;
+    // Amélioration UX: Ajouter une bordure subtile pour séparer le header
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.datepicker__footer {
+    // Dupliquer le style du header pour le footer
+    padding: datepicker.$datepicker-header-padding-top datepicker.$datepicker-header-padding-horizontal !important;
+    padding-top: 0; // Pas d'espace entre le contenu et le divider (le padding est géré par la grille)
+    padding-bottom: datepicker.$datepicker-header-padding-top; // 16px (padding bottom)
+    // Harmonisation: Même couleur que le contenu du calendrier
+    background-color: var(--md-sys-color-surface) !important;
+    // Divider en haut (comme border-bottom du header) - fait automatiquement 100% de la largeur
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.datepicker__header-label {
+    @include typo-mixin.typography('label-medium');
+    color: var(--md-sys-color-on-surface-variant);
+    // MD3 Expressive: height 36px
+    height: 36px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+    text-transform: uppercase;
+    // Amélioration UX: Réduire l'opacité pour une hiérarchie plus claire
+    opacity: 0.87;
+    font-size: 0.75rem;
+    letter-spacing: 0.03125rem;
+}
+
+.datepicker__header-date-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    // MD3 Expressive: 12px below header-label, height 40px
+    margin-top: 12px;
+    height: 40px;
+    // Gap 8px between date and edit icon
+    gap: spacing.$md-sys-spacing-sm;
+}
+
+.datepicker__header-date {
+    @include typo-mixin.typography('headline-medium');
+    color: var(--md-sys-color-on-surface);
+    flex: 1;
+    // Amélioration UX: Améliorer la lisibilité et la hiérarchie
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.5;
+}
+
+.datepicker__header-action {
+    // MD3 Expressive: 48x48px button, right padding 12px
+    min-width: 48px;
+    min-height: 48px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: datepicker.$datepicker-button-radius;
+    cursor: pointer;
+    color: var(--md-sys-color-on-surface-variant);
+    @include state-mixin.state-hover;
+    // Amélioration UX: Transitions plus fluides
+    transition: background-color #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing},
+                color #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing},
+                transform #{motion.$md-sys-motion-expressive-effects-fast-duration} #{motion.$md-sys-motion-expressive-effects-fast-easing};
+    flex-shrink: 0;
+    // Right padding 12px
+    margin-right: -12px;
+
+    svg,
+    .k3ui-icon {
+        width: 24px;
+        height: 24px;
+        transition: transform #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing};
+    }
+
+    // Amélioration UX: Hover plus visible
+    &:hover {
+        background-color: var(--md-sys-color-surface-container-highest);
+        color: var(--md-sys-color-primary);
+        transform: scale(1.05);
+        
+        svg,
+        .k3ui-icon {
+            transform: scale(1.1);
+        }
+    }
+    
+    // Amélioration UX: Active state
+    &:active {
+        transform: scale(0.95);
+    }
+
+    &:focus-visible {
+        outline: datepicker.$datepicker-focus-ring-width solid var(--md-sys-color-primary);
+        outline-offset: datepicker.$datepicker-focus-ring-offset;
+    }
+}
+
+// ============================================================================
+// NAVIGATION
+// ============================================================================
+
+.datepicker__navigation {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    // MD3 Expressive: 4px below header, horizontal padding 24px left, 12px right
+    padding: 0 datepicker.$datepicker-header-padding-horizontal;
+    padding-left: datepicker.$datepicker-header-padding-horizontal; // 24px
+    padding-right: datepicker.$datepicker-calendar-padding-horizontal-right; // 12px
+    margin-top: spacing.$md-sys-spacing-xs; // 4px below header
+    margin-bottom: spacing.$md-sys-spacing-xs; // 4px above calendar
+    // Height selon MD3 Expressive
+    min-height: 40px;
+}
+
+.datepicker__year-month-navigation {
+    display: flex;
+    align-items: center;
+    gap: spacing.$md-sys-spacing-md;
+}
+
+.datepicker__year-button-nav,
+.datepicker__month-button-nav {
+    @include typo-mixin.typography('title-medium');
+    color: var(--md-sys-color-on-surface);
+    background: none;
+    border: none;
+    padding: spacing.$md-sys-spacing-sm spacing.$md-sys-spacing-md;
+    border-radius: datepicker.$datepicker-button-radius;
+    cursor: pointer;
+    transition: color #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing},
+                background-color #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing};
+    display: flex;
+    align-items: center;
+    gap: spacing.$md-sys-spacing-xs;
+    font-weight: 500;
+    
+    @include state-mixin.state-hover;
+    
+    &:focus-visible {
+        outline: datepicker.$datepicker-focus-ring-width solid var(--md-sys-color-primary);
+        outline-offset: datepicker.$datepicker-focus-ring-offset;
+    }
+    
+    .datepicker__year-caret-nav,
+    .datepicker__month-caret-nav {
+        display: inline-flex;
+        align-items: center;
+        transition: transform #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing};
+    }
+}
+
+.datepicker__year-month-header {
+    display: flex;
+    align-items: center;
+    gap: spacing.$md-sys-spacing-md;
+    padding: spacing.$md-sys-spacing-sm datepicker.$datepicker-header-padding-horizontal;
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.datepicker__day-button,
+.datepicker__year-button,
+.datepicker__month-button {
+    @include typo-mixin.typography('title-medium');
+    color: var(--md-sys-color-on-surface);
+    background: none;
+    border: none;
+    padding: spacing.$md-sys-spacing-sm spacing.$md-sys-spacing-md;
+    border-radius: datepicker.$datepicker-button-radius;
+    cursor: pointer;
+    transition: color #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing},
+                background-color #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing};
+    display: flex;
+    align-items: center;
+    justify-content: center; // Centrer le contenu horizontalement
+    gap: spacing.$md-sys-spacing-xs;
+    font-weight: 500;
+    line-height: 1.2; // Uniformiser la hauteur de ligne
+    min-height: 40px; // Hauteur minimale uniforme
+    
+    @include state-mixin.state-hover;
+    
+    &:focus-visible {
+        outline: datepicker.$datepicker-focus-ring-width solid var(--md-sys-color-primary);
+        outline-offset: datepicker.$datepicker-focus-ring-offset;
+    }
+    
+    // Aligner le texte et l'icône sur la même ligne de base
+    > span {
+        display: inline-block;
+        line-height: 1.2;
+        vertical-align: middle;
+    }
+    
+    .datepicker__day-caret,
+    .datepicker__year-caret,
+    .datepicker__month-caret {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0; // Empêcher la réduction de taille
+        width: 16px; // Taille uniforme pour toutes les icônes
+        height: 16px; // Taille uniforme pour toutes les icônes
+        transition: transform #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing};
+        vertical-align: middle;
+        
+        // S'assurer que l'icône SVG est bien centrée
+        .k3ui-icon {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+
+.datepicker__month-year-button {
+    @include typo-mixin.typography('title-medium');
+    color: var(--md-sys-color-on-surface);
+    background: none;
+    border: none;
+    padding: spacing.$md-sys-spacing-sm 0; // Pas de padding horizontal pour aligner avec le L
+    border-radius: datepicker.$datepicker-button-radius;
+    cursor: pointer;
+    // Amélioration UX: Transitions plus fluides
+    transition: color #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing};
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; // Alignement à gauche
+    gap: spacing.$md-sys-spacing-xs;
+    text-align: left; // Alignement du texte à gauche
+    // Aligner avec la première colonne (L) - le padding du parent .datepicker__navigation aligne déjà
+    justify-self: start;
+    margin-left: 0; // Pas de marge supplémentaire
+    // Amélioration UX: Améliorer la lisibilité
+    font-weight: 500;
+    letter-spacing: 0.00625rem;
+
+    &:focus-visible {
+        outline: datepicker.$datepicker-focus-ring-width solid var(--md-sys-color-primary);
+        outline-offset: datepicker.$datepicker-focus-ring-offset;
+    }
+    
+    .datepicker__month-year-caret {
+        transition: transform #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing};
+        display: inline-flex;
+        align-items: center;
+        
+        &--rotated {
+            transform: rotate(180deg);
+        }
+    }
+}
+
+.datepicker__navigation-buttons {
+    display: flex;
+    // MD3 Expressive: 4px gap between buttons
+    gap: spacing.$md-sys-spacing-xs;
+    // Aligner avec la dernière colonne (D) - le padding du parent .datepicker__navigation aligne déjà
+    justify-self: end;
+    margin-right: 0; // Pas de marge supplémentaire
+}
+
+.datepicker__navigation-button {
+    // MD3 Expressive: 48x48px buttons
+    min-width: 48px;
+    min-height: 48px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: datepicker.$datepicker-button-radius;
+    cursor: pointer;
+    color: var(--md-sys-color-on-surface-variant);
+    @include state-mixin.state-hover;
+    // Amélioration UX: Transitions plus fluides avec transform pour un feedback visuel
+    transition: background-color #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing},
+                color #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing},
+                transform #{motion.$md-sys-motion-expressive-effects-fast-duration} #{motion.$md-sys-motion-expressive-effects-fast-easing};
+
+    svg,
+    .k3ui-icon {
+        width: 20px;
+        height: 20px;
+        transition: transform #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing};
+    }
+
+    &:disabled {
+        @include state-mixin.state-disabled;
+    }
+    
+    // Amélioration UX: Hover plus visible avec légère transformation
+    &:hover:not(:disabled) {
+        background-color: var(--md-sys-color-surface-container-highest);
+        color: var(--md-sys-color-primary);
+        transform: scale(1.05);
+        
+        svg,
+        .k3ui-icon {
+            transform: scale(1.1);
+        }
+    }
+    
+    // Amélioration UX: Active state pour un feedback immédiat
+    &:active:not(:disabled) {
+        transform: scale(0.95);
+    }
+
+    &:focus-visible {
+        outline: datepicker.$datepicker-focus-ring-width solid var(--md-sys-color-primary);
+        outline-offset: datepicker.$datepicker-focus-ring-offset;
+    }
+}
+
+// ============================================================================
+// CALENDAR VIEW
+// ============================================================================
+
+.datepicker__calendar {
+    // MD3 Expressive: paddings équilibrés pour un espacement identique à gauche et à droite
+    // Calcul: 360px (modal) - 318px (7 jours × 42px + 6 gaps × 4px) = 42px disponible
+    // Padding idéal de chaque côté : 42px / 2 = 21px pour un espacement équilibré
+    padding: 0 21px spacing.$md-sys-spacing-sm;
+    padding-left: 21px; // Espacement équilibré à gauche
+    padding-right: 21px; // Espacement équilibré à droite (identique au gauche)
+    padding-bottom: spacing.$md-sys-spacing-sm; // 8px selon demande utilisateur
+    // 4px spacing below navigation
+    padding-top: spacing.$md-sys-spacing-xs;
+}
+
+.datepicker__weekdays {
+    display: grid;
+    grid-template-columns: repeat(datepicker.$datepicker-calendar-grid-columns, 1fr);
+    // Gap aligné avec la grille des jours pour cohérence
+    column-gap: spacing.$md-sys-spacing-xs; // 4px
+    // Espacement réduit en dessous des weekdays
+    margin-bottom: spacing.$md-sys-spacing-xs;
+}
+
+.datepicker__weekday {
+    @include typo-mixin.typography('label-medium');
+    color: var(--md-sys-color-on-surface-variant);
+    text-align: center;
+    // Alignement parfait avec les jours : même dimensions et même comportement
+    width: datepicker.$datepicker-day-size;
+    height: datepicker.$datepicker-day-size;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    text-transform: uppercase;
+    // Centrer comme les jours pour un alignement parfait
+    justify-self: center;
+    // Amélioration UX: Améliorer la lisibilité et réduire l'opacité pour une hiérarchie plus claire
+    opacity: 0.7;
+    font-size: 16px; // 16dp selon Material Design
+    letter-spacing: 0.03125rem;
+}
+
+.datepicker__days-grid {
+    display: grid;
+    grid-template-columns: repeat(datepicker.$datepicker-calendar-grid-columns, 1fr);
+    // MD3 Expressive: gaps identiques pour un espacement uniforme (largeur ≈ hauteur)
+    // Gap horizontal et vertical identiques pour un design équilibré
+    gap: spacing.$md-sys-spacing-xs; // 4px partout (horizontal et vertical identiques)
+    column-gap: spacing.$md-sys-spacing-xs; // 4px
+    row-gap: spacing.$md-sys-spacing-xs; // 4px (identique au column-gap)
+    
+    // FIX: S'assurer que la grille a un contexte de stacking propre
+    position: relative;
+    z-index: 0;
+    
+    // FIX: Optimiser le rendering de la grille
+    will-change: auto; // Pas de will-change par défaut pour économiser la mémoire
+    
+    // Pendant le hover en mode range, optimiser
+    .datepicker__modal[data-mode="range"] & {
+        // Isolation pour éviter les problèmes de z-index
+        isolation: isolate;
+    }
+}
+
+.datepicker__day {
+    @include datepicker-mixin.datepicker-day;
+    & {
+        font-size: 16px; // 16dp selon Material Design
+        
+        // Amélioration UX: Transitions plus fluides et naturelles
+        transition: background-color #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing},
+                    color #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing},
+                    box-shadow #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing};
+    }
+    
+    // Amélioration UX: Hover avec primary-container selon Material Design 3
+    &:hover:not(.datepicker__day--disabled):not(.datepicker__day--outside-month):not(.datepicker__day--selected) {
+        background-color: var(--md-sys-color-primary-container);
+        color: var(--md-sys-color-on-primary-container);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    // Forcer le rendering GPU pour éviter les problèmes de repaint
+    &::before,
+    &::after {
+        will-change: auto; // Réinitialiser pour les pseudo-éléments normaux
+    }
+    
+}
+
+// Styles pour le mode range (plage de dates)
+// Rectangle continu avec bulles rondes qui chevauchent à 50% via pseudo-éléments
+.datepicker__day--in-range {
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    border-radius: 0 !important; // Rectangle sans coins arrondis pour les jours intermédiaires
+    position: relative;
+    z-index: 1;
+    
+    // Extension vers la gauche pour combler le gap et créer un rectangle continu
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: calc(-1 * #{datepicker.$datepicker-calendar-grid-gap});
+        width: datepicker.$datepicker-calendar-grid-gap;
+        height: 100%;
+        background-color: var(--md-sys-color-primary-container);
+        z-index: -1;
+    }
+    
+    // Extension vers la droite pour combler le gap et créer un rectangle continu
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: calc(-1 * #{datepicker.$datepicker-calendar-grid-gap});
+        width: datepicker.$datepicker-calendar-grid-gap;
+        height: 100%;
+        background-color: var(--md-sys-color-primary-container);
+        z-index: -1;
+    }
+    
+    // Si c'est aussi range-start ou range-end, ne pas appliquer les pseudo-éléments (les bulles restent rondes)
+    &.datepicker__day--range-start,
+    &.datepicker__day--range-end {
+        &::before,
+        &::after {
+            display: none;
+        }
+        background-color: var(--md-sys-color-primary) !important;
+        color: var(--md-sys-color-on-primary) !important;
+        border-radius: datepicker.$datepicker-day-radius !important;
+    }
+}
+
+// Extension du rectangle pour chevaucher les bulles à 50%
+// Premier jour in-range après range-start : extension vers la gauche pour chevaucher la bulle
+.datepicker__day--range-start + .datepicker__day--in-range {
+    &::before {
+        display: block;
+        left: calc(-1 * (#{math.div(datepicker.$datepicker-day-size, 2)} + #{datepicker.$datepicker-calendar-grid-gap}));
+        width: calc(#{math.div(datepicker.$datepicker-day-size, 2)} + #{datepicker.$datepicker-calendar-grid-gap});
+        z-index: 1;
+    }
+}
+
+// Dernier jour in-range avant range-end : extension vers la droite pour chevaucher la bulle
+.datepicker__day--in-range:has(+ .datepicker__day--range-end) {
+    &::after {
+        display: block;
+        right: calc(-1 * (#{math.div(datepicker.$datepicker-day-size, 2)} + #{datepicker.$datepicker-calendar-grid-gap}));
+        width: calc(#{math.div(datepicker.$datepicker-day-size, 2)} + #{datepicker.$datepicker-calendar-grid-gap});
+        z-index: 1;
+    }
+}
+
+.datepicker__day--range-start {
+    background-color: var(--md-sys-color-primary) !important;
+    color: var(--md-sys-color-on-primary) !important;
+    // Bulle ronde complète pour la date de début - reste centrée
+    border-radius: datepicker.$datepicker-day-radius !important;
+    font-weight: 600;
+    position: relative;
+    z-index: 3; // Plus élevé que le hover preview
+    
+    // S'assurer que le texte reste visible et centré
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+    
+    // S'assurer que le contenu texte reste au-dessus des pseudo-éléments
+    &::before,
+    &::after {
+        z-index: -1 !important;
+    }
+    
+    // Si c'est aussi le dernier jour (plage d'un jour), garder la bulle ronde
+    &.datepicker__day--range-end {
+        border-radius: datepicker.$datepicker-day-radius !important;
+    }
+    
+}
+
+.datepicker__day--range-end {
+    background-color: var(--md-sys-color-primary) !important;
+    color: var(--md-sys-color-on-primary) !important;
+    // Bulle ronde complète pour la date de fin - reste centrée
+    border-radius: datepicker.$datepicker-day-radius !important;
+    font-weight: 600;
+    position: relative;
+    z-index: 3; // Plus élevé que le hover preview
+    
+    // S'assurer que le texte reste visible et centré
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+    
+    // S'assurer que le contenu texte reste au-dessus des pseudo-éléments
+    &::before,
+    &::after {
+        z-index: -1 !important;
+    }
+    
+}
+
+// Si le jour de début est aussi le jour de fin (plage d'un seul jour)
+.datepicker__day--range-start.datepicker__day--range-end {
+    border-radius: datepicker.$datepicker-day-radius !important;
+}
+
+// Style hover spécifique pour le mode range (Material Design 3 You Expressive)
+// Utilise la couleur primary-container comme pour les dates in-range avec transition expressive
+.datepicker__modal[data-mode="range"] {
+    .datepicker__day:not(.datepicker__day--disabled):not(.datepicker__day--outside-month):not(.datepicker__day--range-start):not(.datepicker__day--range-end):not(.datepicker__day--in-range) {
+        // MD3 Expressive: Transition fluide avec courbe emphasized pour une expérience expressive
+        transition: background-color motion.$md-sys-motion-duration-emphasized motion.$md-sys-motion-easing-emphasized,
+                    color motion.$md-sys-motion-duration-emphasized motion.$md-sys-motion-easing-emphasized;
+        
+        &:hover {
+            // MD3 Expressive: Couleur primary-container avec opacité légèrement réduite pour feedback visuel
+            background-color: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
+        }
+    }
+}
+
+// ============================================================================
+// YEAR PICKER VIEW
+// ============================================================================
+
+.datepicker__year-picker {
+    padding: 0;
+    padding-left: spacing.$md-sys-spacing-md; // Réduire l'espace vide
+    padding-right: spacing.$md-sys-spacing-md; // Réduire l'espace vide
+    overflow-x: visible; // Permettre au divider de sortir sur les côtés
+}
+
+.datepicker__year-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: spacing.$md-sys-spacing-sm spacing.$md-sys-spacing-md; // Réduire l'espace vide
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    gap: spacing.$md-sys-spacing-md;
+}
+
+.datepicker__year-nav-button {
+    @include typo-mixin.typography('title-medium');
+    background: none;
+    border: none;
+    padding: spacing.$md-sys-spacing-xs;
+    border-radius: datepicker.$datepicker-button-radius;
+    cursor: pointer;
+    color: var(--md-sys-color-on-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 40px;
+    transition: background-color #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing};
+    
+    @include state-mixin.state-hover;
+    
+    &:focus-visible {
+        outline: datepicker.$datepicker-focus-ring-width solid var(--md-sys-color-primary);
+        outline-offset: datepicker.$datepicker-focus-ring-offset;
+    }
+    
+    .k3ui-icon {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.datepicker__year-range {
+    @include typo-mixin.typography('title-medium');
+    color: var(--md-sys-color-on-surface);
+    text-align: center;
+    flex: 1;
+    font-weight: 500;
+}
+
+.datepicker__year-grid-wrapper {
+    min-height: auto; // S'adapter au contenu
+    max-height: datepicker.$datepicker-year-grid-height; // Limiter la hauteur max pour le scroll
+    overflow-y: auto;
+    overflow-x: visible; // Permettre au divider de sortir sur les côtés
+    padding: 0;
+    margin: 0;
+    position: relative;
+    // Masquer la scrollbar tout en gardant le scroll fonctionnel
+    scrollbar-width: none; // Firefox
+    -ms-overflow-style: none; // IE et Edge
+    
+    &::-webkit-scrollbar {
+        display: none; // Chrome, Safari, Opera
+    }
+}
+
+// Divider sticky retiré - remplacé par le footer avec border-top
+
+.datepicker__year-grid {
+    display: grid;
+    grid-template-columns: repeat(datepicker.$datepicker-year-grid-columns, 1fr);
+    gap: datepicker.$datepicker-year-grid-gap;
+    // Gap identique en haut et en bas : 8px
+    padding: spacing.$md-sys-spacing-sm spacing.$md-sys-spacing-sm; // 8px top, 8px horizontal, 8px bottom
+    // Alignement centré pour une meilleure présentation
+    justify-items: center;
+    align-items: center;
+}
+
+.datepicker__year-item {
+    // Amélioration UX: Dimensions plus équilibrées selon Material Design 3
+    min-width: 64px;
+    min-height: 48px;
+    padding: spacing.$md-sys-spacing-sm spacing.$md-sys-spacing-md;
+    @include typo-mixin.typography('body-large');
+    font-size: 16px; // 16dp selon Material Design
+    background: none;
+    border: none;
+    border-radius: datepicker.$datepicker-year-item-radius;
+    cursor: pointer;
+    color: var(--md-sys-color-on-surface);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include state-mixin.state-hover;
+    transition: background-color #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing},
+        color #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing},
+        transform #{motion.$md-sys-motion-expressive-effects-fast-duration} #{motion.$md-sys-motion-expressive-effects-fast-easing};
+    width: 100%;
+    max-width: 100px; // Limiter la largeur pour une meilleure présentation
+
+    &--selected {
+        background-color: var(--md-sys-color-primary);
+        color: var(--md-sys-color-on-primary);
+        font-weight: 500;
+        // Full radius pour la sélection
+        border-radius: 9999px;
+        // Amélioration UX: Pas de scale pour éviter les décalages
+        transform: none;
+
+        &:hover {
+            background-color: var(--md-sys-color-primary);
+            opacity: 0.9;
+        }
+    }
+    
+    &--disabled {
+        color: var(--md-sys-color-on-surface-variant);
+        opacity: 0.6;
+        cursor: pointer; // Reste cliquable malgré le disabled
+        
+        &:hover {
+            background-color: var(--md-sys-color-surface-container-highest);
+            opacity: 0.8;
+        }
+    }
+
+    &:hover:not(&--selected):not(&--disabled) {
+        background-color: var(--md-sys-color-primary-container);
+        color: var(--md-sys-color-on-primary-container);
+        // Full radius pour le hover
+        border-radius: 9999px;
+    }
+
+    &:focus-visible {
+        outline: datepicker.$datepicker-focus-ring-width solid var(--md-sys-color-primary);
+        outline-offset: datepicker.$datepicker-focus-ring-offset;
+    }
+}
+
+// ============================================================================
+// MONTH PICKER VIEW
+// ============================================================================
+
+.datepicker__month-picker {
+    padding: 0;
+    padding-left: spacing.$md-sys-spacing-md; // Réduire l'espace vide
+    padding-right: spacing.$md-sys-spacing-md; // Réduire l'espace vide
+    overflow-x: visible; // Permettre au divider de sortir sur les côtés
+}
+
+.datepicker__month-grid-wrapper {
+    min-height: auto; // S'adapter au contenu
+    max-height: datepicker.$datepicker-year-grid-height; // Limiter la hauteur max pour le scroll
+    overflow-y: auto;
+    overflow-x: visible; // Permettre au divider de sortir sur les côtés
+    padding: 0;
+    margin: 0;
+    position: relative;
+    // Masquer la scrollbar tout en gardant le scroll fonctionnel
+    scrollbar-width: none; // Firefox
+    -ms-overflow-style: none; // IE et Edge
+    
+    &::-webkit-scrollbar {
+        display: none; // Chrome, Safari, Opera
+    }
+}
+
+// Divider sticky retiré - remplacé par le footer avec border-top
+
+.datepicker__month-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    // Gap pour que les 12 mois (4 lignes) tiennent dans l'espace réservé
+    gap: 2px spacing.$md-sys-spacing-sm; // 2px vertical, 8px horizontal
+    // Gap identique en haut et en bas : 8px
+    padding: spacing.$md-sys-spacing-sm spacing.$md-sys-spacing-sm; // 8px top, 8px horizontal, 8px bottom
+    // Alignement centré pour une meilleure présentation
+    justify-items: center;
+    align-items: center;
+}
+
+.datepicker__month-item {
+    // Amélioration UX: Dimensions plus équilibrées selon Material Design 3
+    min-width: 64px;
+    min-height: 48px;
+    padding: spacing.$md-sys-spacing-sm spacing.$md-sys-spacing-md;
+    @include typo-mixin.typography('body-large');
+    font-size: 16px; // 16dp selon Material Design
+    background: none;
+    border: none;
+    border-radius: datepicker.$datepicker-year-item-radius;
+    cursor: pointer;
+    color: var(--md-sys-color-on-surface);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include state-mixin.state-hover;
+    transition: background-color #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing},
+        color #{motion.$md-sys-motion-expressive-effects-default-duration} #{motion.$md-sys-motion-expressive-effects-default-easing},
+        transform #{motion.$md-sys-motion-expressive-effects-fast-duration} #{motion.$md-sys-motion-expressive-effects-fast-easing};
+    width: 100%;
+    max-width: 120px; // Limiter la largeur pour une meilleure présentation
+
+    &--selected {
+        background-color: var(--md-sys-color-primary);
+        color: var(--md-sys-color-on-primary);
+        font-weight: 500;
+        // Full radius pour la sélection
+        border-radius: 9999px;
+        // Amélioration UX: Pas de scale pour éviter les décalages
+        transform: none;
+
+        &:hover {
+            background-color: var(--md-sys-color-primary);
+            opacity: 0.9;
+        }
+    }
+
+    &:hover:not(&--selected) {
+        background-color: var(--md-sys-color-primary-container);
+        color: var(--md-sys-color-on-primary-container);
+        // Full radius pour le hover
+        border-radius: 9999px;
+    }
+
+    &:focus-visible {
+        outline: datepicker.$datepicker-focus-ring-width solid var(--md-sys-color-primary);
+        outline-offset: datepicker.$datepicker-focus-ring-offset;
+    }
+}
+
+// ============================================================================
+// INPUT MODE VIEW
+// ============================================================================
+
+.datepicker__input-mode {
+    padding: datepicker.$datepicker-header-padding;
+}
+
+.datepicker__input-mode-label {
+    @include typo-mixin.typography('label-large');
+    color: var(--md-sys-color-on-surface-variant);
+    margin-bottom: math.div(datepicker.$datepicker-calendar-padding, 2);
+    display: block;
+}
+
+.datepicker__input-mode-field {
+    width: 100%;
+    height: datepicker.$datepicker-input-height;
+    padding: datepicker.$datepicker-calendar-padding;
+    background-color: var(--md-sys-color-surface-variant);
+    border: datepicker.$datepicker-input-border-width solid var(--md-sys-color-outline-variant);
+    border-radius: datepicker.$datepicker-input-radius;
+    @include typo-mixin.typography('body-large');
+    color: var(--md-sys-color-on-surface);
+    transition: border-color datepicker.$datepicker-transition-duration datepicker.$datepicker-transition-easing,
+        background-color datepicker.$datepicker-transition-duration datepicker.$datepicker-transition-easing;
+
+    &:hover {
+        background-color: var(--md-sys-color-surface);
+    }
+
+    &:focus {
+        outline: none;
+        border-color: var(--md-sys-color-primary);
+        background-color: var(--md-sys-color-surface);
+    }
+
+    &::placeholder {
+        color: var(--md-sys-color-on-surface-variant);
+        opacity: 0.6;
+    }
+}
+
+// ============================================================================
+// ACTIONS
+// ============================================================================
+
+.datepicker__actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: spacing.$md-sys-spacing-sm; // 8px gap between buttons selon MD3
+    // Le padding est géré par le footer parent
+    margin: 0;
+    padding: 0;
+}
+
+.datepicker__button {
+    @include datepicker-mixin.datepicker-button;
+    & {
+        // MD3 Expressive: button height 40px
+        height: datepicker.$datepicker-button-height;
+    }
+}
+
+// ============================================================================
+// RESPONSIVE
+// ============================================================================
+
+@media (max-width: 600px) {
+    .datepicker__modal {
+        max-width: 100%;
+        margin: 0;
+        border-radius: 16px 16px 0 0;
+    }
+
+    .datepicker__header {
+        padding: datepicker.$datepicker-calendar-padding;
+        min-height: datepicker.$datepicker-header-height-mobile;
+    }
+
+    .datepicker__navigation,
+    .datepicker__calendar,
+    .datepicker__year-picker,
+    .datepicker__input-mode {
+        padding-left: datepicker.$datepicker-calendar-padding;
+        padding-right: datepicker.$datepicker-calendar-padding;
+    }
+
+    .datepicker__day,
+    .datepicker__weekday {
+        width: datepicker.$datepicker-day-size-mobile;
+        height: datepicker.$datepicker-day-size-mobile;
+        font-size: 16px; // 16dp selon Material Design
+    }
+
+    .datepicker__actions {
+        padding: math.div(datepicker.$datepicker-calendar-padding, 2);
+    }
+}
+
+// ============================================================================
+// ACCESSIBILITY
+// ============================================================================
+
+.datepicker__visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+    .datepicker__day--selected {
+        outline: 2px solid;
+        outline-offset: -2px;
+    }
+
+    .datepicker__day--today::before {
+        border-width: 3px;
+    }
+}
+
+// ============================================================================
+// REDUCED MOTION SUPPORT
+// ============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+

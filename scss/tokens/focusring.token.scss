@@ -1,0 +1,135 @@
+/**
+ * @file focusring.token.scss
+ * @description Tokens pour le focus ring Material Design 3 Expressive
+ * @see https://m3.material.io/foundations/design-tokens/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use 'sass:map';
+@use 'outline.token' as outline;
+@use 'motion.token' as motion;
+@use 'radius.token' as radius;
+@use 'theme.token' as theme;
+
+// ============================================================================
+// FOCUS RING DE BASE
+// ============================================================================
+
+/**
+ * Largeur de l'anneau de focus par défaut
+ */
+$md-focus-ring-width: 3px !default;
+
+/**
+ * Largeur de l'anneau de focus actif (lors de l'animation)
+ */
+$md-focus-ring-active-width: 8px !default;
+
+/**
+ * Durée de l'animation du focus ring
+ */
+$md-focus-ring-duration: 600ms !default;
+
+/**
+ * Délai de l'animation du focus ring (phase de croissance)
+ */
+$md-focus-ring-delay: calc($md-focus-ring-duration * 0.25) !default;
+
+/**
+ * Courbe d'animation du focus ring
+ */
+$md-focus-ring-easing: motion.spring-easing(effects, fast) !default;
+
+/**
+ * Couleur de l'anneau de focus (par défaut : secondary)
+ */
+$md-focus-ring-color: var(--md-sys-color-secondary, #{theme.$md-ref-palette-secondary50}) !default;
+
+// ============================================================================
+// FOCUS RING OFFSETS
+// ============================================================================
+
+/**
+ * Offset vers l'extérieur pour le mode outward
+ */
+$md-focus-ring-outward-offset: 2px !default;
+
+/**
+ * Offset vers l'intérieur pour le mode inward
+ */
+$md-focus-ring-inward-offset: 0px !default;
+
+// ============================================================================
+// FOCUS RING SHAPE
+// ============================================================================
+
+/**
+ * Rayon de bordure du focus ring (par défaut : full)
+ */
+$md-focus-ring-shape: radius.$md-sys-shape-corner-full !default;
+
+/**
+ * Rayon de bordure end-end
+ */
+$md-focus-ring-shape-end-end: $md-focus-ring-shape !default;
+
+/**
+ * Rayon de bordure end-start
+ */
+$md-focus-ring-shape-end-start: $md-focus-ring-shape !default;
+
+/**
+ * Rayon de bordure start-end
+ */
+$md-focus-ring-shape-start-end: $md-focus-ring-shape !default;
+
+/**
+ * Rayon de bordure start-start
+ */
+$md-focus-ring-shape-start-start: $md-focus-ring-shape !default;
+
+// ============================================================================
+// MAPS ET COLLECTIONS
+// ============================================================================
+
+/**
+ * Map des durées d'animation
+ */
+$md-focus-ring-durations: (
+  fast: 300ms,
+  standard: $md-focus-ring-duration,
+  slow: 900ms
+) !default;
+
+/**
+ * Map des largeurs
+ */
+$md-focus-ring-widths: (
+  thin: 2px,
+  default: $md-focus-ring-width,
+  thick: $md-focus-ring-active-width
+) !default;
+
+// ============================================================================
+// FONCTIONS UTILITAIRES
+// ============================================================================
+
+/**
+ * Fonction pour récupérer une durée d'animation
+ * @param {string} $duration - Type de durée (fast, standard, slow)
+ * @return {string} Valeur de durée
+ */
+@function focus-ring-duration($duration) {
+  @return map.get($md-focus-ring-durations, $duration);
+}
+
+/**
+ * Fonction pour récupérer une largeur
+ * @param {string} $width - Type de largeur (thin, default, thick)
+ * @return {string} Valeur de largeur
+ */
+@function focus-ring-width($width) {
+  @return map.get($md-focus-ring-widths, $width);
+}
+

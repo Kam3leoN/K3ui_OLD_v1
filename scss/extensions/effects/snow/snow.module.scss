@@ -1,0 +1,25 @@
+/**
+ * @fileoverview Module Snow
+ * @description Classes CSS pour le composant
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use "./snow.mixin" as snow-mixin;
+
+/**
+ * Classe principale du composant Snow
+ * @description Canvas pour l'animation de neige
+ */
+.snow {
+  @include snow-mixin.snow-canvas;
+}
+
+
+
+
+
+
+
+
+

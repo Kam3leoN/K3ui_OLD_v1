@@ -1,0 +1,25 @@
+@use 'spacing.token' as spacing;
+
+// Points de rupture de base (basés sur Material Design 3)
+$breakpoint-xs: 600px !default;   // Extra Small / compact (mobile)
+$breakpoint-s: 840px !default;    // Small / expanded (tablette paysage)
+$breakpoint-m: 1200px !default;   // Medium / large (petit laptop)
+$breakpoint-l: 1600px !default;   // Large / xlarge (desktop)
+$breakpoint-xl: 1920px !default;  // Extra Large (grand desktop)
+
+// Gaps — défaut historique (.row inchangé)
+$gap-size: 1.5rem !default;
+
+// Gutters / margins M3 (opt-in via CSS vars + .row--gap-*)
+// compact <600 | medium 600–839 | expanded 840–1199 | large+ ≥1200
+$grid-gutter-compact: spacing.$md-sys-spacing-grid-sm !default;  // 8px
+$grid-gutter-medium: spacing.$md-sys-spacing-grid-md !default;   // 16px
+$grid-gutter-large: spacing.$md-sys-spacing-grid-lg !default;    // 24px
+$grid-gutter-dense: spacing.$md-sys-spacing-grid-sm !default;    // 8px (hero / split-asset)
+
+$grid-margin-compact: spacing.$md-sys-spacing-grid-md !default;  // 16px
+$grid-margin-medium: spacing.$md-sys-spacing-grid-lg !default;   // 24px
+
+$grid-columns-compact: 4 !default;
+$grid-columns-medium: 8 !default;
+$grid-columns-expanded: 12 !default;

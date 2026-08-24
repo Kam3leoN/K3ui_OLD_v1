@@ -1,0 +1,23 @@
+/**
+ * @fileoverview Module Gradient
+ * @description Classes CSS pour le texte en dégradé
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use "./gradient.mixin" as gradient-mixin;
+
+.gradient,
+k3ui-gradient {
+  @include gradient-mixin.gradient-component();
+
+  --k3ui-gradient-angle: 90deg;
+  --k3ui-gradient-colors: #0575E6, #021B79, #0575E6;
+  --k3ui-gradient-background-size: 100%;
+
+  background-image: linear-gradient(
+    var(--k3ui-gradient-angle),
+    var(--k3ui-gradient-colors)
+  );
+  background-size: var(--k3ui-gradient-background-size);
+}

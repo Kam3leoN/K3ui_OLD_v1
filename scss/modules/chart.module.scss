@@ -1,0 +1,216 @@
+/**
+ * @fileoverview Module Chart Material You 3
+ * @description Classes CSS pour le composant Chart K3UI
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens' as tokens;
+@use '../mixins/chart.mixin' as chart;
+@use '../mixins/reset.mixin' as reset;
+
+// =============================================================================
+// MODULE CHART - MATERIAL YOU 3
+// =============================================================================
+
+/**
+ * Conteneur principal du graphique
+ */
+.chart-container {
+  @include chart.chart-container-base();
+
+  &--fullwidth {
+    @include chart.chart-container-base('fullwidth');
+  }
+
+  &--fixed {
+    @include chart.chart-container-base('fixed');
+  }
+}
+
+/**
+ * Conteneur principal du graphique K3UI
+ */
+.chart,
+k3ui-chart {
+  display: block;
+  position: relative;
+  width: 100%;
+  min-height: 200px;
+}
+
+/**
+ * Zone de rendu du graphique
+ */
+.chart__canvas {
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+}
+
+/**
+ * Région accessibilité (masquée visuellement)
+ */
+.chart__a11y {
+  @include reset.visually-hidden;
+}
+
+.chart__a11y-table {
+  margin: 0;
+  border-collapse: collapse;
+  font-size: inherit;
+}
+
+/**
+ * Canvas du graphique (legacy alias)
+ */
+.chart-canvas {
+  @include chart.chart-canvas();
+}
+
+/**
+ * Wrapper pour contrôler la taille du canvas
+ */
+.chart-wrapper {
+  @include chart.chart-wrapper();
+}
+
+/**
+ * Contrôles de graphique
+ */
+.chart-controls {
+  @include chart.chart-controls();
+
+  &__button {
+    @include chart.chart-control-button();
+  }
+}
+
+/**
+ * Légende personnalisée
+ */
+.chart-legend {
+  @include chart.chart-legend();
+
+  &__item {
+    @include chart.chart-legend-item();
+
+    &--label {
+      font-weight: tokens.$md-sys-chart-legend-font-weight;
+    }
+  }
+
+  &__color {
+    @include chart.chart-legend-color();
+  }
+}
+
+/**
+ * Titre du graphique
+ */
+.chart-title {
+  @include chart.chart-title();
+}
+
+/**
+ * Description du graphique
+ */
+.chart-description {
+  @include chart.chart-description();
+}
+
+/**
+ * État de chargement
+ */
+.chart-loading {
+  @include chart.chart-loading();
+
+  &__spinner {
+    @include chart.chart-loading-spinner();
+  }
+}
+
+/**
+ * Animation de rotation pour le spinner
+ */
+@keyframes chart-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/**
+ * Tooltip personnalisé
+ */
+.chart-tooltip {
+  @include chart.chart-tooltip();
+
+  &__label {
+    font-weight: tokens.$md-sys-chart-control-button-font-weight;
+    margin-bottom: tokens.$md-sys-spacing-xs;
+  }
+
+  &__value {
+    color: #93c5fd;
+  }
+}
+
+/**
+ * Grille d'exemples de graphiques
+ */
+.charts-grid {
+  @include chart.chart-grid();
+}
+
+/**
+ * Carte de graphique
+ */
+.chart-card {
+  @include chart.chart-card();
+
+  &__header {
+    margin-bottom: tokens.$md-sys-spacing-lg;
+  }
+
+  &__body {
+    height: 400px;
+  }
+}
+
+/**
+ * Responsive - Mobile
+ */
+@include chart.chart-responsive-mobile {
+  .chart-container {
+    padding: tokens.$md-sys-chart-padding-small;
+  }
+
+  .chart-controls {
+    gap: tokens.$md-sys-chart-gap-small;
+
+    &__button {
+      @include chart.chart-control-button('small');
+    }
+  }
+
+  .chart-title {
+    font-size: var(--md-sys-typescale-title-medium-size, 18px);
+  }
+
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/**
+ * Résumé / données tabulaires pour lecteurs d'écran (masqué visuellement)
+ */
+.k3ui-chart__a11y {
+  @include reset.visually-hidden;
+}
+
+.k3ui-chart__a11y-table {
+  margin: 0;
+  border-collapse: collapse;
+  font-size: inherit;
+}

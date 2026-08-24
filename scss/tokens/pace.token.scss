@@ -1,0 +1,69 @@
+/**
+ * @fileoverview Tokens de design pour Pace (barre de chargement de page)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+// ============================================================================
+// Z-INDEX (au-dessus de l'AppBar 500, drawer 999, dialog 1000, toast 1500)
+// ============================================================================
+
+$pace-z-index: 9999;
+
+// ============================================================================
+// COULEURS (MD3 : tonal pour la piste, primary pour le remplissage)
+// ============================================================================
+
+/** Piste / conteneur (tonal) */
+$pace-track-color: var(--md-sys-color-on-primary-container, #e9ddff);
+
+/** Remplissage de la barre (primary) */
+$pace-bar-color: var(--md-sys-color-primary-container, #4d3d75);
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+/** Hauteur de la barre (px) – thème minimal */
+$pace-bar-height: 3px;
+
+// ============================================================================
+// THÈMES (valeurs par défaut par thème, surchargeables via --pace-bar-color)
+// ============================================================================
+
+/** Thème flash : hauteur barre, taille/offset spinner */
+$pace-flash-bar-height: 2px;
+$pace-flash-activity-size: 14px;
+$pace-flash-activity-offset: 15px;
+
+/** Thème fill : overlay pleine hauteur (couleur + opacité) */
+$pace-fill-bg: rgba(var(--md-sys-color-primary-container-rgb), 0.2);
+$pace-fill-z-index: -1;
+
+/** Thème counter : bloc centré avec pourcentage dans une card filled */
+$pace-counter-font-size: 5rem;
+$pace-counter-color: var(--md-sys-color-on-primary, #e9ddff);
+$pace-counter-z-index: 2000;
+$pace-counter-card-width: 16rem;
+$pace-counter-card-height: 8rem;
+$pace-counter-card-bg: var(--md-sys-color-primary, #4d3d75);
+$pace-counter-card-radius: var(--md-sys-shape-corner-large, 16px);
+$pace-counter-card-elevation: var(--md-sys-elevation-level1, 0 1px 2px rgba(0, 0, 0, 0.3));
+$pace-counter-card-padding: 2rem;
+
+/** Thème flat : barre qui glisse du haut */
+$pace-flat-bar-height: 10px;
+$pace-flat-offset: 50px;
+$pace-flat-color: var(--md-sys-color-on-primary-container, #e9ddff);
+$pace-flat-z-index: 2000;
+
+/** Thème barber : barre avec rayures animées (coiffeur) */
+$pace-barber-height: 10px;
+$pace-barber-track: var(--md-sys-color-primary-container, #4d3d75);
+$pace-barber-progress: var(--md-sys-color-on-primary-container, #e9ddff);
+$pace-barber-z-index: 2000;
+$pace-barber-stripe-size: 32px;
+
+/** Thème material : loader M3 centré plein écran (sans voile — spinner seul) */
+$pace-material-z-index: 2000;
+$pace-material-bg: transparent;

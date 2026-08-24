@@ -1,0 +1,229 @@
+/**
+ * @fileoverview Module Gauge
+ * @description Classes CSS pour la jauge circulaire Material Design 3 Expressive
+ * @author K3UI Team
+ * @version 2.0.0
+ */
+
+@use '../tokens/gauge.token' as gauge;
+@use '../mixins/gauge.mixin' as gauge-mixin;
+
+.gauge,
+k3ui-gauge {
+  @include gauge-mixin.gauge-container;
+
+  &.gauge--lg {
+    @include gauge-mixin.gauge-container-lg;
+  }
+
+  &.gauge--sm {
+    @include gauge-mixin.gauge-container-sm;
+  }
+
+  .gauge__frame,
+  &__frame {
+    @include gauge-mixin.gauge-frame;
+  }
+
+  .gauge__svg,
+  &__svg {
+    @include gauge-mixin.gauge-svg;
+  }
+
+  .gauge__track,
+  &__track {
+    @include gauge-mixin.gauge-track;
+  }
+
+  .gauge__progress,
+  &__progress {
+    @include gauge-mixin.gauge-progress;
+  }
+
+  &.gauge--lg .gauge__track,
+  &.gauge--lg .gauge__progress,
+  &.gauge--lg &__track,
+  &.gauge--lg &__progress {
+    stroke-width: gauge.$gauge-track-stroke-width-lg;
+  }
+
+  .gauge__tick,
+  &__tick {
+    @include gauge-mixin.gauge-tick;
+  }
+
+  .gauge__marker,
+  &__marker {
+    @include gauge-mixin.gauge-marker;
+  }
+
+  /* Texte courbé (label haut / unité bas) */
+  .gauge__arc-label,
+  &__arc-label,
+  .gauge__arc-unit,
+  &__arc-unit {
+    fill: gauge.$gauge-on-surface;
+    dominant-baseline: middle;
+  }
+
+  .gauge__arc-label,
+  &__arc-label {
+    font-size: 7.6px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .gauge__arc-unit,
+  &__arc-unit {
+    font-size: 6.8px;
+    font-weight: 500;
+    letter-spacing: 0.9px;
+    text-transform: uppercase;
+    fill: gauge.$gauge-on-surface-variant;
+  }
+
+  &.gauge--lg .gauge__arc-label,
+  &.gauge--lg &__arc-label {
+    font-size: 6.4px;
+    letter-spacing: 0.8px;
+  }
+
+  &.gauge--lg .gauge__arc-unit,
+  &.gauge--lg &__arc-unit {
+    font-size: 5.8px;
+  }
+
+  .gauge__content,
+  &__content {
+    @include gauge-mixin.gauge-content;
+  }
+
+  .gauge__content--value,
+  &__content--value {
+    margin-top: 2cqi;
+  }
+
+  .gauge__content--value-only,
+  &__content--value-only {
+    margin-top: 0;
+  }
+
+  .gauge__content--curved,
+  &__content--curved {
+    margin-top: 0;
+    row-gap: 1cqi;
+
+    .gauge__icon--sm {
+      margin-bottom: 1cqi;
+    }
+  }
+
+  .gauge__icon,
+  &__icon {
+    @include gauge-mixin.gauge-icon;
+  }
+
+  .gauge__icon--sm,
+  &__icon--sm {
+    width: 16cqi;
+    height: 16cqi;
+    margin-bottom: 2cqi;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .gauge__label,
+  &__label {
+    @include gauge-mixin.gauge-label;
+  }
+
+  .gauge__label--sm,
+  &__label--sm {
+    font-size: 8cqi;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  .gauge__value,
+  &__value {
+    @include gauge-mixin.gauge-value;
+  }
+
+  .gauge__value-row,
+  &__value-row {
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    column-gap: 0.12em;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .gauge__value-row .gauge__unit,
+  &__value-row .gauge__unit {
+    font-size: 8cqi;
+    line-height: 1;
+    flex: none;
+  }
+
+  .gauge__unit,
+  &__unit {
+    @include gauge-mixin.gauge-unit;
+  }
+
+  .gauge__fraction,
+  &__fraction {
+    @include gauge-mixin.gauge-fraction;
+  }
+
+  .gauge__state,
+  &__state {
+    font-size: 9cqi;
+    font-weight: 600;
+    color: gauge.$gauge-on-surface-variant;
+  }
+
+  /* États */
+  &[data-state='loading'] .gauge__progress,
+  &[data-state='loading'] &__progress {
+    stroke: gauge.$gauge-on-surface-variant;
+    animation: gauge-spin 1.1s linear infinite;
+    transform-origin: 50% 50%;
+  }
+}
+
+@keyframes gauge-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gauge[data-state='loading'] .gauge__progress,
+  k3ui-gauge[data-state='loading'] .gauge__progress {
+    animation: none;
+  }
+}
+
+/* Palette CSS vars — utilisées par strokeColor() en JS */
+:root {
+  --gauge-low: #{gauge.$gauge-low-hex};
+  --gauge-medium: #{gauge.$gauge-medium-hex};
+  --gauge-high: #{gauge.$gauge-high-hex};
+  --gauge-critical: #{gauge.$gauge-critical-hex};
+  --gauge-neutral: #{gauge.$gauge-neutral-hex};
+  --gauge-inv-low: #{gauge.$gauge-inv-low-hex};
+  --gauge-inv-medium: #{gauge.$gauge-inv-medium-hex};
+  --gauge-inv-high: #{gauge.$gauge-inv-high-hex};
+  --gauge-inv-full: #{gauge.$gauge-inv-full-hex};
+  --gauge-cold: #{gauge.$gauge-cold-hex};
+  --gauge-cool: #{gauge.$gauge-cool-hex};
+  --gauge-warm: #{gauge.$gauge-warm-hex};
+  --gauge-hot: #{gauge.$gauge-hot-hex};
+  --gauge-lh-poor: #{gauge.$gauge-lh-poor-hex};
+  --gauge-lh-avg: #{gauge.$gauge-lh-avg-hex};
+  --gauge-lh-good: #{gauge.$gauge-lh-good-hex};
+}

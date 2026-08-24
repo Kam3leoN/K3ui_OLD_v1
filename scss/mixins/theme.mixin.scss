@@ -1,0 +1,381 @@
+/**
+ * @file theme.mixin.scss
+ * @description Mixins pour la gestion des thèmes Material Design 3 Expressive
+ * @see https://m3.material.io/foundations/color/the-color-system/color-roles-and-states
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use 'sass:map';
+@use 'sass:color';
+@use 'sass:list';
+@use '../tokens/theme.token' as tokens;
+@use '../tokens/motion.token' as motion;
+
+// ============================================================================
+// MIXINS PRINCIPAUX
+// ============================================================================
+
+/**
+ * Mixin générique pour générer les custom properties de thème
+ * Inspiré de Material Web, mais adapté pour K3UI
+ * 
+ * @param {Map} $tokens - Map avec les noms de tokens comme clés et leurs valeurs
+ * @param {bool} $validate - Valider les tokens (défaut: true)
+ * 
+ * @example scss
+ *   @include theme((
+ *     'primary': #006493,
+ *     'on-primary': #ffffff,
+ *     'primary-container': #c8e6ff
+ *   ));
+ */
+@mixin theme($tokens, $validate: true) {
+  @each $token, $value in $tokens {
+    // Validation optionnelle
+    @if $validate and not tokens.is-supported-token($token) {
+      @error 'Token `#{$token}` n\'est pas un token supporté. Tokens valides: #{list.join(tokens.$md-sys-color-supported-tokens, ", ")}';
+    }
+    
+    // Générer la custom property seulement si la valeur existe
+    @if $value {
+      --md-sys-color-#{$token}: #{$value};
+      // Alias legacy K3UI → canon MD3 (évite les fallbacks morts dans les tokens composants)
+      --k3ui-#{$token}: var(--md-sys-color-#{$token});
+    }
+  }
+}
+
+/**
+ * Mixin pour appliquer les couleurs selon le thème
+ * Refactorisé pour utiliser le mixin theme() générique
+ * @param {string} $scheme - Le schéma de couleur ('light' ou 'dark')
+ */
+@mixin color-scheme($scheme: 'light') {
+  // Générer les tokens de couleur standard (couleurs + RGB)
+  // Le mixin theme() génère automatiquement toutes les custom properties
+  $color-tokens: tokens.get-theme-tokens($scheme);
+  @include theme($color-tokens, $validate: false); // Pas de validation car tokens déjà validés
+}
+
+/**
+ * Mixin pour appliquer un thème clair avec une palette personnalisée
+ * Inspiré de Material Web, permet de changer la palette sans modifier les tokens
+ * 
+ * @param {Map} $md-ref-palette - Palette personnalisée (optionnel, utilise $md-ref-palettes par défaut)
+ * 
+ * @example scss
+ *   // Utiliser la palette par défaut
+ *   :root {
+ *     @include light-theme();
+ *   }
+ *   
+ *   // Utiliser une palette personnalisée
+ *   $my-palette: map.merge(tokens.$md-ref-palettes, (
+ *     'primary': (
+ *       40: #ff0000, // Rouge au lieu de bleu
+ *       // ... autres tons
+ *     )
+ *   ));
+ *   :root {
+ *     @include light-theme($my-palette);
+ *   }
+ */
+@mixin light-theme($md-ref-palette: tokens.$md-ref-palettes) {
+  $tokens: tokens.md-sys-color-values-light($md-ref-palette);
+  $all-tokens: tokens.generate-all-tokens($tokens);
+  @include theme($all-tokens, $validate: false);
+}
+
+/**
+ * Mixin pour appliquer un thème sombre avec une palette personnalisée
+ * 
+ * @param {Map} $md-ref-palette - Palette personnalisée (optionnel, utilise $md-ref-palettes par défaut)
+ * 
+ * @example scss
+ *   @media (prefers-color-scheme: dark) {
+ *     @include dark-theme();
+ *   }
+ */
+@mixin dark-theme($md-ref-palette: tokens.$md-ref-palettes) {
+  $tokens: tokens.md-sys-color-values-dark($md-ref-palette);
+  $all-tokens: tokens.generate-all-tokens($tokens);
+  @include theme($all-tokens, $validate: false);
+}
+
+/**
+ * Mixin pour appliquer un thème automatique selon les préférences système
+ */
+@mixin auto-theme() {
+  // Avant initialisation ThemeManager (pas de data-theme) : suit le système
+  :root:not([data-theme]) {
+    color-scheme: light;
+    @include color-scheme('light');
+    --k3ui-color-surface-variant: var(--md-sys-color-surface-variant);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+      color-scheme: dark;
+      @include color-scheme('dark');
+      --k3ui-color-surface-variant: var(--md-sys-color-surface-variant);
+    }
+  }
+}
+
+/**
+ * Mixin pour forcer le thème clair
+ */
+@mixin theme-light() {
+  @include color-scheme('light');
+}
+
+/**
+ * Mixin pour forcer le thème sombre
+ */
+@mixin theme-dark() {
+  @include color-scheme('dark');
+}
+
+// ============================================================================
+// MIXINS D'ÉTAT
+// ============================================================================
+
+/**
+ * Mixin pour les états d'interaction (hover, focus, pressed)
+ * @param {string} $state - L'état ('hover', 'focus', 'pressed', 'dragged')
+ * @param {color} $color - La couleur de base pour l'état
+ */
+/// State layer M3 via token RGB (suit html[data-theme])
+/// @param {string} $state hover | focus | pressed | dragged
+/// @param {string} $color-token rôle MD3 (on-surface, on-primary, …)
+@mixin state-layer($state: 'hover', $color-token: 'on-surface') {
+  $rgb: var(--md-sys-color-#{$color-token}-rgb);
+
+  @if $state == 'hover' {
+    background-color: rgba($rgb, tokens.$md-sys-state-hover-state-layer-opacity);
+  } @else if $state == 'focus' {
+    background-color: rgba($rgb, tokens.$md-sys-state-focus-state-layer-opacity);
+  } @else if $state == 'pressed' {
+    background-color: rgba($rgb, tokens.$md-sys-state-pressed-state-layer-opacity);
+  } @else if $state == 'dragged' {
+    background-color: rgba($rgb, tokens.$md-sys-state-dragged-state-layer-opacity);
+  }
+}
+
+/**
+ * Mixin pour les états désactivés
+ * @param {string} $type - Le type ('content' ou 'container')
+ */
+@mixin disabled-state($type: 'content') {
+  @if $type == 'content' {
+    opacity: tokens.$md-sys-state-disabled-content-opacity;
+  } @else if $type == 'container' {
+    opacity: tokens.$md-sys-state-disabled-container-opacity;
+  }
+}
+
+// ============================================================================
+// FONCTIONS UTILITAIRES
+// ============================================================================
+
+/**
+ * Fonction pour créer des couleurs avec opacité
+ * @param {color} $color - La couleur de base
+ * @param {number} $opacity - L'opacité (0-1)
+ * @return {color} La couleur avec opacité
+ */
+@function color-mix($color, $opacity: 1) {
+  @return rgba($color, $opacity);
+}
+
+/**
+ * Fonction pour créer des couches d'état
+ * @param {color} $color - La couleur de base
+ * @param {number} $opacity - L'opacité de l'état
+ * @return {color} La couleur pour la couche d'état
+ */
+@function state-layer($color, $opacity) {
+  @return rgba($color, $opacity);
+}
+
+/**
+ * Fonction pour obtenir une couleur du thème actuel
+ * @param {string} $color-name - Le nom de la couleur système
+ * @return {string} La variable CSS de la couleur
+ */
+@function theme-color($color-name) {
+  @return var(--md-sys-color-#{$color-name});
+}
+
+/**
+ * Fonction pour obtenir une couleur RGB du thème actuel
+ * @param {string} $color-name - Le nom de la couleur système
+ * @return {string} La variable CSS de la couleur RGB
+ */
+@function theme-color-rgb($color-name) {
+  @return var(--md-sys-color-#{$color-name}-rgb);
+}
+
+/**
+ * Fonction pour créer une couleur avec opacité depuis une variable RGB
+ * @param {string} $color-name - Le nom de la couleur système
+ * @param {number} $opacity - L'opacité (0-1)
+ * @return {string} La couleur avec opacité
+ */
+@function theme-color-with-opacity($color-name, $opacity) {
+  @return rgba(var(--md-sys-color-#{$color-name}-rgb), $opacity);
+}
+
+// Les mixins d'alerte ont été déplacés vers toast.mixin.scss
+
+// Le mixin toast-role a été déplacé vers toast.mixin.scss
+
+// ============================================================================
+// MIXINS AVANCÉS
+// ============================================================================
+
+/**
+ * Mixin pour appliquer une couleur de surface avec fallback
+ * @param {string} $surface - Type de surface (surface, surface-dim, surface-bright, etc.)
+ * @param {string} $theme - Thème (light ou dark)
+ */
+@mixin surface-color($surface: 'surface', $theme: 'light') {
+  background-color: tokens.sys-color-var($surface);
+}
+
+/**
+ * Mixin pour appliquer une couleur de texte avec fallback
+ * @param {string} $color - Type de couleur (on-surface, primary, secondary, etc.)
+ * @param {string} $theme - Thème (light ou dark)
+ */
+@mixin theme-text-color($color: 'on-surface', $theme: 'light') {
+  color: tokens.sys-color-var($color);
+}
+
+/**
+ * Mixin pour appliquer une couleur de bordure avec fallback
+ * @param {string} $color - Type de couleur (outline, outline-variant, etc.)
+ * @param {string} $theme - Thème (light ou dark)
+ * @param {string} $width - Largeur de la bordure
+ */
+@mixin theme-border-color($color: 'outline', $theme: 'light', $width: 1px) {
+  border: $width solid tokens.sys-color-var($color);
+}
+
+// Les mixins alert-color et alert-text-color ont été déplacés vers toast.mixin.scss
+
+/**
+ * Mixin pour créer un conteneur avec couleur de surface
+ * @param {string} $surface - Type de surface (surface, surface-container, etc.)
+ * @param {string} $theme - Thème (light ou dark)
+ * @param {string} $padding - Padding du conteneur
+ */
+@mixin surface-container($surface: 'surface-container', $theme: 'light', $padding: 16px) {
+  @include surface-color($surface, $theme);
+  @include theme-text-color('on-surface', $theme);
+  padding: $padding;
+}
+
+/**
+ * Mixin pour créer un bouton avec couleur primaire
+ * @param {string} $theme - Thème (light ou dark)
+ * @param {string} $padding - Padding du bouton
+ * @param {string} $border-radius - Rayon de bordure
+ */
+@mixin primary-button($theme: 'light', $padding: 12px 24px, $border-radius: 8px) {
+  @include surface-color('primary', $theme);
+  @include theme-text-color('on-primary', $theme);
+  padding: $padding;
+  border-radius: $border-radius;
+  border: none;
+  cursor: pointer;
+  transition:
+    background-color motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+    color motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+    box-shadow motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+    opacity motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+  
+  &:hover {
+    @include state-layer('hover', 'on-primary');
+  }
+  
+  &:focus {
+    @include state-layer('focus', 'on-primary');
+    outline: 2px solid tokens.sys-color-var('primary');
+    outline-offset: 2px;
+  }
+  
+  &:active {
+    @include state-layer('pressed', 'on-primary');
+  }
+}
+
+/**
+ * Mixin pour créer un bouton secondaire
+ * @param {string} $theme - Thème (light ou dark)
+ * @param {string} $padding - Padding du bouton
+ * @param {string} $border-radius - Rayon de bordure
+ */
+@mixin secondary-button($theme: 'light', $padding: 12px 24px, $border-radius: 8px) {
+  @include surface-color('secondary-container', $theme);
+  @include theme-text-color('on-secondary-container', $theme);
+  @include theme-border-color('outline', $theme);
+  padding: $padding;
+  border-radius: $border-radius;
+  cursor: pointer;
+  transition:
+    background-color motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+    color motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+    border-color motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+    box-shadow motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+    opacity motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+  
+  &:hover {
+    @include state-layer('hover', 'on-secondary-container');
+  }
+  
+  &:focus {
+    @include state-layer('focus', 'on-secondary-container');
+    outline: 2px solid tokens.sys-color-var('secondary');
+    outline-offset: 2px;
+  }
+  
+  &:active {
+    @include state-layer('pressed', 'on-secondary-container');
+  }
+}
+
+/**
+ * Mixin pour créer un bouton d'erreur
+ * @param {string} $theme - Thème (light ou dark)
+ * @param {string} $padding - Padding du bouton
+ * @param {string} $border-radius - Rayon de bordure
+ */
+@mixin error-button($theme: 'light', $padding: 12px 24px, $border-radius: 8px) {
+  @include surface-color('error', $theme);
+  @include theme-text-color('on-error', $theme);
+  padding: $padding;
+  border-radius: $border-radius;
+  border: none;
+  cursor: pointer;
+  transition:
+    background-color motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+    color motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+    box-shadow motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+    opacity motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+  
+  &:hover {
+    @include state-layer('hover', 'on-error');
+  }
+  
+  &:focus {
+    @include state-layer('focus', 'on-error');
+    outline: 2px solid tokens.sys-color-var('error');
+    outline-offset: 2px;
+  }
+  
+  &:active {
+    @include state-layer('pressed', 'on-error');
+  }
+} 

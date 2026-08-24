@@ -1,0 +1,94 @@
+/**
+ * @fileoverview Mixins pour Page
+ * @description Mixins réutilisables pour l'empilement de sections
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/page.token' as page;
+@use '../tokens/motion.token' as motion;
+
+/**
+ * Conteneur principal Page
+ */
+@mixin page-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+/**
+ * Section plein écran empilée
+ */
+@mixin page-section {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  backface-visibility: hidden;
+}
+
+/**
+ * Transition entre sections
+ * @param {string} $duration - Durée de transition
+ * @param {string} $easing - Courbe CSS
+ */
+@mixin page-section-easing(
+  $duration: page.$page-transition-duration,
+  $easing: page.$page-transition-easing
+) {
+  transition: all $duration $easing;
+}
+
+/**
+ * Point de navigation — état inactif
+ */
+@mixin page-nav-bullet {
+  width: page.$page-nav-bullet-size;
+  height: page.$page-nav-bullet-size;
+  border: page.$page-nav-bullet-border;
+  background: page.$page-nav-bullet-inactive-bg;
+  border-radius: 50%;
+  position: relative;
+  z-index: 1;
+  transition:
+    width motion.$md-sys-motion-expressive-effects-default-duration
+      motion.$md-sys-motion-expressive-effects-default-easing,
+    height motion.$md-sys-motion-expressive-effects-default-duration
+      motion.$md-sys-motion-expressive-effects-default-easing,
+    background-color motion.$md-sys-motion-expressive-effects-default-duration
+      motion.$md-sys-motion-expressive-effects-default-easing,
+    border-radius motion.$md-sys-motion-expressive-effects-default-duration
+      motion.$md-sys-motion-expressive-effects-default-easing,
+    transform motion.$md-sys-motion-expressive-effects-fast-duration
+      motion.$md-sys-motion-expressive-effects-fast-easing;
+}
+
+/**
+ * Agrandissement au survol / focus
+ */
+@mixin page-nav-bullet-hover {
+  transform: scale(page.$page-nav-bullet-hover-scale);
+}
+
+/**
+ * Indicateur actif — pill verticale M3 Expressive
+ */
+@mixin page-nav-bullet-active {
+  width: page.$page-nav-bullet-active-width;
+  height: page.$page-nav-bullet-active-height;
+  background: page.$page-nav-bullet-active-bg;
+  border-radius: page.$page-nav-bullet-active-radius;
+}
+
+/**
+ * Infobulle de navigation
+ */
+@mixin page-nav-tooltip {
+  position: absolute;
+  top: -2px;
+  font-size: page.$page-tooltip-font-size;
+  white-space: nowrap;
+  max-width: page.$page-tooltip-max-width;
+}

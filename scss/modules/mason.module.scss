@@ -1,0 +1,37 @@
+/**
+ * @fileoverview Module SCSS Mason minimal (encapsulation)
+ * @description
+ * Styles isolés pour le conteneur Masonry K3ui.
+ *
+ * Le composant TS place les items en `position:absolute`. Ce module :
+ * - définit `position:relative` sur le conteneur
+ * - fournit une base pour les items (sans imposer de `display:grid` ou de `gap`)
+ */
+
+@use '../mixins/mason.mixin' as mason-mx;
+
+.k3ui-mason {
+  @include mason-mx.mason-root;
+}
+
+/**
+ * Mode animation (coordination IsoFilter) :
+ * - on laisse Mason mettre à jour son `transform`
+ * - on anime vers la nouvelle position + opacité
+ * - transition de hauteur du conteneur (évite le “snap” UX)
+ */
+.k3ui-mason--isofilter-animate {
+  @include mason-mx.mason-isofilter-animate-container;
+}
+
+.k3ui-mason--isofilter-animate .k3ui-mason__item {
+  @include mason-mx.mason-isofilter-animate-item;
+}
+
+/**
+ * Classe optionnelle pour cibler les items.
+ * @note Le positionnement est fait dans `Mason.ts` (et restauré au destroy()).
+ */
+.k3ui-mason__item {
+  @include mason-mx.mason-item-base;
+}

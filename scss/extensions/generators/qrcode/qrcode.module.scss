@@ -1,0 +1,13 @@
+@use './qrcode.token' as qrcode;
+@use './qrcode.mixin' as qrcode-mixin;
+
+.qrcode,
+k3ui-qrcode {
+  @include qrcode-mixin.qrcode-container;
+
+  .qrcode__canvas,
+  &__canvas {
+    @include qrcode-mixin.qrcode-preview;
+    @include qrcode-mixin.qrcode-canvas;
+  }
+}

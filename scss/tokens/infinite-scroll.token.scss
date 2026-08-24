@@ -1,0 +1,20 @@
+/**
+ * @fileoverview Tokens de design InfiniteScroll
+ * @description Tokens MD3 pour le composant de chargement progressif.
+ */
+
+@use 'motion.token' as motion;
+
+$infinite-scroll-color-primary: var(--md-sys-color-primary, #6750a4);
+$infinite-scroll-color-on-primary: var(--md-sys-color-on-primary, #ffffff);
+$infinite-scroll-color-surface: var(--md-sys-color-surface, #fffbfe);
+$infinite-scroll-color-on-surface: var(--md-sys-color-on-surface, #1c1b1f);
+$infinite-scroll-color-on-surface-variant: var(--md-sys-color-on-surface-variant, #49454f);
+$infinite-scroll-color-outline-variant: var(--md-sys-color-outline-variant, #cac4d0);
+
+$infinite-scroll-radius: 12px;
+$infinite-scroll-trigger-height: 44px;
+$infinite-scroll-trigger-padding-x: 1.25rem;
+
+$infinite-scroll-duration: 180ms;
+$infinite-scroll-easing: motion.spring-easing(effects, fast);

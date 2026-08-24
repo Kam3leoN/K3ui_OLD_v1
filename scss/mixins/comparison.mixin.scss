@@ -1,0 +1,157 @@
+/**
+ * @fileoverview Mixins pour le composant Comparison
+ * @description Mixins pour la comparaison d'images avant/après
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/comparison.token' as comparison;
+
+/**
+ * Conteneur principal de comparaison
+ */
+@mixin comparison-container {
+  position: relative;
+  width: 100%;
+  max-width: comparison.$comparison-max-width;
+  aspect-ratio: comparison.$comparison-aspect-ratio;
+  border-radius: comparison.$comparison-border-radius;
+  overflow: hidden;
+  box-shadow: comparison.$comparison-shadow;
+  background: comparison.$comparison-bg;
+  user-select: none;
+  touch-action: none;
+}
+
+/**
+ * Wrapper d'image
+ */
+@mixin comparison-image-wrapper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+  }
+}
+
+/**
+ * Image « avant » (révélée par clip-path)
+ */
+@mixin comparison-image-before {
+  z-index: comparison.$comparison-z-image-before;
+}
+
+/**
+ * Image « après » (fond)
+ */
+@mixin comparison-image-after {
+  z-index: comparison.$comparison-z-image-after;
+  filter: saturate(1.1) contrast(1.05);
+}
+
+/**
+ * Label flottant
+ */
+@mixin comparison-label {
+  position: absolute;
+  top: comparison.$comparison-label-offset;
+  padding: comparison.$comparison-label-padding-y comparison.$comparison-label-padding-x;
+  background: comparison.$comparison-label-bg;
+  backdrop-filter: blur(10px);
+  color: comparison.$comparison-label-color;
+  font-size: comparison.$comparison-label-font-size;
+  font-weight: 600;
+  border-radius: 100px;
+  z-index: comparison.$comparison-z-label;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition:
+    opacity comparison.$comparison-label-transition-duration ease,
+    transform comparison.$comparison-label-transition-duration ease;
+  pointer-events: none;
+}
+
+/**
+ * Ligne verticale du curseur
+ */
+@mixin comparison-slider-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: comparison.$comparison-slider-line-width;
+  transform: translateX(-50%);
+  z-index: comparison.$comparison-z-slider-line;
+  pointer-events: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(255, 255, 255, 0.3) 15%,
+      rgba(255, 255, 255, 0.9) 40%,
+      rgba(255, 255, 255, 0.9) 60%,
+      rgba(255, 255, 255, 0.3) 85%,
+      transparent 100%
+    );
+  }
+}
+
+/**
+ * Bouton curseur
+ */
+@mixin comparison-slider-knob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: comparison.$comparison-knob-size;
+  height: comparison.$comparison-knob-size;
+  transform: translate(-50%, -50%);
+  padding: 0;
+  border: none;
+  background: comparison.$comparison-knob-bg;
+  border-radius: 50%;
+  z-index: comparison.$comparison-z-slider-knob;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: comparison.$comparison-knob-shadow;
+  transition:
+    transform comparison.$comparison-transition-duration comparison.$comparison-transition-easing,
+    box-shadow comparison.$comparison-transition-duration comparison.$comparison-transition-easing;
+
+  &:active {
+    cursor: grabbing;
+    transform: translate(-50%, -50%) scale(0.95);
+    box-shadow: comparison.$comparison-knob-shadow-active;
+  }
+
+  svg {
+    width: comparison.$comparison-knob-icon-size;
+    height: comparison.$comparison-knob-icon-size;
+    color: comparison.$comparison-knob-icon-color;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity comparison.$comparison-label-transition-duration ease;
+    z-index: -1;
+  }
+}

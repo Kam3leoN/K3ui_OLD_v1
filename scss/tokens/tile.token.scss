@@ -1,0 +1,38 @@
+/// @file tile.token.scss
+/// @brief Tokens Tile (MD3 expressive + variante carte)
+
+@use './motion.token' as motion;
+
+// Couleurs principales (expressive)
+$md-comp-tile-primary: var(--md-sys-color-primary);
+$md-comp-tile-on-primary: var(--md-sys-color-on-primary);
+$md-comp-tile-primary-container: var(--md-sys-color-primary-container);
+$md-comp-tile-on-primary-container: var(--md-sys-color-on-primary-container);
+$md-comp-tile-error: #ee4540;
+$md-comp-tile-success: #2dc653;
+
+// Tailles alignées sur les hauteurs de Button MD3
+$md-comp-tile-xs-size: 32px;
+$md-comp-tile-sm-size: 40px;
+$md-comp-tile-md-size: 56px;
+$md-comp-tile-lg-size: 96px;
+$md-comp-tile-xl-size: 136px;
+
+// Rayons shape morph expressive (inactif carré, actif rond)
+$md-comp-tile-xs-radius-square: 4px;
+$md-comp-tile-sm-radius-square: 8px;
+$md-comp-tile-md-radius-square: 10px;
+$md-comp-tile-lg-radius-square: 16px;
+$md-comp-tile-xl-radius-square: 20px;
+$md-comp-tile-radius-round: 9999px;
+
+// Motion
+$md-comp-tile-shape-duration: motion.$md-sys-motion-duration-standard;
+$md-comp-tile-shape-easing: motion.$md-sys-motion-easing-emphasized-decelerate;
+$md-comp-tile-state-duration: motion.$md-sys-motion-duration-short;
+
+// Variante carte (groupe)
+$md-comp-tile-card-size: 7rem;
+$md-comp-tile-card-gap: 0.5rem;
+$md-comp-tile-card-border-radius: 5px;
+$md-comp-tile-card-icon-size: 3rem;

@@ -1,0 +1,177 @@
+/// @file radio.mixin.scss
+/// @brief Mixins radio Material 3 Expressive
+
+@use '../tokens/radio.token' as radio;
+@use '../tokens/theme.token' as theme;
+@use '../tokens/motion.token' as motion;
+@use '../tokens/spacing.token' as spacing;
+@use '../mixins/motion.mixin' as motion-mixin;
+@use '../mixins/state.mixin' as state;
+
+/**
+ * Mixin de base pour tous les radios
+ */
+@mixin radio-base {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  outline: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  vertical-align: top;
+  width: auto;
+  min-height: radio.$md-sys-radio-target-size;
+
+  > div:first-child {
+    position: relative;
+    cursor: pointer;
+    touch-action: manipulation;
+    overflow: visible;
+  }
+
+  &__label {
+    cursor: pointer;
+    user-select: text;
+  }
+}
+
+/**
+ * Anneau du radio — wrapper du SVG M3E (20×20)
+ * Couleur via currentColor (anneau + point partagent le même fill)
+ */
+@mixin radio-container {
+  position: relative;
+  box-sizing: border-box;
+  display: block;
+  width: radio.$md-sys-radio-container-size;
+  height: radio.$md-sys-radio-container-size;
+  flex-shrink: 0;
+  color: var(--md-sys-color-outline);
+  z-index: 1;
+  transition: color motion.spring-duration(effects, fast) motion.spring-easing(effects, fast);
+
+  .radio--checked & {
+    color: var(--md-sys-color-primary);
+  }
+
+  .radio--error:not(.radio--checked) & {
+    color: var(--md-sys-color-error);
+  }
+
+  .radio--error.radio--checked & {
+    color: var(--md-sys-color-error);
+  }
+}
+
+/**
+ * Icône SVG — géométrie M3E (viewBox 0 0 20 20, centre 10,10)
+ */
+@mixin radio-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/**
+ * Anneau extérieur (cercle plein + mask cutout r=8 → stroke 2px)
+ */
+@mixin radio-outer {
+  fill: currentColor;
+}
+
+/**
+ * Point central — cercle SVG cx/cy=10 r=5 (diamètre 10), scale depuis le centre
+ */
+@mixin radio-dot {
+  fill: currentColor;
+  transform: scale(0);
+  transform-box: view-box;
+  transform-origin: 10px 10px;
+  transition:
+    transform radio.$md-sys-radio-dot-duration radio.$md-sys-radio-dot-easing,
+    fill motion.spring-duration(effects, fast) motion.spring-easing(effects, fast);
+
+  .radio--checked & {
+    transform: scale(1);
+  }
+}
+
+/**
+ * State layer (halo circulaire avec scale expressive)
+ */
+@mixin radio-state-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: radio.$md-sys-radio-state-layer-shape;
+  background-color: var(--md-sys-color-on-surface);
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+  z-index: 0;
+  transition:
+    opacity motion.spring-duration(effects, fast) motion.spring-easing(effects, fast),
+    transform motion.spring-duration(spatial, fast) motion.spring-easing(spatial, fast);
+
+  .radio:hover:not(.radio--disabled):not(.radio--pressed) &,
+  .radio--hovered:not(.radio--disabled):not(.radio--pressed) & {
+    opacity: radio.$md-sys-radio-state-layer-opacity-hover;
+    transform: scale(1);
+  }
+
+  .radio--focused:not(.radio--disabled) & {
+    opacity: radio.$md-sys-radio-state-layer-opacity-focus;
+    transform: scale(1);
+  }
+
+  .radio--pressed:not(.radio--disabled) & {
+    opacity: radio.$md-sys-radio-state-layer-opacity-pressed;
+    transform: scale(1);
+  }
+
+  .radio--error & {
+    background-color: var(--md-sys-color-error);
+  }
+
+  .radio--disabled & {
+    opacity: 0 !important;
+  }
+}
+
+/**
+ * Mixin pour le label du radio
+ */
+@mixin radio-label {
+  font-size: var(--md-sys-typescale-body-large-size);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  color: var(--md-sys-color-on-surface);
+  user-select: none;
+  cursor: pointer;
+  margin-left: 8px;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+/**
+ * Mixin pour les états hover et focus
+ */
+@mixin radio-states {
+  &.radio--disabled {
+    @include state.state-disabled();
+    cursor: not-allowed;
+    opacity: 1;
+
+    .radio__container {
+      color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+    }
+
+    .radio__label {
+      color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+    }
+  }
+}

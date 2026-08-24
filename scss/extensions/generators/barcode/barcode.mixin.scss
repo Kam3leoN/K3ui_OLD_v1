@@ -1,0 +1,23 @@
+@use './barcode.token' as barcode;
+
+@mixin barcode-container {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin barcode-preview {
+  background: barcode.$barcode-preview-bg;
+  border-radius: barcode.$barcode-preview-radius;
+  padding: barcode.$barcode-preview-padding;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin barcode-svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}

@@ -1,0 +1,45 @@
+/**
+ * @fileoverview Mixins pour Perspective
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use "../tokens/perspective.token" as p;
+
+@mixin perspective-track {
+  perspective: p.$perspective-perspective;
+  -webkit-perspective: p.$perspective-perspective;
+  position: absolute;
+  inset: 0;
+}
+
+@mixin perspective-slide {
+  position: absolute;
+  transform: none;
+  -webkit-transform: none;
+  width: p.$perspective-slide-width;
+  height: p.$perspective-slide-height;
+  top: 50%;
+  left: 50%;
+  margin-left: -(p.$perspective-slide-width * 0.5);
+  margin-top: -(p.$perspective-slide-height * 0.5);
+  opacity: 0;
+  transition: opacity p.$perspective-transition-duration p.$perspective-transition-easing,
+    transform p.$perspective-transition-duration p.$perspective-transition-easing;
+  -webkit-transition: opacity p.$perspective-transition-duration p.$perspective-transition-easing,
+    -webkit-transform p.$perspective-transition-duration p.$perspective-transition-easing;
+}
+
+@mixin perspective-nav {
+  position: absolute;
+  cursor: pointer;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  width: p.$perspective-nav-size;
+  height: p.$perspective-nav-size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: p.$perspective-z-index-nav;
+}

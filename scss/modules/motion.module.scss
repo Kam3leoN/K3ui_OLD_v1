@@ -1,0 +1,46 @@
+/// @file motion.module.scss
+/// @brief Classes utilitaires motion M3 — springs actifs (Expressive par défaut)
+/// @description Schéma Standard : `html[data-motion-scheme="standard"]` sur la racine document
+/// @see https://m3.material.io/styles/motion/overview/specs
+@use '../mixins/motion.mixin' as motion;
+
+.motion-standard {
+  @include motion.motion('standard');
+}
+.motion-emphasized {
+  @include motion.motion('emphasized');
+}
+.motion-entering {
+  @include motion.motion('entering');
+}
+.motion-exiting {
+  @include motion.motion('exiting');
+}
+
+// Animations de révélation
+.motion-reveal-up {
+  @include motion.reveal-up();
+}
+.motion-reveal-down {
+  @include motion.reveal-down();
+}
+.motion-reveal-left {
+  @include motion.reveal-left();
+}
+.motion-reveal-right {
+  @include motion.reveal-right();
+}
+
+// Autres animations de transition
+.motion-fade-in {
+  @include motion.fade-in();
+}
+.motion-zoom-in {
+  @include motion.zoom-in();
+}
+.motion-bounce-in {
+  @include motion.bounce-in();
+}
+.motion-bounce-out {
+  @include motion.bounce-out();
+}

@@ -1,0 +1,92 @@
+/**
+ * @file collapse.token.scss
+ * @description Tokens pour le composant Collapse (accordion M3 Expressive)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'radius.token' as radius;
+
+// ============================================================================
+// LAYOUT
+// ============================================================================
+
+/** Écart entre items */
+$collapse-gap: 4px !default;
+
+/** Gap interne header (leading / label / trailing) */
+$collapse-header-gap: 16px !default;
+
+/** Padding header */
+$collapse-header-padding-block: 14px !default;
+$collapse-header-padding-inline: 20px !default;
+
+/** Padding body */
+$collapse-body-padding-block-start: 14px !default;
+$collapse-body-padding-block-end: 16px !default;
+$collapse-body-padding-inline-end: 20px !default;
+$collapse-body-padding-inline-start: 60px !default;
+
+/** Marge haut du body (séparation header) */
+$collapse-body-margin-top: 4px !default;
+
+// ============================================================================
+// RADIUS (M3 Expressive)
+// ============================================================================
+
+$collapse-radius-xl: radius.$md-sys-shape-corner-extra-large !default;
+$collapse-radius-xs: radius.$md-sys-shape-corner-extra-small !default;
+
+// ============================================================================
+// COULEURS
+// ============================================================================
+
+$collapse-header-bg: var(--md-sys-color-surface-container-high, #272a31) !default;
+$collapse-header-bg-open: var(--md-sys-color-surface-container-highest, #32363e) !default;
+$collapse-body-bg: var(--md-sys-color-surface-container, #1d2025) !default;
+$collapse-on-color: var(--md-sys-color-on-surface, #e2e2e6) !default;
+$collapse-on-variant: var(--md-sys-color-on-surface-variant, #c3c6cf) !default;
+
+// ============================================================================
+// TYPOGRAPHIE
+// ============================================================================
+
+$collapse-header-font-size: 0.9375rem !default;
+$collapse-header-font-weight: 400 !default;
+$collapse-header-line-height: 1.5 !default;
+$collapse-header-letter-spacing: 0.01em !default;
+
+$collapse-body-font-size: 0.875rem !default;
+$collapse-body-line-height: 1.65 !default;
+$collapse-body-letter-spacing: 0.015em !default;
+
+// ============================================================================
+// SLOT / ICON
+// ============================================================================
+
+$collapse-slot-size: 24px !default;
+$collapse-leading-font-size: 1.25rem !default;
+$collapse-chevron-size: 20px !default;
+
+// ============================================================================
+// MOTION
+// ============================================================================
+
+$collapse-expand-duration: 450ms !default;
+$collapse-expand-easing: cubic-bezier(0.2, 0, 0, 1) !default;
+
+$collapse-radius-duration: 400ms !default;
+$collapse-radius-easing: cubic-bezier(0.2, 0, 0, 1) !default;
+
+$collapse-bg-duration: 250ms !default;
+$collapse-bg-easing: cubic-bezier(0.2, 0, 0, 1) !default;
+
+$collapse-fade-in-duration: 250ms !default;
+$collapse-fade-in-delay: 80ms !default;
+$collapse-fade-in-easing: cubic-bezier(0.05, 0.7, 0.1, 1) !default;
+
+$collapse-fade-out-duration: 120ms !default;
+$collapse-fade-out-easing: cubic-bezier(0.3, 0, 0.8, 0.15) !default;
+
+$collapse-slide-in-duration: 350ms !default;
+$collapse-body-offset-y: -6px !default;

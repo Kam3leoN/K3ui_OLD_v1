@@ -1,0 +1,107 @@
+/**
+ * @fileoverview Mixins pour le composant Tooltips
+ * @description Mixins plain/rich M3 — flèche intégrée au panel (::after)
+ * @author K3UI Team
+ * @version 2.2.0
+ */
+
+@use '../tokens/tooltip.token' as t;
+
+/**
+ * Racine positionnée (top/left uniquement)
+ */
+@mixin tooltip-root() {
+  position: fixed;
+  z-index: t.$tooltip-z-index;
+  width: max-content;
+  overflow: visible;
+  pointer-events: none;
+  font-family: inherit;
+
+  --tooltip-spatial-curve: #{t.$tooltip-spatial-easing};
+  --tooltip-spatial-dur: #{t.$tooltip-spatial-duration};
+  --tooltip-effects-curve: #{t.$tooltip-effects-easing};
+  --tooltip-effects-dur: #{t.$tooltip-effects-duration};
+  --tooltip-arrow-w: #{t.$tooltip-arrow-width};
+  --tooltip-arrow-h: #{t.$tooltip-arrow-height};
+  --tooltip-arrow-overlap: #{t.$tooltip-arrow-overlap};
+
+  // Surface partagée panel + flèche (définie par variantes sur .tooltip)
+  --tooltip-surface-bg: var(--md-sys-color-inverse-surface, #1a1a2e);
+  --tooltip-surface-border: transparent;
+}
+
+@mixin tooltip-shell() {
+  position: relative;
+  display: inline-block;
+  width: max-content;
+  opacity: 0;
+  transform: scale(var(--tooltip-scale-from, #{t.$tooltip-scale-from-default}));
+  transform-origin: var(--tooltip-origin, center);
+  transition:
+    transform var(--tooltip-spatial-dur) var(--tooltip-spatial-curve),
+    opacity var(--tooltip-effects-dur) var(--tooltip-effects-curve);
+
+  .tooltip.is-visible & {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@mixin tooltip-panel-base() {
+  position: relative;
+  background: var(--tooltip-surface-bg);
+  color: var(--md-sys-color-inverse-on-surface, var(--md-sys-color-on-inverse-surface, #fff));
+}
+
+@mixin tooltip-plain-panel() {
+  @include tooltip-panel-base;
+  font-size: t.$tooltip-plain-font-size;
+  font-weight: t.$tooltip-plain-font-weight;
+  line-height: t.$tooltip-plain-line-height;
+  padding: t.$tooltip-plain-padding;
+  border-radius: t.$tooltip-radius;
+  max-width: t.$tooltip-plain-max-width;
+  color: var(--md-sys-color-inverse-on-surface, var(--md-sys-color-on-inverse-surface, #fff));
+}
+
+@mixin tooltip-rich-panel() {
+  @include tooltip-panel-base;
+  color: var(--md-sys-color-on-surface, #1a1a2e);
+  border: 0.5px solid var(--tooltip-surface-border);
+  border-radius: t.$tooltip-radius-rich;
+  padding: t.$tooltip-rich-padding;
+  max-width: t.$tooltip-rich-max-width;
+}
+
+/**
+ * Flèche ronde — pseudo du panel, même fond, zéro couture
+ * @description Reproduction de la courbe "round arrow" de tippy.js
+ *   (path SVG 16×6 « M0 6 … 16 6 ») transposée dans la box 32×12 et
+ *   retournée verticalement pour que la bosse pointe hors du panel.
+ *   Base pleine (y=0) collée au panel → fusion sans couture.
+ */
+@mixin tooltip-panel-arrow() {
+  &::after {
+    content: '';
+    position: absolute;
+    width: t.$tooltip-arrow-width;
+    height: t.$tooltip-arrow-height;
+    background: var(--tooltip-surface-bg);
+    pointer-events: none;
+    z-index: 1;
+    clip-path: path(
+      'M 0 0 C 0 0 3.14 0.02 8.17 6.63 C 10.24 9.35 12.13 10.99 14 11 C 15.87 11.01 17.76 9.37 19.85 6.63 C 24.91 0.02 28 0 28 0 H 0 Z'
+    );
+  }
+}
+
+@mixin tooltip-type-surface($bg, $fg) {
+  --tooltip-surface-bg: #{$bg};
+  --tooltip-surface-border: transparent;
+
+  .tooltip__panel {
+    background: $bg;
+    color: $fg;
+  }
+}

@@ -1,0 +1,62 @@
+/**
+ * @fileoverview Module ButtonFabRail — FAB Speed Dial linéaire
+ */
+
+@use '../tokens/button-fab-rail.token' as bfr;
+@use '../mixins/button-fab-rail.mixin' as mix;
+@use '../mixins/button-fab-speed-dial-trigger.mixin' as trigger;
+
+.button-fab-rail,
+k3ui-button-fab-rail {
+  @include mix.button-fab-rail-root;
+}
+
+.button-fab-rail__scrim {
+  @include mix.button-fab-rail-scrim;
+}
+
+.button-fab-rail[data-open='true'] .button-fab-rail__scrim {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.button-fab-rail__slot {
+  @include mix.button-fab-rail-slot;
+}
+
+.button-fab-rail__item {
+  @include mix.button-fab-rail-item;
+}
+
+.button-fab-rail[data-open='true'] .button-fab-rail__item {
+  @include mix.button-fab-rail-item-open;
+}
+
+.button-fab-rail__action {
+  @include mix.button-fab-rail-action-btn;
+
+  .k3ui-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+.button-fab-rail__trigger-wrap {
+  pointer-events: auto;
+}
+
+.button-fab-rail__trigger-wrap .button-fab {
+  flex-shrink: 0;
+  --button-fab-size: var(--button-fab-rail-size, #{bfr.$button-fab-rail-trigger-size});
+  --button-fab-icon-size: 1.5rem;
+}
+
+@include trigger.button-fab-speed-dial-trigger('button-fab-rail', --button-fab-rail-rotate);
+
+@media (prefers-reduced-motion: reduce) {
+  .button-fab-rail,
+  .button-fab-rail *:not(.button-fab-rail__icon-rotator):not(.button-fab-rail__icon-rotator *) {
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+  }
+}

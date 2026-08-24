@@ -1,0 +1,31 @@
+@use '../mixins/alignment.mixin' as alignment;
+
+/// @file alignment.module.scss
+/// @brief Classes utilitaires pour l'alignement (Material 3)
+
+.align-left    { @include alignment.align('left', 'horizontal'); }
+.align-center  { @include alignment.align('center', 'horizontal'); }
+.align-right   { @include alignment.align('right', 'horizontal'); }
+.align-justify { @include alignment.align('justify', 'horizontal'); }
+
+.align-top     { @include alignment.align('top', 'vertical'); }
+.align-middle  { @include alignment.align('middle', 'vertical'); }
+.align-bottom  { @include alignment.align('bottom', 'vertical'); }
+
+.justify-start   { @include alignment.align('start', 'justify'); }
+.justify-center  { @include alignment.align('center', 'justify'); }
+.justify-end     { @include alignment.align('end', 'justify'); }
+.items-start     { @include alignment.align('start', 'items'); }
+.items-center    { @include alignment.align('center', 'items'); }
+.items-end       { @include alignment.align('end', 'items'); }
+
+// Classes spécifiques pour centrer les boutons et éléments inline
+.btn-center {
+  display: block !important;
+  margin: 0 auto !important;
+}
+
+.inline-center {
+  display: inline-block;
+  text-align: center;
+} 

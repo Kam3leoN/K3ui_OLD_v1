@@ -1,0 +1,50 @@
+/**
+ * @fileoverview Module ShuffleNumber
+ * @description Animation de roulement caractère par caractère (nombres / labels)
+ */
+
+@use '../mixins/shuffle-number.mixin' as sn-mixin;
+
+.shuffle-number {
+  @include sn-mixin.shuffle-number-root;
+
+  &--will-change {
+    @include sn-mixin.shuffle-number-will-change;
+  }
+}
+
+.shuffle-number__value {
+  @include sn-mixin.shuffle-number-value;
+}
+
+.shuffle-number__prefix,
+.shuffle-number__suffix {
+  @include sn-mixin.shuffle-number-affix;
+}
+
+.shuffle-number__suffix {
+  margin-inline-start: 0.0625em;
+}
+
+.shuffle-number__char {
+  @include sn-mixin.shuffle-number-char;
+
+  &--resizing {
+    @include sn-mixin.shuffle-number-char-resizing;
+  }
+}
+
+.shuffle-number__char-sizer {
+  @include sn-mixin.shuffle-number-char-sizer;
+}
+
+.shuffle-number__char-face {
+  @include sn-mixin.shuffle-number-char-face;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shuffle-number__char-face {
+    transition: none !important;
+    transform: none !important;
+  }
+}

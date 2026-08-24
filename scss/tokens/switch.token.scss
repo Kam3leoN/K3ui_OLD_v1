@@ -1,0 +1,61 @@
+/// @file switch.tokens.scss
+/// @brief Tokens switch Material 3
+
+@use './radius.token' as radius;
+@use './motion.token' as motion;
+@use './spacing.token' as spacing;
+
+// Dimensions des switches (Material Design 3 specs)
+// Selon l'image de référence Material Design 3
+
+$md-sys-switch-width: 52px;
+$md-sys-switch-height: 32px;
+// Taille du handle — Material Design 3 / Material You
+// Selected (ON) ou avec contenu (icône/texte) : 24dp
+// Unselected (OFF) sans contenu : 16dp
+$md-sys-switch-handle-size: 24px;
+$md-sys-switch-handle-size-unselected: 16px;
+$md-sys-switch-track-height: 32px;
+
+// Style compact (Material Design 2)
+// Le track est plus petit que le handle
+$md-sys-switch-compact-track-height: 10px; // Track réduit de 4px (14px - 4px = 10px)
+
+// Padding et espacement (Material Design 3 specifications)
+// Padding = (track-height - handle-size) / 2 pour centrer le handle
+$md-sys-switch-handle-padding: 4px; // (32 - 24) / 2 — état selected / avec contenu
+$md-sys-switch-handle-padding-unselected: 8px; // (32 - 16) / 2 — état unselected sans contenu
+$md-sys-switch-track-padding: 4px;
+$md-sys-switch-icon-size: 16px; // Material You : icône dans handle 24dp (specs M3)
+$md-sys-switch-text-size: 12px; // Texte compact dans handle 24dp (lisibilité + marge)
+
+// Border radius
+$md-sys-switch-track-border-radius: radius.$md-sys-shape-corner-full; // 999px pour ovale
+$md-sys-switch-handle-border-radius: radius.$md-sys-shape-corner-full; // 999px pour cercle
+
+// Border pour l'état unchecked
+$md-sys-switch-track-border-width: 2px;
+$md-sys-switch-track-border-color-unchecked: var(--md-sys-color-outline);
+
+// State layer (zone de touch interactif)
+$md-sys-switch-state-layer-size: 40px;
+$md-sys-switch-state-layer-shape: radius.$md-sys-shape-corner-full;
+
+// États
+$md-sys-switch-state-layer-opacity-hover: 0.08;
+$md-sys-switch-state-layer-opacity-focus: 0.12;
+$md-sys-switch-state-layer-opacity-pressed: 0.12;
+$md-sys-switch-state-layer-opacity-disabled: 0.38;
+
+// Durées de transition (Material Design 3)
+$md-sys-switch-transition-duration: motion.$md-sys-motion-duration-standard; // 250ms
+$md-sys-switch-transition-easing: motion.$md-sys-motion-easing-standard; // cubic-bezier(0.2, 0, 0, 1)
+$md-sys-switch-haptic-duration: motion.$md-sys-motion-duration-entering; // 200ms pour effet haptic
+
+// Variante outlined
+$md-sys-switch-outlined-border-width: 1px;
+$md-sys-switch-outlined-border-color: var(--md-sys-color-outline);
+$md-sys-switch-outlined-background: transparent;
+$md-sys-switch-outlined-checked-border-color: var(--md-sys-color-primary);
+
+

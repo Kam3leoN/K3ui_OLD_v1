@@ -1,0 +1,110 @@
+/**
+ * @file alert.module.scss
+ * @description Module Alert — encart d'information avec encoche titre (4 positions)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/alert.token' as alert;
+@use '../tokens/notch.token' as notch;
+@use '../mixins/alert.mixin' as alert-mixin;
+
+.alert {
+  @include alert-mixin.alert-base;
+
+  &__surface {
+    @include alert-mixin.alert-surface;
+  }
+
+  &__text {
+    @include alert-mixin.alert-text;
+  }
+
+  &__title {
+    @include alert-mixin.alert-title;
+  }
+
+  /**
+   * Coin externe MYNT (pastille hors surface — voir Alert.ts).
+   * box-shadow : scelle la fringe gamma du border-radius (fil gris).
+   * Uniquement les 4 coins — sur les bords le shadow crée des « ailes » blanches.
+   */
+  &.notch--top-end .notch__label,
+  &.notch--top-start .notch__label,
+  &.notch--bottom-end .notch__label,
+  &.notch--bottom-start .notch__label {
+    box-shadow: 0 0 0 1.5px var(--notch-label-bg, var(--notch-fill));
+  }
+
+  &.notch--top-end .notch__label {
+    border-top-right-radius: notch.$notch-corner-radius;
+  }
+
+  &.notch--top-start .notch__label {
+    border-top-left-radius: notch.$notch-corner-radius;
+  }
+
+  &.notch--bottom-end .notch__label {
+    border-bottom-right-radius: notch.$notch-corner-radius;
+  }
+
+  &.notch--bottom-start .notch__label {
+    border-bottom-left-radius: notch.$notch-corner-radius;
+  }
+
+  &--primary {
+    @include alert-mixin.alert-variant(
+      var(--md-sys-color-primary-container),
+      var(--md-sys-color-on-primary-container),
+      var(--md-sys-color-primary)
+    );
+  }
+
+  &--alert {
+    @include alert-mixin.alert-variant(
+      var(--md-sys-color-error-container),
+      var(--md-sys-color-on-error-container),
+      var(--md-sys-color-error)
+    );
+  }
+
+  &--info {
+    @include alert-mixin.alert-variant(
+      var(--md-sys-color-info-container),
+      var(--md-sys-color-on-info-container),
+      var(--md-sys-color-info)
+    );
+  }
+
+  &--warning {
+    @include alert-mixin.alert-variant(
+      var(--md-sys-color-warning-container),
+      var(--md-sys-color-on-warning-container),
+      var(--md-sys-color-warning)
+    );
+  }
+
+  &--note {
+    @include alert-mixin.alert-variant(
+      var(--md-sys-color-surface-container-low),
+      var(--md-sys-color-on-surface),
+      var(--md-sys-color-on-surface-variant)
+    );
+  }
+
+  &--tips {
+    @include alert-mixin.alert-variant(
+      var(--md-sys-color-success-container),
+      var(--md-sys-color-on-success-container),
+      var(--md-sys-color-success)
+    );
+  }
+
+  &--hint {
+    @include alert-mixin.alert-variant(
+      var(--md-sys-color-info-container),
+      var(--md-sys-color-on-info-container),
+      var(--md-sys-color-info)
+    );
+  }
+}

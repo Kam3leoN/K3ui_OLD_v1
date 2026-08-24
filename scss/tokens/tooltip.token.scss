@@ -1,0 +1,83 @@
+/**
+ * @fileoverview Tokens de design pour Tooltips
+ * @description Variables M3 plain/rich — motion via motion.token.scss
+ * @author K3UI Team
+ * @version 2.0.0
+ */
+
+@use 'motion.token' as motion;
+@use 'elevation.token' as elevation;
+@use 'radius.token' as radius;
+@use 'typography.token' as typo;
+
+// ============================================================================
+// Z-INDEX
+// ============================================================================
+
+$tooltip-z-index: 10000;
+
+// ============================================================================
+// GÉOMÉTRIE (synchronisée avec Tooltips.ts)
+// ============================================================================
+
+$tooltip-gap: 10px;
+/** Largeur de la base de la flèche (synchronisée avec Tooltips.ts) */
+$tooltip-arrow-width: 28px;
+/** Hauteur totale de la flèche (bosse ronde façon tippy.js) */
+$tooltip-arrow-height: 11px;
+/** Chevauchement dans le corps (fusion panel ↔ flèche, zéro couture) */
+$tooltip-arrow-overlap: 2px;
+/** Protrusion visible hors du tooltip = height - overlap (synchronisée avec Tooltips.ts ARROW) */
+$tooltip-arrow-protrusion: $tooltip-arrow-height - $tooltip-arrow-overlap;
+/** @deprecated alias historique border-triangle */
+$tooltip-arrow: $tooltip-arrow-protrusion;
+$tooltip-radius: radius.$md-sys-shape-corner-small;
+$tooltip-radius-rich: radius.$md-sys-shape-corner-medium;
+$tooltip-plain-max-width: 200px;
+$tooltip-rich-max-width: 320px;
+$tooltip-arrow-inset: 16px;
+$tooltip-viewport-margin: 32px;
+
+// ============================================================================
+// PLAIN
+// ============================================================================
+
+$tooltip-plain-padding: 7px 11px;
+$tooltip-plain-font-size: 13px;
+$tooltip-plain-font-weight: 400;
+$tooltip-plain-line-height: 1.4;
+
+// ============================================================================
+// RICH
+// ============================================================================
+
+$tooltip-rich-padding: 14px 16px;
+$tooltip-rich-title-size: 14px;
+$tooltip-rich-body-size: 13px;
+$tooltip-rich-actions-gap: 8px;
+$tooltip-rich-actions-margin-top: 12px;
+
+// ============================================================================
+// BOUTONS D'ACTION (rich interactif)
+// ============================================================================
+
+$tooltip-btn-font-size: 13px;
+$tooltip-btn-padding: 8px 16px;
+$tooltip-btn-radius: 20px;
+
+// ============================================================================
+// SCALE D'ENTRÉE (motion spatial)
+// ============================================================================
+
+$tooltip-scale-from-expressive: 0.82;
+$tooltip-scale-from-standard: 0.92;
+$tooltip-scale-from-default: 0.9;
+
+// ============================================================================
+// ANIMATIONS — springs M3 actifs
+// ============================================================================
+
+$tooltip-spatial-easing: motion.spring-easing(spatial, default);
+$tooltip-spatial-duration: motion.spring-duration(spatial, default);
+$tooltip-effects-easing: motion.spring-easing(effects, default);
+$tooltip-effects-duration: motion.spring-duration(effects, default);

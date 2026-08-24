@@ -1,0 +1,95 @@
+/**
+ * @fileoverview Mixins pour Ticker
+ * @description Mixins réutilisables pour le composant cotation / KPI
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/ticker.token' as t;
+
+/**
+ * Conteneur principal du ticker
+ */
+@mixin ticker-root {
+  --ticker-up: #{t.$ticker-up};
+  --ticker-down: #{t.$ticker-down};
+  --ticker-flat: #{t.$ticker-flat};
+  --ticker-label: #{t.$ticker-label};
+  --ticker-flash-tint: #{t.$ticker-flash-tint};
+  --ticker-tone: var(--ticker-flat);
+
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--ticker-gap);
+  font-family: var(--ticker-font, #{t.$ticker-font});
+  line-height: 1.15;
+}
+
+/**
+ * Label (intitulé de la mesure)
+ */
+@mixin ticker-label {
+  color: var(--ticker-label);
+  font-size: var(--ticker-label-size);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/**
+ * Zone valeur + indicateur + delta
+ */
+@mixin ticker-readout {
+  display: inline-flex;
+  align-items: baseline;
+  gap: t.$ticker-readout-gap;
+  color: var(--ticker-tone);
+}
+
+/**
+ * Valeur numérique formatée
+ */
+@mixin ticker-value {
+  font-family: var(--ticker-numeric-font, #{t.$ticker-numeric-font});
+  font-size: var(--ticker-value-size);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+/**
+ * Texte secondaire (delta / volume)
+ */
+@mixin ticker-delta {
+  color: var(--ticker-tone);
+  font-size: var(--ticker-delta-size);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  opacity: t.$ticker-delta-opacity;
+  white-space: nowrap;
+}
+
+/**
+ * Indicateur de sens (icône IconManager)
+ */
+@mixin ticker-indicator {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ticker-tone);
+  font-size: var(--ticker-value-size);
+  line-height: 1;
+  flex-shrink: 0;
+
+  .k3ui-icon,
+  svg {
+    display: block;
+    width: 0.85em;
+    height: 0.85em;
+    color: inherit;
+    fill: currentColor;
+  }
+}

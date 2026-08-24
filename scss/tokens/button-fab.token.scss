@@ -1,0 +1,100 @@
+/**
+ * @fileoverview Tokens pour ButtonFab Material Design 3 Expressive
+ * @description FAB et Extended FAB — tailles, radius, motion (specs M3 à la lettre)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+// ============================================================================
+// DIMENSIONS FAB (M3: small 56dp, medium 80dp, large 96dp)
+// ============================================================================
+
+$button-fab-size-small: 56px !default;
+$button-fab-size-medium: 80px !default;
+$button-fab-size-large: 96px !default;
+
+$button-fab-icon-small: 24px !default;
+$button-fab-icon-medium: 28px !default;
+$button-fab-icon-large: 36px !default;
+
+/** Padding FAB par rapport au bord de l’écran / conteneur (toutes tailles) */
+$button-fab-container-padding: 16px !default;
+
+/** Radius FAB rounded (small / medium / large) */
+$button-fab-radius-rounded-small: 16px !default;
+$button-fab-radius-rounded-medium: 20px !default;
+$button-fab-radius-rounded-large: 28px !default;
+
+/** Radius FAB square */
+$button-fab-radius-square-small: 8px !default;
+$button-fab-radius-square-medium: 10px !default;
+$button-fab-radius-square-large: 16px !default;
+
+// ============================================================================
+// EXTENDED FAB — padding et gap (specs M3 measurements)
+// ============================================================================
+
+/** Extended small: padding start 16, gap 8, padding end 16 */
+$button-fab-ext-padding-start-small: 16px !default;
+$button-fab-ext-padding-end-small: 16px !default;
+$button-fab-ext-gap-small: 8px !default;
+
+/** Extended medium: padding start 26, gap 12, padding end 20 */
+$button-fab-ext-padding-start-medium: 26px !default;
+$button-fab-ext-padding-end-medium: 20px !default;
+$button-fab-ext-gap-medium: 12px !default;
+
+/** Extended large: padding start 28, gap 16, padding end 28 */
+$button-fab-ext-padding-start-large: 28px !default;
+$button-fab-ext-padding-end-large: 28px !default;
+$button-fab-ext-gap-large: 16px !default;
+
+/** Extended FAB radius rounded (stadium) */
+$button-fab-ext-radius-rounded-small: 28px !default;
+$button-fab-ext-radius-rounded-medium: 40px !default;
+$button-fab-ext-radius-rounded-large: 48px !default;
+
+/** Label typography — md.comp.extended-fab.[small|medium|large].label-text */
+$button-fab-label-size-small: 16px !default;
+$button-fab-label-size-medium: 22px !default;
+$button-fab-label-size-large: 24px !default;
+
+$button-fab-label-weight-small: 500 !default;
+$button-fab-label-weight-medium: 400 !default;
+$button-fab-label-weight-large: 400 !default;
+
+$button-fab-label-letter-spacing-small: 0.15px !default;
+$button-fab-label-letter-spacing-medium: 0 !default;
+$button-fab-label-letter-spacing-large: 0 !default;
+
+$button-fab-label-line-height-small: 24px !default;
+$button-fab-label-line-height-medium: 28px !default;
+$button-fab-label-line-height-large: 32px !default;
+
+// ============================================================================
+// COULEURS (M3 — 6 variantes : filled + container primary/secondary/tertiary, + surface)
+// ============================================================================
+
+/** Filled — Primary & On primary */
+$button-fab-bg-primary: var(--md-sys-color-primary, #6750A4) !default;
+$button-fab-fg-primary: var(--md-sys-color-on-primary, #fff) !default;
+/** Filled — Secondary & On secondary */
+$button-fab-bg-secondary: var(--md-sys-color-secondary, #625B71) !default;
+$button-fab-fg-secondary: var(--md-sys-color-on-secondary, #fff) !default;
+/** Filled — Tertiary & On tertiary */
+$button-fab-bg-tertiary: var(--md-sys-color-tertiary, #7D5260) !default;
+$button-fab-fg-tertiary: var(--md-sys-color-on-tertiary, #fff) !default;
+
+/** Container (default) — Primary container & On primary container */
+$button-fab-bg-primary-container: var(--md-sys-color-primary-container, #EADDFF) !default;
+$button-fab-fg-primary-container: var(--md-sys-color-on-primary-container, #21005D) !default;
+/** Container — Secondary container & On secondary container */
+$button-fab-bg-secondary-container: var(--md-sys-color-secondary-container, #E8DEF8) !default;
+$button-fab-fg-secondary-container: var(--md-sys-color-on-secondary-container, #1D192B) !default;
+/** Container — Tertiary container & On tertiary container */
+$button-fab-bg-tertiary-container: var(--md-sys-color-tertiary-container, #FFD8E4) !default;
+$button-fab-fg-tertiary-container: var(--md-sys-color-on-tertiary-container, #31111D) !default;
+
+/** Surface */
+$button-fab-bg-surface: var(--md-sys-color-surface-container-high, #ECE6F0) !default;
+$button-fab-fg-surface: var(--md-sys-color-primary, #6750A4) !default;

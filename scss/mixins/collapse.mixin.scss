@@ -1,0 +1,106 @@
+/**
+ * @file collapse.mixin.scss
+ * @description Mixins pour le composant Collapse
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/collapse.token' as collapse;
+
+/**
+ * Conteneur accordion
+ */
+@mixin collapse-base {
+  display: flex;
+  flex-direction: column;
+  gap: collapse.$collapse-gap;
+  width: 100%;
+}
+
+/**
+ * Item (header + panel)
+ */
+@mixin collapse-item {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/**
+ * Bouton header
+ */
+@mixin collapse-header {
+  display: flex;
+  align-items: center;
+  gap: collapse.$collapse-header-gap;
+  width: 100%;
+  padding: collapse.$collapse-header-padding-block collapse.$collapse-header-padding-inline;
+  margin: 0;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  font-size: collapse.$collapse-header-font-size;
+  font-weight: collapse.$collapse-header-font-weight;
+  line-height: collapse.$collapse-header-line-height;
+  letter-spacing: collapse.$collapse-header-letter-spacing;
+  color: collapse.$collapse-on-color;
+  background: collapse.$collapse-header-bg;
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    border-radius collapse.$collapse-radius-duration collapse.$collapse-radius-easing,
+    background collapse.$collapse-bg-duration collapse.$collapse-bg-easing;
+}
+
+/**
+ * Slot leading / trailing
+ */
+@mixin collapse-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: collapse.$collapse-slot-size;
+  height: collapse.$collapse-slot-size;
+  color: collapse.$collapse-on-variant;
+}
+
+/**
+ * Panel animé (grid 0fr / 1fr)
+ */
+@mixin collapse-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows collapse.$collapse-expand-duration collapse.$collapse-expand-easing;
+}
+
+/**
+ * Body contenu
+ */
+@mixin collapse-body {
+  margin-top: collapse.$collapse-body-margin-top;
+  padding:
+    collapse.$collapse-body-padding-block-start
+    collapse.$collapse-body-padding-inline-end
+    collapse.$collapse-body-padding-block-end
+    collapse.$collapse-body-padding-inline-start;
+  background: collapse.$collapse-body-bg;
+  /* Découpe label Field outlined = fond du body (sinon fallback surface) */
+  --k3ui-field-outlined-notch-bg: #{collapse.$collapse-body-bg};
+  color: collapse.$collapse-on-variant;
+  font-size: collapse.$collapse-body-font-size;
+  line-height: collapse.$collapse-body-line-height;
+  letter-spacing: collapse.$collapse-body-letter-spacing;
+  border-radius: collapse.$collapse-radius-xs collapse.$collapse-radius-xs
+    collapse.$collapse-radius-xl collapse.$collapse-radius-xl;
+  opacity: 0;
+  transform: translateY(collapse.$collapse-body-offset-y);
+  transition:
+    opacity collapse.$collapse-fade-in-duration collapse.$collapse-fade-in-easing
+      collapse.$collapse-fade-in-delay,
+    transform collapse.$collapse-slide-in-duration collapse.$collapse-fade-in-easing
+      collapse.$collapse-fade-in-delay,
+    border-radius collapse.$collapse-radius-duration collapse.$collapse-radius-easing;
+}

@@ -1,0 +1,33 @@
+/**
+ * @fileoverview Module Firework
+ * @description Classes CSS pour le composant feux d'artifice
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use './firework.token' as firework;
+@use './firework.mixin' as firework-mixin;
+
+.firework-root {
+  @include firework-mixin.firework-root;
+}
+
+.firework-canvas-container {
+  @include firework-mixin.firework-canvas-container;
+
+  &--transparent {
+    background-color: firework.$firework-canvas-bg-transparent !important;
+  }
+}
+
+.firework-canvas {
+  @include firework-mixin.firework-canvas;
+}
+
+k3ui-firework {
+  display: none;
+}
+
+.firework {
+  display: none;
+}

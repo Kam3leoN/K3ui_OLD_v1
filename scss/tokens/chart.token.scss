@@ -1,0 +1,116 @@
+/**
+ * @fileoverview Tokens Chart Material You 3
+ * @description Tokens pour le composant Chart K3UI
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'sass:map';
+
+// =============================================================================
+// TOKENS CHART - MATERIAL YOU 3
+// =============================================================================
+
+// Couleurs de fond
+$md-sys-chart-bg: var(--md-sys-color-surface, #ffffff) !default;
+$md-sys-chart-bg-dark: var(--md-sys-color-surface-dark, #1e293b) !default;
+
+// Ombres
+$md-sys-chart-shadow: var(--md-sys-elevation-level1, 0 4px 6px rgba(0, 0, 0, 0.1)) !default;
+$md-sys-chart-shadow-hover: var(--md-sys-elevation-level2, 0 6px 12px rgba(0, 0, 0, 0.15)) !default;
+
+// Rayons de bordure
+$md-sys-chart-border-radius: var(--md-sys-shape-corner-medium, 12px) !default;
+$md-sys-chart-border-radius-small: var(--md-sys-shape-corner-small, 8px) !default;
+$md-sys-chart-border-radius-large: var(--md-sys-shape-corner-large, 16px) !default;
+
+// Espacement
+$md-sys-chart-padding: var(--md-sys-spacing-lg, 24px) !default;
+$md-sys-chart-padding-small: var(--md-sys-spacing-md, 16px) !default;
+$md-sys-chart-padding-large: var(--md-sys-spacing-xl, 32px) !default;
+
+// Espacement entre les éléments
+$md-sys-chart-gap: var(--md-sys-spacing-md, 16px) !default;
+$md-sys-chart-gap-small: var(--md-sys-spacing-sm, 12px) !default;
+$md-sys-chart-gap-large: var(--md-sys-spacing-lg, 24px) !default;
+
+// Typographie
+$md-sys-chart-title-font-size: var(--md-sys-typescale-title-large-size, 20px) !default;
+$md-sys-chart-title-font-weight: var(--md-sys-typescale-title-large-weight, 700) !default;
+$md-sys-chart-title-line-height: var(--md-sys-typescale-title-large-line-height, 1.2) !default;
+$md-sys-chart-title-color: var(--md-sys-color-on-surface, #1e293b) !default;
+$md-sys-chart-title-color-dark: var(--md-sys-color-on-surface-dark, #f1f5f9) !default;
+
+$md-sys-chart-description-font-size: var(--md-sys-typescale-body-medium-size, 14px) !default;
+$md-sys-chart-description-font-weight: var(--md-sys-typescale-body-medium-weight, 400) !default;
+$md-sys-chart-description-line-height: var(--md-sys-typescale-body-medium-line-height, 1.5) !default;
+$md-sys-chart-description-color: var(--md-sys-color-on-surface-variant, #64748b) !default;
+$md-sys-chart-description-color-dark: var(--md-sys-color-on-surface-variant-dark, #94a3b8) !default;
+
+$md-sys-chart-legend-font-size: var(--md-sys-typescale-body-small-size, 13px) !default;
+$md-sys-chart-legend-font-weight: var(--md-sys-typescale-body-small-weight, 500) !default;
+$md-sys-chart-legend-color: var(--md-sys-color-on-surface-variant, #64748b) !default;
+$md-sys-chart-legend-color-dark: var(--md-sys-color-on-surface-variant-dark, #94a3b8) !default;
+
+// Boutons de contrôle
+$md-sys-chart-control-button-padding: 10px 20px !default;
+$md-sys-chart-control-button-padding-small: 8px 16px !default;
+$md-sys-chart-control-button-font-size: var(--md-sys-typescale-label-large-size, 14px) !default;
+$md-sys-chart-control-button-font-size-small: var(--md-sys-typescale-label-medium-size, 13px) !default;
+$md-sys-chart-control-button-font-weight: var(--md-sys-typescale-label-large-weight, 600) !default;
+$md-sys-chart-control-button-border-radius: var(--md-sys-shape-corner-small, 8px) !default;
+$md-sys-chart-control-button-bg: var(--md-sys-color-surface-container-highest, #f1f5f9) !default;
+$md-sys-chart-control-button-bg-hover: var(--md-sys-color-surface-container, #e2e8f0) !default;
+$md-sys-chart-control-button-bg-active: var(--md-sys-color-primary, #3b82f6) !default;
+$md-sys-chart-control-button-color: var(--md-sys-color-on-surface-variant, #475569) !default;
+$md-sys-chart-control-button-color-active: var(--md-sys-color-on-primary, #ffffff) !default;
+$md-sys-chart-control-button-shadow-active: 0 4px 6px rgba(59, 130, 246, 0.3) !default;
+
+// Tooltip
+$md-sys-chart-tooltip-bg: rgba(0, 0, 0, 0.85) !default;
+$md-sys-chart-tooltip-color: #ffffff !default;
+$md-sys-chart-tooltip-padding: 8px 12px !default;
+$md-sys-chart-tooltip-border-radius: var(--md-sys-shape-corner-small, 6px) !default;
+$md-sys-chart-tooltip-font-size: var(--md-sys-typescale-body-small-size, 12px) !default;
+$md-sys-chart-tooltip-z-index: 1000 !default;
+
+// Loading spinner
+$md-sys-chart-loading-spinner-size: 50px !default;
+$md-sys-chart-loading-spinner-border-width: 4px !default;
+$md-sys-chart-loading-spinner-border-color: var(--md-sys-color-surface-container-highest, #f1f5f9) !default;
+$md-sys-chart-loading-spinner-border-color-active: var(--md-sys-color-primary, #3b82f6) !default;
+
+// Légende
+$md-sys-chart-legend-item-gap: 16px !default;
+$md-sys-chart-legend-color-size: 16px !default;
+$md-sys-chart-legend-color-border-radius: 3px !default;
+
+// Transitions
+$md-sys-chart-transition-duration: var(--md-sys-motion-effects-slow-duration) !default;
+$md-sys-chart-transition-timing: var(--md-sys-motion-spatial-default-easing) !default;
+
+// Tailles fixes
+$md-sys-chart-fixed-width: 800px !default;
+$md-sys-chart-fixed-height: 500px !default;
+
+// Grille
+$md-sys-chart-grid-min-width: 400px !default;
+$md-sys-chart-grid-gap: var(--md-sys-spacing-lg, 24px) !default;
+
+// Responsive breakpoint
+$md-sys-chart-mobile-breakpoint: 768px !default;
+
+// États
+$md-sys-chart-disabled-opacity: 0.5 !default;
+$md-sys-chart-disabled-cursor: not-allowed !default;
+
+// Export des variables CSS
+:root {
+  --md-sys-chart-bg: #{$md-sys-chart-bg};
+  --md-sys-chart-shadow: #{$md-sys-chart-shadow};
+  --md-sys-chart-border-radius: #{$md-sys-chart-border-radius};
+  --md-sys-chart-padding: #{$md-sys-chart-padding};
+  --md-sys-chart-title-font-size: #{$md-sys-chart-title-font-size};
+  --md-sys-chart-description-font-size: #{$md-sys-chart-description-font-size};
+}
+

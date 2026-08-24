@@ -1,0 +1,408 @@
+/**
+ * @fileoverview Module CSS pour le composant Snackbar - Material You 3
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use '../mixins/snackbar.mixin' as snackbar;
+@use '../tokens/snackbar.token' as tokens;
+
+// =============================================================================
+// SNAKBAR MODULE - MATERIAL YOU 3
+// =============================================================================
+
+.k3ui-snackbar-portal {
+  position: fixed;
+  inset: 0;
+  z-index: tokens.$md-sys-snackbar-z-index;
+  pointer-events: none;
+
+  .snackbar {
+    pointer-events: auto;
+  }
+}
+
+.snackbar {
+  @include snackbar.snackbar-container();
+  @include snackbar.snackbar-hide(); // Hidden by default
+  @include snackbar.snackbar-responsive();
+
+  // Show state
+  &.show {
+    @include snackbar.snackbar-show();
+
+    &.snackbar--position-center {
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+
+  // Position horizontale centrée — translateX conservé sur hide/show/anim JS
+  &.snackbar--position-center {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%) translateY(100%);
+
+    &.snackbar--position-top {
+      transform: translateX(-50%) translateY(-100%);
+    }
+
+    &.show {
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+
+  // Single line variant (48px)
+  &.single-line {
+    height: tokens.snackbar-height('single');
+
+    .snackbar__content {
+      @include snackbar.snackbar-content-container(tokens.snackbar-height('single'));
+    }
+
+    // With long action (48px + 44px = 92px)
+    &.has-long-action {
+      height: calc(#{tokens.snackbar-height('single')} + #{tokens.snackbar-height('action-long')});
+
+      .snackbar__content {
+        @include snackbar.snackbar-content-container(tokens.snackbar-height('single'));
+      }
+    }
+  }
+
+  // Double line variant (68px)
+  &.double-line {
+    height: tokens.snackbar-height('double') !important;
+    min-height: tokens.snackbar-height('double') !important;
+    max-height: tokens.snackbar-height('double') !important;
+
+    .snackbar__content {
+      @include snackbar.snackbar-content-container(tokens.snackbar-height('double'));
+      height: tokens.snackbar-height('double') !important;
+      min-height: tokens.snackbar-height('double') !important;
+      max-height: tokens.snackbar-height('double') !important;
+    }
+
+    // With long action (68px + 44px = 112px)
+    &.has-long-action {
+      height: calc(#{tokens.snackbar-height('double')} + #{tokens.snackbar-height('action-long')}) !important;
+      min-height: calc(#{tokens.snackbar-height('double')} + #{tokens.snackbar-height('action-long')}) !important;
+      max-height: calc(#{tokens.snackbar-height('double')} + #{tokens.snackbar-height('action-long')}) !important;
+
+      .snackbar__content {
+        @include snackbar.snackbar-content-container(tokens.snackbar-height('double'));
+        height: tokens.snackbar-height('double') !important;
+        min-height: tokens.snackbar-height('double') !important;
+        max-height: tokens.snackbar-height('double') !important;
+      }
+    }
+  }
+
+  // Content container
+  &__content {
+    .snackbar__text-container {
+      @include snackbar.snackbar-text-container();
+    }
+
+    .snackbar__text {
+      @include snackbar.snackbar-text();
+    }
+
+    .snackbar__actions {
+      @include snackbar.snackbar-actions-group();
+    }
+  }
+
+  // Long action container (isolated section)
+  &__long-action {
+    @include snackbar.snackbar-long-action-container();
+
+    .snackbar__actions {
+      @include snackbar.snackbar-actions-group();
+    }
+  }
+
+  // Action button
+  &__action {
+    @include snackbar.snackbar-action();
+  }
+
+  // Close button
+  &__close {
+    @include snackbar.snackbar-close();
+  }
+
+  // Visibility states — animation gérée en JS (_animateIn/_animateOut) pour préserver translateX(-50%) en center
+  &.entering,
+  &.leaving {
+    animation: none;
+  }
+}
+
+// Keyframes for animations
+@keyframes snackbar-enter {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes snackbar-leave {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+// ============================================================================
+// CLASSES UTILITAIRES SUPPLÉMENTAIRES
+// ============================================================================
+
+/**
+ * Classes pour les différentes variantes
+ */
+.snackbar--variant-single {
+  height: tokens.snackbar-height('single');
+}
+
+.snackbar--variant-double {
+  height: tokens.snackbar-height('double');
+}
+
+.snackbar--variant-with-action {
+  height: calc(#{tokens.snackbar-height('single')} + #{tokens.snackbar-height('action-long')});
+}
+
+.snackbar--variant-double-with-action {
+  height: calc(#{tokens.snackbar-height('double')} + #{tokens.snackbar-height('action-long')});
+}
+
+/**
+ * Classes pour les différents états
+ */
+.snackbar--state-show {
+  @include snackbar.snackbar-show();
+}
+
+.snackbar--state-hide {
+  @include snackbar.snackbar-hide();
+}
+
+.snackbar--state-entering {
+  animation: snackbar-enter tokens.$md-sys-snackbar-transition-duration tokens.$md-sys-snackbar-transition-easing;
+}
+
+.snackbar--state-leaving {
+  animation: snackbar-leave tokens.$md-sys-snackbar-transition-duration tokens.$md-sys-snackbar-transition-easing;
+}
+
+/**
+ * Classes pour les différentes positions
+ */
+.snackbar--position-bottom {
+  bottom: tokens.snackbar-position('bottom-offset');
+}
+
+.snackbar--position-top {
+  top: tokens.snackbar-position('bottom-offset');
+  bottom: auto;
+}
+
+.snackbar--position-center {
+  left: 50%;
+  right: auto;
+}
+
+/**
+ * Classes pour les différentes tailles
+ */
+.snackbar--size-small {
+  max-width: 320px;
+}
+
+.snackbar--size-medium {
+  max-width: tokens.snackbar-position('max-width');
+}
+
+.snackbar--size-large {
+  max-width: 600px;
+}
+
+.snackbar--size-full {
+  max-width: 100%;
+  left: 0;
+  right: 0;
+}
+
+/**
+ * Classes pour les différentes couleurs (même gestion que Toast)
+ */
+.snackbar--color-success {
+  background-color: var(--md-sys-color-success);
+  color: var(--md-sys-color-on-success);
+  
+  .snackbar__action {
+    color: var(--md-sys-color-on-success);
+    font-weight: 600; // Plus gras pour le contraste
+    
+    &:hover {
+      background-color: rgba(var(--md-sys-color-on-success-rgb), 0.12);
+    }
+    
+    &:focus {
+      outline: none; // Supprimer le cadre bleu de focus
+    }
+  }
+}
+
+.snackbar--color-error {
+  background-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+  
+  .snackbar__action {
+    color: var(--md-sys-color-on-error);
+    font-weight: 600; // Plus gras pour le contraste
+    
+    &:hover {
+      background-color: rgba(var(--md-sys-color-on-error-rgb), 0.12);
+    }
+    
+    &:focus {
+      outline: none; // Supprimer le cadre bleu de focus
+    }
+  }
+}
+
+.snackbar--color-warning {
+  background-color: var(--md-sys-color-warning);
+  color: var(--md-sys-color-on-warning);
+  
+  .snackbar__action {
+    color: var(--md-sys-color-on-warning);
+    font-weight: 600; // Plus gras pour le contraste
+    
+    &:hover {
+      background-color: rgba(var(--md-sys-color-on-warning-rgb), 0.12);
+    }
+    
+    &:focus {
+      outline: none; // Supprimer le cadre bleu de focus
+    }
+  }
+}
+
+.snackbar--color-info {
+  background-color: var(--md-sys-color-info);
+  color: var(--md-sys-color-on-info);
+  
+  .snackbar__action {
+    color: var(--md-sys-color-on-info);
+    font-weight: 600; // Plus gras pour le contraste
+    
+    &:hover {
+      background-color: rgba(var(--md-sys-color-on-info-rgb), 0.12);
+    }
+    
+    &:focus {
+      outline: none; // Supprimer le cadre bleu de focus
+    }
+  }
+}
+
+/**
+ * Classes pour les différentes animations
+ */
+.snackbar--animation-slide-up {
+  animation: snackbar-enter tokens.$md-sys-snackbar-transition-duration tokens.$md-sys-snackbar-transition-easing;
+}
+
+.snackbar--animation-slide-down {
+  animation: snackbar-leave tokens.$md-sys-snackbar-transition-duration tokens.$md-sys-snackbar-transition-easing;
+}
+
+.snackbar--animation-fade-in {
+  animation: snackbar-fade-in tokens.$md-sys-snackbar-transition-duration tokens.$md-sys-snackbar-transition-easing;
+}
+
+.snackbar--animation-fade-out {
+  animation: snackbar-fade-out tokens.$md-sys-snackbar-transition-duration tokens.$md-sys-snackbar-transition-easing;
+}
+
+/**
+ * Keyframes pour les animations supplémentaires
+ */
+@keyframes snackbar-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes snackbar-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/**
+ * Classes pour les différents types de contenu
+ */
+.snackbar--content-text-only {
+  .snackbar__actions {
+    display: none;
+  }
+}
+
+.snackbar--content-with-action {
+  .snackbar__actions {
+    display: flex;
+  }
+}
+
+.snackbar--content-with-long-action {
+  .snackbar__long-action {
+    display: flex;
+  }
+}
+
+/**
+ * Classes pour les différents alignements
+ */
+.snackbar--align-left {
+  text-align: left;
+}
+
+.snackbar--align-center {
+  text-align: center;
+}
+
+.snackbar--align-right {
+  text-align: right;
+}
+
+/**
+ * Classes pour les différents espacements
+ */
+.snackbar--spacing-tight {
+  padding: 0 tokens.snackbar-spacing('padding-horizontal');
+}
+
+.snackbar--spacing-normal {
+  padding: 0 tokens.snackbar-spacing('padding-horizontal');
+}
+
+.snackbar--spacing-loose {
+  padding: 0 calc(#{tokens.snackbar-spacing('padding-horizontal')} * 1.5);
+} 

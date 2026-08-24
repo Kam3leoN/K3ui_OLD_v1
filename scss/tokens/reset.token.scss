@@ -1,0 +1,63 @@
+// ========================================
+// RESET TOKENS - Variables et constantes
+// ========================================
+
+@use 'fontface.token' as fontface;
+
+// Font Stacks (source : fontface.token — main = UI, code = mono)
+$font-family-system: fontface.$font-family-main !default;
+$font-family-mono: fontface.$font-family-code !default;
+
+// Tailles de base
+$root-font-size: 100% !default; // 16px
+$root-line-height: 1.5 !default;
+$root-font-weight: 400 !default;
+
+// Couleurs système — tokens MD3 (suit html[data-theme], pas de hex figé)
+$color-text-primary: var(--md-sys-color-on-surface) !default;
+$color-text-secondary: var(--md-sys-color-on-surface-variant) !default;
+$color-background: var(--md-sys-color-surface) !default;
+$color-background-dark: var(--md-sys-color-surface) !default;
+$color-focus: var(--md-sys-color-primary) !default;
+$color-focus-ring: rgba(0, 102, 204, 0.25) !default;
+
+// Espacement
+$focus-outline-width: 2px !default;
+$focus-outline-offset: 2px !default;
+$focus-outline-style: solid !default;
+
+// Transitions (Preflight inspired)
+$transition-base: all 150ms ease !default;
+$transition-focus: box-shadow 150ms ease, outline-color 150ms ease !default;
+
+// Breakpoints pour les media queries
+$breakpoint-mobile: 480px !default;
+$breakpoint-tablet: 768px !default;
+$breakpoint-desktop: 1024px !default;
+
+// Box model
+$box-sizing-default: border-box !default;
+
+// Scroll behavior
+$scroll-behavior: smooth !default;
+
+// Text rendering optimizations
+$text-rendering: optimizeLegibility !default;
+$font-smoothing-webkit: antialiased !default;
+$font-smoothing-moz: grayscale !default;
+
+// Form elements
+$form-element-border-radius: inherit !default;
+$form-element-background: transparent !default;
+
+// Z-index scale
+$z-index-menu: 1000 !default;
+$z-index-sticky: 1020 !default;
+$z-index-fixed: 1030 !default;
+$z-index-modal-backdrop: 1040 !default;
+$z-index-modal: 1050 !default;
+$z-index-popover: 1060 !default;
+$z-index-tooltip: 1070 !default;
+
+// Animation preferences
+$prefers-reduced-motion: reduce !default;

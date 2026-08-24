@@ -1,0 +1,379 @@
+/**
+ * @fileoverview Module Pricing — grille tarifaire SaaS (couleurs K3UI M3)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/pricing.token' as pricing;
+@use '../mixins/pricing.mixin' as pricing-mixin;
+
+// =============================================================================
+// ROOT
+// =============================================================================
+
+.pricing,
+k3ui-pricing {
+  @include pricing-mixin.pricing-root;
+
+  &[data-billing='yearly'] {
+    .pricing__period-monthly {
+      display: none;
+    }
+  }
+
+  &[data-billing='monthly'] {
+    .pricing__period-yearly {
+      display: none;
+    }
+  }
+}
+
+// =============================================================================
+// HEADER
+// =============================================================================
+
+.pricing__header,
+.pricing__compare-header,
+k3ui-pricing .pricing__header,
+k3ui-pricing .pricing__compare-header {
+  @include pricing-mixin.pricing-header;
+}
+
+.pricing__title,
+k3ui-pricing .pricing__title {
+  margin: 0;
+  font-size: pricing.$pricing-title-size;
+  font-weight: pricing.$pricing-title-weight;
+  line-height: 1.2;
+  color: pricing.$pricing-color-on-surface;
+}
+
+.pricing__subtitle,
+k3ui-pricing .pricing__subtitle {
+  margin: 0;
+  max-width: 42rem;
+  font-size: pricing.$pricing-tagline-size;
+  line-height: 1.5;
+  color: pricing.$pricing-color-on-surface-muted;
+}
+
+.pricing__billing,
+k3ui-pricing .pricing__billing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pricing__billing-hint,
+k3ui-pricing .pricing__billing-hint {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: pricing.$pricing-color-on-surface-muted;
+}
+
+// Toggle : ButtonSegmented natif K3UI (pill primary-container)
+.pricing__billing-toggle,
+k3ui-pricing .pricing__billing-toggle {
+  display: inline-flex;
+  align-items: center;
+}
+
+// =============================================================================
+// PLANS — tonal (standard) / filled (featured)
+// =============================================================================
+
+.pricing__plans,
+k3ui-pricing .pricing__plans {
+  @include pricing-mixin.pricing-plans-grid;
+}
+
+.pricing__plan,
+k3ui-pricing .pricing__plan {
+  @include pricing-mixin.pricing-plan-card(false);
+}
+
+.pricing__plan--featured,
+k3ui-pricing .pricing__plan--featured {
+  @include pricing-mixin.pricing-plan-card(true);
+}
+
+.pricing__badge,
+k3ui-pricing .pricing__badge {
+  @include pricing-mixin.pricing-badge;
+}
+
+.pricing__plan-header,
+k3ui-pricing .pricing__plan-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  min-height: pricing.$pricing-plan-header-min-height;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid pricing.$pricing-color-divider;
+  align-self: stretch;
+}
+
+.pricing__plan--featured .pricing__plan-header,
+k3ui-pricing .pricing__plan--featured .pricing__plan-header {
+  border-bottom-color: pricing.$pricing-color-plan-filled-divider;
+}
+
+.pricing__plan-name,
+k3ui-pricing .pricing__plan-name {
+  margin: 0;
+  font-size: pricing.$pricing-plan-name-size;
+  font-weight: pricing.$pricing-plan-name-weight;
+  color: inherit;
+}
+
+.pricing__plan-price,
+k3ui-pricing .pricing__plan-price {
+  @include pricing-mixin.pricing-price-row;
+}
+
+.pricing__price,
+k3ui-pricing .pricing__price {
+  font-size: pricing.$pricing-price-size;
+  font-weight: pricing.$pricing-price-weight;
+  letter-spacing: -0.03em;
+  color: inherit;
+}
+
+.pricing__period,
+k3ui-pricing .pricing__period {
+  margin-bottom: 0.35rem;
+  font-size: pricing.$pricing-period-size;
+  color: pricing.$pricing-color-on-surface-muted;
+}
+
+.pricing__plan--featured .pricing__period,
+k3ui-pricing .pricing__plan--featured .pricing__period {
+  color: pricing.$pricing-color-plan-filled-muted;
+}
+
+.pricing__plan-tagline,
+k3ui-pricing .pricing__plan-tagline {
+  margin: 0;
+  font-size: pricing.$pricing-tagline-size;
+  line-height: 1.35;
+  color: pricing.$pricing-color-on-surface-muted;
+  min-height: 2.5em;
+}
+
+.pricing__plan--featured .pricing__plan-tagline,
+k3ui-pricing .pricing__plan--featured .pricing__plan-tagline {
+  color: pricing.$pricing-color-plan-filled-muted;
+}
+
+.pricing__features,
+k3ui-pricing .pricing__features {
+  @include pricing-mixin.pricing-features;
+}
+
+.pricing__feature,
+k3ui-pricing .pricing__feature {
+  @include pricing-mixin.pricing-feature-item;
+}
+
+.pricing__plan-actions,
+k3ui-pricing .pricing__plan-actions {
+  @include pricing-mixin.pricing-plan-actions;
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+    border-radius: 999px;
+  }
+}
+
+.pricing__plan-note,
+k3ui-pricing .pricing__plan-note {
+  margin: 0;
+  font-size: 0.8125rem;
+  text-align: center;
+  color: pricing.$pricing-color-warning;
+}
+
+// =============================================================================
+// COMPARE TABLE
+// =============================================================================
+
+.pricing__compare,
+k3ui-pricing .pricing__compare {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.pricing__table,
+k3ui-pricing .pricing__table {
+  @include pricing-mixin.pricing-table-grid;
+}
+
+.pricing__table-head,
+k3ui-pricing .pricing__table-head {
+  display: contents;
+}
+
+.pricing__table-row,
+k3ui-pricing .pricing__table-row {
+  display: contents;
+}
+
+.pricing__table-feature,
+k3ui-pricing .pricing__table-feature {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0;
+  font-size: pricing.$pricing-table-feature-size;
+  color: pricing.$pricing-color-on-surface-muted;
+  text-align: left;
+}
+
+.pricing__table-info,
+k3ui-pricing .pricing__table-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  min-width: 1.25rem;
+  min-height: 1.25rem;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: pricing.$pricing-color-table-info;
+  cursor: help;
+  flex-shrink: 0;
+  vertical-align: middle;
+  line-height: 0;
+
+  .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    min-height: 0;
+    font-size: 1rem;
+    line-height: 0;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  }
+}
+
+.pricing__table-col,
+k3ui-pricing .pricing__table-col {
+  @include pricing-mixin.pricing-table-cell;
+  flex-direction: column;
+  gap: 0.125rem;
+  font-weight: 500;
+}
+
+.pricing__table-col--featured,
+k3ui-pricing .pricing__table-col--featured {
+  background: pricing.$pricing-color-plan-filled-bg;
+  color: pricing.$pricing-color-plan-filled-fg;
+}
+
+.pricing__table-col-name,
+k3ui-pricing .pricing__table-col-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.pricing__table-col-price,
+k3ui-pricing .pricing__table-col-price {
+  font-size: 0.8125rem;
+  color: pricing.$pricing-color-on-surface-muted;
+}
+
+.pricing__table-col--featured .pricing__table-col-price,
+k3ui-pricing .pricing__table-col--featured .pricing__table-col-price {
+  color: pricing.$pricing-color-plan-filled-muted;
+}
+
+.pricing__table-cell,
+k3ui-pricing .pricing__table-cell {
+  @include pricing-mixin.pricing-table-cell;
+}
+
+.pricing__table-cell--text,
+k3ui-pricing .pricing__table-cell--text {
+  font-weight: 500;
+}
+
+.pricing__table-icon,
+k3ui-pricing .pricing__table-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  font-size: 1.125rem;
+  line-height: 1;
+  color: pricing.$pricing-color-on-surface-muted;
+
+  .icon {
+    width: 1.125rem;
+    height: 1.125rem;
+    font-size: 1.125rem;
+  }
+}
+
+.pricing__table-icon--cross,
+k3ui-pricing .pricing__table-icon--cross {
+  color: pricing.$pricing-color-warning;
+}
+
+.pricing__table-icon--infinity,
+k3ui-pricing .pricing__table-icon--infinity {
+  width: auto;
+  min-width: 1.25rem;
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: pricing.$pricing-color-on-surface;
+}
+
+.pricing__table-cta,
+k3ui-pricing .pricing__table-cta {
+  @include pricing-mixin.pricing-table-cell;
+  padding: 0.375rem;
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+    border-radius: 999px;
+  }
+}
+
+.pricing__table-note,
+k3ui-pricing .pricing__table-note {
+  font-size: 0.75rem;
+  color: pricing.$pricing-color-warning;
+}
+
+// =============================================================================
+// RESPONSIVE TABLE SCROLL WRAPPER
+// =============================================================================
+
+.pricing__table-scroll,
+k3ui-pricing .pricing__table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  .pricing__table,
+  k3ui-pricing .pricing__table {
+    min-width: 52rem;
+  }
+}

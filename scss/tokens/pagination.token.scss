@@ -1,0 +1,121 @@
+/**
+ * @fileoverview Tokens de design pour Pagination
+ * @description Pagination numérique MD3 Expressive (boutons circulaires + nav)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'motion.token' as motion;
+
+// Couleurs (basées sur MD3)
+$pagination-color-surface: var(--md-sys-color-surface, #FFFBFE);
+$pagination-color-on-surface: var(--md-sys-color-on-surface, #1C1B1F);
+$pagination-color-on-surface-variant: var(--md-sys-color-on-surface-variant, #49454F);
+$pagination-color-primary: var(--md-sys-color-primary, #6750A4);
+$pagination-color-on-primary: var(--md-sys-color-on-primary, #FFFFFF);
+$pagination-color-outline-variant: var(--md-sys-color-outline-variant, #CAC4D0);
+
+// Dimensions
+$pagination-size-btn: 48px;
+$pagination-radius-full: 999px;
+$pagination-radius-rounded: 8px;
+
+// Motion
+$pagination-duration: motion.$md-sys-motion-duration-standard;
+$pagination-easing: motion.spring-easing(effects, fast);
+$pagination-easing-emphasized: motion.spring-easing(spatial, default);
+
+/**
+ * @fileoverview Tokens de design pour Pagination
+ * @description Aligné MD3 : navigation en cards (surface), overline pour le label, hover secondary-container
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+// ============================================================================
+// COULEURS
+// ============================================================================
+
+/** Lien (défaut) : surface dim */
+$pagination-background: var(--md-sys-color-surface-variant, var(--k3ui-color-surface-variant, rgba(0, 0, 0, 0.04)));
+/** Survol / focus / active : primary container */
+$pagination-background-hover: var(--md-sys-color-primary-container, rgba(0, 0, 0, 0.08));
+$pagination-background-focus: var(--md-sys-color-primary-container, rgba(0, 0, 0, 0.08));
+$pagination-background-active: var(--md-sys-color-primary-container, rgba(0, 0, 0, 0.12));
+
+/** Texte principal (titre) – on-surface */
+$pagination-text-color: var(--md-sys-color-on-surface, var(--k3ui-on-surface));
+
+/** Overline / label (Previous, Up next) – on-surface-variant, Title Medium */
+$pagination-overline-color: var(--md-sys-color-on-surface-variant, var(--k3ui-on-surface-variant));
+
+/** Couleur au survol (texte) */
+$pagination-text-color-hover: var(--md-sys-color-on-primary-container, var(--k3ui-on-surface));
+
+// ============================================================================
+// DIMENSIONS PAR TAILLE (small | medium | large)
+// ============================================================================
+
+/** Padding contenu (comme MD3 content-container 24px) */
+$pagination-padding-small: 0.5rem 0.75rem;
+$pagination-padding-medium: 0.75rem 1rem;
+$pagination-padding-large: 1.5rem; // 24px comme MD3
+
+/** Hauteur minimale des liens (cards) */
+$pagination-min-height-small: 50px;
+$pagination-min-height-medium: 72px;
+$pagination-min-height-large: 100px;
+
+/** Gap entre overline et title (stacked) */
+$pagination-gap-small: 0.25rem;
+$pagination-gap-medium: 0.375rem;
+$pagination-gap-large: 0.5rem;
+
+/** Espacement entre les deux cards */
+$pagination-container-gap: 1.5rem;
+
+$pagination-padding: $pagination-padding-medium;
+$pagination-min-height: $pagination-min-height-medium;
+$pagination-gap: $pagination-gap-medium;
+
+// ============================================================================
+// TYPOGRAPHIE – Overline (label) = Title Medium MD3
+// ============================================================================
+
+$pagination-font-family: var(--md-sys-typescale-title-medium-font-family-name, 'Google Sans', Arial, sans-serif);
+$pagination-title-font-family: var(--md-sys-typescale-headline-small-font-family-name, 'Google Sans', Arial, sans-serif);
+
+/** Overline / label – Title Medium (référence large) */
+$pagination-label-font-size-large: var(--md-sys-typescale-title-medium-font-size, 16px);
+$pagination-label-font-weight: var(--md-sys-typescale-title-medium-font-weight, 500);
+$pagination-label-letter-spacing: var(--md-sys-typescale-title-medium-letter-spacing, 0.15px);
+$pagination-label-line-height-large: var(--md-sys-typescale-title-medium-line-height, 24px);
+
+/** Titre – Headline Small (référence large) */
+$pagination-title-font-size-large: var(--md-sys-typescale-headline-small-font-size, 24px);
+$pagination-title-font-weight: var(--md-sys-typescale-headline-small-font-weight, 500);
+$pagination-title-letter-spacing: var(--md-sys-typescale-headline-small-letter-spacing, 0px);
+$pagination-title-line-height-large: var(--md-sys-typescale-headline-small-line-height, 32px);
+
+// Medium (75 %)
+$pagination-label-font-size-medium: 0.75rem;
+$pagination-label-line-height-medium: 1.25;
+$pagination-title-font-size-medium: 1.125rem;
+$pagination-title-line-height-medium: 1.25;
+
+// Small (overline + title empilés, comme medium/large)
+$pagination-label-font-size-small: 0.75rem;
+$pagination-label-line-height-small: 1.25;
+$pagination-title-font-size-small: 0.75rem;
+$pagination-title-line-height-small: 1.25;
+
+// ============================================================================
+// CARD (rayon, transitions – comme MD3)
+// ============================================================================
+
+/** Rayon card MD3 (shape-corner-large 24px) */
+$pagination-border-radius: var(--md-sys-shape-corner-large, var(--k3ui-shape-corner-medium, 24px));
+$pagination-animation-duration: 200ms;
+$pagination-animation-easing: motion.spring-easing(effects, fast);
+$pagination-z-index: 1;
+$pagination-z-index-hover: 2;

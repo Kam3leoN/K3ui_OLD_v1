@@ -1,0 +1,164 @@
+/**
+ * @fileoverview Module PanelSplit
+ * @description Dual-view layout M3 Expressive (modèle M3E Split Pane)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/panel-split.token' as split;
+@use '../mixins/panel-split.mixin' as panel-split;
+
+@property --panel-split-value {
+  syntax: '<length-percentage>';
+  inherits: true;
+  initial-value: 50%;
+}
+
+.panel-split,
+.docs-split-pane,
+k3ui-panel-split {
+  --panel-split-handle-size: #{split.$panel-split-handle-size};
+  --docs-split-handle-size: var(--panel-split-handle-size);
+  --panel-split-handle-color: #{split.$panel-split-handle-color};
+  --panel-split-handle-pressed-color: #{split.$panel-split-handle-pressed-color};
+  contain: layout style;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.panel-split--vertical,
+.docs-split-pane--vertical,
+k3ui-panel-split[orientation='vertical'],
+k3ui-panel-split[data-orientation='vertical'] {
+  flex-direction: column;
+}
+
+.panel-split--horizontal,
+.docs-split-pane--horizontal,
+k3ui-panel-split[orientation='horizontal'],
+k3ui-panel-split[data-orientation='horizontal'] {
+  flex-direction: row;
+}
+
+.panel-split__start,
+.docs-split-pane__start {
+  flex: 0 1 calc(var(--panel-split-value, var(--docs-split-value, 50%)) - (var(--panel-split-handle-size, #{split.$panel-split-handle-size}) / 2));
+  min-height: 0;
+  min-width: 0;
+  max-height: calc(var(--panel-split-value, var(--docs-split-value, 50%)) - (var(--panel-split-handle-size, #{split.$panel-split-handle-size}) / 2));
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-split--horizontal .panel-split__start,
+.panel-split--horizontal .docs-split-pane__start {
+  max-height: none;
+  max-width: calc(var(--panel-split-value, var(--docs-split-value, 50%)) - (var(--panel-split-handle-size, #{split.$panel-split-handle-size}) / 2));
+  flex: 0 1 calc(var(--panel-split-value, var(--docs-split-value, 50%)) - (var(--panel-split-handle-size, #{split.$panel-split-handle-size}) / 2));
+}
+
+.panel-split__start > .panel-content,
+.panel-split__start > .content-pane,
+.panel-split__start > k3ui-panel-content,
+.panel-split__start > k3ui-content-pane,
+.docs-split-pane__start > k3ui-panel-content,
+.docs-split-pane__start > k3ui-content-pane {
+  flex: 1 1 0;
+  min-height: 0;
+  min-width: 0;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.panel-split__handle,
+.docs-split-pane__handle {
+  contain: layout style;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding-inline: #{split.$panel-split-handle-padding-inline};
+  outline: none;
+  touch-action: none;
+  user-select: none;
+  cursor: row-resize;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.panel-split--vertical .panel-split__handle,
+.panel-split--vertical .docs-split-pane__handle,
+k3ui-panel-split[orientation='vertical'] .panel-split__handle {
+  height: var(--panel-split-handle-size, #{split.$panel-split-handle-size});
+}
+
+.panel-split--horizontal .panel-split__handle,
+.panel-split--horizontal .docs-split-pane__handle,
+k3ui-panel-split[orientation='horizontal'] .panel-split__handle {
+  width: var(--panel-split-handle-size, #{split.$panel-split-handle-size});
+  cursor: col-resize;
+}
+
+.panel-split__handle::before,
+.docs-split-pane__handle::before {
+  @include panel-split.panel-split-handle-pill(row);
+}
+
+.panel-split--horizontal .panel-split__handle::before,
+.panel-split--horizontal .docs-split-pane__handle::before,
+k3ui-panel-split[orientation='horizontal'] .panel-split__handle::before,
+k3ui-panel-split[data-orientation='horizontal'] .panel-split__handle::before {
+  @include panel-split.panel-split-handle-pill(column);
+}
+
+.panel-split__handle:hover::before,
+.panel-split__handle:focus-visible::before,
+.docs-split-pane__handle:hover::before,
+.docs-split-pane__handle:focus-visible::before {
+  background-color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+.panel-split__handle.is-pressed::before,
+.docs-split-pane__handle.is-pressed::before {
+  @include panel-split.panel-split-handle-pill-pressed(row);
+}
+
+.panel-split--horizontal .panel-split__handle.is-pressed::before,
+.panel-split--horizontal .docs-split-pane__handle.is-pressed::before,
+k3ui-panel-split[orientation='horizontal'] .panel-split__handle.is-pressed::before,
+k3ui-panel-split[data-orientation='horizontal'] .panel-split__handle.is-pressed::before {
+  @include panel-split.panel-split-handle-pill-pressed(column);
+}
+
+.panel-split[data-split-value='100'] .panel-split__handle::before,
+.docs-split-pane[data-split-value='100'] .docs-split-pane__handle::before {
+  opacity: 0.35;
+}
+
+.panel-split__end,
+.docs-split-pane__end {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-split--disabled .panel-split__handle,
+.panel-split--disabled .docs-split-pane__handle {
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel-split__handle::before,
+  .docs-split-pane__handle::before {
+    transition: none;
+  }
+}

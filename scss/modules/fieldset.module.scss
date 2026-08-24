@@ -1,0 +1,207 @@
+/**
+ * Fieldset Module — k3ui-fieldset
+ */
+
+@use '../mixins/fieldset.mixin' as fs;
+@use '../tokens/fieldset.token' as tokens;
+
+k3ui-fieldset {
+  @include fs.fieldset-host;
+
+  .fieldset__container {
+    @include fs.fieldset-container;
+  }
+
+  .fieldset__legend {
+    @include fs.fieldset-legend;
+  }
+
+  .fieldset__legend[hidden],
+  .fieldset__head[hidden],
+  .fieldset__icon[hidden],
+  .fieldset__toggle[hidden] {
+    display: none;
+  }
+
+  .fieldset__icon {
+    display: inline-block;
+    inline-size: 1.125rem;
+    block-size: 1.125rem;
+    vertical-align: -0.1875em;
+    margin-inline-end: 0.375rem;
+    color: var(--k3ui-fieldset-headline);
+
+    svg,
+    img,
+    i {
+      inline-size: 100%;
+      block-size: 100%;
+    }
+  }
+
+  .fieldset__head {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem var(--k3ui-fieldset-pad-inline) 0;
+  }
+
+  .fieldset__support {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    margin: 0;
+    padding-block: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: var(--md-sys-color-on-surface-variant);
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  .fieldset__toggle {
+    flex: none;
+    display: grid;
+    place-items: center;
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+    margin-inline-start: auto;
+    margin-inline-end: -0.5rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--md-sys-color-on-surface-variant);
+    border-radius: var(--md-sys-shape-corner-full);
+    cursor: pointer;
+
+    &:hover {
+      background: color-mix(in srgb, currentColor 8%, transparent);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--md-sys-color-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  .fieldset__chevron {
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    rotate: 0deg;
+    transition: rotate 220ms ease;
+  }
+
+  .fieldset__content {
+    overflow: clip;
+  }
+
+  .fieldset__fields {
+    @include fs.fieldset-fields;
+  }
+
+  .fieldset__error-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--md-sys-color-primary);
+      outline-offset: 2px;
+      border-radius: var(--md-sys-shape-corner-extra-small);
+    }
+  }
+
+  .fieldset__error {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0 var(--k3ui-fieldset-pad-inline) var(--k3ui-fieldset-pad-block);
+    color: var(--md-sys-color-error);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+
+    &:empty {
+      display: none;
+    }
+
+    i,
+    svg {
+      flex: none;
+      inline-size: 1.125rem;
+      block-size: 1.125rem;
+    }
+  }
+
+  &[density='comfortable'] {
+    --k3ui-fieldset-gap: #{tokens.$fieldset-gap-comfortable};
+    --k3ui-fieldset-pad-inline: #{tokens.$fieldset-pad-inline-comfortable};
+    --k3ui-fieldset-pad-block: #{tokens.$fieldset-pad-block-comfortable};
+    --k3ui-fieldset-shape: #{tokens.$fieldset-shape-comfortable};
+  }
+
+  &[density='compact'] {
+    --k3ui-fieldset-gap: #{tokens.$fieldset-gap-compact};
+    --k3ui-fieldset-pad-inline: #{tokens.$fieldset-pad-inline-compact};
+    --k3ui-fieldset-pad-block: #{tokens.$fieldset-pad-block-compact};
+    --k3ui-fieldset-shape: #{tokens.$fieldset-shape-compact};
+  }
+
+  &[collapsible]:not([open]) {
+    --k3ui-fieldset-shape: var(--md-sys-shape-corner-medium);
+
+    .fieldset__head {
+      padding-block-end: 0.25rem;
+    }
+
+    .fieldset__chevron {
+      rotate: 180deg;
+    }
+  }
+
+  &:focus-within:not([data-error]) {
+    --k3ui-fieldset-outline: var(--md-sys-color-primary);
+    --k3ui-fieldset-headline: var(--md-sys-color-primary);
+  }
+
+  &[data-error] {
+    --k3ui-fieldset-outline: var(--md-sys-color-error);
+    --k3ui-fieldset-headline: var(--md-sys-color-error);
+  }
+
+  &[disabled] {
+    --k3ui-fieldset-outline: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
+    --k3ui-fieldset-headline: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+
+    .fieldset__support {
+      opacity: 0.38;
+    }
+
+    .fieldset__toggle {
+      pointer-events: none;
+      opacity: 0.38;
+    }
+  }
+}
+
+@container (min-width: 640px) {
+  k3ui-fieldset .fieldset__fields {
+    grid-template-columns: repeat(var(--k3ui-fieldset-columns, 1), minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  k3ui-fieldset .fieldset__chevron,
+  k3ui-fieldset .fieldset__container {
+    transition: none;
+  }
+}

@@ -1,0 +1,441 @@
+/**
+ * @fileoverview Mixins pour AppBar
+ * @description Top App Bar M3 Expressive — lift, collapse, hide (12 motions)
+ * @author K3UI Team
+ * @version 1.1.0
+ */
+
+@use '../tokens/appbar.token' as appbar;
+@use '../tokens/button-icon.token' as bitokens;
+@use '../tokens/button-split.token' as bstokens;
+@use '../tokens/skeleton.token' as sk;
+@use 'button-icon.mixin' as bicon;
+
+@mixin appbar-component($z-index: appbar.$appbar-z-index-default) {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: $z-index;
+  display: block;
+  color: appbar.$appbar-color-on-container;
+  background-color: appbar.$appbar-color-container;
+  /* Encoche Field outlined = fond AppBar (surface) */
+  --k3ui-field-outlined-notch-bg: #{appbar.$appbar-color-container};
+  box-shadow: appbar.$appbar-elevation-rest;
+  transition:
+    background-color appbar.$appbar-lift-duration appbar.$appbar-lift-easing,
+    box-shadow appbar.$appbar-lift-duration appbar.$appbar-lift-easing,
+    transform appbar.$appbar-hide-duration appbar.$appbar-hide-easing;
+  will-change: background-color, box-shadow, transform;
+}
+
+@mixin appbar-variant-small {
+  min-block-size: appbar.$appbar-height-small;
+}
+
+@mixin appbar-variant-search {
+  min-block-size: appbar.$appbar-height-search;
+}
+
+@mixin appbar-search-region {
+  .appbar__content {
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: appbar.$appbar-gap;
+    min-inline-size: 0;
+  }
+
+  .appbar__navigation,
+  .appbar__search-actions {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: appbar.$appbar-gap;
+    min-inline-size: 0;
+  }
+
+  .appbar__search-field {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    display: flex;
+    align-items: center;
+
+    input[type='search'],
+    input:not([type]) {
+      box-sizing: border-box;
+      inline-size: 100%;
+      min-block-size: appbar.$appbar-search-field-min-height;
+      padding-block: 0;
+      padding-inline: appbar.$appbar-search-field-padding-inline;
+      margin: 0;
+      border: none;
+      border-radius: appbar.$appbar-search-field-radius;
+      background-color: appbar.$appbar-search-field-bg;
+      box-shadow: inset 0 0 0 1px var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.12));
+      color: appbar.$appbar-color-on-container;
+      font: inherit;
+      line-height: 1.25;
+      -webkit-appearance: none;
+      appearance: none;
+
+      &::placeholder {
+        color: appbar.$appbar-color-on-container-secondary;
+        opacity: 1;
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow:
+          appbar.$appbar-search-field-shadow-focus,
+          inset 0 0 0 1px var(--md-sys-color-outline, rgba(0, 0, 0, 0.2));
+      }
+
+      &:focus-visible {
+        outline: appbar.$appbar-search-field-focus-ring;
+        outline-offset: 2px;
+        box-shadow: appbar.$appbar-search-field-shadow-focus;
+      }
+    }
+
+    input[type='search']::-webkit-search-cancel-button,
+    input[type='search']::-webkit-search-decoration {
+      -webkit-appearance: none;
+      appearance: none;
+    }
+  }
+
+  .appbar__avatar {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: appbar.$appbar-search-avatar-size;
+    block-size: appbar.$appbar-search-avatar-size;
+    min-inline-size: appbar.$appbar-search-avatar-size;
+    min-block-size: appbar.$appbar-search-avatar-size;
+    border-radius: 50%;
+    background-color: appbar.$appbar-search-field-bg;
+    color: appbar.$appbar-color-on-container;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1;
+    user-select: none;
+  }
+}
+
+// Contenu AppBar stable au chargement — pas de glitch horizontal.
+// - .btn-icon : taille md dès le 1er paint (CSS défaut = sm, AutoInit → md → CLS)
+// - Icônes : révélation instantanée (pas de fade opacity)
+// - Pas de transition width/height/transform (évite reflow flex)
+// - Split thème : boîte réservée + skeleton
+@mixin appbar-icon-load-stable {
+  .btn-icon,
+  .button-icon {
+    flex-shrink: 0;
+    // Hover/état seulement — jamais les dimensions (reflow → slide L/R)
+    transition:
+      background-color appbar.$appbar-lift-duration appbar.$appbar-lift-easing,
+      box-shadow appbar.$appbar-lift-duration appbar.$appbar-lift-easing,
+      border-color appbar.$appbar-lift-duration appbar.$appbar-lift-easing,
+      color appbar.$appbar-lift-duration appbar.$appbar-lift-easing;
+    // Aligné sur ButtonIcon.defaults.size = md (évite sm→md au AutoInit)
+    @include bicon.btn-icon-size-md;
+  }
+
+  // Slot leading réservé même avant paint icône
+  .appbar__leading:has(.btn-icon),
+  .appbar__leading:has(.button-icon) {
+    flex: 0 0 auto;
+    min-inline-size: bitokens.$md-comp-icon-button-md-size;
+  }
+
+  .appbar__actions {
+    flex: 0 0 auto;
+  }
+
+  .btn-icon__icon,
+  .button-icon__icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-inline-size: bitokens.$md-comp-icon-button-md-icon-size;
+    min-block-size: bitokens.$md-comp-icon-button-md-icon-size;
+  }
+
+  .btn-icon__icon:has(i[name]:not(.k3ui-icon-loaded))::before,
+  .btn-icon__icon:has(span[name]:not(.k3ui-icon-loaded))::before,
+  .button-icon__icon:has(i[name]:not(.k3ui-icon-loaded))::before,
+  .button-icon__icon:has(span[name]:not(.k3ui-icon-loaded))::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    inline-size: bitokens.$md-comp-icon-button-md-icon-size;
+    block-size: bitokens.$md-comp-icon-button-md-icon-size;
+    border-radius: 50%;
+    background-color: sk.$skeleton-color-bg;
+    animation: appbar-icon-skeleton-pulse 1.2s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  // Révélation nette — pas de transition opacity (évite le slide perçu)
+  .btn-icon__icon i[name],
+  .btn-icon__icon span[name],
+  .button-icon__icon i[name],
+  .button-icon__icon span[name] {
+    transition: none;
+  }
+
+  .btn-icon__icon i[name]:not(.k3ui-icon-loaded),
+  .btn-icon__icon span[name]:not(.k3ui-icon-loaded),
+  .button-icon__icon i[name]:not(.k3ui-icon-loaded),
+  .button-icon__icon span[name]:not(.k3ui-icon-loaded) {
+    opacity: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-icon__icon i[name].k3ui-icon-loaded,
+  .btn-icon__icon span[name].k3ui-icon-loaded,
+  .button-icon__icon i[name].k3ui-icon-loaded,
+  .button-icon__icon span[name].k3ui-icon-loaded {
+    opacity: 1;
+  }
+
+  // Split thème (navbar) — largeur figée + skeleton icônes
+  .navbar-select-container,
+  .split-btn,
+  .split-button,
+  .button-split,
+  k3ui-button-split {
+    flex-shrink: 0;
+  }
+
+  // Icon-only sm (ex. sélecteur thème) : taille finale avant AutoInit (évite md→sm / grow tactile)
+  .split-btn[data-size='sm'][data-label=''],
+  .split-button[data-size='sm'][data-label=''],
+  .button-split[data-size='sm'][data-label=''],
+  .navbar-select-container .split-btn[data-size='sm'],
+  .navbar-select-container .split-button[data-size='sm'],
+  .navbar-select-container .button-split[data-size='sm'] {
+    min-block-size: bstokens.$button-split-touch-target-min;
+    min-inline-size: calc(
+      #{bstokens.$button-split-touch-target-min} * 2 + #{bstokens.$button-split-gap}
+    );
+
+    .split-btn__leading,
+    .split-button__leading,
+    .button-split__leading,
+    .split-btn__trailing,
+    .split-button__trailing,
+    .button-split__trailing {
+      width: bstokens.$button-split-touch-target-min !important;
+      min-width: bstokens.$button-split-touch-target-min !important;
+      max-width: bstokens.$button-split-touch-target-min !important;
+      height: bstokens.$button-split-touch-target-min !important;
+      min-height: bstokens.$button-split-touch-target-min !important;
+      max-height: bstokens.$button-split-touch-target-min !important;
+      padding: 0 !important;
+      box-sizing: border-box;
+    }
+
+    .button-split__label:empty,
+    .split-btn__label:empty,
+    .split-button__label:empty {
+      display: none !important;
+    }
+  }
+
+  .split-btn,
+  .split-button,
+  .button-split,
+  k3ui-button-split {
+    min-block-size: bstokens.$button-split-sm-height;
+  }
+
+  .button-split__icon,
+  .split-btn__icon,
+  .split-button__icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-inline-size: bstokens.$button-split-sm-icon;
+    min-block-size: bstokens.$button-split-sm-icon;
+  }
+
+  .button-split__icon:has(i[name]:not(.k3ui-icon-loaded))::before,
+  .button-split__icon:has(span[name]:not(.k3ui-icon-loaded))::before,
+  .split-btn__icon:has(i[name]:not(.k3ui-icon-loaded))::before,
+  .split-button__icon:has(i[name]:not(.k3ui-icon-loaded))::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    inline-size: bstokens.$button-split-sm-icon;
+    block-size: bstokens.$button-split-sm-icon;
+    border-radius: 50%;
+    background-color: sk.$skeleton-color-bg;
+    animation: appbar-icon-skeleton-pulse 1.2s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .button-split__icon i[name],
+  .button-split__icon span[name],
+  .split-btn__icon i[name],
+  .split-button__icon i[name] {
+    transition: none;
+  }
+
+  .button-split__icon i[name]:not(.k3ui-icon-loaded),
+  .button-split__icon span[name]:not(.k3ui-icon-loaded),
+  .split-btn__icon i[name]:not(.k3ui-icon-loaded),
+  .split-button__icon i[name]:not(.k3ui-icon-loaded) {
+    opacity: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .button-split__icon i[name].k3ui-icon-loaded,
+  .button-split__icon span[name].k3ui-icon-loaded,
+  .split-btn__icon i[name].k3ui-icon-loaded,
+  .split-button__icon i[name].k3ui-icon-loaded {
+    opacity: 1;
+  }
+}
+
+@mixin appbar-variant-medium-large($expanded, $collapsed) {
+  $ratio: var(--appbar-scroll-ratio, 0);
+  min-block-size: calc(#{$collapsed} + (#{$expanded} - #{$collapsed}) * (1 - #{$ratio}));
+}
+
+@mixin appbar-scrolled {
+  background-color: appbar.$appbar-color-container-scrolled;
+  --k3ui-field-outlined-notch-bg: #{appbar.$appbar-color-container-scrolled};
+  box-shadow: appbar.$appbar-elevation-scrolled;
+}
+
+@mixin appbar-flexible-layout($expanded-title-size, $expanded-title-lh) {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .appbar__content {
+    flex-shrink: 0;
+    min-block-size: appbar.$appbar-toolbar-height;
+    align-items: center;
+  }
+
+  .appbar__spacer {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+  }
+
+  .appbar__title-expanded {
+    padding-inline: appbar.$appbar-padding-inline;
+    padding-block-end: appbar.$appbar-title-expanded-padding-block-end;
+    min-inline-size: 0;
+    $ratio: var(--appbar-scroll-ratio, 0);
+
+    > span,
+    > h1,
+    > h2 {
+      margin: 0;
+      display: block;
+      font-weight: 400;
+      color: appbar.$appbar-color-on-container;
+      font-size: calc(
+        #{appbar.$appbar-title-large-font-size} +
+          (#{$expanded-title-size} - #{appbar.$appbar-title-large-font-size}) * (1 - #{$ratio})
+      );
+      line-height: calc(
+        #{appbar.$appbar-title-large-line-height} +
+          (#{$expanded-title-lh} - #{appbar.$appbar-title-large-line-height}) * (1 - #{$ratio})
+      );
+      opacity: calc(1 - #{$ratio} * 0.85);
+      transform: translateY(calc(#{$ratio} * -8px));
+      transition:
+        opacity appbar.$appbar-collapse-duration appbar.$appbar-collapse-easing,
+        transform appbar.$appbar-collapse-duration appbar.$appbar-collapse-easing;
+    }
+  }
+
+  .appbar__subtitle-expanded {
+    padding-inline: appbar.$appbar-padding-inline;
+    margin-block-start: -8px;
+    padding-block-end: appbar.$appbar-title-expanded-padding-block-end;
+    $ratio: var(--appbar-scroll-ratio, 0);
+
+    > span,
+    > p {
+      margin: 0;
+      font-size: calc(
+        #{appbar.$appbar-subtitle-expanded-font-size} +
+          (#{appbar.$appbar-subtitle-collapsed-font-size} - #{appbar.$appbar-subtitle-expanded-font-size}) *
+          #{$ratio}
+      );
+      line-height: calc(
+        #{appbar.$appbar-subtitle-expanded-line-height} +
+          (#{appbar.$appbar-subtitle-collapsed-line-height} - #{appbar.$appbar-subtitle-expanded-line-height}) *
+          #{$ratio}
+      );
+      color: appbar.$appbar-color-on-container-secondary;
+      opacity: calc(1 - #{$ratio});
+    }
+  }
+
+  .appbar__title-collapsed {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: appbar.$appbar-padding-inline;
+    inset-inline-end: appbar.$appbar-padding-inline;
+    block-size: appbar.$appbar-toolbar-height;
+    display: flex;
+    align-items: center;
+    min-inline-size: 0;
+    pointer-events: none;
+    $ratio: var(--appbar-scroll-ratio, 0);
+
+    > span,
+    > h1 {
+      margin: 0;
+      font-size: appbar.$appbar-title-large-font-size;
+      line-height: appbar.$appbar-title-large-line-height;
+      font-weight: 400;
+      color: appbar.$appbar-color-on-container;
+      opacity: $ratio;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      transform: translateY(calc((1 - #{$ratio}) * 12px));
+    }
+  }
+}
+
+@mixin appbar-hidden-top {
+  transform: translateY(calc(-100% - env(safe-area-inset-top, 0px)));
+}
+
+@mixin appbar-hidden-bottom {
+  transform: translateY(calc(100% + env(safe-area-inset-bottom, 0px)));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .appbar {
+    transition: background-color 0.01ms linear, box-shadow 0.01ms linear;
+
+    .appbar__title-expanded > span,
+    .appbar__title-expanded > h1,
+    .appbar__title-expanded > h2,
+    .appbar__title-collapsed > span,
+    .appbar__title-collapsed > h1 {
+      transition: none;
+      transform: none;
+    }
+  }
+}
+

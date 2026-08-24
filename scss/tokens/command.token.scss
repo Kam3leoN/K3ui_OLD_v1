@@ -1,0 +1,102 @@
+/**
+ * @fileoverview Tokens de design pour le composant Command (palette de commandes)
+ * @description Variables MD3 You Expressive pour la command palette
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'radius.token' as radius;
+@use 'motion.token' as motion;
+@use 'elevation.token' as elevation;
+
+// ============================================================================
+// Z-INDEX
+// ============================================================================
+
+$command-scrim-z-index: 100 !default;
+$command-container-z-index: 101 !default;
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+$command-width-default: min(640px, calc(100vw - 48px)) !default;
+$command-width-compact: min(480px, calc(100vw - 48px)) !default;
+$command-width-expanded: min(800px, calc(100vw - 48px)) !default;
+$command-max-height: calc(100vh - 120px) !default;
+
+// ============================================================================
+// SHAPE
+// ============================================================================
+
+$command-surface-radius: 28px !default;
+$command-item-radius: 12px !default;
+$command-icon-radius: 12px !default;
+
+// ============================================================================
+// TIMING (MD3 Expressive)
+// ============================================================================
+
+$command-open-duration: 350ms !default;
+$command-close-duration: 250ms !default;
+$command-scrim-duration: 200ms !default;
+$command-easing-emphasized-decelerate: motion.spring-easing(effects, default) !default;
+$command-easing-standard: motion.spring-easing(effects, fast) !default;
+
+// ============================================================================
+// SCRIM
+// ============================================================================
+
+$command-scrim-bg: rgba(0, 0, 0, 0.32) !default;
+
+// ============================================================================
+// SURFACE (MD3 Surface Container Highest + tonal overlay)
+// ============================================================================
+
+$command-surface-bg: var(--md-sys-color-surface-container-high, #f5f0ff) !default;
+$command-surface-shadow: var(--md-sys-elevation-level3, 0 6px 24px 6px rgba(0, 0, 0, 0.15)) !default;
+$command-surface-outline: color-mix(in srgb, var(--md-sys-color-outline-variant, #cac5d0) 60%, transparent) !default;
+
+// ============================================================================
+// SEARCH
+// ============================================================================
+
+$command-search-padding: 16px !default;
+$command-search-gap: 12px !default;
+$command-search-icon-size: 24px !default;
+$command-search-input-size: 16px !default;
+
+// ============================================================================
+// ITEMS
+// ============================================================================
+
+$command-item-height: 52px !default;
+$command-item-gap: 12px !default;
+$command-item-icon-size: 36px !default;
+$command-item-icon-inner: 18px !default;
+$command-item-margin-x: 8px !default;
+$command-state-hover-opacity: 0.08 !default;
+$command-state-active-bg: color-mix(in srgb, var(--md-sys-color-primary, #4848d8) 12%, var(--md-sys-color-surface-container-high)) !default;
+
+// ============================================================================
+// GROUP HEADER
+// ============================================================================
+
+$command-group-header-padding: 8px 16px 4px !default;
+$command-group-header-size: 11px !default;
+$command-group-header-weight: 600 !default;
+$command-group-spacing: 16px !default; // espacement au-dessus de chaque titre de section
+
+// ============================================================================
+// FOOTER
+// ============================================================================
+
+$command-footer-padding: 8px 16px !default;
+$command-footer-hint-size: 11px !default;
+
+// ============================================================================
+// EMPTY STATE
+// ============================================================================
+
+$command-empty-padding: 40px 24px !default;
+$command-empty-icon-size: 40px !default;

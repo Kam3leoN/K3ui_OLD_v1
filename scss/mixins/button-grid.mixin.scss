@@ -1,0 +1,289 @@
+/**
+ * @fileoverview Mixins pour ButtonGrid Material Design 3 Expressive
+ * @description Grille 3×3 — FAB reveal / pad toujours déployé
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/button-grid.token' as tokens;
+
+/// Conteneur wrapper (espace réservé pour l'animation FAB)
+@mixin btn-grid-base {
+  position: relative;
+  width: tokens.$btn-grid-size;
+  height: tokens.$btn-grid-size;
+  isolation: isolate;
+  outline: none;
+}
+
+/// Cellule / FAB partagée (48×48) — border inclus dans la boîte (gap = gutter seul)
+@mixin btn-grid-cell {
+  appearance: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+
+  width: tokens.$btn-grid-cell;
+  height: tokens.$btn-grid-cell;
+  min-width: tokens.$btn-grid-cell;
+  max-width: tokens.$btn-grid-cell;
+  max-height: tokens.$btn-grid-cell;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+
+  background: tokens.$btn-grid-filled-bg;
+  color: tokens.$btn-grid-filled-fg;
+  box-shadow: tokens.$btn-grid-shadow;
+  transition: box-shadow tokens.$btn-grid-state-duration tokens.$btn-grid-decelerate;
+  font-family: inherit;
+  font-size: 0;
+  line-height: 1;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    background: tokens.$btn-grid-filled-fg;
+    transition: opacity tokens.$btn-grid-state-duration tokens.$btn-grid-decelerate;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  &:hover::before {
+    opacity: 0.08;
+  }
+
+  &:focus-visible {
+    outline: 2px solid tokens.$btn-grid-focus-ring;
+    outline-offset: 2px;
+  }
+
+  &:focus-visible::before,
+  &:active::before {
+    opacity: 0.12;
+  }
+
+  &:hover {
+    box-shadow: tokens.$btn-grid-shadow-hover;
+  }
+
+  svg {
+    width: tokens.$btn-grid-icon-size;
+    height: tokens.$btn-grid-icon-size;
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+    fill: currentColor;
+  }
+}
+
+/// FAB trigger centré
+@mixin btn-grid-fab {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  border-radius: tokens.$btn-grid-outer-radius;
+  z-index: 10;
+  box-shadow: tokens.$btn-grid-fab-shadow;
+
+  &:hover {
+    box-shadow: tokens.$btn-grid-fab-shadow-hover;
+  }
+
+  // CLOSE → FAB springs back
+  transition:
+    transform 0.5s tokens.$btn-grid-spring 0.2s,
+    opacity 0.4s tokens.$btn-grid-effects 0.2s,
+    box-shadow tokens.$btn-grid-state-duration tokens.$btn-grid-decelerate;
+}
+
+@mixin btn-grid-fab-expanded {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.3);
+  pointer-events: none;
+
+  // OPEN → FAB exits
+  transition:
+    transform 0.3s tokens.$btn-grid-decelerate,
+    opacity 0.2s tokens.$btn-grid-decelerate;
+}
+
+/// Conteneur grille 3×3 — gap CSS = 2dp exact entre boîtes 48×48
+@mixin btn-grid-grid {
+  display: grid;
+  grid-template-columns: repeat(3, tokens.$btn-grid-cell);
+  grid-template-rows: repeat(3, tokens.$btn-grid-cell);
+  gap: tokens.$btn-grid-gap;
+  width: tokens.$btn-grid-size;
+  height: tokens.$btn-grid-size;
+  box-sizing: border-box;
+  transform: scale(0.88);
+  transition: transform 0.45s tokens.$btn-grid-decelerate;
+}
+
+@mixin btn-grid-grid-expanded {
+  transform: scale(1);
+  transition: transform 0.55s tokens.$btn-grid-spring 0.04s;
+}
+
+/// Cellule grille (état collapsed)
+@mixin btn-grid-cell-anim {
+  transform: scale(0);
+  opacity: 0;
+  will-change: transform, opacity;
+  transition:
+    transform 0.42s tokens.$btn-grid-decelerate,
+    opacity 0.28s tokens.$btn-grid-decelerate;
+  transition-delay: 0s;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+@mixin btn-grid-cell-expanded {
+  transform: scale(1);
+  opacity: 1;
+  transition:
+    transform 0.5s tokens.$btn-grid-spring,
+    opacity 0.35s tokens.$btn-grid-effects;
+}
+
+/// Transform-origin vers le centre de la grille
+@mixin btn-grid-cell-origins {
+  &--tl { transform-origin: 100% 100%; }
+  &--tc { transform-origin: 50% 100%; }
+  &--tr { transform-origin: 0% 100%; }
+  &--ml { transform-origin: 100% 50%; }
+  &--mc { transform-origin: 50% 50%; }
+  &--mr { transform-origin: 0% 50%; }
+  &--bl { transform-origin: 100% 0%; }
+  &--bc { transform-origin: 50% 0%; }
+  &--br { transform-origin: 0% 0%; }
+}
+
+/// Rayons asymétriques M3 Expressive
+@mixin btn-grid-cell-radii {
+  &--tl {
+    border-radius: tokens.$btn-grid-outer-radius tokens.$btn-grid-inner-radius tokens.$btn-grid-inner-radius tokens.$btn-grid-inner-radius;
+  }
+  &--tc { border-radius: tokens.$btn-grid-inner-radius; }
+  &--tr {
+    border-radius: tokens.$btn-grid-inner-radius tokens.$btn-grid-outer-radius tokens.$btn-grid-inner-radius tokens.$btn-grid-inner-radius;
+  }
+  &--ml { border-radius: tokens.$btn-grid-inner-radius; }
+  &--mc { border-radius: tokens.$btn-grid-inner-radius; }
+  &--mr { border-radius: tokens.$btn-grid-inner-radius; }
+  &--bl {
+    border-radius: tokens.$btn-grid-inner-radius tokens.$btn-grid-inner-radius tokens.$btn-grid-inner-radius tokens.$btn-grid-outer-radius;
+  }
+  &--bc { border-radius: tokens.$btn-grid-inner-radius; }
+  &--br {
+    border-radius: tokens.$btn-grid-inner-radius tokens.$btn-grid-inner-radius tokens.$btn-grid-outer-radius tokens.$btn-grid-inner-radius;
+  }
+}
+
+/// Stagger open : centre → arêtes → coins
+@mixin btn-grid-stagger-open {
+  .btn-grid__cell[data-d='0'],
+  .button-grid__cell[data-d='0'] {
+    transition-delay: tokens.$btn-grid-stagger-0;
+  }
+  .btn-grid__cell[data-d='1'],
+  .button-grid__cell[data-d='1'] {
+    transition-delay: tokens.$btn-grid-stagger-1;
+  }
+  .btn-grid__cell[data-d='2'],
+  .button-grid__cell[data-d='2'] {
+    transition-delay: tokens.$btn-grid-stagger-2;
+  }
+}
+
+/// Mode pad : toujours déployé
+@mixin btn-grid-pad {
+  width: auto;
+  height: auto;
+
+  .btn-grid__fab,
+  .button-grid__fab {
+    display: none;
+  }
+
+  .btn-grid__grid,
+  .button-grid__grid {
+    transform: none;
+    transition: none;
+  }
+
+  .btn-grid__cell,
+  .button-grid__cell {
+    transform: none;
+    opacity: 1;
+    transition: none;
+
+    &::before {
+      transition: opacity tokens.$btn-grid-state-duration tokens.$btn-grid-decelerate;
+    }
+  }
+}
+
+/// Variante tonal
+@mixin btn-grid-tonal {
+  .btn-grid__fab,
+  .button-grid__fab,
+  .btn-grid__cell,
+  .button-grid__cell {
+    background: tokens.$btn-grid-tonal-bg;
+    color: tokens.$btn-grid-tonal-fg;
+    box-shadow: none;
+
+    &::before {
+      background: tokens.$btn-grid-tonal-fg;
+    }
+
+    &:hover {
+      box-shadow: none;
+    }
+  }
+}
+
+/// Variante outlined — border dans la boîte 48×48 (ne mange pas le gap 2dp)
+@mixin btn-grid-outlined {
+  .btn-grid__fab,
+  .button-grid__fab,
+  .btn-grid__cell,
+  .button-grid__cell {
+    background: transparent;
+    color: tokens.$btn-grid-outlined-fg;
+    border: 1.5px solid tokens.$btn-grid-outline;
+    box-shadow: none;
+
+    &::before {
+      background: tokens.$btn-grid-outlined-fg;
+    }
+
+    &:hover {
+      border-color: tokens.$btn-grid-outline-hover;
+      box-shadow: none;
+    }
+  }
+
+  .btn-grid__fab,
+  .button-grid__fab {
+    box-shadow: none;
+
+    &:hover {
+      box-shadow: none;
+    }
+  }
+}

@@ -1,0 +1,223 @@
+/// @file tile.module.scss
+/// @brief Module Tile (expressive MD3 + variante carte déclarative)
+
+@use '../mixins/tile.mixin' as tile-mx;
+@use '../tokens/tile.token' as tokens;
+
+// ---------------------------------------------------------------------------
+// Groupe de tuiles (layout)
+// ---------------------------------------------------------------------------
+.tile-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: tokens.$md-comp-tile-card-gap;
+}
+
+// ---------------------------------------------------------------------------
+// Item — variante carte (fond tonal non sélectionné, sans bordure)
+// ---------------------------------------------------------------------------
+.tile-item--tile {
+  position: relative;
+  flex-shrink: 0;
+  width: tokens.$md-comp-tile-card-size;
+  height: tokens.$md-comp-tile-card-size;
+
+  .tile-input {
+    opacity: 0;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  .tile-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background-color: tokens.$md-comp-tile-primary-container;
+    border-radius: tokens.$md-comp-tile-card-border-radius;
+    padding: 1rem;
+    box-sizing: border-box;
+    pointer-events: none;
+  }
+
+  .tile-panel .icon svg,
+  .tile-panel svg {
+    fill: tokens.$md-comp-tile-on-primary-container;
+    width: tokens.$md-comp-tile-card-icon-size;
+    height: tokens.$md-comp-tile-card-icon-size;
+  }
+
+  .tile-panel-label {
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: tokens.$md-comp-tile-on-primary-container;
+    pointer-events: none;
+  }
+
+  &:hover:not(.tile-item--disabled) .tile-input:not(:checked) + .tile-panel {
+    background-color: tokens.$md-comp-tile-primary-container;
+  }
+
+  .tile-input:checked + .tile-panel {
+    background-color: tokens.$md-comp-tile-primary;
+    color: tokens.$md-comp-tile-on-primary;
+
+    .icon svg,
+    svg {
+      fill: tokens.$md-comp-tile-on-primary;
+    }
+
+    .tile-panel-label {
+      color: tokens.$md-comp-tile-on-primary;
+    }
+  }
+
+  &.tile-item--disabled {
+    opacity: 0.38;
+    pointer-events: none;
+
+    .tile-panel {
+      cursor: not-allowed;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Item — variante expressive (MD3 morph)
+// ---------------------------------------------------------------------------
+.tile-item--expressive {
+  @include tile-mx.tile-base;
+
+  .tile-item__content {
+    @include tile-mx.tile-content;
+    @include tile-mx.tile-size(tokens.$md-comp-tile-md-size, tokens.$md-comp-tile-md-radius-square);
+  }
+
+  .tile-item__state-layer {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
+    transition: opacity tokens.$md-comp-tile-state-duration ease;
+  }
+
+  .tile-item__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .tile-item__icon-glyph {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .tile-item__label {
+    position: absolute;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 92%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    letter-spacing: 0.01em;
+    pointer-events: none;
+  }
+
+  .tile-input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    appearance: none;
+    border: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  &:hover:not(.tile-item--disabled) .tile-item__state-layer,
+  &.tile-item--focused:not(.tile-item--disabled) .tile-item__state-layer {
+    opacity: 1;
+  }
+
+  &.tile-item--checked .tile-item__content {
+    background: tokens.$md-comp-tile-primary;
+    color: tokens.$md-comp-tile-on-primary;
+    border-radius: tokens.$md-comp-tile-radius-round;
+    box-shadow: var(--md-sys-elevation-level2);
+  }
+
+  &.tile-item--disabled .tile-item__content {
+    opacity: 0.38;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &.tile-item--v2:not(.tile-item--checked) .tile-item__content {
+    background: tokens.$md-comp-tile-error;
+    color: #fff;
+  }
+
+  &.tile-item--v2.tile-item--checked .tile-item__content {
+    background: tokens.$md-comp-tile-success;
+    color: #fff;
+  }
+
+  &.tile-item--xs .tile-item__content {
+    @include tile-mx.tile-size(tokens.$md-comp-tile-xs-size, tokens.$md-comp-tile-xs-radius-square);
+  }
+  &.tile-item--xs .tile-item__icon-glyph {
+    width: 20px;
+    height: 20px;
+  }
+  &.tile-item--sm .tile-item__content {
+    @include tile-mx.tile-size(tokens.$md-comp-tile-sm-size, tokens.$md-comp-tile-sm-radius-square);
+  }
+  &.tile-item--sm .tile-item__icon-glyph {
+    width: 20px;
+    height: 20px;
+  }
+  &.tile-item--md .tile-item__content {
+    @include tile-mx.tile-size(tokens.$md-comp-tile-md-size, tokens.$md-comp-tile-md-radius-square);
+  }
+  &.tile-item--md .tile-item__icon-glyph {
+    width: 24px;
+    height: 24px;
+  }
+  &.tile-item--lg .tile-item__content {
+    @include tile-mx.tile-size(tokens.$md-comp-tile-lg-size, tokens.$md-comp-tile-lg-radius-square);
+  }
+  &.tile-item--lg .tile-item__icon-glyph {
+    width: 32px;
+    height: 32px;
+  }
+  &.tile-item--xl .tile-item__content {
+    @include tile-mx.tile-size(tokens.$md-comp-tile-xl-size, tokens.$md-comp-tile-xl-radius-square);
+  }
+  &.tile-item--xl .tile-item__icon-glyph {
+    width: 40px;
+    height: 40px;
+  }
+}

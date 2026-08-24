@@ -1,0 +1,64 @@
+/// @file drag.token.scss
+/// @brief Tokens drag Material 3
+/// @description Tokens pour le système de drag and drop
+
+@use 'sass:map';
+@use 'motion.token' as motion;
+@use 'zindex.token' as zindex;
+
+// =============================================================================
+// TOKENS DRAG - DURÉES
+// =============================================================================
+
+/**
+ * Durée de transition par défaut pour le drag
+ */
+$md-sys-drag-transition-duration: motion.$md-sys-motion-duration-standard !default;
+
+/**
+ * Durée de transition pour l'attraction (snap)
+ */
+$md-sys-drag-attraction-duration: motion.$md-sys-motion-duration-emphasized !default;
+
+// =============================================================================
+// TOKENS DRAG - Z-INDEX
+// =============================================================================
+
+/**
+ * Z-index par défaut pour les éléments en drag
+ */
+$md-sys-drag-z-index: 90 !default;
+
+/**
+ * Z-index pour les éléments en drag actif
+ */
+$md-sys-drag-z-index-active: map.get(zindex.$md-sys-zindex-layers, 'menu') !default;
+
+// =============================================================================
+// TOKENS DRAG - LIMITES
+// =============================================================================
+
+/**
+ * Limites par défaut (en pixels)
+ */
+$md-sys-drag-boundary-default: (
+  top: 0,
+  bottom: 0,
+  left: 0,
+  right: 0
+) !default;
+
+// =============================================================================
+// TOKENS DRAG - EASING
+// =============================================================================
+
+/**
+ * Easing pour les transitions de drag
+ */
+$md-sys-drag-easing: motion.$md-sys-motion-easing-standard !default;
+
+/**
+ * Easing pour l'attraction (snap)
+ */
+$md-sys-drag-attraction-easing: motion.$md-sys-motion-easing-emphasized !default;
+

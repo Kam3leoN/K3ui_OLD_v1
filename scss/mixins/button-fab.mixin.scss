@@ -1,0 +1,99 @@
+/**
+ * @fileoverview Mixins pour ButtonFab Material Design 3 Expressive
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/button-fab.token' as bf;
+@use '../tokens/motion.token' as motion;
+@use '../tokens/typography.token' as typography;
+
+/**
+ * Conteneur ButtonFab (wrapper)
+ */
+@mixin button-fab-container {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+/**
+ * Bouton FAB (icône seule) — dimensions selon data-size
+ */
+@mixin button-fab-btn-base {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-shrink: 0;
+  font-family: typography.$md-sys-typescale-label-large-font-family-name;
+  /* Supprime l'ombre native du navigateur (élévation gérée par elevation.token) */
+  -webkit-appearance: none;
+  appearance: none;
+  transition:
+    background-color motion.spring-duration(effects, fast) motion.spring-easing(effects, fast),
+    box-shadow motion.spring-duration(effects, fast) motion.spring-easing(effects, fast);
+  outline: none;
+  outline-offset: 0;
+
+  &:hover,
+  &:focus,
+  &:active {
+    outline: none;
+  }
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    cursor: not-allowed;
+    opacity: 0.38;
+  }
+}
+
+/**
+ * Tailles FAB (small / medium / large)
+ */
+@mixin button-fab-size-small {
+  width: bf.$button-fab-size-small;
+  height: bf.$button-fab-size-small;
+  min-width: bf.$button-fab-size-small;
+}
+
+@mixin button-fab-size-medium {
+  width: bf.$button-fab-size-medium;
+  height: bf.$button-fab-size-medium;
+  min-width: bf.$button-fab-size-medium;
+}
+
+@mixin button-fab-size-large {
+  width: bf.$button-fab-size-large;
+  height: bf.$button-fab-size-large;
+  min-width: bf.$button-fab-size-large;
+}
+
+/**
+ * Extended FAB — largeur auto, padding start/end, gap icône–label (specs M3)
+ */
+@mixin button-fab-extended {
+  padding-inline-start: var(--button-fab-ext-padding-start);
+  padding-inline-end: var(--button-fab-ext-padding-end);
+  gap: var(--button-fab-ext-gap);
+  min-width: var(--button-fab-size);
+  width: auto;
+  white-space: nowrap;
+}
+
+/**
+ * Label Extended FAB — md.comp.extended-fab.[size].label-text
+ */
+@mixin button-fab-label {
+  font-family: typography.$md-sys-typescale-label-large-font-family-name;
+  font-size: var(--button-fab-label-size, bf.$button-fab-label-size-medium);
+  font-weight: var(--button-fab-label-weight, bf.$button-fab-label-weight-medium);
+  letter-spacing: var(--button-fab-label-letter-spacing, bf.$button-fab-label-letter-spacing-medium);
+  line-height: var(--button-fab-label-line-height, bf.$button-fab-label-line-height-medium);
+  pointer-events: none;
+}

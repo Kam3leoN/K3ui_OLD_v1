@@ -1,0 +1,133 @@
+/**
+ * @fileoverview Mixins pour Badge
+ * @description Mixins réutilisables pour le composant Badge
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/badge.token' as badge;
+@use '../tokens/motion.token' as motion;
+@use './motion.mixin' as motionmix;
+
+/**
+ * Mixin pour le badge small (point uniquement)
+ */
+@mixin badge-small {
+  width: badge.$badge-size-small;
+  height: badge.$badge-size-small;
+  min-width: badge.$badge-size-small;
+  min-height: badge.$badge-size-small;
+  padding: 0;
+  border-radius: badge.$badge-border-radius-small;
+  display: inline-block;
+}
+
+/**
+ * Mixin pour le badge large (avec contenu)
+ */
+@mixin badge-large {
+  // Pour un seul chiffre, le badge doit être carré (20x20px)
+  // Pour plusieurs chiffres ou texte, la largeur s'adapte automatiquement
+  min-width: badge.$badge-width-min-large; // 20px - carré pour un chiffre
+  height: badge.$badge-height-large; // 20px - hauteur fixe
+  padding: 0 badge.$badge-padding-horizontal; // 6px horizontal
+  border-radius: badge.$badge-border-radius-large; // 10px - rectangle aux angles arrondis (pas ovale)
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: badge.$badge-font-size;
+  font-weight: badge.$badge-font-weight;
+  line-height: badge.$badge-line-height;
+  white-space: nowrap;
+  // La largeur s'adapte automatiquement au contenu pour éviter le débordement
+  width: auto;
+  max-width: none; // Pas de limite max pour permettre l'adaptation au texte
+  box-sizing: border-box;
+  overflow: visible; // Permettre au badge de s'agrandir
+  text-overflow: clip; // Éviter l'ellipsis
+}
+
+/**
+ * Mixin pour badge numérique compact (un seul chiffre, carré 20×20)
+ */
+@mixin badge-compact {
+  min-width: badge.$badge-width-min-large;
+  width: badge.$badge-width-min-large;
+  height: badge.$badge-height-large;
+  padding: 0;
+  border-radius: badge.$badge-border-radius-large;
+}
+
+/**
+ * Mixin pour badge avec libellé (texte, 999+, plusieurs chiffres)
+ */
+@mixin badge-label {
+  width: max-content;
+  min-width: badge.$badge-width-min-large;
+  height: auto;
+  min-height: badge.$badge-height-large;
+  padding: 0 badge.$badge-padding-horizontal;
+  border-radius: badge.$badge-border-radius-large;
+  overflow: visible;
+}
+
+/**
+ * Mixin pour le positionnement du badge
+ * @param {string} $position - Position du badge (top-right, top-left, bottom-right, bottom-left)
+ * @description Le transform est géré dynamiquement par JavaScript pour s'adapter à la taille du trigger
+ */
+@mixin badge-position($position: 'top-right') {
+  position: absolute;
+  z-index: badge.$badge-z-index;
+  // top/left/right/bottom peuvent être ajustés en JS selon l’ancre visuelle (icône, bouton, etc.)
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+
+  @if $position == 'top-right' {
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+  } @else if $position == 'top-left' {
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+  } @else if $position == 'bottom-right' {
+    bottom: 0;
+    right: 0;
+    transform: translate(50%, 50%);
+  } @else if $position == 'bottom-left' {
+    bottom: 0;
+    left: 0;
+    transform: translate(-50%, 50%);
+  }
+}
+
+/**
+ * Mixin pour les transitions du badge
+ */
+@mixin badge-transition {
+  @include motionmix.transition-surface(
+    badge.$badge-transition-duration,
+    badge.$badge-transition-easing
+  );
+}
+
+/**
+ * Mixin pour le composant badge complet
+ * @param {string} $variant - Variante du badge (small ou large)
+ * @param {string} $position - Position du badge
+ */
+@mixin badge-component($variant: 'large', $position: 'top-right') {
+  @include badge-transition;
+
+  @if $variant == 'small' {
+    @include badge-small;
+  } @else {
+    @include badge-large;
+  }
+
+  @include badge-position($position);
+}
+

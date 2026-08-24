@@ -1,0 +1,189 @@
+/**
+ * @file opacity.token.scss
+ * @description Tokens d'opacité pour le design system K3UI Material Design 3 Expressive
+ * @see https://m3.material.io/foundations/design-tokens/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use 'sass:map';
+
+// ============================================================================
+// OPACITÉS DE BASE (PAS DE 5)
+// ============================================================================
+
+/**
+ * Opacités de base avec des pas de 5% (0% à 100%)
+ * Utilisées pour les classes utilitaires .opacity-0 à .opacity-100
+ */
+$opacity-0: 0 !default;
+$opacity-5: 0.05 !default;
+$opacity-10: 0.1 !default;
+$opacity-15: 0.15 !default;
+$opacity-20: 0.2 !default;
+$opacity-25: 0.25 !default;
+$opacity-30: 0.3 !default;
+$opacity-35: 0.35 !default;
+$opacity-40: 0.4 !default;
+$opacity-45: 0.45 !default;
+$opacity-50: 0.5 !default;
+$opacity-55: 0.55 !default;
+$opacity-60: 0.6 !default;
+$opacity-65: 0.65 !default;
+$opacity-70: 0.7 !default;
+$opacity-75: 0.75 !default;
+$opacity-80: 0.8 !default;
+$opacity-85: 0.85 !default;
+$opacity-90: 0.9 !default;
+$opacity-95: 0.95 !default;
+$opacity-100: 1 !default;
+
+// ============================================================================
+// OPACITÉS D'ÉTATS D'INTERACTION MATERIAL DESIGN 3
+// ============================================================================
+
+/**
+ * Opacités pour les états d'interaction des composants
+ * @see https://m3.material.io/foundations/interaction/states
+ */
+$md-sys-opacity-disabled: 0.38 !default;    // État désactivé
+$md-sys-opacity-hover: 0.08 !default;       // État survol
+$md-sys-opacity-focus: 0.12 !default;       // État focus
+$md-sys-opacity-selected: 0.12 !default;    // État sélectionné
+$md-sys-opacity-activated: 0.12 !default;   // État activé
+$md-sys-opacity-pressed: 0.12 !default;     // État pressé
+$md-sys-opacity-dragged: 0.16 !default;     // État glissé
+
+// ============================================================================
+// OPACITÉS POUR LES OVERLAYS ET SURFACES
+// ============================================================================
+
+/**
+ * Opacités pour les overlays, scrims et state layers
+ * @see https://m3.material.io/foundations/layout/applying-layout/overlay
+ */
+$md-sys-opacity-overlay: 0.5 !default;        // Overlay standard
+$md-sys-opacity-scrim: 0.32 !default;         // Scrim (arrière-plan flou)
+$md-sys-opacity-state-layer: 0.08 !default;   // State layer (couche d'état)
+
+// ============================================================================
+// OPACITÉS POUR LES SURFACES CONTAINER
+// ============================================================================
+
+/**
+ * Opacités pour les surfaces container Material Design 3
+ * @see https://m3.material.io/foundations/color/roles
+ */
+$md-sys-opacity-surface-container-lowest: 0.05 !default;   // Surface container la plus basse
+$md-sys-opacity-surface-container-low: 0.08 !default;      // Surface container basse
+$md-sys-opacity-surface-container: 0.12 !default;          // Surface container standard
+$md-sys-opacity-surface-container-high: 0.16 !default;     // Surface container haute
+$md-sys-opacity-surface-container-highest: 0.20 !default;  // Surface container la plus haute
+
+// ============================================================================
+// MAPS ET COLLECTIONS
+// ============================================================================
+
+/**
+ * Map des opacités de base pour la génération des classes utilitaires
+ * Utilisée par le module opacity.module.scss
+ */
+$opacity-tokens: (
+  0: $opacity-0,
+  5: $opacity-5,
+  10: $opacity-10,
+  15: $opacity-15,
+  20: $opacity-20,
+  25: $opacity-25,
+  30: $opacity-30,
+  35: $opacity-35,
+  40: $opacity-40,
+  45: $opacity-45,
+  50: $opacity-50,
+  55: $opacity-55,
+  60: $opacity-60,
+  65: $opacity-65,
+  70: $opacity-70,
+  75: $opacity-75,
+  80: $opacity-80,
+  85: $opacity-85,
+  90: $opacity-90,
+  95: $opacity-95,
+  100: $opacity-100
+) !default;
+
+/**
+ * Map des opacités d'états d'interaction
+ * Utilisée pour la génération des classes d'états
+ */
+$md-sys-opacity-states: (
+  disabled: $md-sys-opacity-disabled,
+  hover: $md-sys-opacity-hover,
+  focus: $md-sys-opacity-focus,
+  selected: $md-sys-opacity-selected,
+  activated: $md-sys-opacity-activated,
+  pressed: $md-sys-opacity-pressed,
+  dragged: $md-sys-opacity-dragged
+) !default;
+
+/**
+ * Map des opacités de surface container
+ * Utilisée pour la génération des classes de surface
+ */
+$md-sys-opacity-surfaces: (
+  lowest: $md-sys-opacity-surface-container-lowest,
+  low: $md-sys-opacity-surface-container-low,
+  standard: $md-sys-opacity-surface-container,
+  high: $md-sys-opacity-surface-container-high,
+  highest: $md-sys-opacity-surface-container-highest
+) !default;
+
+/**
+ * Map des opacités d'overlay
+ * Utilisée pour la génération des classes d'overlay
+ */
+$md-sys-opacity-overlays: (
+  overlay: $md-sys-opacity-overlay,
+  scrim: $md-sys-opacity-scrim,
+  state-layer: $md-sys-opacity-state-layer
+) !default;
+
+// ============================================================================
+// FONCTIONS UTILITAIRES
+// ============================================================================
+
+/**
+ * Fonction pour récupérer une opacité de base
+ * @param {string} $level - Niveau d'opacité (0, 5, 10, ..., 100)
+ * @return {number} Valeur d'opacité
+ */
+@function opacity-base($level) {
+  @return map.get($opacity-tokens, $level);
+}
+
+/**
+ * Fonction pour récupérer une opacité d'état
+ * @param {string} $state - État d'interaction (disabled, hover, focus, etc.)
+ * @return {number} Valeur d'opacité
+ */
+@function opacity-state($state) {
+  @return map.get($md-sys-opacity-states, $state);
+}
+
+/**
+ * Fonction pour récupérer une opacité de surface
+ * @param {string} $level - Niveau de surface (lowest, low, standard, high, highest)
+ * @return {number} Valeur d'opacité
+ */
+@function opacity-surface($level) {
+  @return map.get($md-sys-opacity-surfaces, $level);
+}
+
+/**
+ * Fonction pour récupérer une opacité d'overlay
+ * @param {string} $type - Type d'overlay (overlay, scrim, state-layer)
+ * @return {number} Valeur d'opacité
+ */
+@function opacity-overlay($type) {
+  @return map.get($md-sys-opacity-overlays, $type);
+} 

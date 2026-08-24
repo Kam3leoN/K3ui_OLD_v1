@@ -1,0 +1,396 @@
+/**
+ * @file spacing.module.scss
+ * @description Module utilitaire générant les classes d'espacement à partir des mixins.
+ * @use '../mixins/spacing.mixin.scss' pour accéder aux mixins d'espacement.
+ */
+
+@use '../tokens/spacing.token' as tokens;
+@use '../mixins/spacing.mixin' as spacing;
+
+// ============================================================================
+// CLASSES UTILITAIRES D'ESPACEMENT
+// ============================================================================
+
+/**
+ * Classes pour les espacements de base (padding)
+ */
+.spacing-xs {
+  @include spacing.padding('xs');
+}
+
+.spacing-sm {
+  @include spacing.padding('sm');
+}
+
+.spacing-md {
+  @include spacing.padding('md');
+}
+
+.spacing-lg {
+  @include spacing.padding('lg');
+}
+
+.spacing-xl {
+  @include spacing.padding('xl');
+}
+
+/**
+ * Classes pour les espacements de base (margin)
+ */
+.m-spacing-xs {
+  @include spacing.margin('xs');
+}
+
+.m-spacing-sm {
+  @include spacing.margin('sm');
+}
+
+.m-spacing-md {
+  @include spacing.margin('md');
+}
+
+.m-spacing-lg {
+  @include spacing.margin('lg');
+}
+
+.m-spacing-xl {
+  @include spacing.margin('xl');
+}
+
+// ============================================================================
+// CLASSES POUR LES COMPOSANTS
+// ============================================================================
+
+/**
+ * Classes pour les espacements de composants (padding)
+ */
+.spacing-component-xs {
+  @include spacing.padding-component('xs');
+}
+
+.spacing-component-sm {
+  @include spacing.padding-component('sm');
+}
+
+.spacing-component-md {
+  @include spacing.padding-component('md');
+}
+
+.spacing-component-lg {
+  @include spacing.padding-component('lg');
+}
+
+.spacing-component-xl {
+  @include spacing.padding-component('xl');
+}
+
+/**
+ * Classes pour les espacements de composants (margin)
+ */
+.m-spacing-component-xs {
+  @include spacing.margin-component('xs');
+}
+
+.m-spacing-component-sm {
+  @include spacing.margin-component('sm');
+}
+
+.m-spacing-component-md {
+  @include spacing.margin-component('md');
+}
+
+.m-spacing-component-lg {
+  @include spacing.margin-component('lg');
+}
+
+.m-spacing-component-xl {
+  @include spacing.margin-component('xl');
+}
+
+// ============================================================================
+// CLASSES POUR LES LAYOUTS
+// ============================================================================
+
+/**
+ * Classes pour les espacements de layouts (padding)
+ */
+.spacing-layout-xs {
+  @include spacing.padding-layout('xs');
+}
+
+.spacing-layout-sm {
+  @include spacing.padding-layout('sm');
+}
+
+.spacing-layout-md {
+  @include spacing.padding-layout('md');
+}
+
+.spacing-layout-lg {
+  @include spacing.padding-layout('lg');
+}
+
+.spacing-layout-xl {
+  @include spacing.padding-layout('xl');
+}
+
+/**
+ * Classes pour les espacements de layouts (margin)
+ */
+.m-spacing-layout-xs {
+  @include spacing.margin-layout('xs');
+}
+
+.m-spacing-layout-sm {
+  @include spacing.margin-layout('sm');
+}
+
+.m-spacing-layout-md {
+  @include spacing.margin-layout('md');
+}
+
+.m-spacing-layout-lg {
+  @include spacing.margin-layout('lg');
+}
+
+.m-spacing-layout-xl {
+  @include spacing.margin-layout('xl');
+}
+
+// ============================================================================
+// CLASSES POUR LES GRILLES
+// ============================================================================
+
+/**
+ * Classes pour les espacements de grilles (padding)
+ */
+.spacing-grid-xs {
+  @include spacing.spacing-grid('padding', 'xs');
+}
+
+.spacing-grid-sm {
+  @include spacing.spacing-grid('padding', 'sm');
+}
+
+.spacing-grid-md {
+  @include spacing.spacing-grid('padding', 'md');
+}
+
+.spacing-grid-lg {
+  @include spacing.spacing-grid('padding', 'lg');
+}
+
+.spacing-grid-xl {
+  @include spacing.spacing-grid('padding', 'xl');
+}
+
+/**
+ * Classes pour les espacements de grilles (margin)
+ */
+.m-spacing-grid-xs {
+  @include spacing.spacing-grid('margin', 'xs');
+}
+
+.m-spacing-grid-sm {
+  @include spacing.spacing-grid('margin', 'sm');
+}
+
+.m-spacing-grid-md {
+  @include spacing.spacing-grid('margin', 'md');
+}
+
+.m-spacing-grid-lg {
+  @include spacing.spacing-grid('margin', 'lg');
+}
+
+.m-spacing-grid-xl {
+  @include spacing.spacing-grid('margin', 'xl');
+}
+
+// ============================================================================
+// CLASSES RESPONSIVES
+// ============================================================================
+
+/**
+ * Classes pour les espacements responsifs (padding)
+ */
+.spacing-responsive-xs {
+  @include spacing.spacing-responsive('padding', 'xs');
+}
+
+.spacing-responsive-sm {
+  @include spacing.spacing-responsive('padding', 'sm');
+}
+
+.spacing-responsive-md {
+  @include spacing.spacing-responsive('padding', 'md');
+}
+
+.spacing-responsive-lg {
+  @include spacing.spacing-responsive('padding', 'lg');
+}
+
+.spacing-responsive-xl {
+  @include spacing.spacing-responsive('padding', 'xl');
+}
+
+/**
+ * Classes pour les espacements responsifs (margin)
+ */
+.m-spacing-responsive-xs {
+  @include spacing.spacing-responsive('margin', 'xs');
+}
+
+.m-spacing-responsive-sm {
+  @include spacing.spacing-responsive('margin', 'sm');
+}
+
+.m-spacing-responsive-md {
+  @include spacing.spacing-responsive('margin', 'md');
+}
+
+.m-spacing-responsive-lg {
+  @include spacing.spacing-responsive('margin', 'lg');
+}
+
+.m-spacing-responsive-xl {
+  @include spacing.spacing-responsive('margin', 'xl');
+}
+
+// ============================================================================
+// CLASSES POUR LES CÔTÉS SPÉCIFIQUES
+// ============================================================================
+
+/**
+ * Classes pour les espacements par côté (padding)
+ */
+.spacing-top-xs { @include spacing.spacing-sides('padding', 'xs', 'top'); }
+.spacing-top-sm { @include spacing.spacing-sides('padding', 'sm', 'top'); }
+.spacing-top-md { @include spacing.spacing-sides('padding', 'md', 'top'); }
+.spacing-top-lg { @include spacing.spacing-sides('padding', 'lg', 'top'); }
+.spacing-top-xl { @include spacing.spacing-sides('padding', 'xl', 'top'); }
+
+.spacing-right-xs { @include spacing.spacing-sides('padding', 'xs', 'right'); }
+.spacing-right-sm { @include spacing.spacing-sides('padding', 'sm', 'right'); }
+.spacing-right-md { @include spacing.spacing-sides('padding', 'md', 'right'); }
+.spacing-right-lg { @include spacing.spacing-sides('padding', 'lg', 'right'); }
+.spacing-right-xl { @include spacing.spacing-sides('padding', 'xl', 'right'); }
+
+.spacing-bottom-xs { @include spacing.spacing-sides('padding', 'xs', 'bottom'); }
+.spacing-bottom-sm { @include spacing.spacing-sides('padding', 'sm', 'bottom'); }
+.spacing-bottom-md { @include spacing.spacing-sides('padding', 'md', 'bottom'); }
+.spacing-bottom-lg { @include spacing.spacing-sides('padding', 'lg', 'bottom'); }
+.spacing-bottom-xl { @include spacing.spacing-sides('padding', 'xl', 'bottom'); }
+
+.spacing-left-xs { @include spacing.spacing-sides('padding', 'xs', 'left'); }
+.spacing-left-sm { @include spacing.spacing-sides('padding', 'sm', 'left'); }
+.spacing-left-md { @include spacing.spacing-sides('padding', 'md', 'left'); }
+.spacing-left-lg { @include spacing.spacing-sides('padding', 'lg', 'left'); }
+.spacing-left-xl { @include spacing.spacing-sides('padding', 'xl', 'left'); }
+
+.spacing-horizontal-xs { @include spacing.spacing-sides('padding', 'xs', 'horizontal'); }
+.spacing-horizontal-sm { @include spacing.spacing-sides('padding', 'sm', 'horizontal'); }
+.spacing-horizontal-md { @include spacing.spacing-sides('padding', 'md', 'horizontal'); }
+.spacing-horizontal-lg { @include spacing.spacing-sides('padding', 'lg', 'horizontal'); }
+.spacing-horizontal-xl { @include spacing.spacing-sides('padding', 'xl', 'horizontal'); }
+
+.spacing-vertical-xs { @include spacing.spacing-sides('padding', 'xs', 'vertical'); }
+.spacing-vertical-sm { @include spacing.spacing-sides('padding', 'sm', 'vertical'); }
+.spacing-vertical-md { @include spacing.spacing-sides('padding', 'md', 'vertical'); }
+.spacing-vertical-lg { @include spacing.spacing-sides('padding', 'lg', 'vertical'); }
+.spacing-vertical-xl { @include spacing.spacing-sides('padding', 'xl', 'vertical'); }
+
+/**
+ * Classes pour les espacements par côté (margin)
+ */
+.m-spacing-top-xs { @include spacing.spacing-sides('margin', 'xs', 'top'); }
+.m-spacing-top-sm { @include spacing.spacing-sides('margin', 'sm', 'top'); }
+.m-spacing-top-md { @include spacing.spacing-sides('margin', 'md', 'top'); }
+.m-spacing-top-lg { @include spacing.spacing-sides('margin', 'lg', 'top'); }
+.m-spacing-top-xl { @include spacing.spacing-sides('margin', 'xl', 'top'); }
+
+.m-spacing-right-xs { @include spacing.spacing-sides('margin', 'xs', 'right'); }
+.m-spacing-right-sm { @include spacing.spacing-sides('margin', 'sm', 'right'); }
+.m-spacing-right-md { @include spacing.spacing-sides('margin', 'md', 'right'); }
+.m-spacing-right-lg { @include spacing.spacing-sides('margin', 'lg', 'right'); }
+.m-spacing-right-xl { @include spacing.spacing-sides('margin', 'xl', 'right'); }
+
+.m-spacing-bottom-xs { @include spacing.spacing-sides('margin', 'xs', 'bottom'); }
+.m-spacing-bottom-sm { @include spacing.spacing-sides('margin', 'sm', 'bottom'); }
+.m-spacing-bottom-md { @include spacing.spacing-sides('margin', 'md', 'bottom'); }
+.m-spacing-bottom-lg { @include spacing.spacing-sides('margin', 'lg', 'bottom'); }
+.m-spacing-bottom-xl { @include spacing.spacing-sides('margin', 'xl', 'bottom'); }
+
+.m-spacing-left-xs { @include spacing.spacing-sides('margin', 'xs', 'left'); }
+.m-spacing-left-sm { @include spacing.spacing-sides('margin', 'sm', 'left'); }
+.m-spacing-left-md { @include spacing.spacing-sides('margin', 'md', 'left'); }
+.m-spacing-left-lg { @include spacing.spacing-sides('margin', 'lg', 'left'); }
+.m-spacing-left-xl { @include spacing.spacing-sides('margin', 'xl', 'left'); }
+
+.m-spacing-horizontal-xs { @include spacing.spacing-sides('margin', 'xs', 'horizontal'); }
+.m-spacing-horizontal-sm { @include spacing.spacing-sides('margin', 'sm', 'horizontal'); }
+.m-spacing-horizontal-md { @include spacing.spacing-sides('margin', 'md', 'horizontal'); }
+.m-spacing-horizontal-lg { @include spacing.spacing-sides('margin', 'lg', 'horizontal'); }
+.m-spacing-horizontal-xl { @include spacing.spacing-sides('margin', 'xl', 'horizontal'); }
+
+.m-spacing-vertical-xs { @include spacing.spacing-sides('margin', 'xs', 'vertical'); }
+.m-spacing-vertical-sm { @include spacing.spacing-sides('margin', 'sm', 'vertical'); }
+.m-spacing-vertical-md { @include spacing.spacing-sides('margin', 'md', 'vertical'); }
+.m-spacing-vertical-lg { @include spacing.spacing-sides('margin', 'lg', 'vertical'); }
+.m-spacing-vertical-xl { @include spacing.spacing-sides('margin', 'xl', 'vertical'); }
+
+// ============================================================================
+// CLASSES UTILITAIRES SUPPLÉMENTAIRES
+// ============================================================================
+
+/**
+ * Classes pour les espacements personnalisés
+ */
+.spacing-custom {
+  --spacing-top: #{tokens.spacing-base('md')};
+  --spacing-right: #{tokens.spacing-base('md')};
+  --spacing-bottom: #{tokens.spacing-base('md')};
+  --spacing-left: #{tokens.spacing-base('md')};
+  
+  padding: var(--spacing-top) var(--spacing-right) var(--spacing-bottom) var(--spacing-left);
+}
+
+.m-spacing-custom {
+  --spacing-top: #{tokens.spacing-base('md')};
+  --spacing-right: #{tokens.spacing-base('md')};
+  --spacing-bottom: #{tokens.spacing-base('md')};
+  --spacing-left: #{tokens.spacing-base('md')};
+  
+  margin: var(--spacing-top) var(--spacing-right) var(--spacing-bottom) var(--spacing-left);
+}
+
+/**
+ * Classes pour les espacements avec des valeurs spécifiques
+ */
+.spacing-0 { padding: 0 !important; }
+.spacing-1 { padding: 1px !important; }
+.spacing-2 { padding: 2px !important; }
+.spacing-4 { padding: 4px !important; }
+.spacing-8 { padding: 8px !important; }
+.spacing-12 { padding: 12px !important; }
+.spacing-16 { padding: 16px !important; }
+.spacing-20 { padding: 20px !important; }
+.spacing-24 { padding: 24px !important; }
+.spacing-32 { padding: 32px !important; }
+.spacing-40 { padding: 40px !important; }
+.spacing-48 { padding: 48px !important; }
+.spacing-64 { padding: 64px !important; }
+
+.m-spacing-0 { margin: 0 !important; }
+.m-spacing-1 { margin: 1px !important; }
+.m-spacing-2 { margin: 2px !important; }
+.m-spacing-4 { margin: 4px !important; }
+.m-spacing-8 { margin: 8px !important; }
+.m-spacing-12 { margin: 12px !important; }
+.m-spacing-16 { margin: 16px !important; }
+.m-spacing-20 { margin: 20px !important; }
+.m-spacing-24 { margin: 24px !important; }
+.m-spacing-32 { margin: 32px !important; }
+.m-spacing-40 { margin: 40px !important; }
+.m-spacing-48 { margin: 48px !important; }
+.m-spacing-64 { margin: 64px !important; }

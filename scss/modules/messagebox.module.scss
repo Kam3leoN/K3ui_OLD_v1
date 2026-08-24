@@ -1,0 +1,291 @@
+/**
+ * @fileoverview Module MessageBox (boîte de dialogue ALTTP)
+ * @description Classes CSS reproduisant fidèlement la boîte de dialogue
+ *              « A Link to the Past » (machine à écrire, choix, curseurs animés)
+ *              avec positionnement à l'écran (centré par défaut).
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'sass:color';
+@use '../tokens/messagebox.token' as tokens;
+@use '../mixins/messagebox.mixin' as mixin;
+
+// Police pixel-art ALTTP
+@include mixin.messagebox-fontface;
+
+// ============================================================================
+// OVERLAY (voile noir / flou derrière la boîte)
+// ============================================================================
+
+.messagebox-overlay {
+    --messagebox-overlay-opacity: #{tokens.$messagebox-overlay-opacity};
+    --messagebox-overlay-blur: #{tokens.$messagebox-overlay-blur};
+
+    position: fixed;
+    inset: 0;
+    z-index: tokens.$messagebox-overlay-z-index;
+
+    background-color: rgba(
+        color.channel(tokens.$messagebox-overlay-color, 'red'),
+        color.channel(tokens.$messagebox-overlay-color, 'green'),
+        color.channel(tokens.$messagebox-overlay-color, 'blue'),
+        var(--messagebox-overlay-opacity)
+    );
+    backdrop-filter: blur(var(--messagebox-overlay-blur));
+    -webkit-backdrop-filter: blur(var(--messagebox-overlay-blur));
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity tokens.$messagebox-overlay-duration ease;
+
+    &.is-visible {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+// ============================================================================
+// CADRE PRINCIPAL
+// ============================================================================
+
+.messagebox {
+    @include mixin.messagebox-root;
+
+    // --------------------------------------------------------------------------
+    // POSITIONNEMENT À L'ÉCRAN (fixed)
+    // --------------------------------------------------------------------------
+    &--pos-center,
+    &--pos-top,
+    &--pos-top-left,
+    &--pos-top-right,
+    &--pos-bottom,
+    &--pos-bottom-left,
+    &--pos-bottom-right,
+    &--pos-left,
+    &--pos-right {
+        position: fixed;
+        z-index: tokens.$messagebox-z-index;
+    }
+
+    // Centré parfaitement (horizontalement et verticalement) — défaut
+    &--pos-center {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    &--pos-top {
+        top: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    &--pos-bottom {
+        bottom: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    &--pos-left {
+        top: 50%;
+        left: 1rem;
+        transform: translateY(-50%);
+    }
+
+    &--pos-right {
+        top: 50%;
+        right: 1rem;
+        transform: translateY(-50%);
+    }
+
+    &--pos-top-left {
+        top: 1rem;
+        left: 1rem;
+    }
+
+    &--pos-top-right {
+        top: 1rem;
+        right: 1rem;
+    }
+
+    &--pos-bottom-left {
+        bottom: 1rem;
+        left: 1rem;
+    }
+
+    &--pos-bottom-right {
+        bottom: 1rem;
+        right: 1rem;
+    }
+
+    // --------------------------------------------------------------------------
+    // CONTENU
+    // --------------------------------------------------------------------------
+    &__inner {
+        position: relative;
+        background-color: tokens.$messagebox-inner-bg;
+        // Recouvre le liseré sombre (1 px natif) à l'intérieur du cadre sprite.
+        margin: calc(-1px * var(--messagebox-scale));
+        padding: calc(1px * var(--messagebox-scale));
+        min-height: calc(
+            var(--messagebox-lines) * var(--messagebox-font-size) * var(--messagebox-line-height)
+        );
+    }
+
+    &__text {
+        margin: 0;
+        white-space: pre-line;
+        font-family: tokens.$messagebox-font-family;
+        font-size: var(--messagebox-font-size);
+        line-height: var(--messagebox-line-height);
+        letter-spacing: 1px;
+    }
+
+    // --------------------------------------------------------------------------
+    // FLÈCHE « PAGE SUIVANTE » (sprite « next », 16x8, 3 frames)
+    // Centrée, son centre aligné sur le milieu du liseré du bas.
+    // --------------------------------------------------------------------------
+    &__continue {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translate(
+            -50%,
+            calc(
+                50% + (var(--messagebox-frame-slice) * var(--messagebox-scale) / 2) * 1px + 3px *
+                    var(--messagebox-scale)
+            )
+        );
+
+        width: calc(var(--messagebox-next-w) * var(--messagebox-scale));
+        height: calc(var(--messagebox-next-h) * var(--messagebox-scale));
+
+        background-image: url(tokens.$messagebox-next-img);
+        background-repeat: no-repeat;
+        background-size: calc(var(--messagebox-next-w) * var(--messagebox-scale))
+            calc(var(--messagebox-next-h) * var(--messagebox-next-frames) * var(--messagebox-scale));
+        image-rendering: pixelated;
+        cursor: pointer;
+
+        animation: messagebox-next-frames calc(#{tokens.$messagebox-frame-delay} * var(--messagebox-next-frames))
+            steps(1) infinite;
+
+        &[hidden] {
+            display: none;
+        }
+    }
+
+    // --------------------------------------------------------------------------
+    // LISTE DE CHOIX
+    // --------------------------------------------------------------------------
+    &__choices {
+        list-style: none;
+        margin: 0.4em 0 0;
+        padding: 0;
+
+        &[hidden] {
+            display: none;
+        }
+
+        // Disposition horizontale : navigation gauche/droite.
+        &.is-horizontal {
+            display: flex;
+            gap: 1.4em;
+            flex-wrap: wrap;
+        }
+    }
+
+    &__choice {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        padding: 0.1em 0 0.1em calc(var(--messagebox-last-w) * var(--messagebox-scale) + 0.3em);
+        font-family: tokens.$messagebox-font-family;
+        font-size: var(--messagebox-font-size);
+        line-height: var(--messagebox-line-height);
+        letter-spacing: 1px;
+        cursor: pointer;
+    }
+
+    // Curseur de sélection = sprite « last », visible seulement sur l'option active.
+    &__select-cursor {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        // Le pixel utile du sprite « last » est centré à y=5.5 sur 16 (origin_y=3
+        // du .dat) ; on le descend de (8 - 5.5)=2.5px natifs * scale pour
+        // l'aligner sur le milieu de la ligne de texte.
+        transform: translateY(calc(-50% + 2.5px * var(--messagebox-scale)));
+        width: calc(var(--messagebox-last-w) * var(--messagebox-scale));
+        height: calc(var(--messagebox-last-h) * var(--messagebox-scale));
+
+        background-image: url(tokens.$messagebox-last-img);
+        background-repeat: no-repeat;
+        background-size: calc(var(--messagebox-last-w) * var(--messagebox-scale))
+            calc(var(--messagebox-last-h) * var(--messagebox-last-frames) * var(--messagebox-scale));
+        image-rendering: pixelated;
+
+        opacity: 0;
+    }
+
+    &__choice.is-selected &__select-cursor {
+        opacity: 1;
+        animation: messagebox-last-frames calc(#{tokens.$messagebox-frame-delay} * var(--messagebox-last-frames))
+            steps(1) infinite;
+    }
+}
+
+// ============================================================================
+// ANIMATIONS DES CURSEURS
+// ============================================================================
+
+@keyframes messagebox-next-frames {
+    0% {
+        background-position: 0 0;
+    }
+    33.34% {
+        background-position: 0 calc(-1 * var(--messagebox-next-h) * var(--messagebox-scale));
+    }
+    66.67% {
+        background-position: 0 calc(-2 * var(--messagebox-next-h) * var(--messagebox-scale));
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+
+@keyframes messagebox-last-frames {
+    0% {
+        background-position: 0 0;
+    }
+    33.34% {
+        background-position: 0 calc(-1 * var(--messagebox-last-h) * var(--messagebox-scale));
+    }
+    66.67% {
+        background-position: 0 calc(-2 * var(--messagebox-last-h) * var(--messagebox-scale));
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+
+// ============================================================================
+// ACCESSIBILITÉ — mouvement réduit
+// ============================================================================
+
+.messagebox--reduced-motion,
+html.k3ui-reduced-motion .messagebox {
+    .messagebox__continue,
+    .messagebox__choice.is-selected .messagebox__select-cursor {
+        animation: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .messagebox__continue,
+    .messagebox__choice.is-selected .messagebox__select-cursor {
+        animation: none;
+    }
+}

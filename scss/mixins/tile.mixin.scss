@@ -1,0 +1,40 @@
+/// @file tile.mixin.scss
+/// @brief Mixins Tile Material 3
+
+@use '../tokens/tile.token' as tile;
+
+@mixin tile-base {
+  position: relative;
+  display: inline-flex;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@mixin tile-content {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  border: 0;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  background: tile.$md-comp-tile-primary-container;
+  color: tile.$md-comp-tile-on-primary-container;
+  box-shadow: var(--md-sys-elevation-level1);
+  transition:
+    background-color tile.$md-comp-tile-state-duration tile.$md-comp-tile-shape-easing,
+    color tile.$md-comp-tile-state-duration tile.$md-comp-tile-shape-easing,
+    border-radius tile.$md-comp-tile-shape-duration tile.$md-comp-tile-shape-easing,
+    box-shadow tile.$md-comp-tile-state-duration tile.$md-comp-tile-shape-easing;
+}
+
+@mixin tile-size($size, $radius) {
+  width: $size;
+  height: $size;
+  min-width: $size;
+  min-height: $size;
+  border-radius: $radius;
+}

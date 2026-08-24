@@ -1,0 +1,50 @@
+@use '../mixins/layout.mixin' as layout;
+
+// Variables CSS M3 (gutters / margins / columns) — opt-in via .row--gap-*
+@include layout.grid-m3-css-vars;
+
+.container {
+  @include layout.container;
+}
+
+.section {
+  @include layout.section;
+}
+
+.row {
+  @include layout.grid;
+
+
+  // Classes de grille pour toutes les tailles
+  @include layout.grid-columns('s');
+  @include layout.grid-columns('m', 'medium-and-up');
+  @include layout.grid-columns('l', 'large-and-up');
+  @include layout.grid-columns('xl', 'extra-large-and-up');
+}
+
+// Classes de gap (échelle relative à $gap-size — inchangée)
+@include layout.gap-classes;
+
+// Modificateurs de gap M3 (opt-in)
+@include layout.row-gap-modifiers;
+
+// Grille spéciale pour 8 colonnes
+.row--8-col {
+  grid-template-columns: repeat(8, 1fr);
+  
+  // Classes de colonnes pour la grille 8 colonnes
+  @include layout.grid-columns-8col('s');
+  @include layout.grid-columns-8col('m', 'medium-and-up');
+  @include layout.grid-columns-8col('l', 'large-and-up');
+  @include layout.grid-columns-8col('xl', 'extra-large-and-up');
+}
+
+// Grille spéciale pour 4 colonnes (opt-in M3 compact)
+.row--4-col {
+  grid-template-columns: repeat(4, 1fr);
+
+  @include layout.grid-columns-4col('s');
+  @include layout.grid-columns-4col('m', 'medium-and-up');
+  @include layout.grid-columns-4col('l', 'large-and-up');
+  @include layout.grid-columns-4col('xl', 'extra-large-and-up');
+}

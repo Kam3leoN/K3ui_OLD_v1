@@ -1,0 +1,47 @@
+/**
+ * @fileoverview Mixins pour MenuContext
+ * @description Mixins réutilisables pour le menu contextuel
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/menu-context.token' as mc;
+
+/**
+ * Conteneur hôte MenuContext
+ */
+@mixin menu-context-host {
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/**
+ * Ancre invisible pour Floating UI (point curseur)
+ */
+@mixin menu-context-anchor {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: mc.$menu-context-anchor-z-index;
+}
+
+/**
+ * Zone démo (surface cliquable droite)
+ */
+@mixin menu-context-demo-surface {
+  padding: mc.$menu-context-host-padding;
+  border-radius: mc.$menu-context-host-radius;
+  border: 1px dashed mc.$menu-context-host-outline;
+  background: mc.$menu-context-host-surface;
+  min-height: 12rem;
+  user-select: none;
+}

@@ -1,0 +1,52 @@
+/**
+ * @fileoverview Tokens — SlideshowCaptions
+ * @description Variables de design (légendes slideshow animées)
+ * @note Ne pas @use le barrel `tokens` ici : ce fichier est @forward par `tokens/index` → boucle de modules Sass.
+ */
+// ============================================================================
+// Z-INDEX
+// ============================================================================
+
+$slideshow-captions-z-index: 3;
+
+// ============================================================================
+// ESPACEMENT & TIMING (référence visuelle ; runtime via options TS)
+// ============================================================================
+
+$slideshow-captions-line-gap: 45px;
+$slideshow-captions-duration-ref: 5s;
+
+// ============================================================================
+// LIGNE (style type bandeau Synergy / MD surface)
+// ============================================================================
+
+$slideshow-captions-line-padding-x: 10px;
+$slideshow-captions-line-padding-y: 10px;
+$slideshow-captions-line-radius: 0;
+$slideshow-captions-line-bg: none;
+$slideshow-captions-line-color: #ffffff;
+$slideshow-captions-line-font-size: 5rem;
+$slideshow-captions-line-font-weight: 900;
+$slideshow-captions-line-letter-spacing: -0.125rem;
+$slideshow-captions-line-line-height: 1.2em;
+$slideshow-captions-line-shadow: none;
+
+// ============================================================================
+// 3D EFFECT
+// ============================================================================
+
+$slideshow-captions-text-3d-shadow:
+  0px 1px 0px #d8d8d8,
+  0px 2px 0px #c4c4c4,
+  0px 3px 0px #b0b0b0,
+  0px 5px 6px rgba(0, 0, 0, 0.14),
+  0px 10px 18px rgba(0, 0, 0, 0.16);
+
+/// Léger contour pour détacher le texte sur fond clair
+$slideshow-captions-text-stroke: 0.5px rgba(0, 0, 0, 0.05);
+
+// ============================================================================
+// MARQUEE (segments dupliqués)
+// ============================================================================
+
+$slideshow-captions-marquee-segment-gap: 48px;

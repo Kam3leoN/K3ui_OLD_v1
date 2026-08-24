@@ -1,0 +1,374 @@
+/**
+ * Mixins pour le composant WheelPicker
+ * @description Styles réutilisables pour le sélecteur de caractères rotatif
+ */
+
+@use '../tokens/wheel-picker.token' as tokens;
+@use './motion.mixin' as motionmix;
+
+/**
+ * Conteneur racine du WheelPicker
+ */
+@mixin wheel-picker-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  font-family: 'Google Sans', 'Product Sans', system-ui, sans-serif;
+  color: tokens.$wheel-picker-on-surface;
+}
+
+/**
+ * Pilule de prévisualisation des caractères sélectionnés
+ */
+@mixin wheel-picker-preview {
+  display: flex;
+  gap: tokens.$wheel-picker-preview-gap;
+  margin: 1.25rem 0 1.75rem;
+  padding: tokens.$wheel-picker-preview-padding-y tokens.$wheel-picker-preview-padding-x;
+  border-radius: tokens.$wheel-picker-preview-radius;
+  background: tokens.$wheel-picker-surface-container-highest;
+  border: 1px solid tokens.$wheel-picker-outline-variant;
+  animation: wheel-picker-pop-in tokens.$wheel-picker-animation-entrance tokens.$wheel-picker-easing-emphasized 100ms both;
+
+  &--saved {
+    animation: wheel-picker-saved-pulse 700ms ease-out;
+  }
+}
+
+/**
+ * Caractère dans la pilule de prévisualisation
+ */
+@mixin wheel-picker-preview-char {
+  font-size: tokens.$wheel-picker-preview-font-size;
+  font-weight: 600;
+  color: tokens.$wheel-picker-primary;
+  letter-spacing: tokens.$wheel-picker-preview-letter-spacing;
+  font-variant-numeric: tabular-nums;
+  transition: color tokens.$wheel-picker-transition-fast tokens.$wheel-picker-easing-standard;
+}
+
+/**
+ * Rangée des colonnes rotatives
+ */
+@mixin wheel-picker-wheels {
+  display: flex;
+  gap: tokens.$wheel-picker-column-gap;
+  margin-bottom: 2.25rem;
+}
+
+/**
+ * Colonne individuelle (lettre + boutons)
+ */
+@mixin wheel-picker-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  opacity: 0;
+  transform: translateY(30px) scale(0.85);
+  transition:
+    opacity tokens.$wheel-picker-animation-entrance tokens.$wheel-picker-easing-emphasized,
+    transform tokens.$wheel-picker-animation-entrance tokens.$wheel-picker-easing-emphasized;
+
+  &--mounted {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/**
+ * Bouton haut / bas de navigation
+ */
+@mixin wheel-picker-btn {
+  position: relative;
+  overflow: hidden;
+  width: tokens.$wheel-picker-btn-width;
+  height: tokens.$wheel-picker-btn-height;
+  border-radius: tokens.$wheel-picker-btn-radius;
+  border: 1px solid tokens.$wheel-picker-outline-variant;
+  background: tokens.$wheel-picker-surface-container-high;
+  color: tokens.$wheel-picker-on-surface;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  padding: 0;
+  @include motionmix.transition-form(
+    tokens.$wheel-picker-transition-fast,
+    tokens.$wheel-picker-easing-emphasized
+  );
+
+  &:active:not(:disabled) {
+    transform: scale(0.92);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px color-mix(in srgb, tokens.$wheel-picker-primary 25%, transparent);
+  }
+
+  &:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+  }
+
+  svg {
+    display: block;
+    width: 1.5rem;
+    height: 1.5rem;
+    pointer-events: none;
+  }
+}
+
+/**
+ * Zone d'affichage du caractère courant
+ */
+@mixin wheel-picker-display {
+  position: relative;
+  width: tokens.$wheel-picker-display-width;
+  height: tokens.$wheel-picker-display-height;
+  border-radius: tokens.$wheel-picker-display-radius;
+  background: tokens.$wheel-picker-primary-container;
+  box-shadow:
+    0 2px 8px color-mix(in srgb, tokens.$wheel-picker-shadow 25%, transparent),
+    0 1px 3px color-mix(in srgb, tokens.$wheel-picker-shadow 19%, transparent);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  contain: layout style paint;
+
+  &--animating {
+    will-change: transform;
+  }
+}
+
+/**
+ * Lettre affichée dans la colonne
+ */
+@mixin wheel-picker-letter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: tokens.$wheel-picker-letter-font-size;
+  font-weight: tokens.$wheel-picker-letter-font-weight;
+  font-family: inherit;
+  color: tokens.$wheel-picker-on-primary-container;
+  user-select: none;
+  line-height: 1;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+
+  &--current {
+    z-index: 1;
+  }
+
+  &--hidden {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &--slide-out-up {
+    z-index: 2;
+    animation: wheel-picker-slide-out-up tokens.$wheel-picker-animation-cycle tokens.$wheel-picker-easing-cycle-out forwards;
+  }
+
+  &--slide-out-down {
+    z-index: 2;
+    animation: wheel-picker-slide-out-down tokens.$wheel-picker-animation-cycle tokens.$wheel-picker-easing-cycle-out forwards;
+  }
+
+  &--slide-in-up {
+    z-index: 3;
+    animation: wheel-picker-slide-in-up tokens.$wheel-picker-animation-cycle tokens.$wheel-picker-easing-cycle-in forwards;
+  }
+
+  &--slide-in-down {
+    z-index: 3;
+    animation: wheel-picker-slide-in-down tokens.$wheel-picker-animation-cycle tokens.$wheel-picker-easing-cycle-in forwards;
+  }
+}
+
+/**
+ * Reflet décoratif sur la zone d'affichage
+ */
+@mixin wheel-picker-shimmer {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, tokens.$wheel-picker-primary 6%, transparent) 0%,
+    transparent 50%,
+    color-mix(in srgb, tokens.$wheel-picker-tertiary 5%, transparent) 100%
+  );
+  pointer-events: none;
+}
+
+/**
+ * Bouton de soumission
+ */
+@mixin wheel-picker-submit {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  min-width: tokens.$wheel-picker-submit-min-width;
+  height: tokens.$wheel-picker-submit-height;
+  border-radius: tokens.$wheel-picker-submit-radius;
+  border: none;
+  background: tokens.$wheel-picker-primary;
+  color: tokens.$wheel-picker-on-primary;
+  font-size: tokens.$wheel-picker-submit-font-size;
+  font-weight: tokens.$wheel-picker-submit-font-weight;
+  font-family: inherit;
+  letter-spacing: 0.01875rem;
+  cursor: pointer;
+  outline: none;
+  box-shadow:
+    0 1px 3px color-mix(in srgb, tokens.$wheel-picker-shadow 25%, transparent),
+    0 4px 8px color-mix(in srgb, tokens.$wheel-picker-shadow 12%, transparent);
+  animation: wheel-picker-pop-in tokens.$wheel-picker-animation-entrance tokens.$wheel-picker-easing-emphasized 400ms both;
+  @include motionmix.transition-form(320ms, tokens.$wheel-picker-easing-emphasized);
+
+  &:active:not(:disabled) {
+    transform: scale(0.96);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px color-mix(in srgb, tokens.$wheel-picker-primary 31%, transparent);
+  }
+
+  &--saved {
+    background: tokens.$wheel-picker-primary-container;
+    color: tokens.$wheel-picker-on-primary-container;
+    box-shadow: none;
+  }
+
+  svg {
+    width: 1.375rem;
+    height: 1.375rem;
+    flex-shrink: 0;
+
+    path {
+      stroke-dasharray: 30;
+      stroke-dashoffset: 30;
+      animation: wheel-picker-check-draw 400ms ease forwards;
+    }
+  }
+}
+
+/**
+ * Ondulation tactile (effet ripple arcade)
+ */
+@mixin wheel-picker-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: currentcolor;
+  opacity: 0.16;
+  transform: scale(0);
+  pointer-events: none;
+  animation: wheel-picker-ripple tokens.$wheel-picker-animation-ripple tokens.$wheel-picker-easing-emphasized forwards;
+}
+
+/**
+ * Animations clés du WheelPicker
+ */
+@mixin wheel-picker-keyframes {
+  @keyframes wheel-picker-ripple {
+    to {
+      transform: scale(1);
+      opacity: 0;
+    }
+  }
+
+  @keyframes wheel-picker-slide-in-up {
+    from {
+      transform: translate3d(0, -120%, 0);
+      opacity: 0.3;
+    }
+
+    to {
+      transform: translate3d(0, 0, 0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes wheel-picker-slide-in-down {
+    from {
+      transform: translate3d(0, 120%, 0);
+      opacity: 0.3;
+    }
+
+    to {
+      transform: translate3d(0, 0, 0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes wheel-picker-slide-out-up {
+    from {
+      transform: translate3d(0, 0, 0);
+      opacity: 1;
+    }
+
+    to {
+      transform: translate3d(0, -100%, 0);
+      opacity: 0;
+    }
+  }
+
+  @keyframes wheel-picker-slide-out-down {
+    from {
+      transform: translate3d(0, 0, 0);
+      opacity: 1;
+    }
+
+    to {
+      transform: translate3d(0, 100%, 0);
+      opacity: 0;
+    }
+  }
+
+  @keyframes wheel-picker-pop-in {
+    0% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+
+    60% {
+      transform: scale(1.04);
+    }
+
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes wheel-picker-check-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes wheel-picker-saved-pulse {
+    0% {
+      box-shadow: 0 0 0 0 color-mix(in srgb, tokens.$wheel-picker-primary 38%, transparent);
+    }
+
+    70% {
+      box-shadow: 0 0 0 12px color-mix(in srgb, tokens.$wheel-picker-primary 0%, transparent);
+    }
+
+    100% {
+      box-shadow: 0 0 0 0 color-mix(in srgb, tokens.$wheel-picker-primary 0%, transparent);
+    }
+  }
+}

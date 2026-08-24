@@ -1,0 +1,36 @@
+/**
+ * @fileoverview Tokens pour le composant IsoFilter (filtrage type Isotope + FLIP)
+ * @description Contrôles, état actif, coordination Mason (items masqués)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+// ============================================================================
+// RACINE
+// ============================================================================
+
+/** Largeur du bloc IsoFilter */
+$isofilter-root-width: 100% !default;
+
+// ============================================================================
+// CONTRÔLES (boutons, chips, etc.)
+// ============================================================================
+
+/** Espacement entre contrôles (wrap) */
+$isofilter-controls-gap: 0.75rem !default;
+
+/** Curseur sur les contrôles interactifs */
+$isofilter-control-cursor: pointer !default;
+
+// ============================================================================
+// ÉTAT ACTIF (contrôle sélectionné)
+// ============================================================================
+
+/** Couleur du contour (outline) pour le contrôle actif — indigo neutre */
+$isofilter-control-active-outline-color: rgba(99, 102, 241, 0.5) !default;
+
+/** Épaisseur du contour actif */
+$isofilter-control-active-outline-width: 2px !default;
+
+/** Décalage du contour (outline-offset) */
+$isofilter-control-active-outline-offset: 2px !default;

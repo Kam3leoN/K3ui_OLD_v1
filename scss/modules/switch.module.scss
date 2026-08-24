@@ -1,0 +1,430 @@
+/// @file switch.module.scss
+/// @brief Module switch Material 3
+
+@use '../mixins/switch.mixin' as switch;
+@use '../tokens/switch.token' as tokens;
+@use '../tokens/motion.token' as motion;
+
+/**
+ * Classe de base pour le switch
+ */
+.switch {
+  @include switch.switch-base;
+  @include switch.switch-size;
+  @include switch.switch-states;
+
+  // Améliorer le layout quand il y a un label
+  &:has(&__label) {
+    display: flex;
+    align-items: center;
+    width: 100%; // Prendre toute la largeur disponible
+    gap: 16px; // Espacement entre le label et le switch
+  }
+
+  // Positionnement du label à droite
+  &[data-label-position="right"] {
+    flex-direction: row-reverse;
+  }
+
+  // Dupliquer &__handle pour éviter la duplication (déjà défini ci-dessus)
+  // &__handle {
+  //   width: tokens.$md-sys-switch-handle-size !important;
+  //   height: tokens.$md-sys-switch-handle-size !important;
+  // }
+
+  /**
+   * Conteneur du switch
+   */
+  &__container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  /**
+   * State layer (zone de touch interactif)
+   */
+  &__state-layer {
+    @include switch.switch-state-layer;
+  }
+
+  &__track {
+    @include switch.switch-track;
+  }
+
+  &__handle {
+    @include switch.switch-handle;
+    width: tokens.$md-sys-switch-handle-size !important;
+    height: tokens.$md-sys-switch-handle-size !important;
+  }
+
+  // Material You (M3) — style classique uniquement :
+  // handle unselected sans icône/texte = 16dp (sinon 24dp)
+  // Ne s'applique pas au style compact (MD2)
+  &:not([data-style="compact"]):not(.switch--checked):not(.switch--with-icon):not(.switch--with-text) {
+    .switch__handle {
+      width: tokens.$md-sys-switch-handle-size-unselected !important;
+      height: tokens.$md-sys-switch-handle-size-unselected !important;
+      left: tokens.$md-sys-switch-handle-padding-unselected;
+    }
+
+    &[dir="rtl"] .switch__handle,
+    &.switch--rtl .switch__handle,
+    [dir="rtl"] & .switch__handle {
+      left: auto;
+      right: tokens.$md-sys-switch-handle-padding-unselected;
+    }
+  }
+
+  // Effet haptic : rebond horizontal (uniquement si activation="haptic")
+  // Le state layer doit suivre exactement les mêmes animations que le handle
+  &[data-activation="haptic"] &__handle--haptic {
+    transform-origin: center center;
+    will-change: transform;
+    animation: switch-haptic-unchecked motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+  }
+
+  &[data-activation="haptic"] &__state-layer {
+    animation: switch-haptic-unchecked motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+  }
+
+  &[data-activation="haptic"].switch--checked &__handle--haptic {
+    animation: switch-haptic-checked motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+  }
+
+  &[data-activation="haptic"].switch--checked &__state-layer {
+    animation: switch-haptic-checked motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+  }
+
+  // Animation haptic RTL : utiliser les mêmes animations que LTR
+  // Pour unchecked RTL, on utilise la même animation (mouvement relatif identique)
+  &[data-activation="haptic"] [dir="rtl"] &__handle--haptic:not(.switch--checked &__handle--haptic),
+  &[data-activation="haptic"] &--rtl &__handle--haptic:not(.switch--checked &__handle--haptic) {
+    animation: switch-haptic-unchecked motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing !important;
+  }
+
+  &[data-activation="haptic"] [dir="rtl"] &__state-layer:not(.switch--checked &__state-layer),
+  &[data-activation="haptic"] &--rtl &__state-layer:not(.switch--checked &__state-layer) {
+    animation: switch-haptic-unchecked motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing !important;
+  }
+
+  // Animation haptic RTL pour l'état checked : mouvement relatif identique
+  &[data-activation="haptic"] [dir="rtl"] &--checked &__handle--haptic,
+  &[data-activation="haptic"] &--rtl.switch--checked &__handle--haptic {
+    animation: switch-haptic-checked-rtl motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+  }
+
+  &[data-activation="haptic"] [dir="rtl"] &--checked &__state-layer,
+  &[data-activation="haptic"] &--rtl.switch--checked &__state-layer {
+    animation: switch-haptic-checked-rtl motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+  }
+
+  &[data-activation="haptic"].switch--pressed:not(.switch--disabled) &__handle--haptic {
+    animation: none !important;
+  }
+
+  &[data-activation="haptic"].switch--pressed:not(.switch--disabled) &__state-layer {
+    animation: none !important;
+  }
+
+  // Animations haptic pour le style compact
+  &[data-style="compact"][data-activation="haptic"] &__handle--haptic {
+    animation: switch-haptic-unchecked-compact motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+  }
+
+  &[data-style="compact"][data-activation="haptic"] &__state-layer {
+    animation: switch-haptic-unchecked-compact motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+  }
+
+  &[data-style="compact"][data-activation="haptic"].switch--checked &__handle--haptic {
+    animation: switch-haptic-checked-compact motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+  }
+
+  &[data-style="compact"][data-activation="haptic"].switch--checked &__state-layer {
+    animation: switch-haptic-checked-compact motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+  }
+
+  &[data-style="compact"][data-activation="haptic"] [dir="rtl"] &__handle--haptic:not(.switch--checked &__handle--haptic),
+  &[data-style="compact"][data-activation="haptic"] &--rtl &__handle--haptic:not(.switch--checked &__handle--haptic) {
+    animation: switch-haptic-unchecked-compact motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing !important;
+  }
+
+  &[data-style="compact"][data-activation="haptic"] [dir="rtl"] &__state-layer:not(.switch--checked &__state-layer),
+  &[data-style="compact"][data-activation="haptic"] &--rtl &__state-layer:not(.switch--checked &__state-layer) {
+    animation: switch-haptic-unchecked-compact motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing !important;
+  }
+
+  &[data-style="compact"][data-activation="haptic"] [dir="rtl"] &--checked &__handle--haptic,
+  &[data-style="compact"][data-activation="haptic"] &--rtl.switch--checked &__handle--haptic {
+    animation: switch-haptic-checked-compact-rtl motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+  }
+
+  &[data-style="compact"][data-activation="haptic"] [dir="rtl"] &--checked &__state-layer,
+  &[data-style="compact"][data-activation="haptic"] &--rtl.switch--checked &__state-layer {
+    animation: switch-haptic-checked-compact-rtl motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+  }
+
+  // Effet scale : transition classique avec léger scale (uniquement si activation="scale")
+  // Le state layer doit suivre exactement les mêmes animations que le handle
+  &[data-activation="scale"] &__handle--scale {
+    transform-origin: center center;
+    will-change: transform;
+    animation: switch-activate-unchecked #{motion.$md-sys-motion-expressive-effects-slow-duration} #{motion.$md-sys-motion-expressive-effects-slow-easing};
+  }
+
+  &[data-activation="scale"] &__state-layer {
+    animation: switch-activate-unchecked #{motion.$md-sys-motion-expressive-effects-slow-duration} #{motion.$md-sys-motion-expressive-effects-slow-easing};
+  }
+
+  &[data-activation="scale"].switch--checked &__handle--scale {
+    animation: switch-activate-checked #{motion.$md-sys-motion-expressive-effects-slow-duration} #{motion.$md-sys-motion-expressive-effects-slow-easing};
+  }
+
+  &[data-activation="scale"].switch--checked &__state-layer {
+    animation: switch-activate-checked #{motion.$md-sys-motion-expressive-effects-slow-duration} #{motion.$md-sys-motion-expressive-effects-slow-easing};
+  }
+
+  // Animation scale RTL
+  &[data-activation="scale"] [dir="rtl"] &__handle--scale:not(.switch--checked &__handle--scale),
+  &[data-activation="scale"] &--rtl &__handle--scale:not(.switch--checked &__handle--scale) {
+    animation: switch-activate-unchecked-rtl #{motion.$md-sys-motion-expressive-effects-slow-duration} #{motion.$md-sys-motion-expressive-effects-slow-easing};
+  }
+
+  &[data-activation="scale"] [dir="rtl"] &__state-layer:not(.switch--checked &__state-layer),
+  &[data-activation="scale"] &--rtl &__state-layer:not(.switch--checked &__state-layer) {
+    animation: switch-activate-unchecked-rtl #{motion.$md-sys-motion-expressive-effects-slow-duration} #{motion.$md-sys-motion-expressive-effects-slow-easing};
+  }
+
+  &[data-activation="scale"] [dir="rtl"] &--checked &__handle--scale,
+  &[data-activation="scale"] &--rtl.switch--checked &__handle--scale {
+    animation: switch-activate-checked-rtl #{motion.$md-sys-motion-expressive-effects-slow-duration} #{motion.$md-sys-motion-expressive-effects-slow-easing};
+  }
+
+  &[data-activation="scale"] [dir="rtl"] &--checked &__state-layer,
+  &[data-activation="scale"] &--rtl.switch--checked &__state-layer {
+    animation: switch-activate-checked-rtl #{motion.$md-sys-motion-expressive-effects-slow-duration} #{motion.$md-sys-motion-expressive-effects-slow-easing};
+  }
+
+  // Animations scale pour le style compact
+  &[data-style="compact"][data-activation="scale"] &__handle--scale {
+    animation: switch-activate-unchecked-compact #{motion.$md-sys-motion-expressive-effects-slow-duration} #{motion.$md-sys-motion-expressive-effects-slow-easing};
+  }
+
+  &[data-style="compact"][data-activation="scale"] &__state-layer {
+    animation: switch-activate-unchecked-compact #{motion.$md-sys-motion-expressive-effects-slow-duration} #{motion.$md-sys-motion-expressive-effects-slow-easing};
+  }
+
+  &[data-style="compact"][data-activation="scale"].switch--checked &__handle--scale {
+    animation: switch-activate-checked-compact #{motion.$md-sys-motion-expressive-effects-slow-duration} #{motion.$md-sys-motion-expressive-effects-slow-easing};
+  }
+
+  &[data-style="compact"][data-activation="scale"].switch--checked &__state-layer {
+    animation: switch-activate-checked-compact #{motion.$md-sys-motion-expressive-effects-slow-duration} #{motion.$md-sys-motion-expressive-effects-slow-easing};
+  }
+
+  &[data-style="compact"][data-activation="scale"] [dir="rtl"] &__handle--scale:not(.switch--checked &__handle--scale),
+  &[data-style="compact"][data-activation="scale"] &--rtl &__handle--scale:not(.switch--checked &__handle--scale) {
+    animation: switch-activate-unchecked-compact-rtl #{motion.$md-sys-motion-expressive-effects-slow-duration} #{motion.$md-sys-motion-expressive-effects-slow-easing};
+  }
+
+  &[data-style="compact"][data-activation="scale"] [dir="rtl"] &__state-layer:not(.switch--checked &__state-layer),
+  &[data-style="compact"][data-activation="scale"] &--rtl &__state-layer:not(.switch--checked &__state-layer) {
+    animation: switch-activate-unchecked-compact-rtl #{motion.$md-sys-motion-expressive-effects-slow-duration} #{motion.$md-sys-motion-expressive-effects-slow-easing};
+  }
+
+  &[data-style="compact"][data-activation="scale"] [dir="rtl"] &--checked &__handle--scale,
+  &[data-style="compact"][data-activation="scale"] &--rtl.switch--checked &__handle--scale {
+    animation: switch-activate-checked-compact-rtl #{motion.$md-sys-motion-expressive-effects-slow-duration} #{motion.$md-sys-motion-expressive-effects-slow-easing};
+  }
+
+  &[data-style="compact"][data-activation="scale"] [dir="rtl"] &--checked &__state-layer,
+  &[data-style="compact"][data-activation="scale"] &--rtl.switch--checked &__state-layer {
+    animation: switch-activate-checked-compact-rtl #{motion.$md-sys-motion-expressive-effects-slow-duration} #{motion.$md-sys-motion-expressive-effects-slow-easing};
+  }
+
+  // Material You : icône 16dp dans handle 24dp
+  // Spécificité > i[name] / span[name] (défaut IconManager = 24dp / 1.5rem)
+  i.switch__icon,
+  span.switch__icon,
+  &__icon {
+    @include switch.switch-icon;
+    width: tokens.$md-sys-switch-icon-size !important;
+    height: tokens.$md-sys-switch-icon-size !important;
+    font-size: tokens.$md-sys-switch-icon-size !important;
+    min-width: tokens.$md-sys-switch-icon-size;
+    min-height: tokens.$md-sys-switch-icon-size;
+    line-height: 1 !important;
+    flex-shrink: 0;
+
+    svg {
+      width: 100% !important;
+      height: 100% !important;
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+
+  &__text {
+    @include switch.switch-text;
+    font-size: tokens.$md-sys-switch-text-size !important;
+    line-height: 1 !important;
+  }
+
+  &:not(.switch--checked) {
+    .switch__icon,
+    .switch__text {
+      color: white;
+    }
+  }
+
+  &[data-traffic="true"] {
+    &:not(.switch--checked) {
+      .switch__track {
+        background-color: #ee4540;
+        border-color: #ee4540;
+      }
+    }
+
+    &.switch--checked {
+      .switch__track {
+        background-color: #33cc66;
+        border-color: #33cc66;
+      }
+    }
+
+    .switch__handle {
+      background-color: white !important;
+    }
+  }
+
+  &[data-style="compact"] {
+    @include switch.switch-compact;
+
+    // Surcharger le positionnement du handle pour le mode compact
+    // IMPORTANT: Utiliser le sélecteur complet avec data-style pour augmenter la spécificité
+    &[data-style="compact"] .switch__handle {
+      // Position unchecked : le bord gauche du handle doit être aligné avec le bord gauche du track (0px)
+      // left: 0px signifie que le bord gauche est à 0px, le centre est à 12px
+      left: 0px !important;
+      
+      // Positionnement RTL
+      [dir="rtl"] &,
+      .switch--rtl & {
+        left: auto !important;
+        right: 0px !important;
+      }
+    }
+
+    // Position checked : surcharger avec une spécificité maximale
+    &[data-style="compact"].switch--checked .switch__handle {
+      // Position checked : le bord droit du handle doit être à 52px (bord droit du track)
+      // Donc le centre doit être à 40px (52px - 12px)
+      // Depuis left: 0px, le centre initial est à 12px, donc translateX = 28px (40px - 12px)
+      transform: translateY(-50%) translateX(28px) !important;
+    }
+
+    // Position checked RTL
+    &[data-style="compact"].switch--checked [dir="rtl"] .switch__handle,
+    &[data-style="compact"].switch--checked.switch--rtl .switch__handle {
+      transform: translateY(-50%) translateX(-28px) !important;
+    }
+
+    // Le state layer doit aussi suivre le handle en style compact
+    // En style compact, le handle est à left: 0px, son centre est à 12px (handle-size / 2)
+    // Le state layer doit être centré sur le handle, donc left = 12px - 20px = -8px
+    // Mais en checked, le handle se déplace de 28px, donc le centre du handle est à 12px + 28px = 40px
+    // Le state layer doit suivre et être centré à 40px, donc left = 40px - 20px = 20px
+    // Mais comme on utilise translateX(28px), le left initial doit être à -8px pour que -8px + 28px = 20px
+    // Donc le left initial est correct, mais il faut vérifier que le translateX est bien appliqué
+    &[data-style="compact"] .switch__state-layer {
+      // Réinitialiser les règles du mixin pour le style compact
+      left: calc(#{tokens.$md-sys-switch-handle-size} / 2 - #{tokens.$md-sys-switch-state-layer-size} / 2) !important;
+      transform: translateY(-50%) !important;
+
+      [dir="rtl"] &,
+      .switch--rtl & {
+        left: auto !important;
+        right: calc(#{tokens.$md-sys-switch-handle-size} / 2 - #{tokens.$md-sys-switch-state-layer-size} / 2) !important;
+      }
+    }
+
+    // Règle spécifique pour le state layer checked en style compact
+    &[data-style="compact"].switch--checked .switch__state-layer {
+      // Le handle checked est à translateX(28px), donc son centre est à 12px + 28px = 40px
+      // Le state layer doit suivre exactement le même mouvement que le handle
+      // Le left initial est -8px (12px - 20px), donc pour arriver à 40px au centre, il faut translateX(28px)
+      // Mais le translateX(28px) déplace de 28px, donc -8px + 28px = 20px (bord gauche), centre à 20px + 20px = 40px ✓
+      transform: translateY(-50%) translateX(28px) !important;
+    }
+
+    &[data-style="compact"].switch--checked [dir="rtl"] .switch__state-layer,
+    &[data-style="compact"].switch--checked.switch--rtl .switch__state-layer {
+      transform: translateY(-50%) translateX(-28px) !important;
+    }
+
+    &:not(.switch--checked) {
+      .switch__track {
+        background-color: var(--md-sys-color-surface-dim);
+        border: none;
+      }
+      .switch__handle {
+        // Même couleur que le style classique unchecked
+        background-color: var(--md-sys-color-outline);
+      }
+    }
+
+    &.switch--checked {
+      .switch__track {
+        background-color: var(--md-sys-color-primary);
+        border: none;
+      }
+      .switch__handle {
+        background-color: var(--md-sys-color-primary-container);
+      }
+    }
+
+    &:focus-within,
+    &:focus,
+    &.switch--focused {
+      .switch__track::before {
+        display: none !important;
+      }
+    }
+
+    .switch__input:focus {
+      outline: none !important;
+    }
+  }
+
+  &__label {
+    @include switch.switch-label;
+  }
+
+  &__input {
+    position: absolute;
+    appearance: none;
+    outline: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 48px;
+    z-index: 1;
+    cursor: pointer;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: none;
+    background: transparent;
+    
+    &:disabled {
+      cursor: default;
+    }
+  }
+
+  &--outlined {
+    @include switch.switch-outlined;
+  }
+}

@@ -1,0 +1,31 @@
+/**
+ * @file quote.module.scss
+ * @description Module Quote — citation motivante avec encoche auteur
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/quote.token' as quote;
+@use '../mixins/quote.mixin' as quote-mixin;
+
+.quote {
+  @include quote-mixin.quote-base;
+
+  &__surface {
+    @include quote-mixin.quote-surface;
+  }
+
+  &__text {
+    @include quote-mixin.quote-text;
+  }
+
+  &--refreshable {
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: 2px solid var(--md-sys-color-primary);
+      outline-offset: 2px;
+      border-radius: quote.$quote-surface-radius;
+    }
+  }
+}

@@ -1,0 +1,23 @@
+/**
+ * @fileoverview Mixins pour Gradient
+ * @description Mixins réutilisables pour le texte en dégradé
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use "./gradient.token" as gradient;
+
+/**
+ * Mixin principal du composant Gradient
+ */
+@mixin gradient-component() {
+  display: gradient.$gradient-display;
+  background-image: linear-gradient(
+    gradient.$gradient-angle-default,
+    gradient.$gradient-colors-default
+  );
+  background-size: gradient.$gradient-background-size-default;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}

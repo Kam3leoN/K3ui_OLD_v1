@@ -1,0 +1,129 @@
+/**
+ * @fileoverview Module PaginationNav
+ * @description Navigation Précédent/Suivant — surfaces tonales M3 Expressive
+ * @author K3UI Team
+ * @version 2.0.0
+ */
+
+@use "../tokens/paginationnav.token" as paginationnav;
+@use "../mixins/paginationnav.mixin" as paginationnav-mixin;
+
+.pagination-nav {
+  @include paginationnav-mixin.paginationnav-container;
+}
+
+.pagination-nav__previous {
+  @include paginationnav-mixin.paginationnav-item-host;
+  grid-column: 1;
+  text-align: left;
+
+  .pagination-nav__surface {
+    justify-content: flex-start;
+  }
+
+  .pagination-nav__text {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+.pagination-nav__next {
+  @include paginationnav-mixin.paginationnav-item-host;
+  grid-column: 2;
+  text-align: right;
+
+  .pagination-nav__surface {
+    justify-content: flex-end;
+  }
+
+  .pagination-nav__text {
+    align-items: flex-end;
+    text-align: right;
+  }
+}
+
+/** Previous seul → colonne 1 ; Next seul → colonne 2 (push droite) */
+.pagination-nav:not(:has(.pagination-nav__previous)) .pagination-nav__next {
+  grid-column: 2;
+}
+
+.pagination-nav:not(:has(.pagination-nav__next)) .pagination-nav__previous {
+  grid-column: 1;
+}
+
+.pagination-nav__surface {
+  @include paginationnav-mixin.paginationnav-surface;
+}
+
+.pagination-nav__text {
+  @include paginationnav-mixin.paginationnav-text;
+}
+
+.pagination-nav__label {
+  @include paginationnav-mixin.paginationnav-label;
+}
+
+.pagination-nav__title {
+  @include paginationnav-mixin.paginationnav-title;
+}
+
+.pagination-nav__icon {
+  @include paginationnav-mixin.paginationnav-icon;
+}
+
+.pagination-nav--large {
+  .pagination-nav__surface {
+    --paginationnav-item-height: #{paginationnav.$paginationnav-min-height-large};
+    padding: paginationnav.$paginationnav-padding-large;
+    min-height: paginationnav.$paginationnav-min-height-large;
+
+    &.pagination-nav--pressed,
+    &.pressing,
+    .pagination-nav--pressed:not(:disabled) &,
+    .pagination-nav__previous:active:not(:disabled) &,
+    .pagination-nav__next:active:not(:disabled) & {
+      border-radius: paginationnav.$paginationnav-pressed-border-radius-large;
+    }
+  }
+
+  .pagination-nav__title {
+    font-size: paginationnav.$paginationnav-title-font-size-large;
+    line-height: paginationnav.$paginationnav-title-line-height-large;
+  }
+}
+
+@media (max-width: 600px) {
+  .pagination-nav {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .pagination-nav__previous,
+  .pagination-nav__next {
+    grid-column: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pagination-nav__surface {
+    transition: none;
+
+    &.pagination-nav--pressed,
+    &.pressing,
+    .pagination-nav--pressed:not(:disabled) &,
+    .pagination-nav__previous:active:not(:disabled) &,
+    .pagination-nav__next:active:not(:disabled) & {
+      border-radius: paginationnav.$paginationnav-border-radius;
+    }
+  }
+
+  .pagination-nav--large .pagination-nav__surface {
+    &.pagination-nav--pressed,
+    &.pressing,
+    .pagination-nav--pressed:not(:disabled) &,
+    .pagination-nav__previous:active:not(:disabled) &,
+    .pagination-nav__next:active:not(:disabled) & {
+      border-radius: paginationnav.$paginationnav-border-radius;
+    }
+  }
+}

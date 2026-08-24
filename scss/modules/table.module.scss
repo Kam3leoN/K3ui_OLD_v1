@@ -1,0 +1,636 @@
+/**
+ * @fileoverview Module Table Material Design 3 Expressive
+ * @description Classes CSS pour les tables de données
+ * @see https://m3.material.io/components/data-tables/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use '../tokens' as tokens;
+@use '../mixins/table.mixin' as table;
+@use '../mixins/state.mixin' as state;
+
+// =============================================================================
+// CHROME TABLE — tokens CSS sémantiques (light expressif / dark surfaces)
+// =============================================================================
+
+/// Échelle dark : surface-container-* + teinte primary/secondary (hiérarchie préservée)
+@mixin table-chrome-dark {
+  // Teintes progressives : toolbar (léger) → thead (marqué) → section (secondary)
+  --table-toolbar-bg: color-mix(in srgb, var(--md-sys-color-primary) 8%, var(--md-sys-color-surface-container-highest));
+  --table-toolbar-on: var(--md-sys-color-on-surface);
+  --table-toolbar-on-rgb: var(--md-sys-color-on-surface-rgb);
+  --table-thead-bg: color-mix(in srgb, var(--md-sys-color-primary) 16%, var(--md-sys-color-surface-container-high));
+  --table-thead-on: var(--md-sys-color-on-surface);
+  --table-section-bg: color-mix(in srgb, var(--md-sys-color-secondary) 12%, var(--md-sys-color-surface-container));
+  --table-section-on: color-mix(in srgb, var(--md-sys-color-on-secondary-container) 35%, var(--md-sys-color-on-surface-variant));
+  --table-tfoot-bg: color-mix(in srgb, var(--md-sys-color-primary) 12%, var(--md-sys-color-surface-container-high));
+  --table-tfoot-on: var(--md-sys-color-on-surface);
+}
+
+.table-wrapper,
+.table {
+  // Light — expressif (ordre Leexi : foncé → violet → lavande)
+  --table-toolbar-bg: var(--md-sys-color-inverse-surface);
+  --table-toolbar-on: var(--md-sys-color-inverse-on-surface);
+  --table-toolbar-on-rgb: var(--md-sys-color-inverse-on-surface-rgb);
+  --table-thead-bg: var(--md-sys-color-primary);
+  --table-thead-on: var(--md-sys-color-on-primary);
+  --table-section-bg: var(--md-sys-color-secondary-container);
+  --table-section-on: var(--md-sys-color-on-secondary-container);
+  --table-tfoot-bg: var(--md-sys-color-primary-container);
+  --table-tfoot-on: var(--md-sys-color-on-primary-container);
+}
+
+html[data-theme='dark'] {
+  .table-wrapper,
+  .table {
+    @include table-chrome-dark;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme='light']) {
+    .table-wrapper,
+    .table {
+      @include table-chrome-dark;
+    }
+  }
+}
+
+// =============================================================================
+// MODULE TABLE - MATERIAL DESIGN 3 EXPRESSIVE
+// =============================================================================
+
+/**
+ * Classe de base pour toutes les tables
+ */
+.table {
+  @include table.table-base;
+  @include table.table-expressive-radius;
+
+  // Variantes de densité
+  &.table--compact {
+    @include table.table-compact;
+  }
+
+  &.table--comfortable {
+    @include table.table-comfortable;
+  }
+
+  // Variantes de style
+  &.table--bordered {
+    @include table.table-bordered;
+  }
+
+  &.table--striped {
+    @include table.table-striped;
+  }
+
+  &.table--hoverable {
+    @include table.table-hoverable;
+  }
+
+  &.table--sticky-header {
+    @include table.table-sticky-header;
+  }
+
+  // Alignements
+  &.table--text-center {
+    @include table.table-text-align('center');
+  }
+
+  &.table--text-right {
+    @include table.table-text-align('right');
+  }
+
+  // Responsive
+  &.table--responsive {
+    @include table.table-responsive;
+  }
+
+  // États
+  &.table--disabled {
+    opacity: tokens.$md-sys-table-disabled-opacity;
+    pointer-events: none;
+  }
+}
+
+/**
+ * En-tête de colonnes (niveau le plus foncé — ordre Leexi)
+ */
+thead {
+  background-color: tokens.$md-sys-table-header-surface;
+  color: tokens.$md-sys-table-header-on-surface;
+  
+  .table__header {
+    @include table.table-header;
+    background-color: tokens.$md-sys-table-header-surface;
+    color: tokens.$md-sys-table-header-on-surface;
+  }
+}
+
+/**
+ * Cellule d'en-tête de colonnes
+ */
+th.table__header {
+  @include table.table-header;
+  background-color: tokens.$md-sys-table-header-surface;
+  color: tokens.$md-sys-table-header-on-surface;
+}
+
+/**
+ * Corps de table
+ */
+tbody {
+  .table__row {
+    @include table.table-row;
+  }
+}
+
+/**
+ * Ligne de section / catégorie (niveau intermédiaire — ordre Leexi)
+ */
+tr.table__row--section {
+  @include table.table-section-row;
+}
+
+/**
+ * Ligne de table
+ */
+tr.table__row {
+  @include table.table-row;
+}
+
+/**
+ * Cellule de table
+ */
+td.table__cell,
+th.table__cell {
+  @include table.table-cell;
+
+  // Cellules avec boutons : padding réduit pour éviter une hauteur excessive
+  &:has(.btn),
+  &.table__cell--actions {
+    padding-top: tokens.$md-sys-table-cell-padding-compact;
+    padding-bottom: tokens.$md-sys-table-cell-padding-compact;
+
+    .btn {
+      vertical-align: middle;
+    }
+  }
+}
+
+/**
+ * Tableaux avec pagination
+ */
+.table--with-pagination {
+  @include table.table-pagination;
+}
+
+/**
+ * Tableaux avec filtres
+ */
+.table--with-filters {
+  @include table.table-filters;
+}
+
+/**
+ * Tableaux avec actions de ligne
+ */
+.table--with-actions {
+  @include table.table-row-actions;
+}
+
+/**
+ * Tableaux avec sélection
+ */
+.table--with-selection {
+  @include table.table-selection;
+}
+
+/**
+ * Conteneur de table avec scroll horizontal
+ */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 0;
+
+  .table {
+    margin: 0;
+    border-radius: 0;
+  }
+}
+
+/**
+ * Wrapper de table avec pagination et filtres
+ */
+.table-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: tokens.$md-sys-table-surface;
+  border-radius: tokens.$md-sys-table-border-radius;
+  overflow: hidden;
+  box-shadow: var(--md-sys-elevation-level1);
+
+  .table__filters {
+    @include table.table-filters;
+  }
+
+  .table-container {
+    flex: 1;
+    overflow-x: auto;
+    
+    // Si header personnalisé présent, pas d'arrondis en haut sur la table
+    .table {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
+
+  .table__pagination {
+    @include table.table-pagination;
+  }
+
+  // Header personnalisé
+  @include table.table-custom-header;
+
+  // Footer personnalisé
+  @include table.table-custom-footer;
+  
+  // Si header personnalisé présent, pas d'arrondis en haut sur thead
+  &:has(.table__header-custom) {
+    .table-container .table {
+      thead tr:first-child {
+        th:first-child {
+          border-top-left-radius: 0;
+        }
+
+        th:last-child {
+          border-top-right-radius: 0;
+        }
+      }
+    }
+  }
+  
+  // Si footer personnalisé présent, pas d'arrondis en bas sur tfoot ET tbody
+  &:has(.table__footer-custom) {
+    .table-container .table {
+      // Pas d'arrondis sur tfoot si footer personnalisé
+      tfoot tr:last-child {
+        td:first-child,
+        th:first-child {
+          border-bottom-left-radius: 0;
+        }
+
+        td:last-child,
+        th:last-child {
+          border-bottom-right-radius: 0;
+        }
+      }
+      
+      // Pas d'arrondis sur tbody si footer personnalisé
+      tbody tr:last-child {
+        td:first-child {
+          border-bottom-left-radius: 0;
+        }
+
+        td:last-child {
+          border-bottom-right-radius: 0;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Header personnalisé pour les tables (Inverse Surface)
+ */
+.table__header-custom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: tokens.$md-sys-table-header-height;
+  padding: tokens.$md-sys-table-cell-padding-vertical tokens.$md-sys-table-header-padding;
+  background-color: tokens.$md-sys-table-toolbar-surface;
+  color: tokens.$md-sys-table-toolbar-on-surface;
+  border-radius: tokens.$md-sys-table-border-radius tokens.$md-sys-table-border-radius 0 0;
+  font-family: tokens.$md-sys-table-header-font-family;
+  font-size: tokens.$md-sys-table-header-font-size;
+  font-weight: tokens.$md-sys-table-header-font-weight;
+  line-height: tokens.$md-sys-table-header-line-height;
+
+  .table__header-title {
+    display: flex;
+    align-items: center;
+    gap: var(--md-sys-spacing-sm, 8px);
+    margin: 0;
+    font-size: tokens.$md-sys-table-header-font-size;
+    font-weight: tokens.$md-sys-table-header-font-weight;
+  }
+
+  .table__header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--md-sys-spacing-xs, 4px);
+
+    .btn,
+    .btn-icon,
+    .btn--icon {
+      flex-shrink: 0;
+    }
+
+    .btn--filled,
+    .btn-icon--filled,
+    .btn-icon--tonal,
+    .btn--tonal {
+      color: tokens.$md-sys-table-toolbar-on-surface;
+      background-color: rgba(var(--table-toolbar-on-rgb, var(--md-sys-color-inverse-on-surface-rgb)), 0.12);
+      box-shadow: none;
+
+      &:hover {
+        background-color: rgba(var(--table-toolbar-on-rgb, var(--md-sys-color-inverse-on-surface-rgb)), 0.16);
+      }
+    }
+  }
+}
+
+/**
+ * Footer personnalisé pour les tables
+ */
+.table__footer-custom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: tokens.$md-sys-table-footer-height;
+  padding: 0 tokens.$md-sys-table-footer-padding;
+  background-color: tokens.$md-sys-table-footer-background;
+  color: tokens.$md-sys-table-footer-on-background;
+  border-radius: 0 0 tokens.$md-sys-table-border-radius tokens.$md-sys-table-border-radius;
+  border-top: tokens.$md-sys-table-divider-width solid tokens.$md-sys-table-divider;
+  font-size: tokens.$md-sys-table-font-size;
+}
+
+/**
+ * Styles pour tfoot
+ */
+tfoot {
+  background-color: var(--table-tfoot-bg, var(--md-sys-color-primary-container, #eaddff));
+  color: var(--table-tfoot-on, var(--md-sys-color-on-primary-container, #21005d));
+  
+  tr {
+    background-color: var(--table-tfoot-bg, var(--md-sys-color-primary-container, #eaddff));
+  }
+
+  td,
+  th {
+    background-color: var(--table-tfoot-bg, var(--md-sys-color-primary-container, #eaddff));
+    color: var(--table-tfoot-on, var(--md-sys-color-on-primary-container, #21005d));
+    font-weight: tokens.$md-sys-table-header-font-weight;
+    border-top: tokens.$md-sys-table-divider-width solid tokens.$md-sys-table-divider;
+  }
+
+  tr:last-child {
+    td:first-child,
+    th:first-child {
+      border-bottom-left-radius: tokens.$md-sys-table-border-radius;
+    }
+
+    td:last-child,
+    th:last-child {
+      border-bottom-right-radius: tokens.$md-sys-table-border-radius;
+    }
+  }
+}
+
+/**
+ * Styles pour les icônes de tri (On Secondary)
+ */
+.table__sort-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: tokens.$md-sys-table-sort-icon-size;
+  height: tokens.$md-sys-table-sort-icon-size;
+  margin-left: tokens.$md-sys-table-sort-icon-spacing;
+  transition: opacity tokens.$md-sys-table-transition-duration tokens.$md-sys-table-transition-timing;
+  color: tokens.$md-sys-table-header-on-surface;
+  font-size: tokens.$md-sys-table-sort-icon-size;
+
+  // Masquer l'icône seulement si elle n'a pas d'attribut name
+  &:not([name]) {
+    opacity: 0;
+    width: 0;
+    margin-left: 0;
+  }
+
+  // Afficher toutes les icônes avec name="sort" (neutre)
+  &[name="sort"] {
+    opacity: 1;
+    width: tokens.$md-sys-table-sort-icon-size;
+    margin-left: tokens.$md-sys-table-sort-icon-spacing;
+    color: tokens.$md-sys-table-header-on-surface;
+  }
+
+  // Afficher l'icône quand elle est active (sort-up ou sort-down)
+  &.table__sort-icon--active {
+    opacity: 1;
+    width: tokens.$md-sys-table-sort-icon-size;
+    margin-left: tokens.$md-sys-table-sort-icon-spacing;
+    color: tokens.$md-sys-table-header-on-surface;
+  }
+
+  // Les icônes sort-up et sort-down sont gérées par l'attribut name
+  // Pas besoin de rotation car on change l'icône directement
+}
+
+/**
+ * Styles pour les actions de ligne
+ */
+.table__row-actions {
+  display: flex;
+  align-items: center;
+  gap: tokens.$md-sys-table-action-icon-spacing;
+  opacity: 0;
+  transition: opacity tokens.$md-sys-table-transition-duration tokens.$md-sys-table-transition-timing;
+
+  .table__row:hover &,
+  .table__row:focus-within & {
+    opacity: 1;
+  }
+}
+
+.table__action-icon {
+  width: tokens.$md-sys-table-action-icon-size;
+  height: tokens.$md-sys-table-action-icon-size;
+  cursor: pointer;
+  color: tokens.$md-sys-table-on-surface-variant;
+  transition: color tokens.$md-sys-table-transition-duration tokens.$md-sys-table-transition-timing;
+
+  @include state.state-hover(null, var(--md-sys-color-primary));
+
+  &:focus-visible {
+    outline: 2px solid var(--md-sys-color-primary);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+/**
+ * Styles pour les cases à cocher de sélection
+ */
+.table__checkbox {
+  width: tokens.$md-sys-table-checkbox-size;
+  height: tokens.$md-sys-table-checkbox-size;
+  margin-right: tokens.$md-sys-table-checkbox-spacing;
+}
+
+/**
+ * Styles pour la pagination
+ */
+.table__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: tokens.$md-sys-table-pagination-height;
+  padding: 0 tokens.$md-sys-table-pagination-padding;
+  background-color: tokens.$md-sys-table-surface;
+  border-top: tokens.$md-sys-table-divider-width solid tokens.$md-sys-table-divider;
+  font-size: tokens.$md-sys-table-font-size;
+  color: tokens.$md-sys-table-on-surface;
+}
+
+/**
+ * Styles pour les filtres
+ */
+.table__filters {
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-spacing-sm, 8px);
+  height: tokens.$md-sys-table-filter-height;
+  padding: 0 tokens.$md-sys-table-filter-padding;
+  background-color: tokens.$md-sys-table-surface-container;
+  border-bottom: tokens.$md-sys-table-divider-width solid tokens.$md-sys-table-divider;
+}
+
+/**
+ * Support de la réduction de mouvement
+ */
+@media (prefers-reduced-motion: reduce) {
+  .table {
+    transition: none;
+
+    th,
+    td,
+    tr {
+      transition: none;
+    }
+
+    .table__sort-icon,
+    .table__row-actions,
+    .table__action-icon {
+      transition: none;
+    }
+  }
+}
+
+/**
+ * Support du contraste élevé
+ */
+@media (prefers-contrast: high) {
+  .table {
+    border: 2px solid currentColor;
+
+    th,
+    td {
+      border: 1px solid currentColor;
+    }
+  }
+}
+
+/**
+ * Conteneur de recherche
+ */
+.table__search-container {
+  margin-bottom: tokens.$md-sys-table-cell-padding-vertical;
+  width: 100%;
+  max-width: 400px;
+
+  k3ui-field {
+    width: 100%;
+  }
+}
+
+/**
+ * Conteneur de pagination
+ */
+.table__pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: tokens.$md-sys-table-cell-padding-vertical;
+  padding: tokens.$md-sys-table-cell-padding-vertical tokens.$md-sys-table-cell-padding-horizontal;
+  flex-wrap: wrap;
+  gap: tokens.$md-sys-table-cell-padding-horizontal;
+}
+
+.table__pagination-info {
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  font-size: tokens.$md-sys-table-font-size;
+  
+  span {
+    font-weight: 600; // Gras pour les chiffres
+  }
+}
+
+.table__pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: tokens.$md-sys-table-cell-padding-horizontal;
+}
+
+.table__pagination-page {
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+  font-size: tokens.$md-sys-table-font-size;
+  font-weight: 600; // Gras pour les chiffres
+  min-width: 100px;
+  text-align: center;
+}
+
+.table__pagination-btn {
+  min-width: 40px;
+  padding: tokens.$md-sys-table-cell-padding-vertical tokens.$md-sys-table-cell-padding-horizontal;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .k3ui-icon {
+    font-size: 18px;
+  }
+}
+
+/**
+ * Icônes de pagination avec rotation
+ */
+.table__pagination-icon--prev {
+  transform: rotate(-90deg);
+}
+
+.table__pagination-icon--next {
+  transform: rotate(90deg);
+}
+
+/**
+ * Responsive design pour les tableaux
+ */
+@media (max-width: tokens.$md-sys-table-breakpoint-mobile) {
+  .table--responsive {
+    @include table.table-responsive;
+  }
+}
+

@@ -1,0 +1,30 @@
+/**
+ * @fileoverview Tokens de design pour PanelSplit
+ * @description Variables pour dual-view layout M3E
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+/** Taille du conteneur de poignée drag */
+$panel-split-handle-size: 24px;
+
+/** Padding inline (gauche/droite) autour du trigger — 4dp M3 */
+$panel-split-handle-padding-inline: 4px;
+
+/** Couleur poignée (état normal) */
+$panel-split-handle-color: var(--md-sys-color-outline, #79747e);
+
+/** Couleur poignée (état pressé) */
+$panel-split-handle-pressed-color: var(--md-sys-color-on-surface, #1d1b20);
+
+/** Longueur visuelle de la poignée */
+$panel-split-handle-length: 48px;
+
+/** Épaisseur visuelle de la poignée */
+$panel-split-handle-thickness: 4px;
+
+/** Poignée pressée — longueur */
+$panel-split-handle-pressed-length: 52px;
+
+/** Poignée pressée — épaisseur */
+$panel-split-handle-pressed-thickness: 12px;

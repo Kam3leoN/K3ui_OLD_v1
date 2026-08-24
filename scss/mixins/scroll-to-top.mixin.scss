@@ -1,0 +1,44 @@
+/**
+ * @fileoverview Mixins pour ScrollToTop
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/scroll-to-top.token' as stt;
+@use '../tokens/floating-chrome.token' as fc;
+@use '../mixins/floating-chrome.mixin' as fcm;
+@use '../tokens/motion.token' as motion;
+
+@mixin scroll-to-top-container {
+  position: fixed;
+  display: block;
+  line-height: 0;
+  inset: auto;
+  z-index: stt.$scroll-to-top-z-index;
+  @include fcm.floating-chrome-bottom(var(--scroll-to-top-bottom, stt.$scroll-to-top-bottom));
+  right: calc(
+    var(--scroll-to-top-right, stt.$scroll-to-top-right) +
+    var(--scroll-to-top-right-extra, stt.$scroll-to-top-right-extra) +
+    var(--k3ui-rail-inset-right, 0px) +
+    env(safe-area-inset-right, 0px)
+  );
+  @include fcm.floating-chrome-scrollbar-compensation;
+  @include fcm.floating-chrome-scroll-to-top-motion;
+}
+
+@mixin scroll-to-top-button {
+  position: relative;
+  display: block;
+  vertical-align: bottom;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  width: var(--scroll-to-top-size, stt.$scroll-to-top-size);
+  height: var(--scroll-to-top-size, stt.$scroll-to-top-size);
+  background: stt.$scroll-to-top-bg;
+  box-shadow: stt.$scroll-to-top-shadow-rest;
+  transition:
+    transform stt.$scroll-to-top-duration-transform fc.$k3ui-floating-chrome-vertical-easing,
+    box-shadow motion.$md-sys-motion-duration-short motion.$md-sys-motion-easing-standard;
+}

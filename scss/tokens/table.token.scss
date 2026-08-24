@@ -1,0 +1,129 @@
+/**
+ * @fileoverview Tokens Table Material Design 3 Expressive
+ * @description Variables de design pour les tables de données
+ * @see https://m3.material.io/components/data-tables/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+// =============================================================================
+// TOKENS TABLE - MATERIAL DESIGN 3 EXPRESSIVE
+// =============================================================================
+
+// Couleurs de surface pour les tables (même que card)
+$md-sys-table-surface: var(--md-sys-color-surface-container, #f5f5f5);
+$md-sys-table-surface-container: var(--md-sys-color-surface-container, #f5f5f5);
+$md-sys-table-on-surface: var(--md-sys-color-on-surface, #1c1b1f);
+$md-sys-table-on-surface-variant: var(--md-sys-color-on-surface-variant, #49454f);
+
+// Couleurs sémantiques table (définies sur .table / .table-wrapper — light par défaut, dark via override)
+// Light expressif : inverse → primary → secondary-container → surface
+$md-sys-table-toolbar-surface: var(--table-toolbar-bg, var(--md-sys-color-inverse-surface, #322f35));
+$md-sys-table-toolbar-on-surface: var(--table-toolbar-on, var(--md-sys-color-inverse-on-surface, #f5eff7));
+
+$md-sys-table-header-surface: var(--table-thead-bg, var(--md-sys-color-primary, #6750a4));
+$md-sys-table-header-on-surface: var(--table-thead-on, var(--md-sys-color-on-primary, #ffffff));
+
+$md-sys-table-section-surface: var(--table-section-bg, var(--md-sys-color-secondary-container, #e8def8));
+$md-sys-table-section-on-surface: var(--table-section-on, var(--md-sys-color-on-secondary-container, #1d192b));
+
+// Couleurs pour les lignes
+$md-sys-table-row-hover: var(--md-sys-color-surface-container-high, #ece6f0);
+$md-sys-table-row-selected: var(--md-sys-color-secondary-container, #e8def8);
+$md-sys-table-row-selected-on: var(--md-sys-color-on-secondary-container, #1d192b);
+
+// Couleurs pour les bordures et séparateurs
+$md-sys-table-divider: var(--md-sys-color-outline-variant, #cac4d0);
+$md-sys-table-border: var(--md-sys-color-outline, #79747e);
+
+// Typographie corps (alignée btn--sm : 14px / 20px)
+$md-sys-table-font-family: var(--md-sys-typescale-body-medium-font-family-name, 'Google Sans', Arial, sans-serif);
+$md-sys-table-font-size: var(--md-sys-typescale-body-medium-font-size, 14px);
+$md-sys-table-font-weight: var(--md-sys-typescale-body-medium-font-weight, 400);
+$md-sys-table-line-height: var(--md-sys-typescale-body-medium-line-height, 20px);
+$md-sys-table-letter-spacing: var(--md-sys-typescale-body-medium-letter-spacing, 0.25px);
+
+// Typographie pour les en-têtes (18px, poids medium — pas de gras)
+$md-sys-table-header-font-family: var(--md-sys-typescale-title-medium-font-family-name, 'Google Sans', Arial, sans-serif);
+$md-sys-table-header-font-size: var(--md-sys-typescale-title-medium-font-size, 18px);
+$md-sys-table-header-font-weight: var(--md-sys-typescale-title-medium-font-weight, 500);
+$md-sys-table-header-line-height: var(--md-sys-typescale-title-medium-line-height, 28px);
+$md-sys-table-header-letter-spacing: var(--md-sys-typescale-title-medium-letter-spacing, 0.15px);
+
+// Espacements (Leexi : 12px vertical, 24px horizontal)
+$md-sys-table-cell-padding-horizontal: var(--md-sys-spacing-lg, 24px);
+$md-sys-table-cell-padding-vertical: var(--md-sys-spacing-sm, 12px);
+$md-sys-table-cell-padding-compact: var(--md-sys-spacing-xs, 8px);
+$md-sys-table-cell-padding-comfortable: var(--md-sys-spacing-md, 16px);
+
+// Hauteurs de lignes (corps 14px — plus compact)
+$md-sys-table-row-height-compact: 40px;
+$md-sys-table-row-height-standard: 48px;
+$md-sys-table-row-height-comfortable: 56px;
+
+// Hauteurs d'en-têtes
+$md-sys-table-header-height-compact: 48px;
+$md-sys-table-header-height-standard: 56px;
+$md-sys-table-header-height-comfortable: 64px;
+
+// Bordures et séparateurs
+$md-sys-table-border-width: 1px;
+$md-sys-table-divider-width: 1px;
+$md-sys-table-border-radius: var(--md-sys-shape-corner-medium, 12px);
+$md-sys-table-border-radius-large: var(--md-sys-shape-corner-large, 16px);
+
+// États d'interaction
+$md-sys-table-hover-state-layer-opacity: var(--md-sys-state-hover-state-layer-opacity, 0.08);
+$md-sys-table-focus-state-layer-opacity: var(--md-sys-state-focus-state-layer-opacity, 0.12);
+$md-sys-table-pressed-state-layer-opacity: var(--md-sys-state-pressed-state-layer-opacity, 0.12);
+$md-sys-table-selected-state-layer-opacity: var(--md-sys-state-selected-state-layer-opacity, 0.08);
+
+// États désactivés
+$md-sys-table-disabled-opacity: var(--md-sys-state-disabled-content-opacity, 0.38);
+
+// Transitions et animations
+$md-sys-table-transition-duration: var(--md-sys-motion-effects-default-duration);
+$md-sys-table-transition-timing: var(--md-sys-motion-spatial-default-easing);
+
+// Z-index
+$md-sys-table-z-index: 1;
+$md-sys-table-header-z-index: 2;
+$md-sys-table-sticky-header-z-index: 10;
+
+// Largeurs minimales
+$md-sys-table-min-width: 100%;
+$md-sys-table-cell-min-width: 80px;
+
+// Styles pour le tri
+$md-sys-table-sort-icon-size: 16px;
+$md-sys-table-sort-icon-spacing: var(--md-sys-spacing-xs, 4px);
+
+// Styles pour la sélection
+$md-sys-table-checkbox-size: 18px;
+$md-sys-table-checkbox-spacing: var(--md-sys-spacing-sm, 8px);
+
+// Styles pour les actions de ligne
+$md-sys-table-action-icon-size: 20px;
+$md-sys-table-action-icon-spacing: var(--md-sys-spacing-sm, 8px);
+
+// Styles pour les tableaux paginés
+$md-sys-table-pagination-height: 56px;
+$md-sys-table-pagination-padding: var(--md-sys-spacing-md, 16px);
+
+// Styles pour les tableaux avec filtres
+$md-sys-table-filter-height: 48px;
+$md-sys-table-filter-padding: var(--md-sys-spacing-sm, 12px);
+
+// Styles pour les tableaux responsive
+$md-sys-table-breakpoint-mobile: 600px;
+$md-sys-table-breakpoint-tablet: 960px;
+
+// Styles pour les headers et footers personnalisés
+$md-sys-table-header-height: 56px;
+$md-sys-table-header-padding: var(--md-sys-spacing-lg, 24px);
+$md-sys-table-header-background: $md-sys-table-toolbar-surface;
+$md-sys-table-header-on-background: $md-sys-table-toolbar-on-surface;
+$md-sys-table-footer-height: 56px;
+$md-sys-table-footer-padding: var(--md-sys-spacing-md, 16px);
+$md-sys-table-footer-background: var(--md-sys-color-surface-container, #f5f5f5);
+$md-sys-table-footer-on-background: var(--md-sys-color-on-surface, #1c1b1f);

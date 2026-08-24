@@ -1,0 +1,95 @@
+/**
+ * @fileoverview Module Badge
+ * @description Classes CSS pour le composant Badge conforme Material Design 3 Expressive
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/badge.token' as badge;
+@use '../mixins/badge.mixin' as badge-mixin;
+@use '../mixins/state.mixin' as state;
+
+/**
+ * Hôte du badge — conteneur positionné (data-badge ou ancêtre d’un .badge)
+ */
+[data-badge],
+.badge-host {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  max-width: none;
+  overflow: visible;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+/**
+ * Classe principale du composant Badge
+ */
+.badge {
+  @include badge-mixin.badge-component('large', 'top-right');
+
+  // Styles de base
+  background-color: badge.$badge-background-color-default;
+  color: badge.$badge-text-color-default;
+  font-family: inherit;
+  box-sizing: border-box;
+  user-select: none;
+  pointer-events: none; // Le badge n'est pas interactif
+
+  // Variante small
+  &.badge--small {
+    @include badge-mixin.badge-small;
+  }
+
+  // Variante large
+  &.badge--large {
+    @include badge-mixin.badge-large;
+  }
+
+  // Un seul chiffre (0–9) : pastille carrée centrée sur le coin
+  &.badge--compact {
+    @include badge-mixin.badge-compact;
+  }
+
+  // Texte ou plusieurs caractères : pilule étendue, ancrée sur le bord du coin
+  &.badge--label {
+    @include badge-mixin.badge-label;
+  }
+
+  // Positions
+  &.badge--top-right {
+    @include badge-mixin.badge-position('top-right');
+  }
+
+  &.badge--top-left {
+    @include badge-mixin.badge-position('top-left');
+  }
+
+  &.badge--bottom-right {
+    @include badge-mixin.badge-position('bottom-right');
+  }
+
+  &.badge--bottom-left {
+    @include badge-mixin.badge-position('bottom-left');
+  }
+
+  // États
+  &.disabled,
+  &[disabled] {
+    @include state.state-disabled;
+    pointer-events: none;
+  }
+}
+
+/**
+ * Support pour prefers-reduced-motion
+ */
+@media (prefers-reduced-motion: reduce) {
+  .badge {
+    transition: none;
+  }
+}
+

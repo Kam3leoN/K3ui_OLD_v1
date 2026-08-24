@@ -1,0 +1,327 @@
+/// @file motion.mixin.scss
+/// @brief Mixins motion M3 — springs Web actifs (spatial / effects)
+/// @see https://m3.material.io/styles/motion/overview/specs
+@use 'sass:list';
+@use '../tokens/motion.token' as motion;
+
+/// Propriétés fréquemment animées (évite transition: all)
+$motion-default-properties: (
+  opacity,
+  color,
+  background-color,
+  border-color,
+  box-shadow,
+  transform,
+  filter,
+  border-radius,
+  width,
+  height,
+  max-width,
+  max-height,
+  margin,
+  padding
+) !default;
+
+/**
+ * Transition typée — alias sémantiques M3 (standard = effects-fast, emphasized = spatial-default)
+ * @param {string} $type standard | emphasized | entering | exiting
+ * @param {list} $properties liste de propriétés CSS
+ */
+@mixin motion($type: 'standard', $properties: $motion-default-properties) {
+  $duration-var: --md-sys-motion-duration-standard;
+  $easing-var: --md-sys-motion-easing-standard;
+
+  @if $type == 'emphasized' {
+    $duration-var: --md-sys-motion-duration-emphasized;
+    $easing-var: --md-sys-motion-easing-emphasized;
+  } @else if $type == 'entering' {
+    $duration-var: --md-sys-motion-duration-entering;
+    $easing-var: --md-sys-motion-easing-entering;
+  } @else if $type == 'exiting' {
+    $duration-var: --md-sys-motion-duration-exiting;
+    $easing-var: --md-sys-motion-easing-exiting;
+  }
+
+  $parts: ();
+  @each $p in $properties {
+    $parts: list.append($parts, #{$p} var(#{$duration-var}) var(#{$easing-var}), comma);
+  }
+  & {
+    transition: $parts;
+  }
+}
+
+/**
+ * Spatial (transform, taille, radius) — spring actif du schéma courant
+ * @param {string} $speed fast | default | slow
+ */
+@mixin motion-spatial($speed: 'fast') {
+  transition:
+    transform motion.spring-duration(spatial, $speed) motion.spring-easing(spatial, $speed),
+    width motion.spring-duration(spatial, $speed) motion.spring-easing(spatial, $speed),
+    height motion.spring-duration(spatial, $speed) motion.spring-easing(spatial, $speed),
+    border-radius motion.spring-duration(spatial, $speed) motion.spring-easing(spatial, $speed),
+    margin motion.spring-duration(spatial, $speed) motion.spring-easing(spatial, $speed),
+    padding motion.spring-duration(spatial, $speed) motion.spring-easing(spatial, $speed);
+}
+
+/**
+ * Effects (couleur, opacité) — spring actif du schéma courant
+ * @param {string} $speed fast | default | slow
+ */
+@mixin motion-effects($speed: 'fast') {
+  transition:
+    opacity motion.spring-duration(effects, $speed) motion.spring-easing(effects, $speed),
+    color motion.spring-duration(effects, $speed) motion.spring-easing(effects, $speed),
+    background-color motion.spring-duration(effects, $speed) motion.spring-easing(effects, $speed),
+    border-color motion.spring-duration(effects, $speed) motion.spring-easing(effects, $speed),
+    box-shadow motion.spring-duration(effects, $speed) motion.spring-easing(effects, $speed),
+    filter motion.spring-duration(effects, $speed) motion.spring-easing(effects, $speed),
+    fill motion.spring-duration(effects, $speed) motion.spring-easing(effects, $speed);
+}
+
+@mixin transition(
+  $property: all,
+  $duration: motion.spring-duration(effects, fast),
+  $timing: motion.spring-easing(effects, fast)
+) {
+  transition: #{$property} #{$duration} #{$timing};
+}
+
+@mixin transition-properties(
+  $properties: (opacity),
+  $duration: motion.spring-duration(effects, fast),
+  $timing: motion.spring-easing(effects, fast)
+) {
+  $parts: ();
+  @each $p in $properties {
+    $parts: list.append($parts, #{$p} #{$duration} #{$timing}, comma);
+  }
+  transition: $parts;
+}
+
+$motion-surface-properties: (
+  opacity,
+  color,
+  background-color,
+  border-color,
+  box-shadow,
+  transform,
+  filter
+) !default;
+
+$motion-overlay-properties: (
+  opacity,
+  visibility,
+  transform,
+  width,
+  max-width,
+  max-height,
+  height,
+  color,
+  background-color,
+  border-color,
+  box-shadow
+) !default;
+
+$motion-form-properties: (
+  opacity,
+  color,
+  background-color,
+  border-color,
+  border-width,
+  box-shadow,
+  outline,
+  outline-color,
+  transform,
+  filter
+) !default;
+
+$motion-table-properties: (
+  opacity,
+  color,
+  background-color,
+  border-color,
+  box-shadow,
+  transform
+) !default;
+
+@mixin transition-surface($duration, $timing) {
+  @include transition-properties($motion-surface-properties, $duration, $timing);
+}
+
+@mixin transition-overlay($duration, $timing) {
+  @include transition-properties($motion-overlay-properties, $duration, $timing);
+}
+
+@mixin transition-form($duration, $timing) {
+  @include transition-properties($motion-form-properties, $duration, $timing);
+}
+
+@mixin transition-table($duration, $timing) {
+  @include transition-properties($motion-table-properties, $duration, $timing);
+}
+
+@mixin reveal-up(
+  $spatial-duration: motion.spring-duration(spatial, default),
+  $spatial-easing: motion.spring-easing(spatial, default),
+  $effects-duration: motion.spring-duration(effects, default),
+  $effects-easing: motion.spring-easing(effects, default)
+) {
+  transition: transform $spatial-duration $spatial-easing, opacity $effects-duration $effects-easing;
+
+  &.is-hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &.is-visible {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@mixin reveal-down(
+  $spatial-duration: motion.spring-duration(spatial, default),
+  $spatial-easing: motion.spring-easing(spatial, default),
+  $effects-duration: motion.spring-duration(effects, default),
+  $effects-easing: motion.spring-easing(effects, default)
+) {
+  transition: transform $spatial-duration $spatial-easing, opacity $effects-duration $effects-easing;
+
+  &.is-hidden {
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &.is-visible {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@mixin reveal-left(
+  $spatial-duration: motion.spring-duration(spatial, default),
+  $spatial-easing: motion.spring-easing(spatial, default),
+  $effects-duration: motion.spring-duration(effects, default),
+  $effects-easing: motion.spring-easing(effects, default)
+) {
+  transition: transform $spatial-duration $spatial-easing, opacity $effects-duration $effects-easing;
+
+  &.is-hidden {
+    transform: translateX(-100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &.is-visible {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@mixin reveal-right(
+  $spatial-duration: motion.spring-duration(spatial, default),
+  $spatial-easing: motion.spring-easing(spatial, default),
+  $effects-duration: motion.spring-duration(effects, default),
+  $effects-easing: motion.spring-easing(effects, default)
+) {
+  transition: transform $spatial-duration $spatial-easing, opacity $effects-duration $effects-easing;
+
+  &.is-hidden {
+    transform: translateX(100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &.is-visible {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@mixin fade-in(
+  $duration: motion.spring-duration(effects, default),
+  $timing: motion.spring-easing(effects, default)
+) {
+  transition: opacity $duration $timing;
+
+  &.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@mixin zoom-in(
+  $spatial-duration: motion.spring-duration(spatial, fast),
+  $spatial-easing: motion.spring-easing(spatial, fast),
+  $effects-duration: motion.spring-duration(effects, default),
+  $effects-easing: motion.spring-easing(effects, default)
+) {
+  transition: transform $spatial-duration $spatial-easing, opacity $effects-duration $effects-easing;
+
+  &.is-hidden {
+    transform: scale(0);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &.is-visible {
+    transform: scale(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@mixin bounce-in(
+  $spatial-duration: motion.spring-duration(spatial, default),
+  $spatial-easing: motion.spring-easing(spatial, default),
+  $effects-duration: motion.spring-duration(effects, default),
+  $effects-easing: motion.spring-easing(effects, default)
+) {
+  transition: transform $spatial-duration $spatial-easing, opacity $effects-duration $effects-easing;
+
+  &.is-hidden {
+    transform: scale(0);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &.is-visible {
+    transform: scale(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@mixin bounce-out(
+  $spatial-duration: motion.spring-duration(spatial, default),
+  $spatial-easing: motion.spring-easing(spatial, default),
+  $effects-duration: motion.spring-duration(effects, default),
+  $effects-easing: motion.spring-easing(effects, default)
+) {
+  transition: transform $spatial-duration $spatial-easing, opacity $effects-duration $effects-easing;
+
+  &.is-hidden {
+    transform: scale(0.3);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &.is-visible {
+    transform: scale(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+}

@@ -1,0 +1,171 @@
+/**
+ * Menu Tokens
+ * Tokens Material Design 3 pour le composant Menu
+ */
+
+@use 'radius.token' as radius;
+@use 'motion.token' as motion;
+@use 'dialog.token' as dialog;
+
+// ============================================================================
+// MENU TOKENS - MATERIAL DESIGN 3
+// ============================================================================
+
+// Dimensions
+$menu-min-width: 8rem !default;
+$menu-max-width: 20rem !default;
+$menu-max-height: 20rem !default;
+$menu-padding: 1rem !default; // 16px
+$menu-gap: 0.125rem !default; // 2px
+
+// Border radius - Material Design 3 Expressive (rayons plus importants)
+$menu-border-radius: radius.$md-sys-shape-corner-medium !default; // 12px (au lieu de 4px)
+$menu-border-radius-small: radius.$md-sys-shape-corner-small !default; // 8px (au lieu de 2px)
+$menu-border-radius-large: radius.$md-sys-shape-corner-large !default; // 16px (au lieu de 6px)
+
+// Tokens pour les icônes dans les menus (utilisés par Select)
+$menu-icon-size: 20px !default; // Taille des icônes dans les menus
+
+// Z-index — au-dessus du dialog (overlay 2000 / surface 2001) car le menu est hoisté sur body
+$menu-z-index: dialog.$dialog-z-index + 10 !default;
+$menu-z-index-overlay: dialog.$dialog-overlay-z-index - 1 !default;
+$menu-submenu-z-index: $menu-z-index + 1 !default;
+
+// Transitions
+$menu-transition-duration: 0.2s !default;
+$menu-transition-timing: motion.spring-easing(effects, fast) !default;
+$menu-radius-transition: 300ms ease-out !default;
+
+// ============================================================================
+// COULEURS - MATERIAL DESIGN 3
+// ============================================================================
+
+// Background
+$menu-background: var(--md-sys-color-surface-container) !default;
+$menu-background-hover: color-mix(in srgb, var(--md-sys-color-surface), var(--md-sys-color-on-surface) 16%) !default;
+$menu-background-disabled: var(--md-sys-color-surface-variant) !default;
+
+// Text
+$menu-text: var(--md-sys-color-on-surface) !default;
+$menu-text-disabled: var(--md-sys-color-on-surface-variant) !default;
+$menu-text-placeholder: var(--md-sys-color-on-surface-variant) !default;
+
+// Border
+$menu-border: var(--md-sys-color-outline-variant) !default;
+$menu-border-hover: var(--md-sys-color-outline) !default;
+$menu-border-focus: var(--md-sys-color-primary) !default;
+$menu-border-error: var(--md-sys-color-error) !default;
+
+// ============================================================================
+// OPTIONS MENU
+// ============================================================================
+
+// Background options
+$menu-option-background: transparent !default;
+$menu-option-background-hover: var(--md-sys-color-surface-variant) !default;
+$menu-option-background-selected: var(--md-sys-color-secondary-container) !default;
+$menu-option-background-focus: var(--md-sys-color-surface-variant) !default;
+$menu-option-background-active: rgba(var(--md-sys-color-primary-rgb), 0.08) !default;
+
+// Token pour compatibilité (défini après menu-option-background-hover)
+
+// Text options
+$menu-option-text: var(--md-sys-color-on-surface) !default;
+$menu-option-text-hover: var(--md-sys-color-on-surface) !default;
+$menu-option-text-selected: var(--md-sys-color-on-secondary-container) !default;
+$menu-option-text-disabled: var(--md-sys-color-on-surface-variant) !default;
+
+// ============================================================================
+// DIVIDERS
+// ============================================================================
+
+$menu-divider-color: var(--md-sys-color-outline-variant) !default;
+$menu-divider-width: 1px !default;
+
+// ============================================================================
+// SHADOWS
+// ============================================================================
+
+$menu-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !default;
+$menu-shadow-hover: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !default;
+$menu-shadow-focus: 0 0 0 3px rgba(var(--md-sys-color-primary-rgb), 0.1) !default;
+$menu-shadow-elevated: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !default;
+
+// ============================================================================
+// TYPOGRAPHY
+// ============================================================================
+
+$menu-font-family: var(--md-sys-typescale-body-large-font-family-name) !default;
+$menu-font-size: var(--md-sys-typescale-body-large-font-size) !default;
+$menu-font-weight: var(--md-sys-typescale-body-large-font-weight) !default;
+$menu-line-height: var(--md-sys-typescale-body-large-line-height) !default;
+$menu-letter-spacing: var(--md-sys-typescale-body-large-letter-spacing) !default;
+
+// ============================================================================
+// ALIGNMENT
+// ============================================================================
+
+$menu-alignment-left: flex-start !default;
+$menu-alignment-center: center !default;
+$menu-alignment-right: flex-end !default;
+
+// ============================================================================
+// POSITIONING
+// ============================================================================
+
+$menu-offset-x: 0 !default;
+$menu-offset-y: 0.25rem !default;
+$menu-offset-y-small: 0.125rem !default;
+$menu-offset-y-large: 0.5rem !default;
+$menu-submenu-offset: 8px !default;
+
+// ============================================================================
+// RESPONSIVE BREAKPOINTS
+// ============================================================================
+
+$menu-mobile-max-width: 20rem !default;
+$menu-tablet-max-width: 24rem !default;
+$menu-desktop-max-width: 28rem !default;
+
+// ============================================================================
+// ACCESSIBILITY
+// ============================================================================
+
+$menu-focus-ring-width: 2px !default;
+$menu-focus-ring-offset: 2px !default;
+$menu-focus-ring-color: var(--md-sys-color-primary) !default;
+
+// ============================================================================
+// ANIMATIONS - MATERIAL DESIGN 3 EXPRESSIVE
+// ============================================================================
+
+// Durées — tokens M3 actifs (fallback CSS ; JS lit --md-sys-motion-*-fast-duration)
+$menu-animation-duration-in: motion.spring-duration(spatial, fast) !default;
+$menu-animation-duration-out: motion.spring-duration(effects, fast) !default;
+$menu-animation-delay: 0s !default;
+
+// Courbes M3 Expressive — spatial (transform) / effects (opacity)
+$menu-animation-spatial-easing: motion.spring-easing(spatial, fast) !default;
+$menu-animation-effects-easing: motion.spring-easing(effects, fast) !default;
+// Legacy aliases
+$menu-animation-easing-in: $menu-animation-spatial-easing !default;
+$menu-animation-easing-out: $menu-animation-effects-easing !default;
+$menu-animation-easing-standard: $menu-animation-effects-easing !default;
+
+// États de transformation
+$menu-animation-scale-start: 0.85 !default;
+$menu-animation-scale-end: 1 !default;
+
+// Legacy (pour rétrocompatibilité)
+$menu-animation-duration: $menu-animation-duration-in !default;
+$menu-animation-timing: $menu-animation-easing-standard !default;
+
+// State layers M3 — menus (hover/focus 8%, pressed 12%)
+$menu-state-hover-opacity: 0.08 !default;
+$menu-state-focus-opacity: 0.08 !default;
+$menu-state-pressed-opacity: 0.12 !default;
+$menu-state-layer-color: var(--md-sys-color-on-surface) !default;
+$menu-state-layer-transition:
+  background-color var(--md-sys-motion-effects-fast-duration) var(--md-sys-motion-effects-fast-easing),
+  opacity var(--md-sys-motion-effects-fast-duration) var(--md-sys-motion-effects-fast-easing) !default;
+

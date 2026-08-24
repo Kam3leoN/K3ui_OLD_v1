@@ -1,0 +1,127 @@
+/**
+ * @fileoverview Mixins pour Tabs (Material Design 3 Expressive)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/tabs.token' as tabs;
+@use '../tokens/motion.token' as motion;
+@use '../mixins/state.mixin' as state;
+
+/**
+ * Barre d'onglets (conteneur principal)
+ */
+@mixin tabs-bar {
+  position: relative;
+  border-radius: tabs.$tabs-radius;
+  background: tabs.$tabs-background;
+  overflow: hidden;
+  transition: background-color tabs.$tabs-indicator-transition-duration tabs.$tabs-indicator-transition-easing;
+}
+
+/**
+ * Scroller (conteneur des boutons d'onglets + indicateur)
+ */
+@mixin tabs-scroller {
+  position: relative;
+  display: flex;
+  height: 100%;
+  touch-action: manipulation;
+}
+
+/**
+ * Scroller scrollable horizontal
+ */
+@mixin tabs-scroller--horizontal-scrollable {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/**
+ * Scroller scrollable vertical
+ */
+@mixin tabs-scroller--vertical-scrollable {
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/**
+ * Bouton d'onglet (tab)
+ */
+@mixin tabs-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  height: tabs.$tabs-item-height-horizontal;
+  padding: 0 12px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: tabs.$tabs-inactive-color;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color tabs.$tabs-indicator-transition-duration tabs.$tabs-indicator-transition-easing;
+
+  @include state.state-hover($color: tabs.$tabs-active-color);
+  @include state.state-focus($outline-color: transparent);
+
+  &--active {
+    color: tabs.$tabs-active-color;
+  }
+
+  &[aria-disabled='true'] {
+    color: tabs.$tabs-disabled-color;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+/**
+ * Indicateur sous l'onglet actif
+ */
+@mixin tabs-indicator {
+  position: absolute;
+  z-index: 1;
+  background: tabs.$tabs-indicator-background;
+  border-radius: tabs.$tabs-indicator-border-radius;
+  transition: transform tabs.$tabs-indicator-transition-duration tabs.$tabs-indicator-transition-easing,
+    width tabs.$tabs-indicator-transition-duration tabs.$tabs-indicator-transition-easing,
+    height tabs.$tabs-indicator-transition-duration tabs.$tabs-indicator-transition-easing;
+  pointer-events: none;
+}
+
+/**
+ * Conteneur des panneaux (tabs-items)
+ */
+@mixin tabs-items {
+  position: relative;
+  overflow: hidden;
+}
+
+/**
+ * Panneau (tabs-item)
+ */
+@mixin tabs-item {
+  display: none;
+  padding: 1rem 0;
+
+  &--active {
+    display: block;
+  }
+}

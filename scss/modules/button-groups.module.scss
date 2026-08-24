@@ -1,0 +1,877 @@
+/**
+
+ * @fileoverview Module Button Groups — Material Design 3 You Expressive
+
+ * @see https://m3.material.io/components/button-groups/specs
+
+ * @version 3.1.0
+
+ */
+
+
+
+@use 'sass:map';
+
+@use '../tokens/button-groups.token' as bg;
+
+@use '../mixins/button-groups.mixin' as mix;
+
+
+
+$corner-by-size: (
+
+  xs: bg.$button-groups-corner-xs,
+
+  sm: bg.$button-groups-corner-sm,
+
+  md: bg.$button-groups-corner-md,
+
+  lg: bg.$button-groups-corner-lg,
+
+  xl: bg.$button-groups-corner-xl,
+
+);
+
+
+
+$connected-inner-by-size: (
+
+  xs: bg.$button-groups-connected-inner-xs,
+
+  sm: bg.$button-groups-connected-inner-sm,
+
+  md: bg.$button-groups-connected-inner-md,
+
+  lg: bg.$button-groups-connected-inner-lg,
+
+  xl: bg.$button-groups-connected-inner-xl,
+
+);
+
+
+
+$connected-outer-by-size: (
+
+  xs: bg.$button-groups-connected-outer-xs,
+
+  sm: bg.$button-groups-connected-outer-sm,
+
+  md: bg.$button-groups-connected-outer-md,
+
+  lg: bg.$button-groups-connected-outer-lg,
+
+  xl: bg.$button-groups-connected-outer-xl,
+
+);
+
+
+
+$size-heights: (
+
+  xs: bg.$button-groups-size-xs-height,
+
+  sm: bg.$button-groups-size-sm-height,
+
+  md: bg.$button-groups-size-md-height,
+
+  lg: bg.$button-groups-size-lg-height,
+
+  xl: bg.$button-groups-size-xl-height,
+
+);
+
+
+
+$positions: ('standalone', 'first', 'middle', 'last');
+
+
+
+// ============================================================================
+
+// CONTAINER
+
+// ============================================================================
+
+
+
+.button-groups,
+
+k3ui-button-groups {
+
+  @include mix.button-groups-container(bg.$button-groups-gap-standard);
+
+  display: inline-flex !important;
+
+  gap: var(--button-groups-gap, #{bg.$button-groups-gap-standard});
+
+}
+
+
+
+// Standard — gap constant 12dp (override via --button-groups-gap depuis JS)
+
+.button-groups.button-groups--standard,
+
+k3ui-button-groups.button-groups--standard {
+
+  gap: var(--button-groups-gap, #{bg.$button-groups-gap-standard});
+
+}
+
+
+
+// Connected — gap 2dp
+
+.button-groups.button-groups--connected,
+
+k3ui-button-groups.button-groups--connected {
+
+  display: inline-flex !important;
+
+  gap: var(--button-groups-gap, #{bg.$button-groups-gap-connected});
+
+  align-items: stretch;
+
+  width: 100%;
+
+  max-width: 100%;
+
+}
+
+
+
+.button-groups.button-groups--overflow-wrap,
+
+k3ui-button-groups.button-groups--overflow-wrap {
+
+  flex-wrap: wrap;
+
+}
+
+
+
+.button-groups.button-groups--overflow-menu,
+
+k3ui-button-groups.button-groups--overflow-menu {
+
+  flex-wrap: nowrap;
+
+  overflow: hidden;
+
+  width: 100%;
+
+  max-width: 100%;
+
+  position: relative;
+
+}
+
+
+
+.button-groups.button-groups--standard:not(.button-groups--reduce-motion):has(.button-groups__btn--pressing) .button-groups__btn.btn:not(.button-groups__btn--pressing) {
+
+  flex-grow: var(--button-groups-neighbor-flex, 0.925);
+
+}
+
+
+
+// ============================================================================
+
+// BUTTON BASE
+
+// ============================================================================
+
+
+
+.button-groups__btn {
+
+  @include mix.button-groups-btn-base;
+
+
+
+  &:active:not(:disabled) {
+
+    transform: scale(bg.$button-groups-pressed-scale);
+
+  }
+
+
+
+  .button-groups--xs & {
+
+    @include mix.button-groups-touch-target;
+
+    @include mix.button-groups-btn-base(
+
+      bg.$button-groups-size-xs-height,
+
+      bg.$button-groups-size-xs-padding-x,
+
+      bg.$button-groups-size-xs-font,
+
+      bg.$button-groups-size-xs-line-height,
+
+      bg.$button-groups-size-xs-letter-spacing,
+
+      bg.$button-groups-size-xs-font-family,
+
+      bg.$button-groups-size-xs-font-weight,
+
+      bg.$button-groups-size-xs-icon,
+
+      bg.$button-groups-size-xs-gap
+
+    );
+
+  }
+
+
+
+  .button-groups--sm & {
+
+    @include mix.button-groups-touch-target;
+
+    @include mix.button-groups-btn-base(
+
+      bg.$button-groups-size-sm-height,
+
+      bg.$button-groups-size-sm-padding-x,
+
+      bg.$button-groups-size-sm-font,
+
+      bg.$button-groups-size-sm-line-height,
+
+      bg.$button-groups-size-sm-letter-spacing,
+
+      bg.$button-groups-size-sm-font-family,
+
+      bg.$button-groups-size-sm-font-weight,
+
+      bg.$button-groups-size-sm-icon,
+
+      bg.$button-groups-size-sm-gap
+
+    );
+
+  }
+
+
+
+  .button-groups--md & {
+
+    @include mix.button-groups-btn-base(
+
+      bg.$button-groups-size-md-height,
+
+      bg.$button-groups-size-md-padding-x,
+
+      bg.$button-groups-size-md-font,
+
+      bg.$button-groups-size-md-line-height,
+
+      bg.$button-groups-size-md-letter-spacing,
+
+      bg.$button-groups-size-md-font-family,
+
+      bg.$button-groups-size-md-font-weight,
+
+      bg.$button-groups-size-md-icon,
+
+      bg.$button-groups-size-md-gap
+
+    );
+
+  }
+
+
+
+  .button-groups--lg & {
+
+    @include mix.button-groups-btn-base(
+
+      bg.$button-groups-size-lg-height,
+
+      bg.$button-groups-size-lg-padding-x,
+
+      bg.$button-groups-size-lg-font,
+
+      bg.$button-groups-size-lg-line-height,
+
+      bg.$button-groups-size-lg-letter-spacing,
+
+      bg.$button-groups-size-lg-font-family,
+
+      bg.$button-groups-size-lg-font-weight,
+
+      bg.$button-groups-size-lg-icon,
+
+      bg.$button-groups-size-lg-gap
+
+    );
+
+  }
+
+
+
+  .button-groups--xl & {
+
+    @include mix.button-groups-btn-base(
+
+      bg.$button-groups-size-xl-height,
+
+      bg.$button-groups-size-xl-padding-x,
+
+      bg.$button-groups-size-xl-font,
+
+      bg.$button-groups-size-xl-line-height,
+
+      bg.$button-groups-size-xl-letter-spacing,
+
+      bg.$button-groups-size-xl-font-family,
+
+      bg.$button-groups-size-xl-font-weight,
+
+      bg.$button-groups-size-xl-icon,
+
+      bg.$button-groups-size-xl-gap
+
+    );
+
+  }
+
+}
+
+
+
+// ============================================================================
+
+// DENSITY — hauteur segments
+
+// ============================================================================
+
+
+
+@each $size, $height in $size-heights {
+
+  .button-groups.button-groups--#{$size}:not([data-density]) .button-groups__btn,
+
+  .button-groups.button-groups--#{$size}[data-density='0'] .button-groups__btn,
+
+  k3ui-button-groups.button-groups--#{$size}:not([data-density]) .button-groups__btn,
+
+  k3ui-button-groups.button-groups--#{$size}[data-density='0'] .button-groups__btn {
+
+    @include mix.button-groups-density-height($height, 0);
+
+  }
+
+
+
+  .button-groups.button-groups--#{$size}[data-density='-1'] .button-groups__btn,
+
+  k3ui-button-groups.button-groups--#{$size}[data-density='-1'] .button-groups__btn {
+
+    @include mix.button-groups-density-height($height, -1);
+
+  }
+
+
+
+  .button-groups.button-groups--#{$size}[data-density='-2'] .button-groups__btn,
+
+  k3ui-button-groups.button-groups--#{$size}[data-density='-2'] .button-groups__btn {
+
+    @include mix.button-groups-density-height($height, -2);
+
+  }
+
+
+
+  .button-groups.button-groups--#{$size}[data-density='-3'] .button-groups__btn,
+
+  k3ui-button-groups.button-groups--#{$size}[data-density='-3'] .button-groups__btn {
+
+    @include mix.button-groups-density-height($height, -3);
+
+  }
+
+}
+
+
+
+// ============================================================================
+
+// CONNECTED — inner / outer radius par position (CSS vars depuis JS)
+
+// ============================================================================
+
+
+
+@each $size, $inner-fallback in $connected-inner-by-size {
+
+  $outer-fallback: map.get($connected-outer-by-size, $size);
+
+  @each $position in $positions {
+
+    .button-groups.button-groups--connected.button-groups--#{$size} .button-groups__btn.button-groups__btn--#{$position}:not(.button-groups__btn--active):not(.button-groups__btn--pressing),
+
+    k3ui-button-groups.button-groups--connected.button-groups--#{$size} .button-groups__btn.button-groups__btn--#{$position}:not(.button-groups__btn--active):not(.button-groups__btn--pressing) {
+
+      @include mix.button-groups-connected-corners($position, $inner-fallback, $outer-fallback);
+
+    }
+
+  }
+
+}
+
+
+
+@each $size, $outer-fallback in $connected-outer-by-size {
+
+  .button-groups.button-groups--connected.button-groups--#{$size} .button-groups__btn.button-groups__btn--active,
+
+  .button-groups.button-groups--connected.button-groups--#{$size} .button-groups__btn.button-groups__btn--pressing,
+
+  k3ui-button-groups.button-groups--connected.button-groups--#{$size} .button-groups__btn.button-groups__btn--active,
+
+  k3ui-button-groups.button-groups--connected.button-groups--#{$size} .button-groups__btn.button-groups__btn--pressing {
+
+    @include mix.button-groups-connected-morphed($outer-fallback);
+
+  }
+
+}
+
+
+
+// ============================================================================
+
+// STANDARD — morph round ↔ square (sélection + press)
+
+// ============================================================================
+
+
+
+@each $size, $corner in $corner-by-size {
+
+  $cap-fallback: map.get($connected-outer-by-size, $size);
+
+  .button-groups.button-groups--standard.button-groups--round.button-groups--#{$size} .button-groups__btn.btn:not(.button-groups__btn--active):not(.button-groups__btn--pressing),
+
+  k3ui-button-groups.button-groups--standard.button-groups--round.button-groups--#{$size} .button-groups__btn.btn:not(.button-groups__btn--active):not(.button-groups__btn--pressing) {
+
+    @include mix.button-groups-shape-standard-default('round', $corner, $cap-fallback);
+
+  }
+
+
+
+  .button-groups.button-groups--standard.button-groups--round.button-groups--#{$size} .button-groups__btn.btn.button-groups__btn--active,
+
+  .button-groups.button-groups--standard.button-groups--round.button-groups--#{$size} .button-groups__btn.btn.button-groups__btn--pressing,
+
+  .button-groups.button-groups--standard.button-groups--round.button-groups--#{$size} .button-groups__btn.btn.pressing,
+
+  k3ui-button-groups.button-groups--standard.button-groups--round.button-groups--#{$size} .button-groups__btn.btn.button-groups__btn--active,
+
+  k3ui-button-groups.button-groups--standard.button-groups--round.button-groups--#{$size} .button-groups__btn.btn.button-groups__btn--pressing,
+
+  k3ui-button-groups.button-groups--standard.button-groups--round.button-groups--#{$size} .button-groups__btn.btn.pressing {
+
+    @include mix.button-groups-shape-standard-morphed('round', $corner, $cap-fallback);
+
+  }
+
+
+
+  .button-groups.button-groups--standard.button-groups--square.button-groups--#{$size} .button-groups__btn.btn:not(.button-groups__btn--active):not(.button-groups__btn--pressing),
+
+  k3ui-button-groups.button-groups--standard.button-groups--square.button-groups--#{$size} .button-groups__btn.btn:not(.button-groups__btn--active):not(.button-groups__btn--pressing) {
+
+    @include mix.button-groups-shape-standard-default('square', $corner, $cap-fallback);
+
+  }
+
+
+
+  .button-groups.button-groups--standard.button-groups--square.button-groups--#{$size} .button-groups__btn.btn.button-groups__btn--active,
+
+  .button-groups.button-groups--standard.button-groups--square.button-groups--#{$size} .button-groups__btn.btn.button-groups__btn--pressing,
+
+  .button-groups.button-groups--standard.button-groups--square.button-groups--#{$size} .button-groups__btn.btn.pressing,
+
+  k3ui-button-groups.button-groups--standard.button-groups--square.button-groups--#{$size} .button-groups__btn.btn.button-groups__btn--active,
+
+  k3ui-button-groups.button-groups--standard.button-groups--square.button-groups--#{$size} .button-groups__btn.btn.button-groups__btn--pressing,
+
+  k3ui-button-groups.button-groups--standard.button-groups--square.button-groups--#{$size} .button-groups__btn.btn.pressing {
+
+    @include mix.button-groups-shape-standard-morphed('square', $corner, $cap-fallback);
+
+  }
+
+}
+
+
+
+// Neutralise le morph Button module (.pressing → 8px) dans les groupes
+
+.button-groups .button-groups__btn.btn.pressing,
+
+.button-groups .button-groups__btn.btn.releasing,
+
+k3ui-button-groups .button-groups__btn.btn.pressing,
+
+k3ui-button-groups .button-groups__btn.btn.releasing {
+
+  animation: none !important;
+
+}
+
+
+
+// ============================================================================
+
+// VARIANTS — états M3 (background direct, sans couche indicator)
+
+// ============================================================================
+
+
+
+.button-groups--filled .button-groups__btn.btn {
+
+  background-color: var(--md-sys-color-primary, #6750a4);
+
+  color: var(--md-sys-color-on-primary);
+
+
+
+  &:hover:not(:disabled):not(.button-groups__btn--active) {
+
+    background-color: var(--md-sys-color-primary-hover);
+
+  }
+
+
+
+  &:active:not(:disabled):not(.button-groups__btn--active) {
+
+    background-color: var(--md-sys-color-primary-pressed);
+
+  }
+
+
+
+  &.button-groups__btn--active {
+
+    background-color: var(--md-sys-color-primary-container);
+
+    color: var(--md-sys-color-on-primary-container);
+
+  }
+
+}
+
+
+
+.button-groups--tonal .button-groups__btn.btn {
+
+  background-color: var(--md-sys-color-secondary-container);
+
+  color: var(--md-sys-color-on-secondary-container);
+
+
+
+  &:hover:not(:disabled):not(.button-groups__btn--active) {
+
+    background-color: var(--md-sys-color-secondary-container-hover);
+
+  }
+
+
+
+  &:active:not(:disabled):not(.button-groups__btn--active) {
+
+    background-color: var(--md-sys-color-secondary-container-pressed);
+
+  }
+
+
+
+  &.button-groups__btn--active {
+
+    background-color: var(--md-sys-color-primary);
+
+    color: var(--md-sys-color-on-primary);
+
+  }
+
+}
+
+
+
+.button-groups--outlined .button-groups__btn.btn {
+
+  background-color: transparent;
+
+  color: var(--md-sys-color-primary);
+
+  border: 1.5px solid var(--md-sys-color-outline);
+
+
+
+  &:hover:not(:disabled):not(.button-groups__btn--active) {
+
+    background-color: color-mix(in srgb, var(--md-sys-color-primary) 4%, transparent);
+
+  }
+
+
+
+  &:active:not(:disabled):not(.button-groups__btn--active) {
+
+    background-color: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+
+  }
+
+
+
+  &.button-groups__btn--active {
+
+    background-color: var(--md-sys-color-primary-container);
+
+    color: var(--md-sys-color-on-primary-container);
+
+    border-color: var(--md-sys-color-primary);
+
+  }
+
+}
+
+
+
+.button-groups--elevated .button-groups__btn.btn {
+
+  background-color: var(--md-sys-color-surface-container-low);
+
+  color: var(--md-sys-color-primary);
+
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+
+
+
+  &:hover:not(:disabled):not(.button-groups__btn--active) {
+
+    background-color: var(--md-sys-color-surface-container);
+
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+
+  }
+
+
+
+  &:active:not(:disabled):not(.button-groups__btn--active) {
+
+    background-color: var(--md-sys-color-surface-container-high);
+
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+  }
+
+
+
+  &.button-groups__btn--active {
+
+    background-color: var(--md-sys-color-primary-container);
+
+    color: var(--md-sys-color-on-primary-container);
+
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+  }
+
+}
+
+
+
+.button-groups__btn:focus-visible {
+
+  outline: 2px solid var(--md-sys-color-primary);
+
+  outline-offset: 0;
+
+  z-index: 2;
+
+}
+
+
+
+.button-groups--connected .button-groups__btn:focus-visible {
+
+  outline-offset: -2px;
+
+}
+
+
+
+.button-groups__btn:disabled {
+
+  opacity: 0.38;
+
+  pointer-events: none;
+
+  cursor: not-allowed;
+
+}
+
+
+
+.button-groups__btn--icon-only {
+
+  padding-left: 0;
+
+  padding-right: 0;
+
+  min-width: bg.$button-groups-min-touch-target;
+
+  aspect-ratio: 1;
+
+}
+
+
+
+.button-groups__btn--overflow {
+
+  flex: 0 0 auto;
+
+  min-width: bg.$button-groups-min-touch-target;
+
+  padding-left: 0;
+
+  padding-right: 0;
+
+  border-radius: bg.$button-groups-pill-radius !important;
+
+  background-color: var(--md-sys-color-surface-container-high, #ece6f0);
+
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+
+}
+
+
+
+.button-groups__overflow-menu {
+
+  position: absolute;
+
+  top: calc(100% + 4px);
+
+  right: 0;
+
+  z-index: 10;
+
+  margin: 0;
+
+  padding: 4px 0;
+
+  list-style: none;
+
+  min-width: 10rem;
+
+  background: var(--md-sys-color-surface-container, #f3edf7);
+
+  border-radius: 4px;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+
+}
+
+
+
+.button-groups__overflow-menu-item {
+
+  display: block;
+
+  width: 100%;
+
+  padding: 10px 16px;
+
+  border: none;
+
+  background: transparent;
+
+  text-align: start;
+
+  font: inherit;
+
+  cursor: pointer;
+
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+
+
+
+  &:hover {
+
+    background: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 8%, transparent);
+
+  }
+
+}
+
+
+
+// prefers-reduced-motion — snap instantané (état morphé conservé, sans animation)
+
+.button-groups--reduce-motion .button-groups__btn,
+
+.button-groups--reduce-motion .button-groups__btn.btn {
+
+  transition:
+
+    color 0.01ms,
+
+    border-color 0.01ms,
+
+    box-shadow 0.01ms,
+
+    background-color 0.01ms,
+
+    flex-grow 0.01ms,
+
+    border-top-left-radius 0.01ms,
+
+    border-top-right-radius 0.01ms,
+
+    border-bottom-right-radius 0.01ms,
+
+    border-bottom-left-radius 0.01ms !important;
+
+}
+
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  .button-groups__btn {
+
+    transition:
+
+      color 0.01ms,
+
+      border-color 0.01ms,
+
+      box-shadow 0.01ms,
+
+      background-color 0.01ms,
+
+      flex-grow 0.01ms,
+
+      border-radius 0.01ms;
+
+  }
+
+}
+
+

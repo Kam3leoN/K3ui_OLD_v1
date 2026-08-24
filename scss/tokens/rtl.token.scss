@@ -1,0 +1,39 @@
+/// @file rtl.token.scss
+/// @brief Tokens pour la gestion RTL/LTR
+
+/**
+ * Tokens pour la direction de texte
+ * Ces tokens permettent de gérer les valeurs selon la direction LTR/RTL
+ */
+
+// Valeurs de direction par défaut
+$md-sys-direction-default: 'ltr' !default;
+$md-sys-direction-rtl: 'rtl' !default;
+
+// Multiplicateur pour l'inversion en RTL (-1 pour inverser)
+$md-sys-rtl-inverse-multiplier: -1 !default;
+
+// Propriétés CSS logiques par défaut (pour compatibilité)
+// Ces valeurs sont utilisées comme fallback pour les navigateurs qui ne supportent pas les propriétés logiques
+$md-sys-rtl-use-logical-properties: true !default;
+
+// Classes CSS pour la gestion RTL
+$md-sys-rtl-selector: '[dir="rtl"]' !default;
+$md-sys-ltr-selector: '[dir="ltr"]' !default;
+
+// Valeurs de transformation pour RTL
+$md-sys-rtl-transform-scale-x: -1 !default;
+
+// Espacements adaptatifs (start/end au lieu de left/right)
+// Ces tokens peuvent être utilisés pour remplacer margin-left/right par margin-inline-start/end
+$md-sys-spacing-inline-start: var(--md-sys-spacing-inline-start, 0) !default;
+$md-sys-spacing-inline-end: var(--md-sys-spacing-inline-end, 0) !default;
+$md-sys-spacing-block-start: var(--md-sys-spacing-block-start, 0) !default;
+$md-sys-spacing-block-end: var(--md-sys-spacing-block-end, 0) !default;
+
+// Propriétés de positionnement logiques
+$md-sys-inset-inline-start: var(--md-sys-inset-inline-start, auto) !default;
+$md-sys-inset-inline-end: var(--md-sys-inset-inline-end, auto) !default;
+$md-sys-inset-block-start: var(--md-sys-inset-block-start, auto) !default;
+$md-sys-inset-block-end: var(--md-sys-inset-block-end, auto) !default;
+

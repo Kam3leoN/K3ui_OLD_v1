@@ -1,0 +1,116 @@
+/**
+ * @fileoverview Module Marquee
+ * @description Styles du composant Marquee K3UI.
+ */
+
+@keyframes marquee-classic-left {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes marquee-classic-right {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100vw);
+  }
+}
+
+.marquee-container {
+  --marquee-duration: 20s;
+  --marquee-gap: 80px;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
+}
+
+.marquee-container.--no-fade {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.marquee-rotate-wrap {
+  --rotate-track-height: 56px;
+  --rotate-length: 300px;
+  display: inline-flex;
+  vertical-align: top;
+  width: var(--rotate-track-height);
+  height: var(--rotate-length);
+  align-self: stretch;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.marquee-rotate-wrap .marquee-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--rotate-length);
+}
+
+[data-rotate='clockwise'] .marquee-container {
+  transform-origin: center center;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+[data-rotate='counterclockwise'] .marquee-container {
+  transform-origin: center center;
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+.marquee-track {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--marquee-gap);
+  min-width: max-content;
+  will-change: transform;
+}
+
+.marquee-track > span,
+.marquee-track > a,
+.marquee-track > p {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.marquee-track > img,
+.marquee-track > svg {
+  display: block;
+  flex-shrink: 0;
+}
+
+[data-clone] {
+  pointer-events: none;
+  user-select: none;
+}
+
+.marquee-track--classic {
+  animation: marquee-classic-left var(--marquee-duration) linear infinite;
+}
+
+[data-direction='right'] .marquee-track--classic {
+  animation-name: marquee-classic-right;
+}
+
+.marquee-track--pingpong {
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .marquee-track--classic {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+

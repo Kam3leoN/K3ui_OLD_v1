@@ -1,0 +1,200 @@
+/// @file chip.tokens.scss
+/// @brief Tokens chips Material 3 - Nomenclature standardisée : $md-sys-chip-*
+
+@use './spacing.token' as spacing;
+@use './radius.token' as radius;
+@use './typography.token' as typography;
+@use './motion.token' as motion;
+
+// ============================================================================
+// DIMENSIONS (Material Design 3 specs)
+// ============================================================================
+
+// Dimensions des chips (Material Design 3 specs)
+$md-sys-chip-height: 32px; // Hauteur standard des chips
+$md-sys-chip-min-width: 48px; // Largeur minimale
+$md-sys-chip-max-width: 200px; // Largeur maximale
+
+// Padding des chips (Material Design 3 specs)
+$md-sys-chip-padding-horizontal: 16px; // Padding horizontal standard
+$md-sys-chip-padding-horizontal-with-icon: 8px; // Padding avec icône
+$md-sys-chip-padding-between-elements: 8px; // Espacement entre éléments
+
+// ============================================================================
+// FORMES ET BORDURES
+// ============================================================================
+
+// Border radius (MD3 : 8dp par défaut, full pour variante arrondie / pill)
+$md-sys-chip-border-radius: radius.$md-sys-shape-corner-small; // 8px
+$md-sys-chip-border-radius-rounded: radius.$md-sys-shape-corner-full; // pill
+
+// Tailles d'icônes
+$md-sys-chip-icon-size: 18px; // Taille d'icône standard
+
+// ============================================================================
+// TYPOGRAPHIE
+// ============================================================================
+
+// Typographie
+$md-sys-chip-font-size: typography.$md-sys-typescale-label-large-font-size; // 14px
+$md-sys-chip-font-weight: typography.$md-sys-typescale-label-large-font-weight; // 500
+$md-sys-chip-line-height: typography.$md-sys-typescale-label-large-line-height; // 20px
+$md-sys-chip-letter-spacing: typography.$md-sys-typescale-label-large-letter-spacing; // 0.10px
+
+// ============================================================================
+// ÉTATS D'INTERACTION (Material You 3)
+// ============================================================================
+
+// États
+$md-sys-chip-state-layer-opacity-hover: 0.08;
+$md-sys-chip-state-layer-opacity-focus: 0.12;
+$md-sys-chip-state-layer-opacity-pressed: 0.12;
+$md-sys-chip-state-layer-opacity-dragged: 0.16;
+
+// ============================================================================
+// ANIMATIONS ET TRANSITIONS
+// ============================================================================
+
+// Durées de transition (MD3 Expressive — effects default)
+$md-sys-chip-transition-duration: motion.$md-sys-motion-expressive-effects-default-duration;
+$md-sys-chip-transition-easing: motion.$md-sys-motion-expressive-effects-default-easing;
+
+// ============================================================================
+// TYPES DE CHIPS - COULEURS
+// ============================================================================
+
+// Type Assist
+$md-sys-chip-type-assist-background: var(--md-sys-color-surface-container);
+$md-sys-chip-type-assist-elevated-background: var(--md-sys-color-surface-container-low);
+$md-sys-chip-type-assist-color: var(--md-sys-color-on-surface);
+$md-sys-chip-type-assist-border: var(--md-sys-color-outline);
+$md-sys-chip-type-assist-elevation: 0;
+
+// Type Filter
+$md-sys-chip-type-filter-background: var(--md-sys-color-secondary-container);
+$md-sys-chip-type-filter-color: var(--md-sys-color-on-secondary-container);
+$md-sys-chip-type-filter-border: var(--md-sys-color-outline);
+$md-sys-chip-type-filter-elevation: 0;
+
+// Type Input
+$md-sys-chip-type-input-background: var(--md-sys-color-surface-container);
+$md-sys-chip-type-input-color: var(--md-sys-color-on-surface);
+$md-sys-chip-type-input-border: var(--md-sys-color-outline);
+$md-sys-chip-type-input-elevation: 0;
+
+// Type Suggestion
+$md-sys-chip-type-suggestion-background: var(--md-sys-color-tertiary-container);
+$md-sys-chip-type-suggestion-color: var(--md-sys-color-on-tertiary-container);
+$md-sys-chip-type-suggestion-border: var(--md-sys-color-outline);
+$md-sys-chip-type-suggestion-elevation: 0;
+
+// ============================================================================
+// ÉTATS DES CHIPS - COULEURS
+// ============================================================================
+
+// État Selected
+$md-sys-chip-state-selected-background: var(--md-sys-color-primary);
+$md-sys-chip-state-selected-color: var(--md-sys-color-on-primary);
+$md-sys-chip-state-selected-border: var(--md-sys-color-primary);
+
+// État Disabled
+$md-sys-chip-state-disabled-background: var(--md-sys-color-surface-disabled);
+$md-sys-chip-state-disabled-color: var(--md-sys-color-on-surface-disabled);
+$md-sys-chip-state-disabled-border: var(--md-sys-color-outline-disabled);
+
+// État Elevated (avec ombre)
+$md-sys-chip-state-elevated-elevation: 1;
+
+// ============================================================================
+// TAILLES DE CHIPS - DIMENSIONS
+// ============================================================================
+
+// Taille Small
+$md-sys-chip-size-small-height: 24px;
+$md-sys-chip-size-small-min-width: 40px;
+$md-sys-chip-size-small-padding-horizontal: 12px;
+$md-sys-chip-size-small-font-size: 12px;
+$md-sys-chip-size-small-icon-size: 16px;
+
+// Taille Medium
+$md-sys-chip-size-medium-height: 32px;
+$md-sys-chip-size-medium-min-width: 48px;
+$md-sys-chip-size-medium-padding-horizontal: 16px;
+$md-sys-chip-size-medium-font-size: 14px;
+$md-sys-chip-size-medium-icon-size: 18px;
+
+// Taille Large
+$md-sys-chip-size-large-height: 40px;
+$md-sys-chip-size-large-min-width: 56px;
+$md-sys-chip-size-large-padding-horizontal: 20px;
+$md-sys-chip-size-large-font-size: 16px;
+$md-sys-chip-size-large-icon-size: 20px;
+
+// ============================================================================
+// TOKENS DE COMPATIBILITÉ (pour éviter de casser le code existant)
+// ============================================================================
+
+// Maps de compatibilité (dépréciées mais maintenues temporairement)
+$md-sys-chip-types: (
+  'assist': (
+    'background': $md-sys-chip-type-assist-background,
+    'color': $md-sys-chip-type-assist-color,
+    'border': $md-sys-chip-type-assist-border,
+    'elevation': $md-sys-chip-type-assist-elevation
+  ),
+  'filter': (
+    'background': $md-sys-chip-type-filter-background,
+    'color': $md-sys-chip-type-filter-color,
+    'border': $md-sys-chip-type-filter-border,
+    'elevation': $md-sys-chip-type-filter-elevation
+  ),
+  'input': (
+    'background': $md-sys-chip-type-input-background,
+    'color': $md-sys-chip-type-input-color,
+    'border': $md-sys-chip-type-input-border,
+    'elevation': $md-sys-chip-type-input-elevation
+  ),
+  'suggestion': (
+    'background': $md-sys-chip-type-suggestion-background,
+    'color': $md-sys-chip-type-suggestion-color,
+    'border': $md-sys-chip-type-suggestion-border,
+    'elevation': $md-sys-chip-type-suggestion-elevation
+  )
+);
+
+$md-sys-chip-states: (
+  'selected': (
+    'background': $md-sys-chip-state-selected-background,
+    'color': $md-sys-chip-state-selected-color,
+    'border': $md-sys-chip-state-selected-border
+  ),
+  'disabled': (
+    'background': $md-sys-chip-state-disabled-background,
+    'color': $md-sys-chip-state-disabled-color,
+    'border': $md-sys-chip-state-disabled-border
+  )
+);
+
+$md-sys-chip-sizes: (
+  'small': (
+    'height': $md-sys-chip-size-small-height,
+    'min-width': $md-sys-chip-size-small-min-width,
+    'padding-horizontal': $md-sys-chip-size-small-padding-horizontal,
+    'font-size': $md-sys-chip-size-small-font-size,
+    'icon-size': $md-sys-chip-size-small-icon-size
+  ),
+  'medium': (
+    'height': $md-sys-chip-size-medium-height,
+    'min-width': $md-sys-chip-size-medium-min-width,
+    'padding-horizontal': $md-sys-chip-size-medium-padding-horizontal,
+    'font-size': $md-sys-chip-size-medium-font-size,
+    'icon-size': $md-sys-chip-size-medium-icon-size
+  ),
+  'large': (
+    'height': $md-sys-chip-size-large-height,
+    'min-width': $md-sys-chip-size-large-min-width,
+    'padding-horizontal': $md-sys-chip-size-large-padding-horizontal,
+    'font-size': $md-sys-chip-size-large-font-size,
+    'icon-size': $md-sys-chip-size-large-icon-size
+  )
+); 

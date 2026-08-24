@@ -1,0 +1,310 @@
+/**
+ * @file toolbar.module.scss
+ * @description Toolbar M3 Expressive — floating, docked, bare (Meet), icônes + tooltips
+ * @see https://m3.material.io/components/toolbars/guidelines
+ */
+
+@use '../tokens/toolbar.token' as tb;
+@use '../mixins/toolbar.mixin' as mix;
+
+.toolbar,
+k3ui-toolbar {
+  @include mix.toolbar-container;
+}
+
+.toolbar__items {
+  @include mix.toolbar-items-row;
+  flex-wrap: nowrap;
+}
+
+.toolbar--vertical .toolbar__items,
+k3ui-toolbar.toolbar--vertical .toolbar__items {
+  @include mix.toolbar-items-column;
+}
+
+// ── Conteneur floating / docked ───────────────────────────────────────────
+
+.toolbar--floating:not(.toolbar--bare),
+k3ui-toolbar.toolbar--floating:not(.toolbar--bare) {
+  /* Demi-cercles aux extrémités (hauteur/2), pas border-radius: 50% (ellipse) */
+  border-radius: tb.$toolbar-floating-radius;
+  width: max-content;
+  max-width: calc(100% - #{tb.$toolbar-floating-margin * 2});
+}
+
+.toolbar--docked:not(.toolbar--bare),
+k3ui-toolbar.toolbar--docked:not(.toolbar--bare) {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  border-radius: tb.$toolbar-docked-radius;
+}
+
+.toolbar--vertical:not(.toolbar--bare),
+k3ui-toolbar.toolbar--vertical:not(.toolbar--bare) {
+  flex-direction: column;
+  width: max-content;
+  min-height: auto;
+  align-items: stretch;
+  border-radius: tb.$toolbar-floating-radius;
+}
+
+// ── Variantes relief (= buttons elevated | filled | tonal) ─────────────────
+
+.toolbar--filled:not(.toolbar--bare),
+k3ui-toolbar.toolbar--filled:not(.toolbar--bare) {
+  @include mix.toolbar-variant-colors(tb.$toolbar-color-filled-bg, tb.$toolbar-color-filled-on);
+  box-shadow: tb.$toolbar-elevation-none;
+}
+
+.toolbar--tonal:not(.toolbar--bare),
+k3ui-toolbar.toolbar--tonal:not(.toolbar--bare) {
+  @include mix.toolbar-variant-colors(tb.$toolbar-color-tonal-bg, tb.$toolbar-color-tonal-on);
+  box-shadow: tb.$toolbar-elevation-none;
+}
+
+.toolbar--elevated:not(.toolbar--bare),
+k3ui-toolbar.toolbar--elevated:not(.toolbar--bare) {
+  @include mix.toolbar-variant-colors(tb.$toolbar-color-elevated-bg, tb.$toolbar-color-elevated-on);
+  box-shadow: tb.$toolbar-elevation-elevated;
+}
+
+// ── Mode bare (Google Meet) — pas de card, items sur la surface ─────────────
+
+.toolbar--bare,
+k3ui-toolbar.toolbar--bare {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0;
+  min-height: 0;
+  color: inherit;
+  display: inline-flex;
+
+  .toolbar__items {
+    gap: tb.$toolbar-bare-gap;
+  }
+}
+
+// ── Surface inverse (Meet on-dark) ──────────────────────────────────────────
+
+.toolbar--inverse,
+k3ui-toolbar.toolbar--inverse {
+  color: tb.$toolbar-inverse-item-on;
+
+  .toolbar__item.btn-icon.toolbar__item--icon-only:not(.toolbar__item-part),
+  .toolbar__compound,
+  .toolbar__split.split-btn,
+  .toolbar__split.split-button,
+  .toolbar__split.button-split {
+    background-color: tb.$toolbar-inverse-item-bg;
+    color: tb.$toolbar-inverse-item-on;
+  }
+
+  .toolbar__compound .toolbar__item-part--secondary {
+    border-inline-end-color: tb.$toolbar-inverse-divider;
+  }
+
+  .toolbar__split.split-btn,
+  .toolbar__split.split-button,
+  .toolbar__split.button-split {
+    background: transparent;
+
+    .split-btn__leading,
+    .split-button__leading,
+    .button-split__leading,
+    .split-btn__trailing,
+    .split-button__trailing,
+    .button-split__trailing {
+      background-color: tb.$toolbar-inverse-item-bg;
+      color: tb.$toolbar-inverse-item-on;
+    }
+  }
+
+  .toolbar__item--emphasized,
+  .toolbar__compound.toolbar__item--emphasized,
+  .toolbar__split.toolbar__item--emphasized {
+    background-color: tb.$toolbar-inverse-item-emphasized-bg;
+    color: tb.$toolbar-inverse-item-emphasized-on;
+  }
+
+  .toolbar__split.toolbar__item--emphasized {
+    .split-btn__leading,
+    .split-button__leading,
+    .button-split__leading,
+    .split-btn__trailing,
+    .split-button__trailing,
+    .button-split__trailing {
+      background-color: tb.$toolbar-inverse-item-emphasized-bg;
+      color: tb.$toolbar-inverse-item-emphasized-on;
+    }
+  }
+
+  .toolbar__item--destructive.btn-icon {
+    background-color: tb.$toolbar-inverse-item-destructive-bg !important;
+    color: tb.$toolbar-inverse-item-destructive-on !important;
+  }
+
+  .toolbar__item-part--accent {
+    color: #8ab4f8;
+  }
+
+  .toolbar__item--active,
+  .toolbar__item[aria-pressed='true'],
+  .toolbar__item[data-selected='true'] {
+    background-color: color-mix(in srgb, tb.$toolbar-inverse-item-bg 85%, white);
+    color: tb.$toolbar-inverse-item-on;
+  }
+
+  .toolbar__compound--active,
+  .toolbar__compound.toolbar__item--active,
+  .toolbar__split--active,
+  .toolbar__split.toolbar__item--active {
+    background-color: color-mix(in srgb, tb.$toolbar-inverse-item-bg 85%, white);
+    color: tb.$toolbar-inverse-item-on;
+
+    .split-btn__leading,
+    .split-button__leading,
+    .button-split__leading,
+    .split-btn__trailing,
+    .split-button__trailing,
+    .button-split__trailing {
+      background-color: color-mix(in srgb, tb.$toolbar-inverse-item-bg 85%, white);
+      color: tb.$toolbar-inverse-item-on;
+    }
+  }
+}
+
+.toolbar--bare:not(.toolbar--inverse) {
+  .toolbar__item.btn-icon.toolbar__item--icon-only:not(.toolbar__item-part),
+  .toolbar__compound {
+    background-color: tb.$toolbar-bare-item-bg;
+  }
+
+  .toolbar__split.split-btn,
+  .toolbar__split.split-button,
+  .toolbar__split.button-split {
+    background: transparent;
+
+    .split-btn__leading,
+    .split-button__leading,
+    .button-split__leading,
+    .split-btn__trailing,
+    .split-button__trailing,
+    .button-split__trailing {
+      background-color: tb.$toolbar-bare-item-bg;
+    }
+  }
+}
+
+// ── Items ───────────────────────────────────────────────────────────────────
+
+.toolbar__item {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Icon-only : forme / largeur déléguées à ButtonIcon (default | narrow | wide) */
+.toolbar__item.btn-icon.toolbar__item--icon-only:not(.toolbar__item-part),
+.toolbar__item.btn-icon:not(.toolbar__item--labeled):not(.toolbar__item-part) {
+  overflow: hidden;
+
+  &::before,
+  .ripple-surface,
+  .ripple-hover-layer,
+  .ripple-pressed-layer {
+    border-radius: inherit;
+  }
+}
+
+.toolbar__item--active:not(.toolbar__item--destructive),
+.toolbar__item[aria-pressed='true']:not(.toolbar__item--destructive),
+.toolbar__item[data-selected='true']:not(.toolbar__item--destructive) {
+  @include mix.toolbar-item-active-surface;
+}
+
+// ── Compound (legacy) + ButtonSplit (dualAction) ────────────────────────────
+
+.toolbar__compound {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: stretch;
+  flex-shrink: 0;
+  border-radius: tb.$toolbar-floating-radius;
+  overflow: hidden;
+  background-color: tb.$toolbar-compound-bg;
+  gap: 0;
+}
+
+.toolbar__split.split-btn,
+.toolbar__split.split-button,
+.toolbar__split.button-split,
+.toolbar .split-btn.toolbar__item,
+.toolbar .button-split.toolbar__item {
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.toolbar--vertical .toolbar__compound {
+  flex-direction: column;
+}
+
+.toolbar__compound .toolbar__item-part {
+  border-radius: 0;
+  background: transparent;
+}
+
+.toolbar__compound .toolbar__item-part--secondary {
+  border-start-start-radius: tb.$toolbar-floating-radius;
+  border-end-start-radius: tb.$toolbar-floating-radius;
+  border-inline-end: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.toolbar__compound .toolbar__item-part--primary {
+  border-start-end-radius: tb.$toolbar-floating-radius;
+  border-end-end-radius: tb.$toolbar-floating-radius;
+}
+
+.toolbar--vertical .toolbar__compound .toolbar__item-part--secondary {
+  border-start-start-radius: tb.$toolbar-floating-radius;
+  border-start-end-radius: tb.$toolbar-floating-radius;
+  border-end-start-radius: 0;
+  border-inline-end: none;
+  border-block-end: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.toolbar--vertical .toolbar__compound .toolbar__item-part--primary {
+  border-end-start-radius: tb.$toolbar-floating-radius;
+  border-end-end-radius: tb.$toolbar-floating-radius;
+  border-start-end-radius: 0;
+}
+
+.toolbar__compound--active,
+.toolbar__compound.toolbar__item--active {
+  background-color: tb.$toolbar-item-active-bg;
+  color: tb.$toolbar-item-active-on;
+
+  .toolbar__item-part.toolbar__item--active {
+    background: transparent;
+  }
+}
+
+// ── Groupe toolbar + FAB ────────────────────────────────────────────────────
+
+.toolbar-group {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: tb.$toolbar-fab-gap;
+}
+
+.toolbar-group--vertical {
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.toolbar-group .toolbar--floating {
+  margin: 0;
+}

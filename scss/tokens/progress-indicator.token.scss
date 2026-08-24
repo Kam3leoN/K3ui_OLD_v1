@@ -1,0 +1,49 @@
+/**
+ * @fileoverview Tokens de design pour ProgressIndicator
+ * @description Material Design 3 Expressive — progress indicators
+ * @see https://m3.material.io/components/progress-indicators/specs
+ * @author K3UI Team
+ */
+
+@use 'motion.token' as motion;
+
+// ============================================================================
+// DIMENSIONS — MD3 specs
+// ============================================================================
+
+$progress-indicator-track-height: 4px;
+$progress-indicator-track-height-thick: 8px;
+$progress-indicator-gap: 4px;
+// MD3 / Android trackStopIndicatorSize — point d’arrêt en fin de piste linéaire
+$progress-indicator-stop-size: 4px;
+
+$progress-indicator-circular-size-sm: 24px;
+$progress-indicator-circular-size-md: 40px;
+$progress-indicator-circular-size-lg: 52px;
+
+// Label valeur circulaire (slot M3E-like)
+$progress-indicator-value-font-size: 0.75rem;
+$progress-indicator-value-font-weight: 500;
+$progress-indicator-value-line-height: 1;
+
+// ============================================================================
+// COULEURS — palettes MD3 (surcharge via data-palette / CSS vars)
+// ============================================================================
+
+$progress-indicator-primary: var(--md-sys-color-primary, #6750a4);
+$progress-indicator-primary-track: var(--md-sys-color-primary-container, #eaddff);
+
+$progress-indicator-secondary: var(--md-sys-color-secondary, #625b71);
+$progress-indicator-secondary-track: var(--md-sys-color-secondary-container, #e8def8);
+
+$progress-indicator-tertiary: var(--md-sys-color-tertiary, #7d5260);
+$progress-indicator-tertiary-track: var(--md-sys-color-tertiary-container, #ffd8e4);
+
+$progress-indicator-error: var(--md-sys-color-error, #b3261e);
+$progress-indicator-error-track: var(--md-sys-color-error-container, #f9dedc);
+
+// ============================================================================
+// MOTION — expressive spatial
+// ============================================================================
+
+$progress-indicator-easing: motion.spring-easing(spatial, default);

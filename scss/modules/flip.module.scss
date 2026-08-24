@@ -1,0 +1,132 @@
+/**
+ * @fileoverview Module Flip — retournement 3D recto/verso
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/flip.token' as flip;
+@use '../mixins/flip.mixin' as flip-mixin;
+
+// Overshoot expressive : --flip-progress peut dépasser 1 (linear() M3)
+@supports (transition: --flip-progress 600ms linear) {
+  @property --flip-progress {
+    syntax: '<number>';
+    inherits: false;
+    initial-value: 0;
+  }
+}
+
+.flip {
+  @include flip-mixin.flip-root;
+
+  &[data-flip-trigger='click'],
+  &[data-trigger='click'] {
+    cursor: pointer;
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+    border-radius: 0.25rem;
+  }
+
+  &[data-flip-motion='expressive'],
+  &[data-motion='expressive'] {
+    --flip-run: calc(var(--flip-duration) * #{flip.$flip-expressive-duration-factor});
+    --flip-ease: #{flip.$flip-ease-expressive};
+  }
+
+  @supports (transition-timing-function: linear(0, 1)) {
+    &[data-flip-motion='expressive'],
+    &[data-motion='expressive'] {
+      --flip-ease: linear(
+        0, 0.402 7.4%, 0.883 15.9%, 1.02, 1.108 23.4%, 1.132, 1.129 32.8%,
+        1.086 39.3%, 1.011 48.4%, 0.98 55%, 0.982 66%, 1.001 85%, 1
+      );
+    }
+  }
+}
+
+.flip__inner {
+  @include flip-mixin.flip-inner;
+}
+
+.flip__face {
+  @include flip-mixin.flip-face;
+
+  > .card {
+    height: 100%;
+    overflow: visible;
+  }
+}
+
+// --- Axe Y : pivot vertical (retournement gauche / droite) ---
+.flip--axis-y,
+.flip[data-flip-axis='y'],
+.flip[data-axis='y'] {
+  .flip__face--back {
+    @include flip-mixin.flip-axis-y-back;
+  }
+
+  @include flip-mixin.flip-hover-active {
+    > .flip__inner {
+      @include flip-mixin.flip-axis-y-active-inner;
+    }
+  }
+}
+
+// --- Axe X : pivot horizontal (retournement haut / bas) ---
+.flip--axis-x,
+.flip[data-flip-axis='x'],
+.flip[data-axis='x'] {
+  .flip__face--back {
+    @include flip-mixin.flip-axis-x-back;
+  }
+
+  @include flip-mixin.flip-hover-active {
+    > .flip__inner {
+      @include flip-mixin.flip-axis-x-active-inner;
+    }
+  }
+}
+
+// --- Overshoot expressive via --flip-progress ---
+@supports (transition: --flip-progress 600ms linear) {
+  .flip__inner {
+    @include flip-mixin.flip-inner-progress;
+  }
+
+  .flip--axis-y,
+  .flip[data-flip-axis='y'],
+  .flip[data-axis='y'] {
+    .flip__inner {
+      transform: rotateY(calc(var(--flip-progress) * 180deg));
+    }
+
+    @include flip-mixin.flip-hover-active {
+      > .flip__inner {
+        @include flip-mixin.flip-axis-y-active-inner-progress;
+      }
+    }
+  }
+
+  .flip--axis-x,
+  .flip[data-flip-axis='x'],
+  .flip[data-axis='x'] {
+    .flip__inner {
+      transform: rotateX(calc(var(--flip-progress) * 180deg));
+    }
+
+    @include flip-mixin.flip-hover-active {
+      > .flip__inner {
+        @include flip-mixin.flip-axis-x-active-inner-progress;
+      }
+    }
+  }
+}
+
+@include flip-mixin.flip-reduced-motion;
+
+html.k3ui-reduced-motion .flip__inner {
+  transition: none;
+}

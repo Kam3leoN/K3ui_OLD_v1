@@ -1,0 +1,119 @@
+/**
+ * @fileoverview Mixins pour ListMaker
+ * @description Mixins réutilisables — pill XS narrow + rotation horizontal
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/list-maker.token' as lm;
+
+/**
+ * Racine ListMaker (liste flex colonne)
+ */
+@mixin list-maker-root {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--list-maker-row, 4px);
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+/**
+ * Variante filled (primary / on-primary)
+ */
+@mixin list-maker-variant-filled {
+  --list-maker-marker-bg: #{lm.$list-maker-marker-bg-filled};
+  --list-maker-marker-fg: #{lm.$list-maker-marker-fg-filled};
+  --list-maker-text: #{lm.$list-maker-body-color};
+}
+
+/**
+ * Variante tonal (primary-container)
+ */
+@mixin list-maker-variant-tonal {
+  --list-maker-marker-bg: #{lm.$list-maker-marker-bg-tonal};
+  --list-maker-marker-fg: #{lm.$list-maker-marker-fg-tonal};
+  --list-maker-text: #{lm.$list-maker-body-color};
+}
+
+/**
+ * Ligne d’item (marqueur + corps)
+ */
+@mixin list-maker-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--list-maker-gap, 16px);
+  box-sizing: border-box;
+}
+
+/**
+ * Emplacement layout du marqueur (AABB si rotation)
+ */
+@mixin list-maker-marker-wrap {
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  width: var(--list-maker-slot-w, var(--list-maker-w, #{lm.$list-maker-marker-width}));
+  height: var(--list-maker-slot-h, var(--list-maker-h, #{lm.$list-maker-marker-height}));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/**
+ * Pill marqueur = ButtonIcon XS narrow (28×48 fixe)
+ */
+@mixin list-maker-marker {
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  width: var(--list-maker-w, #{lm.$list-maker-marker-width});
+  min-width: var(--list-maker-w, #{lm.$list-maker-marker-width});
+  max-width: var(--list-maker-w, #{lm.$list-maker-marker-width});
+  height: var(--list-maker-h, #{lm.$list-maker-marker-height});
+  min-height: var(--list-maker-h, #{lm.$list-maker-marker-height});
+  max-height: var(--list-maker-h, #{lm.$list-maker-marker-height});
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: lm.$list-maker-marker-radius;
+  background: var(--list-maker-marker-bg);
+  color: var(--list-maker-marker-fg);
+  user-select: none;
+  transform: rotate(var(--list-maker-rotate, 0deg));
+  transform-origin: center center;
+  transition:
+    background-color lm.$list-maker-transition-duration lm.$list-maker-transition-easing,
+    color lm.$list-maker-transition-duration lm.$list-maker-transition-easing,
+    transform lm.$list-maker-transition-duration lm.$list-maker-transition-easing;
+}
+
+/**
+ * Libellé dans le pill — contre-rotation pour rester lisible en horizontal
+ */
+@mixin list-maker-marker-label {
+  font-size: var(--list-maker-fs, #{lm.$list-maker-marker-font-size});
+  font-weight: lm.$list-maker-marker-font-weight;
+  line-height: 1;
+  letter-spacing: lm.$list-maker-marker-letter-spacing;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  transform: rotate(var(--list-maker-label-rotate, 0deg));
+  transform-origin: center center;
+}
+
+/**
+ * Corps de l’item (première ligne centrée via overhang sur le slot)
+ */
+@mixin list-maker-body {
+  min-width: 0;
+  padding-top: var(--list-maker-overhang, 0px);
+  color: var(--list-maker-text);
+  font-size: var(--list-maker-label, 15.4px);
+  line-height: lm.$list-maker-body-line-height;
+  letter-spacing: lm.$list-maker-body-letter-spacing;
+}

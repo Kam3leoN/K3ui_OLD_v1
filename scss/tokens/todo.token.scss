@@ -1,0 +1,64 @@
+/// @file todo.token.scss
+/// @brief Tokens todo Material 3
+
+@use './radius.token' as radius;
+@use './motion.token' as motion;
+@use './spacing.token' as spacing;
+@use './elevation.token' as elevation;
+
+// Dimensions du composant Todo selon Material Design 3
+// Container width: max-width 600dp (selon les specs MD3)
+$md-sys-todo-container-max-width: 600px;
+
+// Container padding
+$md-sys-todo-container-padding: 16px;
+
+// Item height: 56dp (selon les specs MD3)
+$md-sys-todo-item-height: 56px;
+
+// Item padding horizontal
+$md-sys-todo-item-padding-x: 12px;
+
+// Item padding vertical
+$md-sys-todo-item-padding-y: 8px;
+
+// Item gap (espace entre checkbox et texte)
+$md-sys-todo-item-gap: 12px;
+
+// Input height
+$md-sys-todo-input-height: 56px;
+
+// Input padding
+$md-sys-todo-input-padding: 12px;
+
+// Footer height
+$md-sys-todo-footer-height: 48px;
+
+// Footer padding
+$md-sys-todo-footer-padding: 8px;
+
+// Filter button gap
+$md-sys-todo-filter-gap: 4px;
+
+// Border radius
+$md-sys-todo-border-radius: radius.$md-sys-shape-corner-medium; // 12px
+
+// Item border radius
+$md-sys-todo-item-border-radius: radius.$md-sys-shape-corner-small; // 8px
+
+// Durées de transition (Material Design 3)
+$md-sys-todo-transition-duration: motion.$md-sys-motion-duration-standard; // 250ms
+$md-sys-todo-transition-easing: motion.$md-sys-motion-easing-standard; // cubic-bezier(0.2, 0, 0, 1)
+
+// Élévation
+$md-sys-todo-container-elevation: 1;
+
+// Opacités pour les états
+$md-sys-todo-item-opacity-completed: 0.6;
+$md-sys-todo-item-opacity-disabled: 0.38;
+
+// State layer opacity
+$md-sys-todo-item-state-layer-opacity-hover: 0.08;
+$md-sys-todo-item-state-layer-opacity-focus: 0.12;
+$md-sys-todo-item-state-layer-opacity-pressed: 0.12;
+

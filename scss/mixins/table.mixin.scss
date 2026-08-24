@@ -1,0 +1,569 @@
+/**
+ * @fileoverview Mixins Table Material Design 3 Expressive
+ * @description Mixins réutilisables pour les tables de données
+ * @see https://m3.material.io/components/data-tables/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use '../tokens/table.token' as table;
+@use '../tokens/motion.token' as motion;
+@use '../mixins/motion.mixin' as motionmix;
+@use '../tokens/state.token' as state;
+@use '../tokens/elevation.token' as elevation;
+
+// =============================================================================
+// MIXINS TABLE - MATERIAL DESIGN 3 EXPRESSIVE
+// =============================================================================
+
+/**
+ * Mixin de base pour toutes les tables
+ */
+@mixin table-base {
+  width: 100%;
+  min-width: table.$md-sys-table-min-width;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: table.$md-sys-table-surface;
+  color: table.$md-sys-table-on-surface;
+  font-family: table.$md-sys-table-font-family;
+  font-size: table.$md-sys-table-font-size;
+  font-weight: table.$md-sys-table-font-weight;
+  line-height: table.$md-sys-table-line-height;
+  letter-spacing: table.$md-sys-table-letter-spacing;
+  border-radius: table.$md-sys-table-border-radius;
+  overflow: hidden;
+}
+
+/**
+ * Mixin pour les en-têtes de table
+ * @param {string} $density - Densité (compact, standard, comfortable)
+ */
+@mixin table-header($density: 'standard') {
+  background-color: table.$md-sys-table-header-surface;
+  color: table.$md-sys-table-header-on-surface;
+  font-family: table.$md-sys-table-header-font-family;
+  font-size: table.$md-sys-table-header-font-size;
+  font-weight: table.$md-sys-table-header-font-weight;
+  line-height: table.$md-sys-table-header-line-height;
+  letter-spacing: table.$md-sys-table-header-letter-spacing;
+  text-align: left;
+  vertical-align: middle;
+  position: relative;
+  z-index: table.$md-sys-table-header-z-index;
+
+  @if $density == 'compact' {
+    min-height: table.$md-sys-table-header-height-compact;
+    padding: table.$md-sys-table-cell-padding-compact table.$md-sys-table-cell-padding-horizontal;
+  } @else if $density == 'comfortable' {
+    min-height: table.$md-sys-table-header-height-comfortable;
+    padding: table.$md-sys-table-cell-padding-comfortable table.$md-sys-table-cell-padding-horizontal;
+  } @else {
+    min-height: table.$md-sys-table-header-height-standard;
+    padding: table.$md-sys-table-cell-padding-vertical table.$md-sys-table-cell-padding-horizontal;
+  }
+
+  // Bordure inférieure
+  border-bottom: table.$md-sys-table-divider-width solid table.$md-sys-table-divider;
+
+  // Support du tri
+  &.table__header--sortable {
+    cursor: pointer;
+    user-select: none;
+    // Pas de changement de couleur au hover pour le thead
+
+    &:focus-visible {
+      outline: 2px solid var(--md-sys-color-primary);
+      outline-offset: -2px;
+    }
+  }
+
+  // Icône de tri
+  .table__sort-icon {
+    display: inline-flex;
+    align-items: center;
+    margin-left: table.$md-sys-table-sort-icon-spacing;
+    width: table.$md-sys-table-sort-icon-size;
+    height: table.$md-sys-table-sort-icon-size;
+    opacity: 0.5;
+    transition: opacity table.$md-sys-table-transition-duration table.$md-sys-table-transition-timing;
+
+    &.table__sort-icon--active {
+      opacity: 1;
+    }
+
+    &.table__sort-icon--asc {
+      transform: rotate(0deg);
+    }
+
+    &.table__sort-icon--desc {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+/**
+ * Mixin pour les cellules de table
+ * @param {string} $density - Densité (compact, standard, comfortable)
+ */
+@mixin table-cell($density: 'standard') {
+  min-width: table.$md-sys-table-cell-min-width;
+  vertical-align: middle;
+  position: relative;
+
+  @if $density == 'compact' {
+    min-height: table.$md-sys-table-row-height-compact;
+    padding: table.$md-sys-table-cell-padding-compact table.$md-sys-table-cell-padding-horizontal;
+  } @else if $density == 'comfortable' {
+    min-height: table.$md-sys-table-row-height-comfortable;
+    padding: table.$md-sys-table-cell-padding-comfortable table.$md-sys-table-cell-padding-horizontal;
+  } @else {
+    min-height: table.$md-sys-table-row-height-standard;
+    padding: table.$md-sys-table-cell-padding-vertical table.$md-sys-table-cell-padding-horizontal;
+  }
+
+  // Bordure inférieure
+  border-bottom: table.$md-sys-table-divider-width solid table.$md-sys-table-divider;
+}
+
+/**
+ * Mixin pour les lignes de table
+ */
+@mixin table-row {
+  transition: background-color table.$md-sys-table-transition-duration table.$md-sys-table-transition-timing;
+  position: relative;
+
+  // État hover (léger, sans surcharge colorée)
+  &:hover:not(.table__row--section) {
+    background-color: var(--md-sys-color-surface-container-high, #ece6f0);
+  }
+
+  // État focus
+  &:focus-within {
+    background-color: rgba(var(--md-sys-color-primary-rgb), table.$md-sys-table-focus-state-layer-opacity);
+  }
+
+  // État sélectionné
+  &.table__row--selected {
+    background-color: table.$md-sys-table-row-selected;
+    color: table.$md-sys-table-row-selected-on;
+
+    &:hover {
+      background-color: rgba(var(--md-sys-color-primary-rgb), table.$md-sys-table-selected-state-layer-opacity);
+    }
+  }
+
+  // État désactivé
+  &.table__row--disabled {
+    opacity: table.$md-sys-table-disabled-opacity;
+    pointer-events: none;
+  }
+
+  // Dernière ligne sans bordure
+  &:last-child {
+    .table__cell {
+      border-bottom: none;
+    }
+  }
+}
+
+/**
+ * Mixin pour les lignes de section / catégorie (niveau intermédiaire)
+ */
+@mixin table-section-row {
+  background-color: table.$md-sys-table-section-surface;
+  color: table.$md-sys-table-section-on-surface;
+  font-weight: table.$md-sys-table-header-font-weight;
+
+  td,
+  th {
+    background-color: table.$md-sys-table-section-surface;
+    color: table.$md-sys-table-section-on-surface;
+    font-weight: table.$md-sys-table-header-font-weight;
+    border-bottom-color: table.$md-sys-table-divider;
+  }
+
+  &:hover {
+    background-color: table.$md-sys-table-section-surface;
+  }
+}
+
+/**
+ * Mixin pour les tableaux avec en-têtes fixes (sticky)
+ */
+@mixin table-sticky-header {
+  thead {
+    position: sticky;
+    top: 0;
+    z-index: table.$md-sys-table-sticky-header-z-index;
+
+    th {
+      background-color: table.$md-sys-table-header-surface;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+/**
+ * Mixin pour les tableaux avec bordures
+ */
+@mixin table-bordered {
+  border: table.$md-sys-table-border-width solid table.$md-sys-table-border;
+
+  th,
+  td {
+    border-right: table.$md-sys-table-divider-width solid table.$md-sys-table-divider;
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+}
+
+/**
+ * Mixin pour les tableaux avec lignes alternées (zebra)
+ */
+@mixin table-striped {
+  tbody {
+    tr:nth-child(even) {
+      background-color: var(--md-sys-color-surface-container, #f5f5f5);
+
+      &:hover {
+        background-color: var(--md-sys-color-surface-container-high, #ece6f0);
+      }
+
+      &.table__row--selected {
+        background-color: table.$md-sys-table-row-selected;
+      }
+    }
+  }
+}
+
+/**
+ * Mixin pour les tableaux compacts
+ */
+@mixin table-compact {
+  th,
+  td {
+    @include table-cell('compact');
+  }
+}
+
+/**
+ * Mixin pour les tableaux confortables
+ */
+@mixin table-comfortable {
+  th,
+  td {
+    @include table-cell('comfortable');
+  }
+}
+
+/**
+ * Mixin pour les tableaux hoverables (lignes cliquables)
+ */
+@mixin table-hoverable {
+  tbody {
+    tr {
+      cursor: pointer;
+      @include motionmix.transition-table(
+        table.$md-sys-table-transition-duration,
+        table.$md-sys-table-transition-timing
+      );
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: elevation.$md-sys-elevation-level1;
+      }
+
+      &:active {
+        transform: translateY(0);
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+/**
+ * Mixin pour les tableaux avec alignement du texte
+ * @param {string} $align - Alignement (left, center, right)
+ */
+@mixin table-text-align($align: 'left') {
+  text-align: $align;
+
+  th,
+  td {
+    text-align: $align;
+  }
+}
+
+/**
+ * Mixin pour les tableaux responsive
+ */
+@mixin table-responsive {
+  @media (max-width: table.$md-sys-table-breakpoint-mobile) {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+
+    thead,
+    tbody,
+    tr,
+    th,
+    td {
+      display: block;
+    }
+
+    thead {
+      display: none;
+    }
+
+    tr {
+      border: table.$md-sys-table-border-width solid table.$md-sys-table-border;
+      border-radius: table.$md-sys-table-border-radius;
+      margin-bottom: var(--md-sys-spacing-md, 16px);
+      padding: var(--md-sys-spacing-sm, 12px);
+    }
+
+    td {
+      border: none;
+      border-bottom: table.$md-sys-table-divider-width solid table.$md-sys-table-divider;
+      padding: var(--md-sys-spacing-xs, 8px) 0;
+      text-align: right;
+      position: relative;
+      padding-left: 50%;
+
+      &::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 45%;
+        padding-right: var(--md-sys-spacing-sm, 8px);
+        text-align: left;
+        font-weight: table.$md-sys-table-header-font-weight;
+        color: table.$md-sys-table-header-on-surface;
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+/**
+ * Mixin pour les tableaux avec pagination
+ */
+@mixin table-pagination {
+  .table__pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: table.$md-sys-table-pagination-height;
+    padding: 0 table.$md-sys-table-pagination-padding;
+    background-color: table.$md-sys-table-surface;
+    border-top: table.$md-sys-table-divider-width solid table.$md-sys-table-divider;
+  }
+}
+
+/**
+ * Mixin pour les tableaux avec filtres
+ */
+@mixin table-filters {
+  .table__filters {
+    display: flex;
+    align-items: center;
+    gap: var(--md-sys-spacing-sm, 8px);
+    height: table.$md-sys-table-filter-height;
+    padding: 0 table.$md-sys-table-filter-padding;
+    background-color: table.$md-sys-table-surface-container;
+    border-bottom: table.$md-sys-table-divider-width solid table.$md-sys-table-divider;
+  }
+}
+
+/**
+ * Mixin pour les tableaux avec actions de ligne
+ */
+@mixin table-row-actions {
+  .table__row-actions {
+    display: flex;
+    align-items: center;
+    gap: table.$md-sys-table-action-icon-spacing;
+    opacity: 0;
+    transition: opacity table.$md-sys-table-transition-duration table.$md-sys-table-transition-timing;
+
+    .table__row:hover &,
+    .table__row:focus-within & {
+      opacity: 1;
+    }
+  }
+
+  .table__action-icon {
+    width: table.$md-sys-table-action-icon-size;
+    height: table.$md-sys-table-action-icon-size;
+    cursor: pointer;
+    color: table.$md-sys-table-on-surface-variant;
+    transition: color table.$md-sys-table-transition-duration table.$md-sys-table-transition-timing;
+
+    &:hover {
+      color: var(--md-sys-color-primary);
+    }
+  }
+}
+
+/**
+ * Mixin pour les tableaux avec cases à cocher de sélection
+ */
+@mixin table-selection {
+  .table__checkbox {
+    width: table.$md-sys-table-checkbox-size;
+    height: table.$md-sys-table-checkbox-size;
+    margin-right: table.$md-sys-table-checkbox-spacing;
+  }
+}
+
+/**
+ * Mixin pour les headers personnalisés (au-dessus de la table)
+ */
+@mixin table-custom-header {
+  .table__header-custom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: table.$md-sys-table-header-height;
+    padding: 0 table.$md-sys-table-header-padding;
+    background-color: table.$md-sys-table-header-background;
+    color: table.$md-sys-table-header-on-background;
+    border-radius: table.$md-sys-table-border-radius table.$md-sys-table-border-radius 0 0;
+    font-family: table.$md-sys-table-header-font-family;
+    font-size: table.$md-sys-table-header-font-size;
+    font-weight: table.$md-sys-table-header-font-weight;
+    line-height: table.$md-sys-table-header-line-height;
+
+    .table__header-title {
+      display: flex;
+      align-items: center;
+      gap: var(--md-sys-spacing-sm, 8px);
+      margin: 0;
+      font-size: var(--md-sys-typescale-title-medium-font-size, 16px);
+      font-weight: var(--md-sys-typescale-title-medium-font-weight, 500);
+    }
+
+    .table__header-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--md-sys-spacing-xs, 4px);
+
+      // Action discrète dans la barre — pas de bouton filled proéminent
+      .btn,
+      .btn-icon,
+      .btn--icon {
+        flex-shrink: 0;
+      }
+
+      .btn--filled,
+      .btn-icon--filled,
+      .btn-icon--tonal,
+      .btn--tonal {
+        color: table.$md-sys-table-toolbar-on-surface;
+        background-color: rgba(var(--table-toolbar-on-rgb, var(--md-sys-color-inverse-on-surface-rgb)), 0.12);
+        box-shadow: none;
+
+        &:hover {
+          background-color: rgba(var(--table-toolbar-on-rgb, var(--md-sys-color-inverse-on-surface-rgb)), 0.16);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Mixin pour les footers personnalisés (sous la table)
+ */
+@mixin table-custom-footer {
+  .table__footer-custom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: table.$md-sys-table-footer-height;
+    padding: 0 table.$md-sys-table-footer-padding;
+    background-color: table.$md-sys-table-footer-background;
+    color: table.$md-sys-table-footer-on-background;
+    border-radius: 0 0 table.$md-sys-table-border-radius table.$md-sys-table-border-radius;
+    border-top: table.$md-sys-table-divider-width solid table.$md-sys-table-divider;
+    font-size: table.$md-sys-table-font-size;
+  }
+
+  // Styles pour tfoot
+  tfoot {
+    tr {
+      background-color: table.$md-sys-table-footer-background;
+    }
+
+    td,
+    th {
+      background-color: table.$md-sys-table-footer-background;
+      color: table.$md-sys-table-footer-on-background;
+      font-weight: table.$md-sys-table-header-font-weight;
+      border-top: table.$md-sys-table-divider-width solid table.$md-sys-table-divider;
+    }
+
+    tr:last-child {
+      td:first-child {
+        border-bottom-left-radius: table.$md-sys-table-border-radius;
+      }
+
+      td:last-child {
+        border-bottom-right-radius: table.$md-sys-table-border-radius;
+      }
+    }
+  }
+}
+
+/**
+ * Mixin pour les coins arrondis Material Design 3 Expressive
+ */
+@mixin table-expressive-radius {
+  // Coins arrondis sur le premier et dernier th du thead
+  thead {
+    tr:first-child {
+      th:first-child {
+        border-top-left-radius: table.$md-sys-table-border-radius;
+      }
+
+      th:last-child {
+        border-top-right-radius: table.$md-sys-table-border-radius;
+      }
+    }
+  }
+
+  // Coins arrondis sur le premier et dernier td du tbody (UNIQUEMENT si pas de tfoot)
+  tbody:not(:has(+ tfoot)) {
+    tr:last-child {
+      td:first-child {
+        border-bottom-left-radius: table.$md-sys-table-border-radius;
+      }
+
+      td:last-child {
+        border-bottom-right-radius: table.$md-sys-table-border-radius;
+      }
+    }
+  }
+
+  // Si tfoot existe, les coins arrondis sont UNIQUEMENT sur tfoot (pas sur tbody)
+  tfoot {
+    tr:last-child {
+      td:first-child,
+      th:first-child {
+        border-bottom-left-radius: table.$md-sys-table-border-radius;
+      }
+
+      td:last-child,
+      th:last-child {
+        border-bottom-right-radius: table.$md-sys-table-border-radius;
+      }
+    }
+  }
+}
+

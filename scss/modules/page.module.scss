@@ -1,0 +1,164 @@
+/**
+ * @fileoverview Module Page
+ * @description Empilement plein écran de sections (pagePiling)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/page.token' as page;
+@use '../mixins/page.mixin' as page-mixin;
+
+html.page-scroll-lock,
+html.page-scroll-lock body {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+html.page-scroll-lock .k3ui-footer__viewport {
+  overflow: hidden;
+}
+
+.page {
+  @include page-mixin.page-container;
+}
+
+.page--fullscreen {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  z-index: page.$page-z-index-fullscreen;
+}
+
+body.k3ui-footer .page--fullscreen {
+  top: 4rem;
+  bottom: 0;
+  height: auto;
+}
+
+html.page-scroll-lock .page-footer,
+html.page-scroll-lock .scrolltotop {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.page__section {
+  @include page-mixin.page-section;
+}
+
+.page__section--easing {
+  @include page-mixin.page-section-easing;
+}
+
+.page__section--table {
+  display: table;
+}
+
+.page__cell {
+  display: table-cell;
+  vertical-align: middle;
+  width: 100%;
+  height: 100%;
+}
+
+.page__section--scrollable {
+  overflow-y: auto;
+  height: 100%;
+}
+
+.page__nav {
+  position: fixed;
+  z-index: page.$page-nav-z-index;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 1;
+
+  &--right {
+    right: page.$page-nav-offset;
+  }
+
+  &--left {
+    left: page.$page-nav-offset;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: block;
+    width: page.$page-nav-item-size;
+    height: page.$page-nav-item-size;
+    margin: page.$page-nav-item-gap 0;
+    position: relative;
+
+    &:has(a:hover),
+    &:has(a:focus-visible) {
+      z-index: 2;
+    }
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 50%;
+    outline-offset: 2px;
+
+    &:focus-visible {
+      outline: 2px solid var(--md-sys-color-primary, #6750a4);
+    }
+
+    &:not(.active):hover span,
+    &:not(.active):focus-visible span {
+      @include page-mixin.page-nav-bullet-hover;
+    }
+
+    &.active span {
+      @include page-mixin.page-nav-bullet-active;
+    }
+
+    &.active:hover span,
+    &.active:focus-visible span {
+      transform: none;
+    }
+  }
+
+  span {
+    @include page-mixin.page-nav-bullet;
+  }
+}
+
+.page__tooltip {
+  @include page-mixin.page-nav-tooltip;
+
+  &--right {
+    right: 20px;
+  }
+
+  &--left {
+    left: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page__section--easing {
+    transition: none;
+  }
+
+  .page__nav a:not(.active):hover span,
+  .page__nav a:not(.active):focus-visible span {
+    transform: none;
+  }
+}

@@ -1,0 +1,54 @@
+/// @file checkbox.token.scss
+/// @brief Tokens checkbox Material 3 Expressive
+
+@use './radius.token' as radius;
+@use './motion.token' as motion;
+@use './spacing.token' as spacing;
+@use './shape.token' as shape;
+
+// Dimensions — Material You Expressive (24dp, ne pas réduire)
+$md-sys-checkbox-container-size: 24px;
+
+// Coins doux expressive
+$md-sys-checkbox-container-corner-shape: 8px;
+
+// Coche SVG (légèrement plus petite que la boîte pour respirer)
+$md-sys-checkbox-icon-size: 18px;
+$md-sys-checkbox-check-stroke-width: 3;
+$md-sys-checkbox-check-dasharray: 24;
+$md-sys-checkbox-dash-width: 12px;
+$md-sys-checkbox-dash-height: 2.5px;
+
+// Rebond à la sélection (animation expressive)
+$md-sys-checkbox-selected-scale: 1.08;
+
+// Target size (touch target): 48dp
+$md-sys-checkbox-target-size: 48px;
+
+// State-layer size: 48dp
+$md-sys-checkbox-state-layer-size: 48px;
+
+// State-layer shape: full corner (circulaire)
+$md-sys-checkbox-state-layer-shape: radius.$md-sys-shape-corner-full;
+
+// Outline (box-shadow inset — 2px net, pas de demi-pixel)
+$md-sys-checkbox-unselected-outline-width: 2px;
+
+// Selected outline width
+$md-sys-checkbox-selected-outline-width: 0px;
+
+// Disabled container opacity
+$md-sys-checkbox-disabled-container-opacity: 0.38;
+
+// Timings M3 Expressive
+$md-sys-checkbox-transition-duration: motion.spring-duration(effects, fast);
+$md-sys-checkbox-transition-easing: motion.spring-easing(effects, fast);
+$md-sys-checkbox-check-draw-duration: 320ms;
+$md-sys-checkbox-check-retract-duration: 300ms;
+$md-sys-checkbox-check-enter-delay: 100ms;
+$md-sys-checkbox-fill-exit-delay: 300ms;
+
+// Opacités pour les états
+$md-sys-checkbox-state-layer-opacity-hover: 0.08;
+$md-sys-checkbox-state-layer-opacity-focus: 0.12;
+$md-sys-checkbox-state-layer-opacity-pressed: 0.12;

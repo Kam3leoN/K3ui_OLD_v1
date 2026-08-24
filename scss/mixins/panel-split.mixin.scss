@@ -1,0 +1,46 @@
+/**
+ * @fileoverview Mixins pour PanelSplit
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/panel-split.token' as split;
+
+/**
+ * Poignée drag M3E (pill)
+ * @param $pill-axis row = pill horizontal (split vertical), column = pill vertical (split horizontal)
+ */
+@mixin panel-split-handle-pill($pill-axis: row) {
+  content: '';
+  border-radius: 999px;
+  background-color: var(--panel-split-handle-color, #{split.$panel-split-handle-color});
+  transition:
+    background-color 200ms cubic-bezier(0.2, 0, 0, 1),
+    width 200ms cubic-bezier(0.42, 1.67, 0.21, 0.9),
+    height 200ms cubic-bezier(0.42, 1.67, 0.21, 0.9);
+
+  @if $pill-axis == row {
+    width: split.$panel-split-handle-length;
+    height: split.$panel-split-handle-thickness;
+  } @else {
+    width: split.$panel-split-handle-thickness;
+    height: split.$panel-split-handle-length;
+  }
+}
+
+/**
+ * Poignée pressée M3E
+ * @param $pill-axis row = pill horizontal, column = pill vertical
+ */
+@mixin panel-split-handle-pill-pressed($pill-axis: row) {
+  border-radius: 8px;
+  background-color: var(--panel-split-handle-pressed-color, #{split.$panel-split-handle-pressed-color});
+
+  @if $pill-axis == row {
+    width: split.$panel-split-handle-pressed-length;
+    height: split.$panel-split-handle-pressed-thickness;
+  } @else {
+    width: split.$panel-split-handle-pressed-thickness;
+    height: split.$panel-split-handle-pressed-length;
+  }
+}

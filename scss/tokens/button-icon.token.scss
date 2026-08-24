@@ -1,0 +1,91 @@
+/**
+ * @fileoverview Tokens pour ButtonIcon (bouton d'action) Material Design 3 Expressive
+ * @description Dimensions default / narrow / wide (capture 1) et target sizes accessibilité (capture 2)
+ * @see https://m3.material.io/components/icon-buttons/specs
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+// ============================================================================
+// DIMENSIONS VISUELLES (Capture 1 — Default / Narrow / Wide)
+// Hauteur de référence → Default (L×H) | Narrow (L×H) | Wide (L×H)
+// 32px → 32×32 | 28×32 | 40×32
+// 40px → 40×40 | 32×40 | 52×40
+// 56px → 56×56 | 48×56 | 72×56
+// 96px → 96×96 | 64×96 | 128×96
+// 136px → 136×136 | 104×136 | 184×136
+//
+// TARGET A11Y (Capture 2) — xs/sm rendus à ≥48dp de hauteur (comme Meet) :
+// narrow / default / wide partagent la MÊME hauteur ; seule la largeur change.
+// Extra small: 48×48 | 28×48 | 40×48
+// Small:      48×48 | 32×48 | 52×48
+// ============================================================================
+//
+// Icon sizes (glyphe à l'intérieur du bouton) :
+//   Icon button xsmall icon size : 20dp
+//   Icon button small icon size  : 24dp
+//   Icon button medium icon size : 24dp
+//   Icon button large icon size  : 32dp
+//   Icon button xlarge icon size : 40dp
+// ============================================================================
+
+// XS - 32px container (rendu a11y → hauteur 48)
+$md-comp-icon-button-xs-icon-size: 1.25rem !default; // 20dp
+$md-comp-icon-button-xs-size: 2rem !default; // 32×32 default
+$md-comp-icon-button-xs-narrow-width: 1.75rem !default;  // 28px
+$md-comp-icon-button-xs-narrow-height: 3rem !default;   // 48px (= target, = hauteur action)
+$md-comp-icon-button-xs-wide-width: 2.5rem !default;    // 40px
+$md-comp-icon-button-xs-wide-height: 3rem !default;    // 48px (= target, = hauteur action)
+
+// SM - 40px container (rendu a11y → hauteur 48)
+$md-comp-icon-button-sm-icon-size: 1.5rem !default; // 24dp
+$md-comp-icon-button-sm-size: 2.5rem !default; // 40×40 default
+$md-comp-icon-button-sm-narrow-width: 2rem !default;    // 32px
+$md-comp-icon-button-sm-narrow-height: 3rem !default; // 48px (= target, = hauteur action)
+$md-comp-icon-button-sm-wide-width: 3.25rem !default;   // 52px
+$md-comp-icon-button-sm-wide-height: 3rem !default;   // 48px (= target, = hauteur action)
+
+// MD - 56px container
+$md-comp-icon-button-md-icon-size: 1.5rem !default; // 24dp
+$md-comp-icon-button-md-size: 3.5rem !default; // 56×56 default
+$md-comp-icon-button-md-narrow-width: 3rem !default;    // 48px
+$md-comp-icon-button-md-narrow-height: 3.5rem !default; // 56px
+$md-comp-icon-button-md-wide-width: 4.5rem !default;     // 72px
+$md-comp-icon-button-md-wide-height: 3.5rem !default;   // 56px
+
+// LG - 96px container
+$md-comp-icon-button-lg-icon-size: 2rem !default; // 32dp
+$md-comp-icon-button-lg-size: 6rem !default; // 96×96 default
+$md-comp-icon-button-lg-narrow-width: 4rem !default;    // 64px
+$md-comp-icon-button-lg-narrow-height: 6rem !default;   // 96px
+$md-comp-icon-button-lg-wide-width: 8rem !default;      // 128px
+$md-comp-icon-button-lg-wide-height: 6rem !default;     // 96px
+
+// XL - 136px container
+$md-comp-icon-button-xl-icon-size: 2.5rem !default; // 40dp
+$md-comp-icon-button-xl-size: 8.5rem !default; // 136×136 default
+$md-comp-icon-button-xl-narrow-width: 6.5rem !default;  // 104px
+$md-comp-icon-button-xl-narrow-height: 8.5rem !default; // 136px
+$md-comp-icon-button-xl-wide-width: 11.5rem !default;    // 184px
+$md-comp-icon-button-xl-wide-height: 8.5rem !default;   // 136px
+
+// ============================================================================
+// TARGET SIZES ACCESSIBILITÉ (Capture 2 — 48×48dp minimum)
+// Extra small / Small : hauteur commune 48dp pour default, narrow et wide
+// Small wide : largeur 52dp × hauteur 48dp
+// ============================================================================
+$md-comp-icon-button-target-min: 3rem !default;      // 48px
+$md-comp-icon-button-sm-wide-target-width: 3.25rem !default; // 52px (SM wide)
+
+/** Gap 3dp entre boutons icône côte à côte (M3 Expressive) */
+$md-sys-icon-button-gap: 3px !default;
+
+// ============================================================================
+// SHAPE — round (défaut) vs square (opt-in .btn-icon--square)
+// @see https://github.com/material-components/material-components-android/blob/master/docs/components/IconButton.md
+// M3 : state-layer-shape = corner-full ; morph au press uniquement pour la variante square.
+// Les boutons texte utilisent pressed 8dp — ne pas réutiliser sur icon-button round.
+// ============================================================================
+
+/** Round : reste circulaire au press (40dp → cercle, pas corner-small 8dp) */
+$md-comp-icon-button-round-pressed-radius: 9999px !default;

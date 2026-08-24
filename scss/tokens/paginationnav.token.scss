@@ -1,0 +1,84 @@
+/**
+ * @fileoverview Tokens de design pour PaginationNav
+ * @description Navigation Précédent/Suivant — surfaces tonales M3 Expressive
+ * @author K3UI Team
+ * @version 2.0.0
+ */
+
+@use 'card.token' as card;
+@use 'motion.token' as motion;
+
+// ============================================================================
+// COULEURS (tonal — secondary-container)
+// ============================================================================
+
+$paginationnav-background: var(--md-sys-color-secondary-container, var(--k3ui-secondary-container, #e8def8));
+$paginationnav-background-hover: var(--md-sys-color-secondary-container-hover, var(--k3ui-secondary-container-hover, #ddd2ed));
+$paginationnav-text-color: var(--md-sys-color-on-secondary-container, var(--k3ui-on-secondary-container, #1d192b));
+$paginationnav-label-color: var(--md-sys-color-on-secondary-container, var(--k3ui-on-secondary-container, #1d192b));
+$paginationnav-icon-color: var(--md-sys-color-on-secondary-container, var(--k3ui-on-secondary-container, #1d192b));
+
+// ============================================================================
+// ESPACEMENTS
+// ============================================================================
+
+$paginationnav-padding-block: 1rem;
+$paginationnav-padding-inline: 1.25rem;
+$paginationnav-padding: $paginationnav-padding-block $paginationnav-padding-inline;
+
+$paginationnav-padding-block-large: 1.25rem;
+$paginationnav-padding-inline-large: 1.5rem;
+$paginationnav-padding-large: $paginationnav-padding-block-large $paginationnav-padding-inline-large;
+
+$paginationnav-gap: 0.75rem;
+$paginationnav-text-gap: 0.25rem;
+$paginationnav-container-gap: 0.75rem;
+
+$paginationnav-icon-size: 24px;
+
+// ============================================================================
+// TYPOGRAPHIE (M3 label-medium / title-large)
+// ============================================================================
+
+$paginationnav-label-font-size: 0.875rem;
+$paginationnav-label-font-weight: 500;
+$paginationnav-label-line-height: 1.25rem;
+$paginationnav-label-letter-spacing: 0.00625em;
+
+$paginationnav-title-font-size: 1.375rem;
+$paginationnav-title-font-weight: 400;
+$paginationnav-title-line-height: 1.75rem;
+
+$paginationnav-title-font-size-large: 1.5rem;
+$paginationnav-title-line-height-large: 2rem;
+
+// ============================================================================
+// FORME M3 EXPRESSIVE
+// ============================================================================
+
+/** Coin large expressif (aligné PanelContent / footer docs 28dp) */
+$paginationnav-border-radius: var(--md-sys-shape-corner-extra-large, 28px);
+
+/** Morph press → pill (hauteur / 2) */
+$paginationnav-min-height: 72px;
+$paginationnav-min-height-large: 88px;
+$paginationnav-pressed-border-radius: calc(var(--paginationnav-item-height, #{$paginationnav-min-height}) / 2);
+$paginationnav-pressed-border-radius-large: calc(var(--paginationnav-item-height, #{$paginationnav-min-height-large}) / 2);
+
+// ============================================================================
+// MOTION
+// ============================================================================
+
+$paginationnav-animation-duration: card.$md-sys-card-transition-duration;
+$paginationnav-animation-easing: card.$md-sys-card-transition-timing;
+$paginationnav-shape-morph-duration: card.$md-comp-card-shape-morph-duration;
+$paginationnav-shape-morph-easing: card.$md-comp-card-shape-morph-easing;
+
+// ============================================================================
+// ÉLÉVATION / Z-INDEX
+// ============================================================================
+
+$paginationnav-elevation: 0;
+$paginationnav-elevation-hover: 0;
+$paginationnav-z-index: 1;
+$paginationnav-z-index-hover: 2;

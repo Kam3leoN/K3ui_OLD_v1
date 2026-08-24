@@ -1,0 +1,511 @@
+/// @file holo.mixin.scss
+/// @brief Mixins Holo — portage fidèle pokemon-cards-151 (@simeydotme, GPL-3.0)
+
+@use './holo.token' as holo;
+
+@mixin holo-container {
+  --card-aspect: #{holo.$holo-aspect};
+  --card-radius: #{holo.$holo-radius};
+  --card-scale: 1;
+  --card-opacity: 0;
+  --pointer-x: 50%;
+  --pointer-y: 50%;
+  --translate-x: 0px;
+  --translate-y: 0px;
+  --rotate-x: 0deg;
+  --rotate-y: 0deg;
+  --rotate-delta: 0deg;
+  --background-x: var(--pointer-x);
+  --background-y: var(--pointer-y);
+  --pointer-from-center: 0;
+  --pointer-from-top: var(--pointer-from-center);
+  --pointer-from-left: var(--pointer-from-center);
+  --mask: none;
+  --foil: none;
+  --glittersize: 25%;
+  --space: 5%;
+  --angle: 133deg;
+  --imgsize: cover;
+  --holo-strength: #{holo.$holo-strength};
+
+  --sunpillar-1: #{holo.$holo-sunpillar-1};
+  --sunpillar-2: #{holo.$holo-sunpillar-2};
+  --sunpillar-3: #{holo.$holo-sunpillar-3};
+  --sunpillar-4: #{holo.$holo-sunpillar-4};
+  --sunpillar-5: #{holo.$holo-sunpillar-5};
+  --sunpillar-6: #{holo.$holo-sunpillar-6};
+  --sunpillar-clr-1: var(--sunpillar-1);
+  --sunpillar-clr-2: var(--sunpillar-2);
+  --sunpillar-clr-3: var(--sunpillar-3);
+  --sunpillar-clr-4: var(--sunpillar-4);
+  --sunpillar-clr-5: var(--sunpillar-5);
+  --sunpillar-clr-6: var(--sunpillar-6);
+  --sunpillar: var(--sunpillar-1) 25%, var(--sunpillar-2), var(--sunpillar-3),
+    var(--sunpillar-4), var(--sunpillar-5), var(--sunpillar-6) 75%;
+  --holo: var(--sunpillar-1), var(--sunpillar-2), var(--sunpillar-3),
+    var(--sunpillar-4), var(--sunpillar-5), var(--sunpillar-6), var(--sunpillar-1);
+
+  display: inline-grid;
+  touch-action: pan-y;
+  isolation: isolate;
+  text-decoration: none;
+  color: inherit;
+  transform: translate3d(0, 0, 0.01px);
+  transform-style: preserve-3d;
+  will-change: transform, visibility, z-index;
+  z-index: calc(var(--card-scale) * 2);
+
+  &,
+  & * {
+    outline: 1px solid transparent;
+  }
+
+  &.holo--interacting {
+    z-index: calc(var(--card-scale) * 120);
+  }
+}
+
+@mixin holo-tilt {
+  display: grid;
+  width: 100%;
+  perspective: 600px;
+  will-change: transform, box-shadow;
+  transform-origin: center;
+  transform-style: preserve-3d;
+  transform: rotateY(var(--rotate-x)) rotateX(var(--rotate-y));
+  pointer-events: auto;
+  aspect-ratio: holo.$holo-aspect;
+  border-radius: holo.$holo-radius;
+}
+
+@mixin holo-content {
+  position: relative;
+  display: grid;
+  grid-area: 1 / 1;
+  width: 100%;
+  aspect-ratio: holo.$holo-aspect;
+  border-radius: holo.$holo-radius;
+  image-rendering: auto;
+  transform-style: preserve-3d;
+  pointer-events: none;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0.01px);
+  backface-visibility: hidden;
+
+  > :not([class^='holo__']) {
+    position: absolute;
+    inset: 0;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: holo.$holo-radius;
+    object-fit: cover;
+    object-position: center center;
+    transform: translate3d(0, 0, 0.01px);
+  }
+}
+
+@mixin holo-shine-glitter-base {
+  grid-area: 1 / 1;
+  display: grid;
+  transform: translateZ(1px);
+  overflow: hidden;
+  z-index: 3;
+  background: transparent;
+  background-size: cover;
+  background-position: center;
+  border-radius: holo.$holo-radius;
+  filter: brightness(0.45) contrast(1.5) saturate(1.2);
+  mix-blend-mode: color-dodge;
+  opacity: var(--card-opacity);
+  pointer-events: none;
+  will-change: transform, opacity, background-image, background-size,
+    background-position, background-blend-mode, filter;
+
+  &::before,
+  &::after {
+    --sunpillar-clr-1: var(--sunpillar-5);
+    --sunpillar-clr-2: var(--sunpillar-6);
+    --sunpillar-clr-3: var(--sunpillar-1);
+    --sunpillar-clr-4: var(--sunpillar-2);
+    --sunpillar-clr-5: var(--sunpillar-3);
+    --sunpillar-clr-6: var(--sunpillar-4);
+    grid-area: 1 / 1;
+    transform: translateZ(1px);
+    border-radius: holo.$holo-radius;
+  }
+
+  &::after {
+    --sunpillar-clr-1: var(--sunpillar-6);
+    --sunpillar-clr-2: var(--sunpillar-1);
+    --sunpillar-clr-3: var(--sunpillar-2);
+    --sunpillar-clr-4: var(--sunpillar-3);
+    --sunpillar-clr-5: var(--sunpillar-4);
+    --sunpillar-clr-6: var(--sunpillar-5);
+    transform: translateZ(1.2px);
+  }
+}
+
+@mixin holo-glare-base {
+  grid-area: 1 / 1;
+  transform: translateZ(1.41px);
+  overflow: hidden;
+  border-radius: holo.$holo-radius;
+  pointer-events: none;
+  background-image: radial-gradient(
+    farthest-corner circle at var(--pointer-x) var(--pointer-y),
+    hsla(0, 0%, 100%, 0.8) 10%,
+    hsla(0, 0%, 100%, 0.65) 20%,
+    hsla(0, 0%, 0%, 0.5) 90%
+  );
+  opacity: var(--card-opacity);
+  mix-blend-mode: overlay;
+  will-change: transform, opacity, background-image, background-size,
+    background-position, background-blend-mode, filter;
+}
+
+@mixin holo-layer-clip-reset {
+  clip-path: none !important;
+  -webkit-clip-path: none !important;
+}
+
+@mixin holo-variant-rayon {
+  .holo__glitter {
+    display: block;
+    background-image:
+      radial-gradient(
+        farthest-corner circle at var(--pointer-x) var(--pointer-y),
+        hsl(295, 100%, 10%) 20%,
+        hsla(183, 84%, 85%, 0.15) 100%
+      ),
+      linear-gradient(var(--angle), var(--sunpillar)),
+      var(--birthday-dank),
+      var(--birthday-dank2);
+    -webkit-mask-image:
+      radial-gradient(
+        farthest-corner circle at var(--pointer-x) var(--pointer-y),
+        transparent 30%,
+        black 100%
+      ),
+      var(--mask);
+    mask-image:
+      radial-gradient(
+        farthest-corner circle at var(--pointer-x) var(--pointer-y),
+        transparent 30%,
+        black 100%
+      ),
+      var(--mask);
+    -webkit-mask-mode: alpha, luminance;
+    mask-mode: alpha, luminance;
+    -webkit-mask-composite: destination-in;
+    mask-composite: intersect;
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    background-size: cover, 500% 500%, 140% 140%, 120% 120%;
+    background-position: center center, var(--pointer-x) var(--pointer-y), center center, center center;
+    background-blend-mode: darken, hue, lighten;
+    mix-blend-mode: hard-light;
+    filter: brightness(2) contrast(0.5) saturate(0.75);
+  }
+
+  .holo__shine {
+    -webkit-mask-image: var(--mask);
+    mask-image: var(--mask);
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    -webkit-mask-position: center center;
+    mask-position: center center;
+
+    &::before,
+    &::after {
+      content: '';
+      --space: 5%;
+      --angle: 133deg;
+      --imgsize: 200px;
+      background-image:
+        var(--grain),
+        repeating-linear-gradient(
+          0deg,
+          var(--sunpillar-clr-1) calc(var(--space) * 1),
+          var(--sunpillar-clr-2) calc(var(--space) * 2),
+          var(--sunpillar-clr-3) calc(var(--space) * 3),
+          var(--sunpillar-clr-4) calc(var(--space) * 4),
+          var(--sunpillar-clr-5) calc(var(--space) * 5),
+          var(--sunpillar-clr-6) calc(var(--space) * 6),
+          var(--sunpillar-clr-1) calc(var(--space) * 7)
+        ),
+        repeating-linear-gradient(
+          var(--angle),
+          #0e1221 0%,
+          hsl(180, 10%, 60%) 2.8%,
+          hsl(180, 20.9%, 82.2%) 3.5%,
+          hsl(180, 10%, 60%) 4.2%,
+          #0e1221 7%,
+          #0e1221 12%
+        ),
+        radial-gradient(
+          farthest-corner circle at var(--pointer-x) var(--pointer-y),
+          hsla(0, 0%, 0%, 0.1) 12%,
+          hsla(0, 0%, 0%, 0.15) 20%,
+          hsla(0, 0%, 0%, 0.25) 120%
+        );
+      background-blend-mode: screen, hue, hard-light;
+      background-size: var(--imgsize) var(--imgsize), 200% 700%, 300% 100%, 200% 100%;
+      background-position: center, 0% var(--background-y), var(--background-x) var(--background-y),
+        var(--background-x) var(--background-y);
+      filter: brightness(1) contrast(1.5) saturate(2);
+      mix-blend-mode: lighten;
+    }
+
+    &::after {
+      background-position: center, 0% var(--background-y),
+        calc(var(--background-x) * -1) calc(var(--background-y) * -1),
+        var(--background-x) var(--background-y);
+      background-size: var(--imgsize) 100%, 200% 400%, 195% 100%, 200% 100%;
+      filter: brightness(1.2) contrast(1) saturate(2);
+      mix-blend-mode: difference;
+    }
+  }
+
+  .holo__glare,
+  .holo__glare2 {
+    background-image: radial-gradient(
+      farthest-corner circle at var(--pointer-x) var(--pointer-y),
+      hsl(0, 0%, 40%) 0%,
+      hsla(210, 3%, 54%, 0.5) 63%,
+      hsla(0, 0%, 30%, 1) 150%
+    );
+    filter: brightness(1.5) contrast(2);
+    mix-blend-mode: color-burn;
+    opacity: calc(var(--card-opacity) * (var(--pointer-from-center) + 0.2));
+    z-index: 4;
+  }
+
+  .holo__glare2 {
+    background-image: radial-gradient(
+      farthest-corner circle at var(--pointer-x) var(--pointer-y),
+      hsl(0, 0%, 90%) 10%,
+      hsla(0, 0%, 20%, 0) 60%
+    );
+    filter: brightness(1) contrast(1.4);
+    mix-blend-mode: lighten;
+    opacity: calc(var(--card-opacity) * var(--pointer-from-center) * 0.66);
+  }
+}
+
+@mixin holo-variant-space {
+  --shift: calc(3px * var(--card-scale));
+  --glitter-size: 150px 150px;
+
+  .holo__shine {
+    filter: brightness(0.6) contrast(1.5) saturate(1);
+
+    &::after {
+      content: '';
+      background-image:
+        linear-gradient(
+          calc((var(--rotate-x) - var(--rotate-delta)) * -0.25),
+          black 24%,
+          #797979 30%,
+          black 36%
+        ),
+        linear-gradient(
+          calc((var(--rotate-x) - var(--rotate-delta)) * 0.25),
+          black 24%,
+          #797979 30%,
+          black 36%
+        );
+      background-position:
+        50% calc(var(--background-y) * 1.7),
+        50% calc(var(--background-y) * -1.3);
+      background-size: 300% 300%;
+      background-blend-mode: exclusion;
+      filter: brightness(1) contrast(0.75) saturate(1);
+      mix-blend-mode: hard-light;
+      z-index: 3;
+    }
+
+    &::before {
+      content: '';
+      background-image: repeating-linear-gradient(
+        15deg,
+        var(--holo),
+        var(--holo),
+        var(--holo)
+      );
+      background-position: center center;
+      background-size: 240% 240%;
+      filter: brightness(1) contrast(0.75) saturate(1);
+      mix-blend-mode: overlay;
+      z-index: 2;
+    }
+  }
+
+  .holo__glitter {
+    display: grid;
+    background-image: var(--iri9);
+    background-size: var(--glitter-size);
+    background-position: center center;
+    background-repeat: repeat;
+    filter: brightness(1) contrast(2) saturate(1.2);
+    mix-blend-mode: plus-lighter;
+    -webkit-mask-image: var(--mask);
+    mask-image: var(--mask);
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    -webkit-mask-position: center center;
+    mask-position: center center;
+    -webkit-mask-mode: luminance;
+    mask-mode: luminance;
+    opacity: calc(var(--card-opacity) * (0.2 + var(--pointer-from-center) * 0.3));
+
+    &::before,
+    &::after {
+      content: '';
+      background-image: var(--iri8);
+      background-size: var(--glitter-size);
+      background-position:
+        calc(50% + (var(--pointer-from-left) * var(--shift)))
+        calc(50% + (var(--pointer-from-top) * var(--shift)));
+      background-repeat: repeat;
+      filter: brightness(2) contrast(1.2) saturate(2);
+      mix-blend-mode: overlay;
+      z-index: 2;
+      opacity: var(--pointer-from-top);
+      -webkit-mask-image: var(--mask);
+      mask-image: var(--mask);
+      -webkit-mask-size: cover;
+      mask-size: cover;
+      -webkit-mask-position: center center;
+      mask-position: center center;
+      -webkit-mask-mode: luminance;
+      mask-mode: luminance;
+    }
+
+    &::after {
+      background-image: var(--iri7);
+      background-position:
+        calc(50% + (var(--pointer-from-left) * var(--shift) * -1))
+        calc(50% + (var(--pointer-from-top) * var(--shift) * -1));
+      z-index: 3;
+      opacity: calc(var(--pointer-from-top) * -1 + 1);
+    }
+  }
+
+  .holo__glare {
+    background-image: radial-gradient(
+      farthest-corner circle at var(--pointer-x) var(--pointer-y),
+      hsl(0, 0%, 80%) 10%,
+      hsl(0, 0%, 50%) 70%
+    );
+    mix-blend-mode: multiply;
+    filter: contrast(1.5);
+  }
+
+  .holo__glare2 {
+    display: block;
+    background: white;
+    -webkit-mask: var(--foil);
+    mask: var(--foil);
+    -webkit-mask-mode: luminance;
+    mask-mode: luminance;
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    mix-blend-mode: overlay;
+    filter: contrast(0.8);
+  }
+}
+
+@mixin holo-variant-rainbow {
+  .holo__shine {
+    --imgsize: cover;
+    --r-clr-1: hsl(0, 57%, 37%);
+    --r-clr-2: hsl(40, 53%, 39%);
+    --r-clr-3: hsl(90, 60%, 35%);
+    --r-clr-4: hsl(180, 60%, 35%);
+    --r-clr-5: hsl(180, 60%, 35%);
+    --r-clr-6: hsl(210, 57%, 39%);
+    --r-clr-7: hsl(280, 55%, 31%);
+    --mask: none;
+    --foil: none;
+    --imgsize: 25% auto;
+
+    background-image:
+      repeating-linear-gradient(
+        var(--angle),
+        hsla(283, 49%, 60%, 0.75) calc(var(--space) * 1),
+        hsla(2, 70%, 58%, 0.75) calc(var(--space) * 2),
+        hsla(53, 67%, 53%, 0.75) calc(var(--space) * 3),
+        hsla(93, 56%, 52%, 0.75) calc(var(--space) * 4),
+        hsla(176, 38%, 50%, 0.75) calc(var(--space) * 5),
+        hsla(228, 100%, 77%, 0.75) calc(var(--space) * 6),
+        hsla(283, 49%, 61%, 0.75) calc(var(--space) * 7)
+      ),
+      var(--glitter),
+      linear-gradient(
+        -30deg,
+        var(--r-clr-1), var(--r-clr-2), var(--r-clr-3), var(--r-clr-4),
+        var(--r-clr-5), var(--r-clr-6), var(--r-clr-7),
+        var(--r-clr-1), var(--r-clr-2), var(--r-clr-3), var(--r-clr-4),
+        var(--r-clr-5), var(--r-clr-6), var(--r-clr-7),
+        var(--r-clr-1), var(--r-clr-2), var(--r-clr-3), var(--r-clr-4),
+        var(--r-clr-5), var(--r-clr-6), var(--r-clr-7),
+        var(--r-clr-1)
+      );
+    background-size: 200% 400%, var(--glittersize) var(--glittersize), 400% 400%;
+    background-position:
+      0% calc(var(--background-y) * 1),
+      center center,
+      calc(var(--background-x) * 1.5) calc(var(--background-y) * 1.5);
+    background-blend-mode: luminosity, overlay;
+    filter: brightness(calc((var(--pointer-from-center) * 0.3) + 0.3)) contrast(3) saturate(1.8);
+
+    &::after {
+      content: '';
+      -webkit-mask-image: none !important;
+      mask-image: none !important;
+      background-image:
+        var(--glitter),
+        linear-gradient(
+          -60deg,
+          var(--r-clr-1), var(--r-clr-2), var(--r-clr-3), var(--r-clr-4),
+          var(--r-clr-5), var(--r-clr-6), var(--r-clr-7),
+          var(--r-clr-1), var(--r-clr-2), var(--r-clr-3), var(--r-clr-4),
+          var(--r-clr-5), var(--r-clr-6), var(--r-clr-7),
+          var(--r-clr-1), var(--r-clr-2), var(--r-clr-3), var(--r-clr-4),
+          var(--r-clr-5), var(--r-clr-6), var(--r-clr-7),
+          var(--r-clr-1)
+        );
+      background-blend-mode: overlay;
+      background-size: var(--glittersize) var(--glittersize), 400% 400%;
+      background-position: center center,
+        calc(var(--background-x) * -1.5) calc(var(--background-y) * -1.5);
+      filter: brightness(calc((var(--pointer-from-center) * 0.5) + 0.6)) contrast(3) saturate(1);
+      mix-blend-mode: color-dodge;
+      opacity: calc(1.2 + (var(--pointer-from-center) / 2) * -1);
+    }
+
+    &::before {
+      content: '';
+      background-image: var(--foil);
+      background-size: var(--imgsize);
+      background-position: center center;
+      filter: brightness(1.5) contrast(1.5);
+      opacity: calc((var(--pointer-from-center) + 0.6) * 0.4);
+      background-blend-mode: difference;
+      mix-blend-mode: color-dodge;
+    }
+  }
+
+  .holo__glare {
+    background-image: radial-gradient(
+      farthest-corner circle at var(--pointer-x) var(--pointer-y),
+      hsla(50, 20%, 90%, 0.75) 0%,
+      hsla(150, 20%, 30%, 0.65) 45%,
+      hsla(0, 0%, 0%, 1) 100%
+    );
+    filter: brightness(0.9) contrast(2);
+    opacity: calc(var(--card-opacity) * 0.75);
+  }
+}

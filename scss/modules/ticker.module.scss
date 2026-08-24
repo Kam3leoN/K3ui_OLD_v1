@@ -1,0 +1,214 @@
+/**
+ * @fileoverview Module Ticker
+ * @description Classes CSS pour l'affichage de cotations / KPI signés
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'sass:map';
+@use '../tokens/ticker.token' as t;
+@use '../mixins/ticker.mixin' as m;
+
+.ticker,
+k3ui-ticker {
+  @include m.ticker-root;
+
+  &.is-up {
+    --ticker-tone: var(--ticker-up);
+  }
+
+  &.is-down {
+    --ticker-tone: var(--ticker-down);
+  }
+
+  &.is-flat {
+    --ticker-tone: var(--ticker-flat);
+  }
+
+  &__label {
+    @include m.ticker-label;
+  }
+
+  &__readout {
+    @include m.ticker-readout;
+  }
+
+  &__value {
+    @include m.ticker-value;
+  }
+
+  &__delta {
+    @include m.ticker-delta;
+
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  &__indicator {
+    @include m.ticker-indicator;
+
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  &.is-flat &__indicator {
+    opacity: 0.65;
+  }
+
+  @each $name, $tokens in t.$ticker-sizes {
+    &--#{$name} {
+      --ticker-value-size: #{map.get($tokens, value)};
+      --ticker-label-size: #{map.get($tokens, label)};
+      --ticker-delta-size: #{map.get($tokens, delta)};
+      --ticker-caret-size: #{map.get($tokens, caret)};
+      --ticker-gap: #{map.get($tokens, gap)};
+    }
+  }
+
+  &--stacked {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: t.$ticker-stacked-gap;
+  }
+
+  &[data-flash] {
+    animation: ticker-flash t.$ticker-flash-duration t.$ticker-flash-easing;
+  }
+}
+
+@keyframes ticker-flash {
+  0% {
+    background-color: color-mix(in srgb, var(--ticker-tone) var(--ticker-flash-tint), transparent);
+    box-shadow: 0 0 0 0.25em color-mix(in srgb, var(--ticker-tone) var(--ticker-flash-tint), transparent);
+  }
+
+  100% {
+    background-color: transparent;
+    box-shadow: 0 0 0 0.25em transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker[data-flash],
+  k3ui-ticker[data-flash] {
+    animation-duration: 1ms;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .ticker,
+  k3ui-ticker {
+    --ticker-up: #0a5c43;
+    --ticker-down: #96261e;
+    --ticker-label: #3a4048;
+  }
+}
+
+// ============================================================================
+// BANDE DÉFILANTE (tape marché)
+// ============================================================================
+
+.ticker-tape {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: t.$ticker-tape-bg;
+  padding: 0.85rem 0;
+
+  &__track {
+    display: flex;
+    width: max-content;
+    gap: t.$ticker-tape-gap;
+    padding-right: t.$ticker-tape-gap;
+    animation: ticker-tape-scroll t.$ticker-tape-duration linear infinite;
+  }
+
+  &:hover &__track,
+  &:focus-within &__track {
+    animation-play-state: paused;
+  }
+
+  .ticker {
+    --ticker-up: #{t.$ticker-tape-up};
+    --ticker-down: #{t.$ticker-tape-down};
+    --ticker-flat: #{t.$ticker-tape-flat};
+    --ticker-label: #{t.$ticker-tape-label};
+    flex-shrink: 0;
+  }
+}
+
+.ticker-board {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  align-items: stretch;
+
+  .card {
+    min-width: 0;
+  }
+
+  .card__content {
+    padding: 1.15rem 1.25rem;
+  }
+
+  .ticker {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .ticker__label,
+  .ticker__value,
+  .ticker__delta {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.ticker-specimens {
+  display: flex;
+  flex-direction: column;
+  background: var(--md-sys-color-surface, #fbfcfa);
+  border: 1px solid var(--md-sys-color-outline-variant, #d2d6cc);
+  border-radius: 0.75rem;
+  overflow: hidden;
+
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    padding: 1rem 1.25rem;
+
+    & + & {
+      border-top: 1px solid var(--md-sys-color-outline-variant, #d2d6cc);
+    }
+
+    code {
+      color: var(--md-sys-color-on-surface-variant, #626a63);
+      font-size: 0.75rem;
+    }
+  }
+}
+
+@keyframes ticker-tape-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-tape__track {
+    animation: none;
+  }
+
+  .ticker-tape {
+    overflow-x: auto;
+  }
+}

@@ -1,0 +1,438 @@
+/**
+ * @fileoverview Mixins pour List
+ * @description Mixins réutilisables pour le composant List
+ * @author K3UI Team
+ * @version 1.0.1
+ */
+
+@use '../tokens/list.token' as list;
+@use '../tokens/motion.token' as motion;
+@use '../tokens/spacing.token' as spacing;
+@use '../mixins/motion.mixin' as motion-mixin;
+@use '../tokens/state.token' as state;
+@use '../tokens/opacity.token' as opacity;
+@use '../mixins/state.mixin' as state-mixin;
+
+/**
+ * Mixin de base pour le composant List (MD3 Expressive)
+ * @param {string} $variant - 'standard' (items espacés 8dp, îlots) ou 'segmented' (items reliés, 0 gap)
+ */
+@mixin list-base($variant: 'standard') {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  @if $variant == 'standard' {
+    background-color: transparent;
+  } @else if $variant != 'segmented' {
+    background-color: var(--md-sys-color-surface);
+  }
+  color: var(--md-sys-color-on-surface);
+
+  @if $variant == 'standard' {
+    gap: list.$list-standard-gap;
+  } @else if $variant == 'segmented' {
+    gap: list.$list-segmented-gap;
+  }
+}
+
+/**
+ * Mixin pour le conteneur des items en mode segmented (MD3 Expressive)
+ * Premier item : haut 12dp, bas 4dp. Dernier : bas 12dp, haut 4dp. Milieu : tous 4dp.
+ * (hover/drag/selected/focused → 16dp tous bords, géré dans le module.)
+ */
+@mixin list-items-segmented() {
+  .list-item:not(.list-item--subheader):not(.subheader):not(.optgroup):not(.list-item--gap) {
+    &:first-child::before {
+      border-top-left-radius: list.$list-segmented-radius-outer !important;
+      border-top-right-radius: list.$list-segmented-radius-outer !important;
+      border-bottom-left-radius: list.$list-segmented-radius-inner !important;
+      border-bottom-right-radius: list.$list-segmented-radius-inner !important;
+    }
+    &:last-child::before {
+      border-bottom-left-radius: list.$list-segmented-radius-outer !important;
+      border-bottom-right-radius: list.$list-segmented-radius-outer !important;
+      border-top-left-radius: list.$list-segmented-radius-inner !important;
+      border-top-right-radius: list.$list-segmented-radius-inner !important;
+    }
+    &:not(:first-child):not(:last-child)::before {
+      border-radius: list.$list-segmented-radius-inner !important;
+    }
+    &:only-child::before {
+      border-radius: list.$list-segmented-radius-outer !important;
+    }
+  }
+}
+
+/**
+ * Mixin pour les items de liste (MD3 Expressive)
+ * z-index: 1 crée un contexte d'empilement ; le ::before (z-index: -1) reste sous le contenu.
+ * @param {boolean} $dense - Si true, applique le mode dense
+ */
+@mixin list-item-base($dense: false) {
+  $item-min-height: list.$list-item-min-height;
+  $item-padding-vertical: list.$list-item-padding-vertical;
+  $item-padding-horizontal: list.$list-item-padding-horizontal;
+
+  @if $dense {
+    $item-min-height: list.$list-item-min-height-dense;
+    $item-padding-vertical: list.$list-item-padding-vertical-dense;
+    $item-padding-horizontal: list.$list-item-padding-horizontal-dense;
+  }
+
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  min-height: $item-min-height;
+  padding: $item-padding-vertical $item-padding-horizontal;
+  cursor: pointer;
+  transition: list.$list-transition, list.$list-selection-transition;
+  user-select: none;
+  outline: none;
+  // Couleur de texte par défaut pour éviter que les items apparaissent gris
+  color: list.$list-item-primary-color;
+}
+
+/**
+ * Mixin pour le contenu d'un item
+ */
+@mixin list-item-content() {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0; // Permet au texte de se tronquer
+}
+
+/**
+ * Mixin pour le leading (icône ou image)
+ */
+@mixin list-item-leading() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-inline-end: list.$list-item-leading-gap;
+}
+
+/**
+ * Mixin pour les icônes leading/trailing (rôle On surface variant)
+ * @param {boolean} $dense - Si true, applique le mode dense
+ */
+@mixin list-item-icon($dense: false) {
+  $icon-size: list.$list-item-icon-size;
+
+  @if $dense {
+    $icon-size: list.$list-item-icon-size-dense;
+  }
+
+  width: $icon-size;
+  height: $icon-size;
+  font-size: $icon-size;
+  color: list.$list-item-icon-color;
+}
+
+/**
+ * Mixin pour les images leading (avatars)
+ * @param {boolean} $dense - Si true, applique le mode dense
+ */
+@mixin list-item-image($dense: false) {
+  $image-size: list.$list-item-image-size;
+
+  @if $dense {
+    $image-size: list.$list-item-image-size-dense;
+  }
+
+  width: $image-size;
+  height: $image-size;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/**
+ * Mixin pour le leading avec fond coloré type avatar/initial (rôles Primary container, On primary container)
+ * @param {boolean} $dense - Si true, applique le mode dense
+ */
+@mixin list-item-leading-container($dense: false) {
+  $container-size: list.$list-item-image-size;
+  $container-icon-size: list.$list-item-icon-size;
+
+  @if $dense {
+    $container-size: list.$list-item-image-size-dense;
+    $container-icon-size: list.$list-item-icon-size-dense;
+  }
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: $container-size;
+  width: $container-size;
+  height: $container-size;
+  border-radius: 50%;
+  background-color: list.$list-item-leading-container-bg;
+  color: list.$list-item-leading-container-color;
+  font-size: $container-icon-size;
+  font-weight: 500;
+}
+
+/**
+ * Mixin pour le texte d'un item
+ */
+@mixin list-item-text() {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0; // Permet au texte de se tronquer
+}
+
+/**
+ * Mixin pour le texte principal
+ */
+@mixin list-item-primary-text() {
+  font-size: list.$list-item-primary-font-size;
+  font-weight: list.$list-item-primary-font-weight;
+  line-height: list.$list-item-primary-line-height;
+  color: list.$list-item-primary-color;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/**
+ * Mixin pour le texte secondaire
+ */
+@mixin list-item-secondary-text() {
+  font-size: list.$list-item-secondary-font-size;
+  font-weight: list.$list-item-secondary-font-weight;
+  line-height: list.$list-item-secondary-line-height;
+  color: list.$list-item-secondary-color;
+  margin-top: spacing.$md-sys-spacing-xs;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/**
+ * Mixin pour le texte tertiaire
+ */
+@mixin list-item-tertiary-text() {
+  font-size: list.$list-item-tertiary-font-size;
+  font-weight: list.$list-item-tertiary-font-weight;
+  line-height: list.$list-item-tertiary-line-height;
+  color: list.$list-item-tertiary-color;
+  margin-top: spacing.$md-sys-spacing-xs;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+/**
+ * Mixin pour l'overline (MD3 — texte au-dessus du headline, label small, uppercase)
+ */
+@mixin list-item-overline() {
+  font-size: list.$list-item-overline-font-size;
+  font-weight: list.$list-item-overline-font-weight;
+  line-height: list.$list-item-overline-line-height;
+  letter-spacing: list.$list-item-overline-letter-spacing;
+  color: list.$list-item-overline-color;
+  text-transform: uppercase;
+  margin-bottom: list.$list-item-overline-margin-bottom;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/**
+ * Mixin pour le meta (MD3 — texte trailing type heure, durée ; body small, simple)
+ */
+@mixin list-item-meta() {
+  font-size: list.$list-item-meta-font-size;
+  font-weight: list.$list-item-meta-font-weight;
+  line-height: list.$list-item-meta-line-height;
+  color: list.$list-item-meta-color;
+  white-space: nowrap;
+}
+
+/**
+ * Mixin pour le trailing (icône) - 16dp left, 24dp right (MD3), 48dp target tactile
+ */
+@mixin list-item-trailing() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-inline-start: list.$list-item-trailing-gap;
+  padding-inline-end: list.$list-item-trailing-right-padding;
+  min-height: list.$list-target-min-size;
+  box-sizing: border-box;
+}
+
+/**
+ * Mixin pour les séparateurs (full-width par défaut)
+ */
+@mixin list-item-divider() {
+  position: absolute;
+  bottom: 0;
+  left: list.$list-divider-margin;
+  right: list.$list-divider-margin;
+  height: list.$list-divider-thickness;
+  background-color: list.$list-divider-color;
+}
+
+/**
+ * Mixin pour les séparateurs avec inset MD3 (16dp left, 24dp right)
+ */
+@mixin list-item-divider-inset() {
+  position: absolute;
+  bottom: list.$list-divider-padding-vertical;
+  left: list.$list-divider-inset-left;
+  right: list.$list-divider-inset-right;
+  height: list.$list-divider-thickness;
+  background-color: list.$list-divider-color;
+}
+
+/**
+ * Mixin pour les états hover (MD3 Expressive)
+ * Ne force pas de border-radius : le contexte (Standard ou Segmented) définit le radius du ::before.
+ */
+@mixin list-item-hover() {
+  &:hover:not(:disabled):not(.list-item--disabled)::before {
+    background-color: list.$list-item-hover-color;
+    // Pas de transition ici : celle du ::before de base assure une transition fluide entrée/sortie (évite le clignotement)
+  }
+}
+
+/**
+ * Mixin pour les états focus
+ */
+@mixin list-item-focus() {
+  @include state-mixin.state-focus(
+    list.$list-item-focus-color,
+    null,
+    null
+  );
+}
+
+/**
+ * Mixin pour les états selected (MD3 Expressive)
+ * Ne force pas de border-radius : le contexte (Standard ou Segmented) définit le radius du ::before.
+ * Texte et icônes utilisent color: inherit pour respecter les contrastes.
+ */
+@mixin list-item-selected() {
+  color: list.$list-item-selected-text-color;
+
+  &::before {
+    background-color: list.$list-item-selected-color;
+    // z-index et transition gérés par le ::before de base (évite clignotement)
+  }
+
+  .list-item__primary-text,
+  .list-item__secondary-text,
+  .list-item__tertiary-text,
+  .list-item__headline,
+  .list-item__supporting-text,
+  .list-item__leading-icon,
+  .list-item__trailing-icon {
+    color: inherit;
+  }
+}
+
+/**
+ * Mixin pour les états disabled
+ */
+@mixin list-item-disabled() {
+  @include state-mixin.state-disabled();
+  background-color: list.$list-item-disabled-color;
+  color: list.$list-item-disabled-text-color;
+  opacity: list.$list-item-disabled-opacity;
+  cursor: not-allowed;
+  pointer-events: none;
+
+  .list-item__primary-text,
+  .list-item__secondary-text,
+  .list-item__tertiary-text,
+  .list-item__headline,
+  .list-item__supporting-text {
+    color: list.$list-item-disabled-text-color;
+    opacity: list.$list-item-disabled-opacity;
+  }
+}
+
+/**
+ * Mixin pour l'état dragging (item en cours de drag — couleur tertiary MD3)
+ */
+@mixin list-item-dragging() {
+  cursor: grabbing;
+  z-index: 1000;
+  background-color: list.$list-item-drag-bg;
+  color: list.$list-item-drag-color;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transform: scale(1.02);
+  transition: transform motion.$md-sys-motion-duration-standard motion.$md-sys-motion-easing-standard;
+
+  .list-item__primary-text,
+  .list-item__secondary-text,
+  .list-item__tertiary-text,
+  .list-item__headline,
+  .list-item__supporting-text,
+  .list-item__leading-icon,
+  .list-item__trailing-icon {
+    color: list.$list-item-drag-color;
+  }
+}
+
+/**
+ * Mixin pour l'état drag-over (item sur lequel on peut déposer)
+ */
+@mixin list-item-drag-over() {
+  background-color: list.$list-item-hover-color;
+  border-top: 2px solid var(--md-sys-color-primary);
+}
+
+/**
+ * Mixin pour le placeholder pendant le drag (couleur tertiary MD3)
+ */
+@mixin list-item-placeholder() {
+  background-color: transparent;
+  border: 2px dashed list.$list-item-placeholder-border;
+  border-radius: list.$list-standard-item-radius;
+  pointer-events: none;
+}
+
+/**
+ * Forme active (survol / focus / sélection) d'un item de liste segmented.
+ * Applique un rayon par coin à TOUTES les couches (conteneur + couches internes :
+ * item-inner, item, state-layer) afin que le state-layer se repeigne correctement
+ * lors du changement de forme au survol (border-radius: inherit n'est pas fiable ici).
+ * @param {length} $top-left - Rayon coin haut-gauche
+ * @param {length} $top-right - Rayon coin haut-droit
+ * @param {length} $bottom-right - Rayon coin bas-droit
+ * @param {length} $bottom-left - Rayon coin bas-gauche
+ */
+@mixin list-item-active-shape($top-left, $top-right, $bottom-right, $bottom-left) {
+  &,
+  .list__item-inner,
+  .list__item,
+  .list__state-layer {
+    border-top-left-radius: $top-left !important;
+    border-top-right-radius: $top-right !important;
+    border-bottom-right-radius: $bottom-right !important;
+    border-bottom-left-radius: $bottom-left !important;
+  }
+}
+
+/**
+ * Mixin pour l'état gap (espacement visible de type "îlot" Material Design 3)
+ */
+@mixin list-item-gap() {
+  margin-bottom: list.$list-item-gap;
+
+  &::before {
+    border-bottom-left-radius: list.$list-item-gap-radius;
+    border-bottom-right-radius: list.$list-item-gap-radius;
+  }
+}

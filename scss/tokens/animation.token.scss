@@ -1,0 +1,107 @@
+/**
+ * Animation Tokens
+ * Définit les tokens pour les animations du système de design
+ * Les courbes redondantes avec le système motion M3 pointent vers motion.token.
+ */
+
+@use 'motion.token' as motion;
+
+// Durées d'animation (alignées M3 Expressive effects quand applicable)
+$animation-duration-fast: 0.15s; // = expressive-effects-fast
+$animation-duration-normal: 0.3s;
+$animation-duration-slow: 0.5s;
+$animation-duration-slower: 1s;
+$animation-duration-slowest: 2s;
+
+// Fonctions d'accélération
+$animation-easing-linear: linear;
+$animation-easing-ease: ease;
+$animation-easing-ease-in: ease-in;
+$animation-easing-ease-out: ease-out;
+$animation-easing-ease-in-out: ease-in-out;
+$animation-easing-cubic-bezier: motion.spring-easing(effects, default);
+$animation-easing-cubic-bezier-smooth: motion.spring-easing(spatial, default);
+$animation-easing-cubic-bezier-ping: motion.spring-easing(effects, fast);
+
+/** Easing spring-like — conversion Web M3 expressive spatial fast */
+$animation-easing-spring-elastic: motion.$md-sys-motion-expressive-spatial-fast-easing !default;
+
+// Délais d'animation
+$animation-delay-none: 0s;
+$animation-delay-fast: 0.1s;
+$animation-delay-normal: 0.2s;
+$animation-delay-slow: 0.5s;
+
+// Itérations d'animation
+$animation-iteration-none: 1;
+$animation-iteration-infinite: infinite;
+
+// Direction d'animation
+$animation-direction-normal: normal;
+$animation-direction-reverse: reverse;
+$animation-direction-alternate: alternate;
+$animation-direction-alternate-reverse: alternate-reverse;
+
+// État de remplissage d'animation
+$animation-fill-mode-none: none;
+$animation-fill-mode-forwards: forwards;
+$animation-fill-mode-backwards: backwards;
+$animation-fill-mode-both: both;
+
+// Valeurs de transformation spécifiques
+$animation-bounce-height: -30px;
+$animation-bounce-height-small: -15px;
+$animation-float-height: 15px;
+$animation-fly-height: 5%;
+$animation-ping-scale: 2;
+$animation-popup-scale-small: 0.8;
+$animation-popup-scale-large: 1.1;
+$animation-popup-scale-medium: 0.9;
+$animation-heartbeat-scale-large: 1.1;
+$animation-heartbeat-scale-small: 0.8;
+$animation-rumble-translate: 3px;
+$animation-rumble-rotate: 1deg;
+$animation-shake-translate: 3px;
+$animation-shake-blur: 4px;
+$animation-shake-skew: -8deg;
+$animation-shaker-skew: 15deg;
+$animation-slide-distance: 2.65vw;
+$animation-slide-distance-up: 4.4vw;
+$animation-spin-rotation: 360deg;
+$animation-spin-rotation-reverse: -360deg;
+
+// Opacités
+$animation-opacity-transparent: 0;
+$animation-opacity-visible: 1;
+$animation-opacity-pulse: 0.5;
+
+// Couleurs pour l'animation gradient
+$animation-gradient-color-1: #ff7356;
+$animation-gradient-color-2: #ff59e2;
+$animation-gradient-color-3: #52ddf6;
+$animation-gradient-color-4: #eadf4e;
+$animation-gradient-position: 200%;
+
+// Valeurs de clip pour l'effet glitch
+$animation-glitch-clip-values: (
+  0%: rect(64px, 9999px, 63px, 0),
+  10%: rect(36px, 9999px, 38px, 0),
+  20%: rect(46px, 9999px, 29px, 0),
+  30%: rect(83px, 9999px, 31px, 0),
+  40%: rect(56px, 9999px, 83px, 0),
+  50%: rect(70px, 9999px, 27px, 0),
+  60%: rect(46px, 9999px, 59px, 0),
+  70%: rect(40px, 9999px, 50px, 0),
+  80%: rect(59px, 9999px, 26px, 0),
+  90%: rect(23px, 9999px, 80px, 0),
+  100%: rect(38px, 9999px, 75px, 0)
+);
+
+// Valeurs de scan
+$animation-scan-height-min: 0;
+$animation-scan-height-max: 1em;
+$animation-scan-line-height: 0.2em;
+$animation-scan-transform-x: -50%;
+$animation-scan-transform-x-offset: -55%;
+$animation-scan-transform-y: 0.44em;
+$animation-scan-transform-y-offset: 0.21em; 

@@ -1,0 +1,82 @@
+/**
+ * @fileoverview Tokens pour ButtonShape Material Design 3 Expressive
+ * @description Pastille + slots shape overhang — métriques dérivées du demo OctagonButton
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+// ============================================================================
+// MÉTRIQUES DE TAILLE (Material 3 Expressive)
+// Shape : sunny | octagonal-circle (défaut sunny).
+// h, pad, icon, font, lh — dérivés :
+//   oct = round(h * 1.3 * 1.1)  // ×1.1 pour couvrir le pill
+//   overhang = round(oct * 0.33)
+//   gap = round(h * 0.28)
+//   inset = oct - overhang + gap
+// ============================================================================
+
+// XS — h:32 pad:12 icon:20 font:14 lh:20 → oct:46 overhang:15 gap:9 inset:40
+$md-comp-button-shape-xs-height: 2rem !default; // 32px
+$md-comp-button-shape-xs-padding-x: 0.75rem !default; // 12px
+$md-comp-button-shape-xs-icon-size: 1.25rem !default; // 20px
+$md-comp-button-shape-xs-font-size: 0.875rem !default; // 14px
+$md-comp-button-shape-xs-line-height: 1.25rem !default; // 20px
+$md-comp-button-shape-xs-oct: 2.875rem !default; // 46px
+$md-comp-button-shape-xs-overhang: 0.9375rem !default; // 15px
+$md-comp-button-shape-xs-gap: 0.5625rem !default; // 9px
+$md-comp-button-shape-xs-inset: 2.5rem !default; // 40px
+
+// SM — h:40 pad:16 icon:20 font:15 lh:20 → oct:57 overhang:19 gap:11 inset:49
+$md-comp-button-shape-sm-height: 2.5rem !default; // 40px
+$md-comp-button-shape-sm-padding-x: 1rem !default; // 16px
+$md-comp-button-shape-sm-icon-size: 1.25rem !default; // 20px
+$md-comp-button-shape-sm-font-size: 0.9375rem !default; // 15px
+$md-comp-button-shape-sm-line-height: 1.25rem !default; // 20px
+$md-comp-button-shape-sm-oct: 3.5625rem !default; // 57px
+$md-comp-button-shape-sm-overhang: 1.1875rem !default; // 19px
+$md-comp-button-shape-sm-gap: 0.6875rem !default; // 11px
+$md-comp-button-shape-sm-inset: 3.0625rem !default; // 49px
+
+// MD — h:56 pad:24 icon:24 font:18 lh:24 → oct:80 overhang:26 gap:16 inset:70
+$md-comp-button-shape-md-height: 3.5rem !default; // 56px
+$md-comp-button-shape-md-padding-x: 1.5rem !default; // 24px
+$md-comp-button-shape-md-icon-size: 1.5rem !default; // 24px
+$md-comp-button-shape-md-font-size: 1.125rem !default; // 18px
+$md-comp-button-shape-md-line-height: 1.5rem !default; // 24px
+$md-comp-button-shape-md-oct: 5rem !default; // 80px
+$md-comp-button-shape-md-overhang: 1.625rem !default; // 26px
+$md-comp-button-shape-md-gap: 1rem !default; // 16px
+$md-comp-button-shape-md-inset: 4.375rem !default; // 70px
+
+// LG — h:96 pad:48 icon:32 font:28 lh:36 → oct:138 overhang:46 gap:27 inset:119
+$md-comp-button-shape-lg-height: 6rem !default; // 96px
+$md-comp-button-shape-lg-padding-x: 3rem !default; // 48px
+$md-comp-button-shape-lg-icon-size: 2rem !default; // 32px
+$md-comp-button-shape-lg-font-size: 1.75rem !default; // 28px
+$md-comp-button-shape-lg-line-height: 2.25rem !default; // 36px
+$md-comp-button-shape-lg-oct: 8.625rem !default; // 138px
+$md-comp-button-shape-lg-overhang: 2.875rem !default; // 46px
+$md-comp-button-shape-lg-gap: 1.6875rem !default; // 27px
+$md-comp-button-shape-lg-inset: 7.4375rem !default; // 119px
+
+// XL — h:136 pad:64 icon:40 font:40 lh:48 → oct:195 overhang:64 gap:38 inset:169
+$md-comp-button-shape-xl-height: 8.5rem !default; // 136px
+$md-comp-button-shape-xl-padding-x: 4rem !default; // 64px
+$md-comp-button-shape-xl-icon-size: 2.5rem !default; // 40px
+$md-comp-button-shape-xl-font-size: 2.5rem !default; // 40px
+$md-comp-button-shape-xl-line-height: 3rem !default; // 48px
+$md-comp-button-shape-xl-oct: 12.1875rem !default; // 195px
+$md-comp-button-shape-xl-overhang: 4rem !default; // 64px
+$md-comp-button-shape-xl-gap: 2.375rem !default; // 38px
+$md-comp-button-shape-xl-inset: 10.5625rem !default; // 169px
+
+/** Rayon pastille au repos — fallback (les tailles utilisent les tokens Button rounded) */
+$md-comp-button-shape-pill-radius: 999px !default;
+
+/** Rayon pressed (morph M3 Expressive — aligné Button rounded) */
+$md-comp-button-shape-pressed-radius: 0.5rem !default; // 8px / corner-small
+
+/** State layer M3 (couleur uniquement) */
+$md-comp-button-shape-state-hover: 0.08 !default;
+$md-comp-button-shape-state-focus: 0.1 !default;
+$md-comp-button-shape-state-pressed: 0.1 !default;

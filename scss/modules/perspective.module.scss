@@ -1,0 +1,797 @@
+/**
+ * @fileoverview Module Perspective (slider 3D)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use "../tokens/perspective.token" as p;
+@use "../tokens/theme.token" as theme;
+@use "../mixins/perspective.mixin" as pm;
+
+// ============================================================================
+// ROOT & TRACK
+// ============================================================================
+
+.perspective {
+  @include pm.perspective-track;
+  overflow: hidden;
+  display: block;
+  background: none;
+  touch-action: manipulation;
+
+  &--draggable {
+    touch-action: none;
+    cursor: grab;
+    &:active {
+      cursor: grabbing;
+    }
+  }
+}
+
+// ============================================================================
+// SLIDES
+// ============================================================================
+
+.perspective__slide {
+  @include pm.perspective-slide;
+  transition-duration: var(--perspective-transition-duration, 0.7s);
+
+  &--inactive {
+    user-select: none;
+    pointer-events: none;
+  }
+
+  &--active {
+    opacity: 1;
+    z-index: 1;
+  }
+}
+
+.perspective__slide-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: var(--md-sys-color-secondary-container, theme.$md-sys-color-secondary-container-light);
+  color: var(--md-sys-color-on-secondary-container, theme.$md-sys-color-on-secondary-container-light);
+}
+
+/* Vignette active : même couleur que le survol des boutons (primary) */
+.perspective__slide--active .perspective__slide-inner {
+  background-color: var(--md-sys-color-primary, theme.$md-sys-color-primary-light);
+  color: var(--md-sys-color-on-primary, theme.$md-sys-color-on-primary-light);
+}
+
+// ============================================================================
+// NAV
+// ============================================================================
+
+.perspective__nav {
+  @include pm.perspective-nav;
+  color: var(--md-sys-color-on-secondary-container, theme.$md-sys-color-on-secondary-container-light);
+  user-select: none;
+  background-color: var(--md-sys-color-secondary-container, theme.$md-sys-color-secondary-container-light);
+  border-radius: 50%;
+  font-size: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+
+  &:hover {
+    background-color: var(--md-sys-color-primary, theme.$md-sys-color-primary-light);
+    color: var(--md-sys-color-on-primary, theme.$md-sys-color-on-primary-light);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  &--prev {
+    left: p.$perspective-nav-offset;
+    &::before {
+      content: "‹";
+    }
+  }
+
+  &--next {
+    right: p.$perspective-nav-offset;
+    &::before {
+      content: "›";
+    }
+  }
+}
+
+// Navigation en mode vertical : haut / bas
+.perspective--vertical .perspective__nav {
+  top: auto;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+
+  &:hover {
+    transform: translateX(-50%) scale(1.1);
+  }
+
+  &--prev {
+    top: p.$perspective-nav-offset;
+    &::before {
+      content: "‹";
+      display: inline-block;
+      transform: rotate(90deg); /* flèche vers le haut = précédent */
+    }
+  }
+
+  &--next {
+    bottom: p.$perspective-nav-offset;
+    top: auto;
+    &::before {
+      content: "›";
+      display: inline-block;
+      transform: rotate(90deg); /* flèche vers le bas = suivant */
+    }
+  }
+}
+
+// ============================================================================
+// INDICATEURS (points de slide)
+// ============================================================================
+
+.perspective__indicators {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  z-index: p.$perspective-z-index-nav;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.perspective--indicators-top .perspective__indicators {
+  top: 1rem;
+  bottom: auto;
+}
+
+.perspective__indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: var(--md-sys-color-secondary-container, theme.$md-sys-color-secondary-container-light);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: var(--md-sys-color-tertiary-container, theme.$md-sys-color-tertiary-container-light);
+  }
+
+  &--active {
+    background: var(--md-sys-color-primary, theme.$md-sys-color-primary-light);
+  }
+}
+
+// ============================================================================
+// SHADOW
+// ============================================================================
+
+.perspective__shadow-wrapper {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  width: 100%;
+  height: 100px;
+}
+
+.perspective__shadow > span {
+  display: block;
+  width: 100%;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  box-shadow: 0 0 200px 50px rgba(0, 0, 0, 0.7);
+  transition: opacity 1.5s;
+  opacity: 0.15;
+  transform: rotateX(95deg) translateZ(30px) scale(0.55);
+  -webkit-transform: rotateX(95deg) translateZ(30px) scale(0.55);
+}
+
+// ============================================================================
+// CANVAS : AUCUN FOND (tous les effets)
+// ============================================================================
+
+.perspective--effect-wave,
+.perspective--effect-coverflow,
+.perspective--effect-carousel,
+.perspective--effect-cube,
+.perspective--effect-classic,
+.perspective--effect-concave,
+.perspective--effect-arc,
+.perspective--effect-spiral-right,
+.perspective--effect-spiral-left {
+  background: none !important;
+}
+
+// Couleurs unifiées pour tous les effets (aucune couleur spécifique wave=vert, classic=rouge, etc.)
+.perspective--effect-wave .perspective__slide-inner,
+.perspective--effect-coverflow .perspective__slide-inner,
+.perspective--effect-carousel .perspective__slide-inner,
+.perspective--effect-cube .perspective__slide-inner,
+.perspective--effect-classic .perspective__slide-inner,
+.perspective--effect-concave .perspective__slide-inner,
+.perspective--effect-arc .perspective__slide-inner,
+.perspective--effect-spiral-right .perspective__slide-inner,
+.perspective--effect-spiral-left .perspective__slide-inner {
+  background-color: var(--md-sys-color-secondary-container, theme.$md-sys-color-secondary-container-light);
+  color: var(--md-sys-color-on-secondary-container, theme.$md-sys-color-on-secondary-container-light);
+}
+
+.perspective--effect-wave .perspective__slide--active .perspective__slide-inner,
+.perspective--effect-coverflow .perspective__slide--active .perspective__slide-inner,
+.perspective--effect-carousel .perspective__slide--active .perspective__slide-inner,
+.perspective--effect-cube .perspective__slide--active .perspective__slide-inner,
+.perspective--effect-classic .perspective__slide--active .perspective__slide-inner,
+.perspective--effect-concave .perspective__slide--active .perspective__slide-inner,
+.perspective--effect-arc .perspective__slide--active .perspective__slide-inner,
+.perspective--effect-spiral-right .perspective__slide--active .perspective__slide-inner,
+.perspective--effect-spiral-left .perspective__slide--active .perspective__slide-inner {
+  background-color: var(--md-sys-color-primary, theme.$md-sys-color-primary-light);
+  color: var(--md-sys-color-on-primary, theme.$md-sys-color-on-primary-light);
+}
+
+// Slides 4 et 5 (numVisible >= 4) : position générique hors écran
+.perspective__slide--before-4,
+.perspective__slide--before-5 {
+  transform: translateX(-450%);
+  opacity: 0.05;
+}
+
+.perspective__slide--after-4,
+.perspective__slide--after-5 {
+  transform: translateX(450%);
+  opacity: 0.05;
+}
+
+// ============================================================================
+// EFFECT: WAVE
+// ============================================================================
+
+.perspective--effect-wave {
+  .perspective__slide--before {
+    transform: translate(-134.7%, 31.6%) rotateZ(-6deg) rotateY(-15deg) scale(0.4);
+    opacity: 0;
+  }
+  .perspective__slide--before-2 {
+    transform: translate(-109.3%, 26.3%) rotateZ(-14deg) rotateY(-40deg) scale(0.55);
+    opacity: 0.3;
+  }
+  .perspective__slide--before-1 {
+    transform: translate(-80%, 14.5%) rotateZ(-11deg) rotateY(-30deg) scale(0.8);
+    opacity: 0.5;
+  }
+  .perspective__slide--after {
+    transform: translate(134.7%, 31.6%) rotateZ(6deg) rotateY(15deg) scale(0.4);
+    opacity: 0;
+  }
+  .perspective__slide--after-1 {
+    transform: translate(80%, 14.5%) rotateZ(11deg) rotateY(30deg) scale(0.8);
+    opacity: 0.5;
+  }
+  .perspective__slide--after-2 {
+    transform: translate(109.3%, 26.3%) rotateZ(14deg) rotateY(40deg) scale(0.55);
+    opacity: 0.3;
+  }
+}
+
+// ============================================================================
+// EFFECT: COVERFLOW
+// ============================================================================
+
+.perspective--effect-coverflow {
+  .perspective__slide--before {
+    transform: translateX(-52.7%) rotateY(45deg) scale(0.6);
+    z-index: 6;
+  }
+  .perspective__slide--before-3 {
+    transform: translateX(-45%) rotateY(45deg) scale(0.6);
+    opacity: 0.1;
+    z-index: 7;
+  }
+  .perspective__slide--before-2 {
+    transform: translateX(-37.1%) rotateY(45deg) scale(0.6);
+    opacity: 0.2;
+    z-index: 8;
+  }
+  .perspective__slide--before-1 {
+    transform: translateX(-29.3%) rotateY(45deg) scale(0.6);
+    opacity: 0.3;
+    z-index: 9;
+  }
+  .perspective__slide--active {
+    z-index: 10;
+  }
+  .perspective__slide--after {
+    transform: translateX(52.7%) rotateY(-45deg) scale(0.6);
+    z-index: 6;
+  }
+  .perspective__slide--after-1 {
+    transform: translateX(29.3%) rotateY(-45deg) scale(0.6);
+    opacity: 0.3;
+    z-index: 9;
+  }
+  .perspective__slide--after-2 {
+    transform: translateX(37.1%) rotateY(-45deg) scale(0.6);
+    opacity: 0.2;
+    z-index: 8;
+  }
+  .perspective__slide--after-3 {
+    transform: translateX(45%) rotateY(-45deg) scale(0.6);
+    opacity: 0.1;
+    z-index: 7;
+  }
+}
+
+// ============================================================================
+// EFFECT: CAROUSEL
+// ============================================================================
+
+.perspective--effect-carousel {
+  .perspective__slide--before {
+    transform: translateX(-191.4%) rotateY(-72deg) translateX(-252%);
+    opacity: 0;
+  }
+  .perspective__slide--before-2 {
+    transform: translateX(-590px) rotateY(-52deg) translateX(-152.3%);
+    opacity: 0.3;
+  }
+  .perspective__slide--before-1 {
+    transform: translateX(-52.7%) rotateY(-30deg) translateX(-56.6%);
+    opacity: 0.5;
+  }
+  .perspective__slide--after {
+    transform: translateX(191.4%) rotateY(72deg) translateX(252%);
+    opacity: 0;
+  }
+  .perspective__slide--after-1 {
+    transform: translateX(52.7%) rotateY(30deg) translateX(56.6%);
+    opacity: 0.5;
+  }
+  .perspective__slide--after-2 {
+    transform: translateX(590px) rotateY(52deg) translateX(152.3%);
+    opacity: 0.3;
+  }
+}
+
+// ============================================================================
+// EFFECT: CUBE
+// ============================================================================
+
+.perspective--effect-cube {
+  .perspective__slide--before {
+    transform: translateX(-64.8%) rotateY(-70deg) translateX(-127.3%) rotateY(-110deg) translateX(-103.5%);
+  }
+  .perspective__slide--before-1 {
+    transform: translateX(-64.8%) rotateY(-70deg) translateX(-100%);
+    opacity: 0.5;
+  }
+  .perspective__slide--after {
+    transform: translateX(64.8%) rotateY(70deg) translateX(127.3%) rotateY(110deg) translateX(103.5%);
+  }
+  .perspective__slide--after-1 {
+    transform: translateX(64.8%) rotateY(70deg) translateX(100%);
+    opacity: 0.5;
+  }
+}
+
+// ============================================================================
+// EFFECT: CLASSIC
+// ============================================================================
+
+.perspective--effect-classic {
+  .perspective__slide--before {
+    transform: translateX(-375%);
+  }
+  .perspective__slide--before-2 {
+    transform: translateX(-250%);
+    opacity: 0.1;
+  }
+  .perspective__slide--before-1 {
+    transform: translateX(-125%);
+    opacity: 0.3;
+  }
+  .perspective__slide--after {
+    transform: translateX(375%);
+  }
+  .perspective__slide--after-2 {
+    transform: translateX(250%);
+    opacity: 0.1;
+  }
+  .perspective__slide--after-1 {
+    transform: translateX(125%);
+    opacity: 0.3;
+  }
+}
+
+// ============================================================================
+// EFFECT: CONCAVE
+// ============================================================================
+
+.perspective--effect-concave {
+  .perspective__slide--before {
+    transform: translateX(-156%) rotateY(90deg) translateX(-156%);
+  }
+  .perspective__slide--before-1 {
+    transform: translateX(-60.5%) rotateY(28deg) translateX(-46.8%);
+    opacity: 0.4;
+  }
+  .perspective__slide--after {
+    transform: translateX(156%) rotateY(-90deg) translateX(156%);
+  }
+  .perspective__slide--after-1 {
+    transform: translateX(60.5%) rotateY(-28deg) translateX(46.8%);
+    opacity: 0.4;
+  }
+}
+
+// ============================================================================
+// EFFECT: ARC
+// ============================================================================
+
+.perspective--effect-arc {
+  .perspective__slide--before {
+    transform: translate(-146.5%, 63%) rotateZ(-17deg) scale(0.5);
+    opacity: 0;
+  }
+  .perspective__slide--before-2 {
+    transform: translate(-109.5%, 42.3%) rotateZ(-14deg) scale(0.6);
+    opacity: 0.3;
+  }
+  .perspective__slide--before-1 {
+    transform: translate(-67.5%, 19.5%) rotateZ(-8deg) scale(0.8);
+    opacity: 0.5;
+  }
+  .perspective__slide--after {
+    transform: translate(146.5%, 63%) rotateZ(17deg) scale(0.5);
+    opacity: 0;
+  }
+  .perspective__slide--after-1 {
+    transform: translate(67.5%, 19.5%) rotateZ(8deg) scale(0.8);
+    opacity: 0.5;
+  }
+  .perspective__slide--after-2 {
+    transform: translate(109.5%, 42.3%) rotateZ(14deg) scale(0.6);
+    opacity: 0.3;
+  }
+}
+
+// ============================================================================
+// EFFECT: SPIRAL RIGHT
+// ============================================================================
+
+.perspective--effect-spiral-right {
+  overflow: hidden;
+
+  .perspective__slide--before {
+    transform: translateX(-191.4%) rotateY(-72deg) translate(-252%, 600px);
+    opacity: 0;
+  }
+  .perspective__slide--before-2 {
+    transform: translateX(-115.2%) rotateY(-52deg) translate(-152.3%, 400px);
+    opacity: 0.3;
+  }
+  .perspective__slide--before-1 {
+    transform: translateX(-52.7%) rotateY(-30deg) translate(-56.6%, 200px);
+    opacity: 0.5;
+  }
+  .perspective__slide--after {
+    transform: translateX(191.4%) rotateY(72deg) translate(252%, -600px);
+    opacity: 0;
+  }
+  .perspective__slide--after-1 {
+    transform: translateX(52.7%) rotateY(30deg) translate(56.6%, -200px);
+    opacity: 0.5;
+  }
+  .perspective__slide--after-2 {
+    transform: translateX(115.2%) rotateY(52deg) translate(152.3%, -400px);
+    opacity: 0.3;
+  }
+}
+
+// ============================================================================
+// EFFECT: SPIRAL LEFT
+// ============================================================================
+
+.perspective--effect-spiral-left {
+  overflow: hidden;
+
+  .perspective__slide--before {
+    transform: translateX(-191.4%) rotateY(-72deg) translate(-252%, -600px);
+    opacity: 0;
+  }
+  .perspective__slide--before-2 {
+    transform: translateX(-115.2%) rotateY(-52deg) translate(-152.3%, -400px);
+    opacity: 0.3;
+  }
+  .perspective__slide--before-1 {
+    transform: translateX(-52.7%) rotateY(-30deg) translate(-56.6%, -200px);
+    opacity: 0.5;
+  }
+  .perspective__slide--after {
+    transform: translateX(191.4%) rotateY(72deg) translate(252%, 600px);
+    opacity: 0;
+  }
+  .perspective__slide--after-1 {
+    transform: translateX(52.7%) rotateY(30deg) translate(56.6%, 200px);
+    opacity: 0.5;
+  }
+  .perspective__slide--after-2 {
+    transform: translateX(115.2%) rotateY(52deg) translate(152.3%, 400px);
+    opacity: 0.3;
+  }
+}
+
+// ============================================================================
+// ORIENTATION VERTICALE (effets en colonne, type Hyperspin)
+// ============================================================================
+
+.perspective--vertical.perspective--effect-wave {
+  .perspective__slide--before {
+    transform: translate(31.6%, -134.7%) rotateZ(-6deg) rotateX(15deg) scale(0.4);
+    opacity: 0;
+  }
+  .perspective__slide--before-2 {
+    transform: translate(26.3%, -109.3%) rotateZ(-14deg) rotateX(40deg) scale(0.55);
+    opacity: 0.3;
+  }
+  .perspective__slide--before-1 {
+    transform: translate(14.5%, -80%) rotateZ(-11deg) rotateX(30deg) scale(0.8);
+    opacity: 0.5;
+  }
+  .perspective__slide--after {
+    transform: translate(31.6%, 134.7%) rotateZ(6deg) rotateX(-15deg) scale(0.4);
+    opacity: 0;
+  }
+  .perspective__slide--after-1 {
+    transform: translate(14.5%, 80%) rotateZ(11deg) rotateX(-30deg) scale(0.8);
+    opacity: 0.5;
+  }
+  .perspective__slide--after-2 {
+    transform: translate(26.3%, 109.3%) rotateZ(14deg) rotateX(-40deg) scale(0.55);
+    opacity: 0.3;
+  }
+}
+
+.perspective--vertical.perspective--effect-coverflow {
+  .perspective__slide--before {
+    transform: translateY(-52.7%) rotateX(-45deg) scale(0.6);
+    z-index: 6;
+  }
+  .perspective__slide--before-3 {
+    transform: translateY(-45%) rotateX(-45deg) scale(0.6);
+    opacity: 0.1;
+    z-index: 7;
+  }
+  .perspective__slide--before-2 {
+    transform: translateY(-37.1%) rotateX(-45deg) scale(0.6);
+    opacity: 0.2;
+    z-index: 8;
+  }
+  .perspective__slide--before-1 {
+    transform: translateY(-29.3%) rotateX(-45deg) scale(0.6);
+    opacity: 0.3;
+    z-index: 9;
+  }
+  .perspective__slide--after {
+    transform: translateY(52.7%) rotateX(45deg) scale(0.6);
+    z-index: 6;
+  }
+  .perspective__slide--after-1 {
+    transform: translateY(29.3%) rotateX(45deg) scale(0.6);
+    opacity: 0.3;
+    z-index: 9;
+  }
+  .perspective__slide--after-2 {
+    transform: translateY(37.1%) rotateX(45deg) scale(0.6);
+    opacity: 0.2;
+    z-index: 8;
+  }
+  .perspective__slide--after-3 {
+    transform: translateY(45%) rotateX(45deg) scale(0.6);
+    opacity: 0.1;
+    z-index: 7;
+  }
+}
+
+.perspective--vertical.perspective--effect-carousel {
+  .perspective__slide--before {
+    transform: translateY(-191.4%) rotateX(72deg) translateY(-252%);
+    opacity: 0;
+  }
+  .perspective__slide--before-2 {
+    transform: translateY(-152.3%) rotateX(52deg) translateY(-152.3%);
+    opacity: 0.3;
+  }
+  .perspective__slide--before-1 {
+    transform: translateY(-52.7%) rotateX(30deg) translateY(-56.6%);
+    opacity: 0.5;
+  }
+  .perspective__slide--after {
+    transform: translateY(191.4%) rotateX(-72deg) translateY(252%);
+    opacity: 0;
+  }
+  .perspective__slide--after-1 {
+    transform: translateY(52.7%) rotateX(-30deg) translateY(56.6%);
+    opacity: 0.5;
+  }
+  .perspective__slide--after-2 {
+    transform: translateY(152.3%) rotateX(-52deg) translateY(152.3%);
+    opacity: 0.3;
+  }
+}
+
+.perspective--vertical.perspective--effect-classic {
+  .perspective__slide--before {
+    transform: translateY(-375%);
+  }
+  .perspective__slide--before-2 {
+    transform: translateY(-250%);
+    opacity: 0.1;
+  }
+  .perspective__slide--before-1 {
+    transform: translateY(-125%);
+    opacity: 0.3;
+  }
+  .perspective__slide--after {
+    transform: translateY(375%);
+  }
+  .perspective__slide--after-2 {
+    transform: translateY(250%);
+    opacity: 0.1;
+  }
+  .perspective__slide--after-1 {
+    transform: translateY(125%);
+    opacity: 0.3;
+  }
+}
+
+.perspective--vertical.perspective--effect-concave {
+  .perspective__slide--before {
+    transform: translateY(-156%) rotateX(-90deg) translateY(-156%);
+  }
+  .perspective__slide--before-1 {
+    transform: translateY(-60.5%) rotateX(-28deg) translateY(-46.8%);
+    opacity: 0.4;
+  }
+  .perspective__slide--after {
+    transform: translateY(156%) rotateX(90deg) translateY(156%);
+  }
+  .perspective__slide--after-1 {
+    transform: translateY(60.5%) rotateX(28deg) translateY(46.8%);
+    opacity: 0.4;
+  }
+}
+
+.perspective--vertical.perspective--effect-arc {
+  .perspective__slide--before {
+    transform: translate(63%, -146.5%) rotateZ(-17deg) scale(0.5);
+    opacity: 0;
+  }
+  .perspective__slide--before-2 {
+    transform: translate(42.3%, -109.5%) rotateZ(-14deg) scale(0.6);
+    opacity: 0.3;
+  }
+  .perspective__slide--before-1 {
+    transform: translate(19.5%, -67.5%) rotateZ(-8deg) scale(0.8);
+    opacity: 0.5;
+  }
+  .perspective__slide--after {
+    transform: translate(63%, 146.5%) rotateZ(17deg) scale(0.5);
+    opacity: 0;
+  }
+  .perspective__slide--after-1 {
+    transform: translate(19.5%, 67.5%) rotateZ(8deg) scale(0.8);
+    opacity: 0.5;
+  }
+  .perspective__slide--after-2 {
+    transform: translate(42.3%, 109.5%) rotateZ(14deg) scale(0.6);
+    opacity: 0.3;
+  }
+}
+
+.perspective--vertical.perspective--effect-cube,
+.perspective--vertical.perspective--effect-spiral-right,
+.perspective--vertical.perspective--effect-spiral-left {
+  .perspective__slide--before {
+    transform: translateY(-125%);
+    opacity: 0.2;
+  }
+  .perspective__slide--before-1 {
+    transform: translateY(-80%) scale(0.85);
+    opacity: 0.5;
+  }
+  .perspective__slide--after {
+    transform: translateY(125%);
+    opacity: 0.2;
+  }
+  .perspective__slide--after-1 {
+    transform: translateY(80%) scale(0.85);
+    opacity: 0.5;
+  }
+}
+
+// Vertical : slides 4 et 5 (numVisible)
+.perspective--vertical .perspective__slide--before-4,
+.perspective--vertical .perspective__slide--before-5 {
+  transform: translateY(-450%);
+  opacity: 0.05;
+}
+
+.perspective--vertical .perspective__slide--after-4,
+.perspective--vertical .perspective__slide--after-5 {
+  transform: translateY(450%);
+  opacity: 0.05;
+}
+
+// ============================================================================
+// LAYOUT MODIFIERS
+// ============================================================================
+
+.perspective--fullwidth {
+  width: 100%;
+  position: relative;
+  height: 600px;
+}
+
+.perspective--grid {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  height: 600px;
+}
+
+@media (max-width: 768px) {
+  .perspective--fullwidth,
+  .perspective--grid {
+    height: 400px;
+  }
+
+  .perspective__slide {
+    width: 340px;
+    height: 250px;
+    margin-left: -170px;
+    margin-top: -125px;
+  }
+}
+
+// ============================================================================
+// SECTION PLEINE LARGEUR & CONTENU DÉMO
+// ============================================================================
+
+.perspective-section-fullwidth {
+  width: 100%;
+}
+
+.perspective-section-fullwidth .perspective--fullwidth {
+  width: 100%;
+  max-width: none;
+}
+
+.perspective-demo-text {
+  user-select: none;
+  color: inherit;
+  font-weight: 900;
+  font-size: 10em;
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .perspective-demo-text {
+    font-size: 6em;
+  }
+}

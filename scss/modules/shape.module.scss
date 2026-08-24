@@ -1,0 +1,425 @@
+/**
+ * @file shape.module.scss
+ * @description Modules pour les shapes Material Design 3 Expressive (uniquement mask)
+ * @see https://m3.material.io/foundations/shape/overview
+ */
+
+@use 'sass:map';
+@use '../tokens/shape.token' as tokens;
+@use '../mixins/shape.mixin' as shape;
+
+/**
+ * Classe de base pour les shapes
+ */
+.shape {
+  @include shape.shape-base();
+}
+
+/**
+ * Styles de base pour le composant Shape (masques) — pas les conteneurs data-shape des boutons
+ */
+.shape[data-shape],
+[data-shape].shape,
+.card__avatar[data-shape] {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+
+  // Image de base
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+/**
+ * Shapes avec masquage (découpe d'image) - Classes CSS
+ */
+@each $shape in tokens.$shapes {
+  .shape--mask-#{$shape} {
+    @include shape.shape-mask($shape);
+  }
+  
+  // Tailles prédéfinies
+  @each $size, $size-value in tokens.$shape-sizes {
+    .shape--mask-#{$shape}--#{$size} {
+      @include shape.shape-mask($shape, $size);
+    }
+  }
+  
+  // Shapes avec hover effects
+  .shape--mask-#{$shape}--hover {
+    @include shape.shape-with-hover($shape, 'mask');
+  }
+}
+
+/**
+ * Shapes responsives - Classes CSS
+ */
+@each $shape in tokens.$shapes {
+  .shape--mask-#{$shape}--responsive {
+    @include shape.shape-responsive($shape, 'mask');
+  }
+}
+
+/**
+ * Styles pour les shapes avec attributs data (uniquement mask)
+ */
+@each $shape in tokens.$shapes {
+  [data-shape="#{$shape}"][data-variant="mask"] {
+    // Taille par défaut si data-size n'est pas défini
+    @include shape.shape-mask($shape, 'md');
+    
+    // Tailles prédéfinies
+    &[data-size="xs"] {
+      @include shape.shape-mask($shape, 'xs');
+    }
+    
+    &[data-size="sm"] {
+      @include shape.shape-mask($shape, 'sm');
+    }
+    
+    &[data-size="md"] {
+      @include shape.shape-mask($shape, 'md');
+    }
+    
+    &[data-size="lg"] {
+      @include shape.shape-mask($shape, 'lg');
+    }
+    
+    &[data-size="xl"] {
+      @include shape.shape-mask($shape, 'xl');
+    }
+    
+    &[data-size="2xl"] {
+      @include shape.shape-mask($shape, '2xl');
+    }
+    
+    &[data-size="3xl"] {
+      @include shape.shape-mask($shape, '3xl');
+    }
+    
+    &[data-size="4xl"] {
+      @include shape.shape-mask($shape, '4xl');
+    }
+  }
+}
+
+/**
+ * Classes utilitaires pour les tailles
+ */
+.shape--xs {
+  width: tokens.shape-size('xs');
+  height: tokens.shape-size('xs');
+}
+
+.shape--sm {
+  width: tokens.shape-size('sm');
+  height: tokens.shape-size('sm');
+}
+
+.shape--md {
+  width: tokens.shape-size('md');
+  height: tokens.shape-size('md');
+}
+
+.shape--lg {
+  width: tokens.shape-size('lg');
+  height: tokens.shape-size('lg');
+}
+
+.shape--xl {
+  width: tokens.shape-size('xl');
+  height: tokens.shape-size('xl');
+}
+
+.shape--2xl {
+  width: tokens.shape-size('2xl');
+  height: tokens.shape-size('2xl');
+}
+
+.shape--3xl {
+  width: tokens.shape-size('3xl');
+  height: tokens.shape-size('3xl');
+}
+
+.shape--4xl {
+  width: tokens.shape-size('4xl');
+  height: tokens.shape-size('4xl');
+}
+
+/**
+ * Classes pour les variantes (uniquement mask)
+ */
+.shape--mask {
+  // Masquage de base
+}
+
+/**
+ * Classes pour les effets
+ */
+.shape--hover {
+  &:hover {
+    transform: scale(tokens.shape-transform('scale-hover'));
+    
+    img {
+      filter: brightness(tokens.shape-filter('brightness-hover'));
+    }
+  }
+  
+  &:active {
+    transform: scale(tokens.shape-transform('scale-active'));
+  }
+}
+
+/**
+ * Styles pour les effets de survol avec attributs data
+ */
+[data-hover="true"] {
+  &:hover {
+    transform: scale(tokens.shape-transform('scale-hover'));
+    
+    img {
+      filter: brightness(tokens.shape-filter('brightness-hover'));
+    }
+  }
+  
+  &:active {
+    transform: scale(tokens.shape-transform('scale-active'));
+  }
+}
+
+.shape--responsive {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+}
+
+/**
+ * Classes pour les positions
+ */
+.shape--center {
+  margin: 0 auto;
+}
+
+.shape--left {
+  margin-right: auto;
+}
+
+.shape--right {
+  margin-left: auto;
+}
+
+/**
+ * Styles pour les positions (composant Shape uniquement)
+ */
+.shape[data-shape],
+[data-shape].shape {
+  &.shape--center {
+    margin: 0 auto;
+  }
+
+  &.shape--left {
+    margin-right: auto;
+  }
+
+  &.shape--right {
+    margin-left: auto;
+  }
+}
+
+/**
+ * Classes pour les animations
+ */
+.shape--animate {
+  animation: shape-pulse tokens.shape-animation-duration('slow') tokens.shape-easing('fade') infinite;
+}
+
+/**
+ * Styles pour les animations avec attributs data
+ */
+[data-animate="true"] {
+  animation: shape-pulse tokens.shape-animation-duration('slow') tokens.shape-easing('fade') infinite;
+}
+
+@keyframes shape-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(tokens.shape-transform('scale-pulse'));
+  }
+}
+
+.shape--rotate {
+  animation: shape-rotate tokens.shape-animation-duration('slow') linear infinite;
+}
+
+@keyframes shape-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/**
+ * Classes pour les états
+ */
+.shape--disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.shape--loading {
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid transparent;
+    border-top: 2px solid var(--md-sys-color-primary);
+    border-radius: 50%;
+    animation: shape-spin 1s linear infinite;
+  }
+}
+
+@keyframes shape-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// ============================================================================
+// CLASSES UTILITAIRES SUPPLÉMENTAIRES
+// ============================================================================
+
+/**
+ * Classes pour les différentes variantes
+ */
+.shape--variant-mask {
+  // Masquage de base
+}
+
+.shape--variant-border {
+  // Bordure avec masque
+}
+
+.shape--variant-outline {
+  // Contour avec masque
+}
+
+.shape--variant-fill {
+  // Remplissage avec masque
+}
+
+/**
+ * Classes pour les différentes animations
+ */
+.shape--animation-bounce {
+  transition:
+    transform tokens.shape-animation-duration('normal') tokens.shape-easing('bounce'),
+    opacity tokens.shape-animation-duration('normal') tokens.shape-easing('bounce'),
+    clip-path tokens.shape-animation-duration('normal') tokens.shape-easing('bounce');
+}
+
+.shape--animation-elastic {
+  transition:
+    transform tokens.shape-animation-duration('normal') tokens.shape-easing('elastic'),
+    opacity tokens.shape-animation-duration('normal') tokens.shape-easing('elastic'),
+    clip-path tokens.shape-animation-duration('normal') tokens.shape-easing('elastic');
+}
+
+.shape--animation-fade {
+  transition:
+    opacity tokens.shape-animation-duration('normal') tokens.shape-easing('fade'),
+    transform tokens.shape-animation-duration('normal') tokens.shape-easing('fade');
+}
+
+/**
+ * Classes pour les différents états
+ */
+.shape--state-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.shape--state-loading {
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid transparent;
+    border-top: 2px solid tokens.shape-color('fill');
+    border-radius: 50%;
+    animation: shape-spin tokens.shape-animation-duration('normal') linear infinite;
+  }
+}
+
+/**
+ * Classes pour les différentes couleurs
+ */
+.shape--color-border {
+  --shape-border-color: #{tokens.shape-color('border')};
+}
+
+.shape--color-outline {
+  --shape-outline-color: #{tokens.shape-color('outline')};
+}
+
+.shape--color-fill {
+  --shape-fill-color: #{tokens.shape-color('fill')};
+}
+
+.shape--color-background {
+  --shape-background-color: #{tokens.shape-color('background')};
+}
+
+/**
+ * Classes pour les différentes positions
+ */
+.shape--position-center {
+  margin: 0 auto;
+}
+
+.shape--position-left {
+  margin-right: auto;
+}
+
+.shape--position-right {
+  margin-left: auto;
+}
+
+/**
+ * Classes pour les différentes tailles personnalisées
+ */
+.shape--size-custom {
+  width: var(--shape-width, 200px);
+  height: var(--shape-height, 200px);
+}
+
+/**
+ * Classes pour les différentes formes
+ */
+@each $shape in tokens.$shapes {
+  .shape--form-#{$shape} {
+    --shape-form: #{$shape};
+  }
+} 

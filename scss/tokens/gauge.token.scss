@@ -1,0 +1,84 @@
+/**
+ * @fileoverview Tokens de design pour le composant Gauge
+ * @description Variables Material Design 3 Expressive (arc 270°, palettes sémantiques)
+ * @author K3UI Team
+ * @version 2.0.0
+ */
+
+@use 'motion.token' as motion;
+
+// ============================================================================
+// COULEURS — palettes
+// ============================================================================
+
+$gauge-low-hex: #41c56d;
+$gauge-medium-hex: #fdd663;
+$gauge-high-hex: #f2620f;
+$gauge-critical-hex: #ea4335;
+$gauge-neutral-hex: #c6cede;
+
+$gauge-inv-low-hex: #ea4335;
+$gauge-inv-medium-hex: #f2620f;
+$gauge-inv-high-hex: #fdd663;
+$gauge-inv-full-hex: #41c56d;
+
+$gauge-cold-hex: #64b5f6;
+$gauge-cool-hex: #41c56d;
+$gauge-warm-hex: #fdd663;
+$gauge-hot-hex: #ea4335;
+
+$gauge-lh-poor-hex: #f33d3d;
+$gauge-lh-avg-hex: #ffa400;
+$gauge-lh-good-hex: #0cce6b;
+
+$gauge-low: var(--gauge-low, #{$gauge-low-hex});
+$gauge-medium: var(--gauge-medium, #{$gauge-medium-hex});
+$gauge-high: var(--gauge-high, #{$gauge-high-hex});
+$gauge-critical: var(--gauge-critical, #{$gauge-critical-hex});
+$gauge-neutral: var(--gauge-neutral, #{$gauge-neutral-hex});
+
+$gauge-inv-low: var(--gauge-inv-low, #{$gauge-inv-low-hex});
+$gauge-inv-medium: var(--gauge-inv-medium, #{$gauge-inv-medium-hex});
+$gauge-inv-high: var(--gauge-inv-high, #{$gauge-inv-high-hex});
+$gauge-inv-full: var(--gauge-inv-full, #{$gauge-inv-full-hex});
+
+$gauge-cold: var(--gauge-cold, #{$gauge-cold-hex});
+$gauge-cool: var(--gauge-cool, #{$gauge-cool-hex});
+$gauge-warm: var(--gauge-warm, #{$gauge-warm-hex});
+$gauge-hot: var(--gauge-hot, #{$gauge-hot-hex});
+
+$gauge-lh-poor: var(--gauge-lh-poor, #{$gauge-lh-poor-hex});
+$gauge-lh-avg: var(--gauge-lh-avg, #{$gauge-lh-avg-hex});
+$gauge-lh-good: var(--gauge-lh-good, #{$gauge-lh-good-hex});
+
+/** Piste inactive */
+$gauge-track: var(
+  --g-track,
+  var(--md-sys-color-surface-container-high, #2b3341)
+);
+
+/** Texte / icônes */
+$gauge-on-surface: var(--g-text, var(--md-sys-color-on-surface, #eceff4));
+$gauge-on-surface-variant: var(
+  --g-sublabel,
+  var(--md-sys-color-on-surface-variant, #aeb6c4)
+);
+$gauge-icon-color: var(--g-icon, #{$gauge-on-surface-variant});
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+$gauge-size: clamp(96px, 26vw, 150px);
+$gauge-size-lg: clamp(190px, 54vw, 250px);
+$gauge-size-sm: clamp(72px, 18vw, 110px);
+$gauge-track-stroke-width: 8;
+$gauge-track-stroke-width-lg: 5;
+
+// ============================================================================
+// MOTION
+// ============================================================================
+
+$gauge-stroke-transition: 200ms linear;
+$gauge-theme-transition-duration: 350ms;
+$gauge-easing-emphasized: motion.spring-easing(spatial, default);

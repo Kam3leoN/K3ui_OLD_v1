@@ -1,0 +1,901 @@
+/**
+ * Field Module - Styles pour le composant k3ui-field
+ * Basé sur MDUI text-field et Material Design 3
+ */
+
+@use '../mixins/field.mixin' as field;
+@use '../tokens/field.token' as tokens;
+
+// ========================================
+// COMPONENT HOST
+// ========================================
+
+k3ui-field {
+  display: inline-block;
+  width: 100%;
+
+  --k3ui-field-height: #{tokens.$md-sys-field-height-filled};
+  --k3ui-field-padding-inline: #{tokens.$md-sys-field-padding-left};
+  --k3ui-field-label-top: #{tokens.$md-sys-field-label-top-default};
+  --k3ui-field-label-top-filled-active: #{tokens.$md-sys-field-label-top-filled-active};
+  --k3ui-field-icon-size: #{tokens.$md-sys-field-icon-size};
+
+  --k3ui-field-lead: var(--k3ui-field-padding-inline);
+  --k3ui-field-trail: var(--k3ui-field-padding-inline);
+
+  &[data-leading] {
+    --k3ui-field-lead: 52px;
+    --k3ui-field-label-inset-start: 52px;
+  }
+
+  &[data-trailing] {
+    --k3ui-field-trail: 52px;
+    --k3ui-field-label-inset-end: 52px;
+  }
+
+  /** M3 default 56dp — référence explicite si attribut density="default" */
+  &[density='default'],
+  &[data-density='default'] {
+    --k3ui-field-height: #{tokens.$md-sys-field-height-filled};
+  }
+
+  /** M3 dense — min 48dp (touch target), padding 12dp */
+  &[density='comfortable'],
+  &[data-density='comfortable'] {
+    --k3ui-field-height: #{tokens.$md-sys-field-height-comfortable};
+    --k3ui-field-padding-inline: #{tokens.$md-sys-field-density-comfortable-padding-inline};
+    --k3ui-field-label-top: #{tokens.$md-sys-field-label-top-comfortable};
+    --k3ui-field-icon-size: #{tokens.$md-sys-field-icon-size-comfortable};
+  }
+
+  /** Grilles très denses — à utiliser avec parcimonie (< 48dp) */
+  &[density='compact'],
+  &[data-density='compact'] {
+    --k3ui-field-height: #{tokens.$md-sys-field-height-compact};
+    --k3ui-field-padding-inline: #{tokens.$md-sys-field-density-compact-padding-inline};
+    --k3ui-field-label-top: #{tokens.$md-sys-field-label-top-compact};
+    --k3ui-field-label-top-filled-active: #{tokens.$md-sys-field-label-top-filled-active-compact};
+    --k3ui-field-icon-size: #{tokens.$md-sys-field-icon-size-compact};
+  }
+
+  &[disabled],
+  &[readonly] {
+    cursor: not-allowed;
+  }
+
+  &[disabled] .input-field,
+  &[readonly] .input-field {
+    pointer-events: none;
+  }
+
+  &[type="hidden"] {
+    display: none;
+  }
+}
+
+// ========================================
+// CONTAINER
+// ========================================
+
+k3ui-field .input-field {
+  @include field.field-container;
+
+  --k3ui-field-label-inset-start: #{tokens.$md-sys-field-padding-left};
+  --k3ui-field-label-inset-end: #{tokens.$md-sys-field-padding-right};
+
+  &.has-leading-icon {
+    --k3ui-field-label-inset-start: calc(
+      #{tokens.$md-sys-field-padding-left-with-icon} + #{tokens.$md-sys-field-icon-size} +
+        #{tokens.$md-sys-field-action-spacing}
+    );
+  }
+
+  &.has-trailing-icon {
+    --k3ui-field-label-inset-end: calc(
+      #{tokens.$md-sys-field-padding-right-with-action} + #{tokens.$md-sys-field-icon-size} +
+        #{tokens.$md-sys-field-action-spacing}
+    );
+  }
+
+  &.has-action,
+  &.has-suffix,
+  &.has-trailing-icon {
+    @include field.field-container-with-action;
+  }
+}
+
+
+// ========================================
+// VARIANT FILLED
+// ========================================
+
+k3ui-field[variant="filled"] .input-field {
+  @include field.field-filled;
+
+  &.invalid,
+  &.invalid-style {
+    @include field.field-filled-invalid;
+  }
+}
+
+k3ui-field[variant="filled"][invalid] .input-field {
+  @include field.field-filled-invalid;
+}
+
+k3ui-field[variant="filled"]:hover .input-field {
+  @include field.field-filled-hover;
+
+  &.invalid,
+  &.invalid-style {
+    @include field.field-filled-invalid-hover;
+  }
+}
+
+k3ui-field[variant="filled"][invalid]:hover .input-field {
+  @include field.field-filled-invalid-hover;
+}
+
+k3ui-field[variant="filled"][focused] .input-field,
+k3ui-field[variant="filled"][focused-style] .input-field {
+  @include field.field-filled-focused;
+
+  &.invalid,
+  &.invalid-style {
+    @include field.field-filled-invalid-focused;
+  }
+}
+
+k3ui-field[variant="filled"][invalid][focused] .input-field,
+k3ui-field[variant="filled"][invalid][focused-style] .input-field {
+  @include field.field-filled-invalid-focused;
+}
+
+k3ui-field[variant="filled"][disabled] .input-field {
+  @include field.field-filled-disabled;
+}
+
+// ========================================
+// VARIANT OUTLINED
+// ========================================
+
+k3ui-field[variant="outlined"] .input-field {
+  @include field.field-outlined;
+
+  &.invalid,
+  &.invalid-style {
+    @include field.field-outlined-invalid;
+  }
+}
+
+k3ui-field[variant="outlined"][invalid] .input-field {
+  @include field.field-outlined-invalid;
+}
+
+k3ui-field[variant="outlined"]:hover .input-field {
+  @include field.field-outlined-hover;
+
+  &.invalid,
+  &.invalid-style {
+    @include field.field-outlined-invalid-hover;
+  }
+}
+
+k3ui-field[variant="outlined"][invalid]:hover .input-field {
+  @include field.field-outlined-invalid-hover;
+}
+
+k3ui-field[variant="outlined"][focused] .input-field,
+k3ui-field[variant="outlined"][focused-style] .input-field {
+  @include field.field-outlined-focused;
+
+  &.invalid,
+  &.invalid-style {
+    @include field.field-outlined-invalid-focused;
+  }
+}
+
+k3ui-field[variant="outlined"][invalid][focused] .input-field,
+k3ui-field[variant="outlined"][invalid][focused-style] .input-field {
+  @include field.field-outlined-invalid-focused;
+}
+
+k3ui-field[variant="outlined"][disabled] .input-field {
+  @include field.field-outlined-disabled;
+}
+
+// ========================================
+// VARIANT PLAIN
+// ========================================
+
+k3ui-field[variant="plain"] {
+  display: flex;
+  flex-direction: column;
+}
+
+k3ui-field[variant="plain"] > .label {
+  @include field.field-label-plain;
+}
+
+k3ui-field[variant="plain"] .input-field {
+  @include field.field-container-plain;
+  @include field.field-plain;
+
+  &.invalid,
+  &.invalid-style {
+    @include field.field-plain-invalid;
+  }
+}
+
+k3ui-field[variant="plain"][invalid] .input-field {
+  @include field.field-plain-invalid;
+}
+
+k3ui-field[variant="plain"]:hover .input-field {
+  @include field.field-plain-hover;
+
+  &.invalid,
+  &.invalid-style {
+    @include field.field-plain-invalid-hover;
+  }
+}
+
+k3ui-field[variant="plain"][invalid]:hover .input-field {
+  @include field.field-plain-invalid-hover;
+}
+
+k3ui-field[variant="plain"][focused] .input-field,
+k3ui-field[variant="plain"][focused-style] .input-field,
+k3ui-field[variant="plain"] .input-field:focus-within {
+  @include field.field-plain-focused;
+
+  &.invalid,
+  &.invalid-style {
+    @include field.field-plain-invalid-focused;
+  }
+}
+
+k3ui-field[variant="plain"][invalid][focused] .input-field,
+k3ui-field[variant="plain"][invalid][focused-style] .input-field,
+k3ui-field[variant="plain"][invalid] .input-field:focus-within {
+  @include field.field-plain-invalid-focused;
+}
+
+k3ui-field[variant="plain"][disabled] .input-field {
+  @include field.field-plain-disabled;
+}
+
+k3ui-field[variant="plain"][invalid] > .label,
+k3ui-field[variant="plain"]:hover[invalid] > .label {
+  @include field.field-label-invalid;
+}
+
+k3ui-field[variant="plain"]:hover[invalid] > .label {
+  @include field.field-label-invalid-hover;
+}
+
+k3ui-field[variant="plain"][focused][invalid] > .label,
+k3ui-field[variant="plain"][focused-style][invalid] > .label {
+  @include field.field-label-focused-invalid;
+}
+
+k3ui-field[variant="plain"][focused]:not([invalid]) > .label,
+k3ui-field[variant="plain"][focused-style]:not([invalid]) > .label {
+  @include field.field-label-focused;
+}
+
+k3ui-field[variant="plain"][disabled] > .label {
+  @include field.field-label-disabled;
+}
+
+k3ui-field[variant="plain"] .field-bottom {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+// ========================================
+// LABEL
+// ========================================
+
+k3ui-field .label {
+  @include field.field-label;
+
+  .invalid &,
+  .invalid-style & {
+    @include field.field-label-invalid;
+  }
+}
+
+k3ui-field[invalid] .label {
+  @include field.field-label-invalid;
+}
+
+k3ui-field[required] .label::after,
+k3ui-field[required][variant="plain"] > .label::after {
+  content: ' *';
+  color: rgb(var(--md-sys-color-error-rgb));
+}
+
+// Label inactif avec icône à gauche (filled uniquement)
+k3ui-field[variant="filled"] .has-leading-icon .label {
+  @include field.field-label-filled-inactive-with-icon;
+}
+
+// Outlined : label sur l'encoche dès qu'un adornement leading occupe la zone de saisie
+k3ui-field[variant="outlined"] .has-leading-icon .label,
+k3ui-field[variant="outlined"] .has-prefix .label {
+  @include field.field-label-outlined-active;
+}
+
+// Label flottant dès qu'un adornement leading est présent (filled uniquement)
+k3ui-field[variant="filled"] .has-leading-icon .label,
+k3ui-field[variant="filled"] .has-prefix .label {
+  @include field.field-label-filled-active;
+}
+
+k3ui-field[variant="outlined"] .label {
+  @include field.field-label-outlined;
+}
+
+k3ui-field[variant="outlined"]:hover .label {
+  @include field.field-label-outlined-hover;
+}
+
+k3ui-field[variant="filled"]:hover .invalid .label,
+k3ui-field[variant="outlined"]:hover .invalid .label,
+k3ui-field[variant="filled"]:hover .invalid-style .label,
+k3ui-field[variant="outlined"]:hover .invalid-style .label,
+k3ui-field[invalid][variant="filled"]:hover .label,
+k3ui-field[invalid][variant="outlined"]:hover .label {
+  @include field.field-label-invalid-hover;
+}
+
+k3ui-field[variant="filled"][focused]:not([invalid]) .label,
+k3ui-field[variant="filled"][focused-style]:not([invalid]) .label,
+k3ui-field[variant="outlined"][focused]:not([invalid]) .label,
+k3ui-field[variant="outlined"][focused-style]:not([invalid]) .label {
+  @include field.field-label-focused;
+}
+
+// Label actif (filled)
+k3ui-field[variant="filled"][focused] .label,
+k3ui-field[variant="filled"][focused-style] .label,
+k3ui-field[variant="filled"][has-value] .label,
+k3ui-field[variant="filled"][type="date"] .label,
+k3ui-field[variant="filled"][type="datetime-local"] .label,
+k3ui-field[variant="filled"][type="month"] .label,
+k3ui-field[variant="filled"][type="time"] .label,
+k3ui-field[variant="filled"][type="week"] .label {
+  @include field.field-label-filled-active;
+}
+
+// Label actif (filled) avec icône à gauche
+k3ui-field[variant="filled"][focused] .has-leading-icon .label,
+k3ui-field[variant="filled"][focused-style] .has-leading-icon .label,
+k3ui-field[variant="filled"][has-value] .has-leading-icon .label,
+k3ui-field[variant="filled"][type="date"] .has-leading-icon .label,
+k3ui-field[variant="filled"][type="datetime-local"] .has-leading-icon .label,
+k3ui-field[variant="filled"][type="month"] .has-leading-icon .label,
+k3ui-field[variant="filled"][type="time"] .has-leading-icon .label,
+k3ui-field[variant="filled"][type="week"] .has-leading-icon .label {
+  @include field.field-label-filled-active-with-icon;
+}
+
+// Label actif (outlined) avec icône à gauche
+k3ui-field[variant="outlined"][focused] .has-leading-icon .label,
+k3ui-field[variant="outlined"][focused-style] .has-leading-icon .label,
+k3ui-field[variant="outlined"][has-value] .has-leading-icon .label,
+k3ui-field[variant="outlined"][type="date"] .has-leading-icon .label,
+k3ui-field[variant="outlined"][type="datetime-local"] .has-leading-icon .label,
+k3ui-field[variant="outlined"][type="month"] .has-leading-icon .label,
+k3ui-field[variant="outlined"][type="time"] .has-leading-icon .label,
+k3ui-field[variant="outlined"][type="week"] .has-leading-icon .label,
+k3ui-field[variant="outlined"][focused] .has-prefix .label,
+k3ui-field[variant="outlined"][focused-style] .has-prefix .label,
+k3ui-field[variant="outlined"][has-value] .has-prefix .label {
+  @include field.field-label-outlined-active;
+}
+
+// Label actif (filled) avec icône à droite (trailing icon)
+k3ui-field[variant="filled"][focused] .has-trailing-icon .label,
+k3ui-field[variant="filled"][focused-style] .has-trailing-icon .label,
+k3ui-field[variant="filled"][has-value] .has-trailing-icon .label,
+k3ui-field[variant="filled"][type="date"] .has-trailing-icon .label,
+k3ui-field[variant="filled"][type="datetime-local"] .has-trailing-icon .label,
+k3ui-field[variant="filled"][type="month"] .has-trailing-icon .label,
+k3ui-field[variant="filled"][type="time"] .has-trailing-icon .label,
+k3ui-field[variant="filled"][type="week"] .has-trailing-icon .label {
+  @include field.field-label-filled-active-with-trailing-icon;
+}
+
+// Label actif (outlined) avec icône à droite (trailing icon)
+k3ui-field[variant="outlined"][focused] .has-trailing-icon .label,
+k3ui-field[variant="outlined"][focused-style] .has-trailing-icon .label,
+k3ui-field[variant="outlined"][has-value] .has-trailing-icon .label,
+k3ui-field[variant="outlined"][type="date"] .has-trailing-icon .label,
+k3ui-field[variant="outlined"][type="datetime-local"] .has-trailing-icon .label,
+k3ui-field[variant="outlined"][type="month"] .has-trailing-icon .label,
+k3ui-field[variant="outlined"][type="time"] .has-trailing-icon .label,
+k3ui-field[variant="outlined"][type="week"] .has-trailing-icon .label {
+  @include field.field-label-outlined-active;
+}
+
+
+// Label actif (outlined)
+k3ui-field[variant="outlined"][focused] .label,
+k3ui-field[variant="outlined"][focused-style] .label,
+k3ui-field[variant="outlined"][has-value] .label,
+k3ui-field[variant="outlined"][type="date"] .label,
+k3ui-field[variant="outlined"][type="datetime-local"] .label,
+k3ui-field[variant="outlined"][type="month"] .label,
+k3ui-field[variant="outlined"][type="time"] .label,
+k3ui-field[variant="outlined"][type="week"] .label {
+  @include field.field-label-outlined-active;
+}
+
+// Label focused en erreur
+k3ui-field[variant="filled"][focused] .invalid .label,
+k3ui-field[variant="filled"][focused-style] .invalid .label,
+k3ui-field[variant="outlined"][focused] .invalid .label,
+k3ui-field[variant="outlined"][focused-style] .invalid .label,
+k3ui-field[variant="filled"][focused] .invalid-style .label,
+k3ui-field[variant="filled"][focused-style] .invalid-style .label,
+k3ui-field[variant="outlined"][focused] .invalid-style .label,
+k3ui-field[variant="outlined"][focused-style] .invalid-style .label,
+k3ui-field[invalid][variant="filled"][focused] .label,
+k3ui-field[invalid][variant="filled"][focused-style] .label,
+k3ui-field[invalid][variant="outlined"][focused] .label,
+k3ui-field[invalid][variant="outlined"][focused-style] .label {
+  @include field.field-label-focused-invalid;
+}
+
+// Label disabled
+k3ui-field[variant="filled"][disabled] .label,
+k3ui-field[variant="outlined"][disabled] .label {
+  @include field.field-label-disabled;
+}
+
+// ========================================
+// INPUT CONTAINER
+// ========================================
+
+k3ui-field .input-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+// ========================================
+// INPUT
+// ========================================
+
+k3ui-field .input {
+  @include field.field-input;
+
+  .invalid &,
+  .invalid-style & {
+    @include field.field-input-invalid;
+  }
+}
+
+
+
+k3ui-field .input-field.has-suffix .input {
+  @include field.field-input-with-suffix;
+}
+
+k3ui-field[disabled] .input {
+  @include field.field-input-disabled;
+}
+
+k3ui-field[end-aligned] .input {
+  text-align: right;
+}
+
+// Input filled avec label
+k3ui-field[variant="filled"][label] .label + .input {
+  @include field.field-input-filled-with-label;
+}
+
+// ========================================
+// TEXTAREA
+// ========================================
+
+// Textarea de base selon Material Design 3 Expressive
+
+
+
+// Hide input (pour select)
+k3ui-field .input.hide-input {
+  opacity: 0;
+  height: 0;
+  min-height: 0;
+  width: 0;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+// ========================================
+// ICONS & ACTIONS
+// ========================================
+
+k3ui-field .leading-icon,
+k3ui-field .action,
+k3ui-field .trailing-icon {
+  @include field.field-icon;
+}
+
+// Nouvelle structure avec text-wrapper
+k3ui-field .text-wrapper {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0; // Permet au flex de se rétrécir
+  gap: tokens.$md-sys-field-adornment-gap;
+  background: transparent; // Fond uniforme
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+// Espacement pour text-wrapper avec leading icon
+k3ui-field .has-leading-icon .text-wrapper {
+  padding-left: 36px;
+}
+
+// Espacement pour text-wrapper avec trailing icon
+k3ui-field .has-trailing-icon .text-wrapper {
+  padding-right: 36px;
+}
+
+k3ui-field .text-wrapper .input {
+  flex: 1;
+  min-width: 0; // Permet à l'input de se rétrécir
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+}
+
+k3ui-field .prefix-text,
+k3ui-field .suffix-text {
+  @include field.field-prefix-suffix-text;
+  flex-shrink: 0; // Empêche le rétrécissement
+  white-space: nowrap;
+  background: transparent !important; // Même fond que l'input
+  border: none !important;
+  padding: 0 !important;
+}
+
+// Espacement pour text-wrapper avec leading icon ET prefix
+k3ui-field .has-leading-icon.has-prefix .text-wrapper {
+  padding-left: 36px; // Padding seulement si il y a un prefix
+}
+
+// Espacement pour text-wrapper avec trailing icon ET suffix
+k3ui-field .has-trailing-icon.has-suffix .text-wrapper {
+  padding-right: 36px; // Padding seulement si il y a un suffix
+}
+
+// Anciens styles pour compatibilité (si nécessaire)
+k3ui-field .prefix,
+k3ui-field .suffix {
+  @include field.field-prefix-suffix-text;
+  display: inline-block;
+  background: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+  box-shadow: none;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+// Icône d'erreur de validation
+k3ui-field .error-icon {
+  color: rgb(var(--md-sys-color-error-rgb));
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+// Espacement spécifique pour prefix avec icône leading
+k3ui-field .has-leading-icon .prefix {
+  @include field.field-prefix-with-leading-icon;
+}
+
+// Espacement spécifique pour suffix avec icône trailing
+k3ui-field .has-trailing-icon.has-suffix .suffix {
+  @include field.field-suffix-with-trailing-icon;
+}
+
+k3ui-field[disabled] .leading-icon,
+k3ui-field[disabled] .action,
+k3ui-field[disabled] .trailing-icon,
+k3ui-field[disabled] .clear-button {
+  @include field.field-icon-disabled;
+}
+
+k3ui-field[disabled] .prefix,
+k3ui-field[disabled] .suffix {
+  @include field.field-prefix-suffix-text-disabled;
+}
+
+k3ui-field .trailing-icon {
+  .invalid &,
+  .invalid-style & {
+    @include field.field-icon-error;
+  }
+}
+
+k3ui-field:hover .trailing-icon {
+  .invalid &,
+  .invalid-style & {
+    @include field.field-icon-error-hover;
+  }
+}
+
+k3ui-field[focused] .trailing-icon,
+k3ui-field[focused-style] .trailing-icon {
+  .invalid &,
+  .invalid-style & {
+    @include field.field-icon-error-focused;
+  }
+}
+
+// Positionnement des icônes
+k3ui-field .leading-icon {
+  position: absolute;
+  left: tokens.$md-sys-field-padding-left-with-icon; // 12px
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+k3ui-field .trailing-icon {
+  position: absolute;
+  right: tokens.$md-sys-field-padding-right-with-action; // 12px
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+// Masquer l'icône native date/time du navigateur (on utilise notre trailing-icon)
+k3ui-field .input[type="date"],
+k3ui-field .input[type="time"],
+k3ui-field .input[type="datetime-local"],
+k3ui-field .input[type="month"],
+k3ui-field .input[type="week"] {
+  &::-webkit-calendar-picker-indicator {
+    display: none;
+    appearance: none;
+  }
+  &::-webkit-date-and-time-value {
+    text-align: left;
+  }
+}
+
+// Icône trailing cliquable (ex. copier, comme toggle password)
+k3ui-field .trailing-icon--action {
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+// Espacement des autres éléments
+k3ui-field .has-action .action {
+  margin-left: 12px;
+}
+
+// ========================================
+// PREFIX & SUFFIX
+// ========================================
+
+k3ui-field .prefix,
+k3ui-field .suffix {
+  @include field.field-prefix-suffix;
+}
+
+k3ui-field[variant="filled"][label] .prefix,
+k3ui-field[variant="filled"][label] .suffix {
+  @include field.field-prefix-suffix-filled-with-label;
+}
+
+k3ui-field .prefix,
+k3ui-field .suffix {
+  @include field.field-prefix-suffix-visible;
+}
+
+// ========================================
+// SUPPORTING TEXT
+// ========================================
+
+k3ui-field .supporting {
+  @include field.field-supporting;
+
+  &.invalid,
+  &.invalid-style {
+    @include field.field-supporting-invalid;
+  }
+}
+
+k3ui-field .helper {
+  @include field.field-helper;
+}
+
+k3ui-field[disabled] .helper {
+  @include field.field-helper-disabled;
+}
+
+k3ui-field[helper-on-focus] .helper {
+  @include field.field-helper-hidden;
+}
+
+k3ui-field[helper-on-focus][focused] .helper,
+k3ui-field[helper-on-focus][focused-style] .helper {
+  @include field.field-helper-visible;
+}
+
+k3ui-field .error {
+  @include field.field-error;
+}
+
+k3ui-field .field-display-counter {
+  @include field.field-counter;
+}
+
+// ========================================
+// INPUT TYPE="NUMBER" - Retrait des flèches
+// ========================================
+
+k3ui-field .input[type="number"]::-webkit-outer-spin-button,
+k3ui-field .input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  display: none;
+}
+
+k3ui-field .input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+// ========================================
+// INPUT TYPE="SEARCH" - Retrait de l'icône clear
+// ========================================
+
+k3ui-field .input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+// ========================================
+// EDGE - Masquer le bouton toggle password
+// ========================================
+
+k3ui-field ::-ms-reveal {
+  display: none;
+}
+
+// ========================================
+// COUNTER ET HELPER TEXT POSITIONNÉS EN BAS
+// ========================================
+
+// Conteneur pour aligner helper et counter sur la même ligne
+k3ui-field .field-bottom {
+  display: flex;
+  align-items: baseline;
+  margin-top: 4px;
+  padding-left: tokens.$md-sys-field-padding-left;
+  padding-right: tokens.$md-sys-field-padding-right;
+}
+
+// Helper text positionné en bas à gauche
+k3ui-field .helper-text {
+  font-family: 'JetBrains Mono', 'JetBrainsMono', monospace;
+  font-size: 12px;
+  line-height: 1.33;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  flex: 1; // Prend tout l'espace disponible à gauche
+}
+
+// Compteur de caractères positionné en bas à droite (évite conflit avec le composant .counter)
+k3ui-field .field-display-counter {
+  font-family: 'JetBrains Mono', 'JetBrainsMono', monospace;
+  font-size: 12px;
+  line-height: 1.33;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: right;
+  margin: 0;
+  padding: 0;
+  margin-left: auto; // Pousse le counter vers la droite
+  
+  &.limit-reached {
+    color: rgb(var(--md-sys-color-error-rgb));
+    font-weight: 500;
+  }
+  pointer-events: none;
+}
+
+// Bouton toggle password (utilise les mêmes styles que les trailing icons)
+k3ui-field .toggle-password-button {
+  @include field.field-icon;
+  position: absolute;
+  right: tokens.$md-sys-field-padding-right-with-action; // 12px
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+// Bouton clear (xmark trailing)
+k3ui-field .clear-button {
+  @include field.field-icon;
+  position: absolute;
+  right: tokens.$md-sys-field-padding-right-with-action;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  pointer-events: auto;
+
+  &[hidden] {
+    display: none !important;
+  }
+}
+
+// Décaler le clear quand un toggle password est présent
+k3ui-field .input-field.toggle-password .clear-button {
+  right: calc(#{tokens.$md-sys-field-padding-right-with-action} + #{tokens.$md-sys-field-icon-size} + #{tokens.$md-sys-field-action-spacing});
+}
+
+// Décaler le clear quand une icône trailing est présente
+k3ui-field .input-field.has-trailing-icon .clear-button {
+  right: calc(#{tokens.$md-sys-field-padding-right-with-action} + 36px);
+}
+
+// Décaler le clear quand toggle password et icône trailing sont présents
+k3ui-field .input-field.toggle-password.has-trailing-icon .clear-button {
+  right: calc(#{tokens.$md-sys-field-padding-right-with-action} + 36px + #{tokens.$md-sys-field-icon-size} + #{tokens.$md-sys-field-action-spacing});
+}
+
+// Espacement du texte quand le bouton clear est visible
+k3ui-field .input-field.has-clear-visible .text-wrapper {
+  padding-right: 36px;
+}
+
+k3ui-field .input-field.has-clear-visible.has-trailing-icon .text-wrapper {
+  padding-right: 72px;
+}
+
+k3ui-field .input-field.has-clear-visible.toggle-password .text-wrapper {
+  padding-right: calc(36px + #{tokens.$md-sys-field-icon-size} + #{tokens.$md-sys-field-action-spacing});
+}
+
+k3ui-field .input-field.has-clear-visible.toggle-password.has-trailing-icon .text-wrapper {
+  padding-right: calc(72px + #{tokens.$md-sys-field-icon-size} + #{tokens.$md-sys-field-action-spacing});
+}
+
+k3ui-field[variant="plain"][disabled] > .label,
+k3ui-field[variant="plain"][readonly] > .label {
+  pointer-events: none;
+}
+
+// Curseur interdit pour les champs non modifiables
+k3ui-field[disabled] .input-field,
+k3ui-field[disabled] .input,
+k3ui-field[disabled] .text-wrapper,
+k3ui-field[readonly] .input-field,
+k3ui-field[readonly] .input,
+k3ui-field[readonly] .text-wrapper {
+  cursor: not-allowed;
+}
+
+// Ajuster le padding de l'input quand il y a un toggle password
+k3ui-field.toggle-password .input,
+k3ui-field .input-field.toggle-password .input {
+  padding-right: calc(tokens.$md-sys-field-padding-right + tokens.$md-sys-field-icon-size + tokens.$md-sys-field-action-spacing);
+}
+
+
+

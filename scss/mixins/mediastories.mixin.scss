@@ -1,0 +1,45 @@
+/**
+ * @fileoverview Mixins pour MediaStories
+ * @description Mixins réutilisables pour le viewer de stories
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/mediastories.token' as ws;
+
+/**
+ * Racine du viewer (mode embed)
+ */
+@mixin mediastories-root {
+  display: inline-block;
+  color: ws.$mediastories-text;
+  user-select: none;
+  outline: none;
+  box-sizing: border-box;
+}
+
+/**
+ * Mode plein écran (stage + flèches)
+ */
+@mixin mediastories-fullscreen {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: #000;
+  z-index: ws.$mediastories-z-index-fullscreen;
+}
+
+/**
+ * Carte portrait
+ */
+@mixin mediastories-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: ws.$mediastories-radius;
+  background: ws.$mediastories-bg;
+  isolation: isolate;
+  z-index: 1;
+}

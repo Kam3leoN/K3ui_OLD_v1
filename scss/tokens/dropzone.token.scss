@@ -1,0 +1,54 @@
+/**
+ * @fileoverview Tokens DropZone pour K3UI
+ * @description Variables de design pour les zones de dépôt de fichiers
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'motion.token' as motion;
+
+// ============================================================================
+// DROPZONE TOKENS
+// ============================================================================
+
+// Bordures
+$dropzone-border-width: 2px !default;
+$dropzone-border-style: dashed !default;
+$dropzone-border-color: var(--md-sys-color-outline) !default;
+$dropzone-border-color-active: var(--md-sys-color-primary) !default;
+$dropzone-border-color-invalid: var(--md-sys-color-error) !default;
+
+// Arrondis
+$dropzone-border-radius: var(--md-sys-shape-corner-medium) !default;
+
+// Espacements
+$dropzone-padding: 2rem !default;
+$dropzone-gap: 1rem !default;
+
+// Couleurs
+$dropzone-background: transparent !default;
+$dropzone-background-active: var(--md-sys-color-primary-container) !default;
+$dropzone-background-disabled: var(--md-sys-color-surface-variant) !default;
+
+// Couleurs de texte
+$dropzone-text-color: var(--md-sys-color-on-surface) !default;
+$dropzone-text-color-secondary: var(--md-sys-color-on-surface-variant) !default;
+$dropzone-text-color-disabled: var(--md-sys-color-on-surface-variant) !default;
+
+// Transitions
+$dropzone-transition-duration: 200ms !default;
+$dropzone-transition-timing: motion.spring-easing(effects, fast) !default;
+
+// Preview
+$dropzone-preview-item-size: 100px !default;
+$dropzone-preview-item-radius: var(--md-sys-shape-corner-small) !default;
+$dropzone-preview-gap: 1rem !default;
+$dropzone-preview-remove-size: 24px !default;
+$dropzone-preview-remove-offset: -8px !default;
+
+// Icône
+$dropzone-icon-size: 48px !default;
+$dropzone-icon-color: var(--md-sys-color-primary) !default;
+
+// Opacité
+$dropzone-opacity-disabled: 0.38 !default;

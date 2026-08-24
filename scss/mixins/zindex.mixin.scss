@@ -1,0 +1,151 @@
+/// @file zindex.mixin.scss
+/// @brief Mixin zindex Material 3
+@use '../tokens/zindex.token' as zindex;
+
+/**
+ * Mixin principal pour appliquer un z-index Material Design 3
+ * @param {string} $layer - Couche z-index (base, menu, appbar, drawer, dialog, toast, tooltip, max)
+ */
+@mixin zindex($layer: 'base') {
+  @if $layer == 'base' { 
+    z-index: var(--md-sys-zindex-base, #{zindex.zindex-layer('base')}); 
+  } @else if $layer == 'menu' { 
+    z-index: var(--md-sys-zindex-menu, #{zindex.zindex-layer('menu')}); 
+  } @else if $layer == 'appbar' { 
+    z-index: var(--md-sys-zindex-appbar, #{zindex.zindex-layer('appbar')}); 
+  } @else if $layer == 'drawer' { 
+    z-index: var(--md-sys-zindex-drawer, #{zindex.zindex-layer('drawer')}); 
+  } @else if $layer == 'dialog' { 
+    z-index: var(--md-sys-zindex-dialog, #{zindex.zindex-layer('dialog')}); 
+  } @else if $layer == 'toast' { 
+    z-index: var(--md-sys-zindex-toast, #{zindex.zindex-layer('toast')}); 
+  } @else if $layer == 'tooltip' { 
+    z-index: var(--md-sys-zindex-tooltip, #{zindex.zindex-layer('tooltip')}); 
+  } @else if $layer == 'max' { 
+    z-index: var(--md-sys-zindex-max, #{zindex.zindex-layer('max')}); 
+  }
+}
+
+// =============================================================================
+// MIXINS AVANCÉS
+// =============================================================================
+
+/**
+ * Mixin pour z-index par priorité
+ * @param {string} $priority - Niveau de priorité (low, medium, high, higher, highest, critical, urgent, maximum)
+ */
+@mixin zindex-priority($priority: 'medium') {
+  z-index: zindex.zindex-priority($priority);
+}
+
+/**
+ * Mixin pour z-index par composant
+ * @param {string} $component - Nom du composant (surface, menu, navigation, sidebar, modal, notification, overlay, system)
+ */
+@mixin zindex-component($component: 'surface') {
+  z-index: zindex.zindex-component($component);
+}
+
+/**
+ * Mixin pour z-index personnalisé
+ * @param {number} $value - Valeur z-index personnalisée
+ */
+@mixin zindex-custom($value) {
+  @if zindex.zindex-valid($value) {
+    z-index: $value;
+  } @else {
+    @warn "Invalid z-index value: #{$value}. Must be between 0 and 2147483647.";
+  }
+}
+
+/**
+ * Mixin pour z-index avec décalage
+ * @param {string} $base-layer - Couche de base
+ * @param {number} $offset - Décalage à ajouter
+ */
+@mixin zindex-offset($base-layer: 'base', $offset: 0) {
+  $base-value: zindex.zindex-layer($base-layer);
+  $custom-value: zindex.zindex-custom($base-value, $offset);
+  z-index: $custom-value;
+}
+
+/**
+ * Mixin pour z-index avec fallback
+ * @param {string} $layer - Couche z-index
+ * @param {number} $fallback - Valeur de fallback
+ */
+@mixin zindex-with-fallback($layer: 'base', $fallback: 1) {
+  z-index: var(--md-sys-zindex-#{$layer}, #{zindex.zindex-layer($layer)}, $fallback);
+}
+
+/**
+ * Mixin pour z-index responsive
+ * @param {string} $mobile-layer - Couche pour mobile
+ * @param {string} $tablet-layer - Couche pour tablette (optionnel)
+ * @param {string} $desktop-layer - Couche pour desktop (optionnel)
+ */
+@mixin zindex-responsive($mobile-layer, $tablet-layer: null, $desktop-layer: null) {
+  @include zindex($mobile-layer);
+  
+  @if $tablet-layer {
+    @media (min-width: 768px) {
+      @include zindex($tablet-layer);
+    }
+  }
+  
+  @if $desktop-layer {
+    @media (min-width: 1024px) {
+      @include zindex($desktop-layer);
+    }
+  }
+}
+
+/**
+ * Mixin pour z-index avec contexte
+ * @param {string} $context - Contexte d'utilisation (modal, menu, tooltip, etc.)
+ */
+@mixin zindex-context($context: 'base') {
+  @if $context == 'modal' {
+    @include zindex('dialog');
+  } @else if $context == 'menu' {
+    @include zindex('menu');
+  } @else if $context == 'tooltip' {
+    @include zindex('tooltip');
+  } @else if $context == 'notification' {
+    @include zindex('toast');
+  } @else if $context == 'navigation' {
+    @include zindex('appbar');
+  } @else if $context == 'sidebar' {
+    @include zindex('drawer');
+  } @else {
+    @include zindex('base');
+  }
+}
+
+/**
+ * Mixin pour z-index avec isolation
+ * @param {string} $layer - Couche z-index
+ */
+@mixin zindex-isolated($layer: 'base') {
+  @include zindex($layer);
+  isolation: isolate;
+}
+
+/**
+ * Mixin pour z-index avec stacking context
+ * @param {string} $layer - Couche z-index
+ * @param {string} $position - Position (relative, absolute, fixed, sticky)
+ */
+@mixin zindex-stacking($layer: 'base', $position: 'relative') {
+  @include zindex($layer);
+  position: #{$position};
+}
+
+/**
+ * Mixin pour z-index avec transform
+ * @param {string} $layer - Couche z-index
+ */
+@mixin zindex-transformed($layer: 'base') {
+  @include zindex($layer);
+  transform: translateZ(0);
+} 

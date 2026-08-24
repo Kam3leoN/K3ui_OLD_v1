@@ -1,0 +1,113 @@
+/**
+ * @fileoverview Mixins pour NavigationBar (Material Design 3 Expressive - Bottom)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/navigation-bar.token' as bar;
+@use '../tokens/navigation-item.token' as navitem;
+@use '../tokens/touch.token' as touch;
+@use '../mixins/state.mixin' as state;
+@use '../mixins/navigation-item.mixin' as navitem-mx;
+
+@mixin navigation-bar-container {
+  position: fixed;
+  bottom: 0;
+  left: calc(
+    var(--k3ui-rail-inset-left, var(--k3ui-rail-inset-left-default, 0px)) + env(safe-area-inset-left, 0px)
+  );
+  right: calc(var(--k3ui-rail-inset-right, 0px) + env(safe-area-inset-right, 0px));
+  height: bar.$navigation-bar-height;
+  background-color: bar.$navigation-bar-surface;
+  border-top: 1px solid bar.$navigation-bar-border;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: bar.$navigation-bar-z-index;
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.04);
+  transition:
+    left var(--md-sys-motion-spatial-default-duration, 500ms) var(--md-sys-motion-spatial-default-easing, ease),
+    right var(--md-sys-motion-spatial-default-duration, 500ms) var(--md-sys-motion-spatial-default-easing, ease);
+
+  &.navigation-bar--compact {
+    justify-content: center;
+    gap: 0;
+  }
+}
+
+@mixin navigation-bar-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: bar.$navigation-bar-icon-label-gap;
+  flex: 1;
+  height: 100%;
+  min-height: touch.$md-sys-touch-target-min;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 400ms bar.$navigation-bar-pill-easing;
+  font-family: inherit;
+
+  @at-root .navigation-bar.navigation-bar--compact #{&} {
+    flex: 0 1 auto;
+    min-width: 64px;
+    max-width: 80px;
+  }
+
+  @include state.state-focus-visible($outline-color: bar.$navigation-bar-focus-outline);
+}
+
+@mixin navigation-bar-icon-wrapper {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: bar.$navigation-bar-pill-width;
+  height: bar.$navigation-bar-pill-height;
+}
+
+@mixin navigation-bar-pill {
+  @include navitem-mx.nav-item-indicator(
+    (
+      width-vertical: bar.$navigation-bar-pill-width,
+      height-vertical: bar.$navigation-bar-pill-height,
+      radius-vertical: bar.$navigation-bar-pill-radius,
+      height-horizontal: bar.$navigation-bar-pill-height,
+      radius-horizontal: bar.$navigation-bar-pill-radius,
+      bg: bar.$navigation-bar-pill-bg,
+      hover-bg: bar.$navigation-bar-hover-bg,
+      hover-duration: bar.$navigation-bar-hover-duration,
+      prefix: 'navigation-bar',
+      expanded-parent: null,
+    )
+  );
+}
+
+@mixin navigation-bar-pill--active {
+  @include navitem-mx.nav-item-indicator--active;
+  background-color: bar.$navigation-bar-pill-bg;
+}
+
+@mixin navigation-bar-pill--anim-enter {
+  @include navitem-mx.nav-item-indicator--anim-enter('navigation-bar');
+}
+
+@include navitem-mx.nav-item-indicator-keyframes('navigation-bar');
+
+
+@mixin navigation-bar-label {
+  position: relative;
+  z-index: 2;
+  font-size: bar.$navigation-bar-label-font-size;
+  font-weight: bar.$navigation-bar-label-font-weight;
+  letter-spacing: bar.$navigation-bar-label-letter-spacing;
+  color: bar.$navigation-bar-label-inactive;
+  transition: color 400ms bar.$navigation-bar-pill-easing;
+  user-select: none;
+}

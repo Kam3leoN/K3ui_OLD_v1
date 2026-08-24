@@ -1,0 +1,28 @@
+/**
+ * @fileoverview Tokens de design pour ContentPane
+ * @description Variables pour surfaces M3 Expressive scrollables
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+/** Rayon par défaut des panes (M3E docs) */
+$panel-content-radius: 28px;
+$content-pane-radius: $panel-content-radius;
+
+/** Couleur de surface — token M3 */
+$panel-content-surface: var(--md-sys-color-surface-container-lowest, var(--md-sys-color-surface, #fffbfe));
+$content-pane-surface: $panel-content-surface;
+
+/** Gap interne trailing pane */
+$panel-content-trailing-padding-block: 1rem 1.5rem;
+$panel-content-trailing-padding-inline: 1.25rem;
+$content-pane-trailing-padding-block: $panel-content-trailing-padding-block;
+$content-pane-trailing-padding-inline: $panel-content-trailing-padding-inline;
+
+/** Scrollbar sizes */
+$panel-content-scrollbar-size-trailing: 6px;
+$panel-content-scrollbar-size-leading: 6px;
+$panel-content-scrollbar-size-layout: 8px;
+$content-pane-scrollbar-size-trailing: $panel-content-scrollbar-size-trailing;
+$content-pane-scrollbar-size-leading: $panel-content-scrollbar-size-leading;
+$content-pane-scrollbar-size-layout: $panel-content-scrollbar-size-layout;

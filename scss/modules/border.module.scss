@@ -1,0 +1,17 @@
+@use '../mixins/border.mixin' as border;
+
+/// @file border.module.scss
+/// @brief Classes utilitaires pour border Material 3
+
+.border {
+  @include border.border('default');
+}
+.border-variant {
+  @include border.border('variant');
+}
+.border-thick {
+  @include border.border('default', var(--md-sys-border-width-thick, 2px));
+}
+.border-radius {
+  @include border.border('default', null, var(--md-sys-border-radius-default, 4px));
+} 

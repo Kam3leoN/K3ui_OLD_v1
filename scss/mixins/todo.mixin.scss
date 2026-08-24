@@ -1,0 +1,242 @@
+/// @file todo.mixin.scss
+/// @brief Mixins todo Material 3
+
+@use '../tokens/todo.token' as todo;
+@use '../tokens/theme.token' as theme;
+@use '../tokens/motion.token' as motion;
+@use '../tokens/spacing.token' as spacing;
+@use '../mixins/motion.mixin' as motion-mixin;
+@use '../mixins/state.mixin' as state;
+@use '../mixins/elevation.mixin' as elevation;
+
+/**
+ * Mixin de base pour le composant Todo
+ */
+@mixin todo-base {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: todo.$md-sys-todo-container-max-width;
+  margin: 0 auto;
+  background-color: var(--md-sys-color-surface);
+  border-radius: todo.$md-sys-todo-border-radius;
+  @include elevation.elevation(1);
+  overflow: hidden;
+}
+
+/**
+ * Mixin pour la zone d'ajout
+ */
+@mixin todo-add {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: todo.$md-sys-todo-container-padding;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/**
+ * Mixin pour l'input d'ajout
+ */
+@mixin todo-input {
+  flex: 1;
+  height: todo.$md-sys-todo-input-height;
+  padding: 0 todo.$md-sys-todo-input-padding;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: var(--md-sys-color-on-surface);
+  font-size: var(--md-sys-typescale-body-large-size);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  
+  &::placeholder {
+    color: var(--md-sys-color-on-surface-variant);
+    opacity: 0.6;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+/**
+ * Mixin pour la liste des tâches
+ */
+@mixin todo-list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+/**
+ * Mixin pour un item de tâche
+ */
+@mixin todo-item {
+  display: flex;
+  align-items: center;
+  gap: todo.$md-sys-todo-item-gap;
+  min-height: todo.$md-sys-todo-item-height;
+  padding: todo.$md-sys-todo-item-padding-y todo.$md-sys-todo-item-padding-x;
+  background-color: transparent;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  transition: background-color todo.$md-sys-todo-transition-duration todo.$md-sys-todo-transition-easing,
+              opacity todo.$md-sys-todo-transition-duration todo.$md-sys-todo-transition-easing;
+  position: relative;
+  cursor: pointer;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  // State layer pour les interactions
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--md-sys-color-on-surface);
+    opacity: 0;
+    transition: opacity todo.$md-sys-todo-transition-duration todo.$md-sys-todo-transition-easing;
+    pointer-events: none;
+  }
+
+  // États hover, focus, pressed
+  &:hover {
+    &::before {
+      opacity: todo.$md-sys-todo-item-state-layer-opacity-hover;
+    }
+  }
+
+  &:focus {
+    &::before {
+      opacity: todo.$md-sys-todo-item-state-layer-opacity-focus;
+    }
+  }
+
+  &:active {
+    &::before {
+      opacity: todo.$md-sys-todo-item-state-layer-opacity-pressed;
+    }
+  }
+
+  // État complété
+  &--completed {
+    opacity: todo.$md-sys-todo-item-opacity-completed;
+
+    .todo__item-text {
+      text-decoration: line-through;
+      color: var(--md-sys-color-on-surface-variant);
+    }
+  }
+
+  // État en cours d'édition
+  &--editing {
+    background-color: var(--md-sys-color-surface-container-high);
+
+    &::before {
+      opacity: 0;
+    }
+  }
+}
+
+/**
+ * Mixin pour le texte d'une tâche
+ */
+@mixin todo-item-text {
+  flex: 1;
+  color: var(--md-sys-color-on-surface);
+  font-size: var(--md-sys-typescale-body-large-size);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  transition: color todo.$md-sys-todo-transition-duration todo.$md-sys-todo-transition-easing,
+              text-decoration todo.$md-sys-todo-transition-duration todo.$md-sys-todo-transition-easing;
+
+  &--completed {
+    text-decoration: line-through;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+}
+
+/**
+ * Mixin pour l'input d'édition
+ */
+@mixin todo-item-edit-input {
+  flex: 1;
+  width: 100%;
+  padding: 0;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: var(--md-sys-color-on-surface);
+  font-size: var(--md-sys-typescale-body-large-size);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+
+  &:focus {
+    outline: none;
+  }
+}
+
+/**
+ * Mixin pour les actions d'un item
+ */
+@mixin todo-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity todo.$md-sys-todo-transition-duration todo.$md-sys-todo-transition-easing;
+
+  .todo__item:hover &,
+  .todo__item--editing & {
+    opacity: 1;
+  }
+}
+
+/**
+ * Mixin pour les filtres
+ */
+@mixin todo-filters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: todo.$md-sys-todo-filter-gap;
+  padding: todo.$md-sys-todo-container-padding;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/**
+ * Mixin pour le footer
+ */
+@mixin todo-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: todo.$md-sys-todo-footer-height;
+  padding: todo.$md-sys-todo-footer-padding todo.$md-sys-todo-container-padding;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  background-color: var(--md-sys-color-surface-container-low);
+}
+
+/**
+ * Mixin pour le compteur
+ */
+@mixin todo-counter {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: var(--md-sys-typescale-body-medium-size);
+  font-weight: var(--md-sys-typescale-body-medium-weight);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+}
+

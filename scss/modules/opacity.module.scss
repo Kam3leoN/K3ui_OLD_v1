@@ -1,0 +1,150 @@
+/**
+ * @file opacity.module.scss
+ * @description Module utilitaire générant les classes d'opacité à partir des mixins.
+ * @use '../mixins/opacity.mixin.scss' pour accéder aux mixins d'opacité.
+ */
+
+@use '../tokens/opacity.token' as tokens;
+@use '../mixins/opacity.mixin' as opacity;
+
+// ============================================================================
+// CLASSES UTILITAIRES D'OPACITÉ
+// ============================================================================
+
+/**
+ * Génère les classes utilitaires d'opacité de base
+ * .opacity-0, .opacity-5, .opacity-10, .opacity-15, .opacity-20, .opacity-25, 
+ * .opacity-30, .opacity-35, .opacity-40, .opacity-45, .opacity-50, .opacity-55, 
+ * .opacity-60, .opacity-65, .opacity-70, .opacity-75, .opacity-80, .opacity-85, 
+ * .opacity-90, .opacity-95, .opacity-100
+ */
+@each $level, $value in tokens.$opacity-tokens {
+  .opacity-#{$level} {
+    @include opacity.opacity($value);
+  }
+}
+
+// ============================================================================
+// CLASSES D'ÉTATS MATERIAL DESIGN 3
+// ============================================================================
+
+/**
+ * Classes pour les états d'interaction Material Design 3
+ */
+.opacity-disabled {
+  @include opacity.opacity-disabled;
+}
+
+.opacity-hover {
+  @include opacity.opacity-hover;
+}
+
+.opacity-focus {
+  @include opacity.opacity-focus;
+}
+
+.opacity-pressed {
+  @include opacity.opacity-pressed;
+}
+
+.opacity-drag {
+  @include opacity.opacity-drag;
+}
+
+.opacity-selected {
+  @include opacity.opacity-selected;
+}
+
+.opacity-activated {
+  @include opacity.opacity-activated;
+}
+
+.opacity-overlay {
+  @include opacity.opacity-overlay;
+}
+
+.opacity-scrim {
+  @include opacity.opacity-scrim;
+}
+
+.opacity-state-layer {
+  @include opacity.opacity-state-layer;
+}
+
+// ============================================================================
+// CLASSES DE SURFACE CONTAINER
+// ============================================================================
+
+/**
+ * Classes pour les opacités de surface container
+ */
+.opacity-surface-container-lowest {
+  @include opacity.opacity-surface-container-lowest;
+}
+
+.opacity-surface-container-low {
+  @include opacity.opacity-surface-container-low;
+}
+
+.opacity-surface-container {
+  @include opacity.opacity-surface-container;
+}
+
+.opacity-surface-container-high {
+  @include opacity.opacity-surface-container-high;
+}
+
+.opacity-surface-container-highest {
+  @include opacity.opacity-surface-container-highest;
+}
+
+// ============================================================================
+// CLASSES DE TRANSITION ET ANIMATION
+// ============================================================================
+
+/**
+ * Classes pour les transitions d'opacité
+ */
+.opacity-transition {
+  @include opacity.opacity-transition;
+}
+
+.opacity-transition-fast {
+  @include opacity.opacity-transition-fast;
+}
+
+.opacity-transition-slow {
+  @include opacity.opacity-transition-slow;
+}
+
+/**
+ * Classes pour les animations de fade
+ */
+.opacity-fade-in {
+  @include opacity.opacity-fade-in;
+}
+
+.opacity-fade-out {
+  @include opacity.opacity-fade-out;
+}
+
+.opacity-fade-in-fast {
+  @include opacity.opacity-fade-in-fast;
+}
+
+.opacity-fade-out-fast {
+  @include opacity.opacity-fade-out-fast;
+}
+
+// ============================================================================
+// CLASSES UTILITAIRES AVANCÉES
+// ============================================================================
+
+/**
+ * Classes pour les opacités de base avec paramètres
+ */
+.opacity-base-0 { @include opacity.opacity-base(0); }
+.opacity-base-25 { @include opacity.opacity-base(25); }
+.opacity-base-50 { @include opacity.opacity-base(50); }
+.opacity-base-75 { @include opacity.opacity-base(75); }
+.opacity-base-100 { @include opacity.opacity-base(100); } 

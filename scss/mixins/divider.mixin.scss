@@ -1,0 +1,247 @@
+/**
+ * @file divider.mixin.scss
+ * @description Mixins pour le composant Divider
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/divider.token' as divider;
+@use '../tokens/theme.token' as theme;
+
+$thickness: var(#{divider.$divider-thickness-var}, #{divider.$divider-thickness});
+
+/// Variables et typographie communes
+@mixin divider-base {
+  #{divider.$divider-thickness-var}: #{divider.$divider-thickness};
+  #{divider.$divider-line-color-var}: #{divider.$divider-line-color};
+  #{divider.$divider-text-color-var}: #{divider.$divider-text-color};
+
+  flex-shrink: 0;
+  align-self: stretch;
+  white-space: nowrap;
+  font-family: divider.$divider-font-family;
+  font-size: divider.$divider-font-size;
+  font-weight: divider.$divider-font-weight;
+  line-height: divider.$divider-line-height;
+  letter-spacing: divider.$divider-letter-spacing;
+  color: var(#{divider.$divider-text-color-var}, #{divider.$divider-text-color});
+}
+
+/// Épaisseur fixe sur l'axe vertical (trait horizontal)
+@mixin divider-lock-height {
+  height: $thickness;
+  min-height: $thickness;
+  max-height: $thickness;
+}
+
+/// Épaisseur fixe sur l'axe horizontal (trait vertical)
+@mixin divider-lock-width {
+  width: $thickness;
+  min-width: $thickness;
+  max-width: $thickness;
+}
+
+/// Styles communs des pseudo-éléments ligne
+@mixin divider-line-pseudo {
+  content: '';
+  display: block;
+  background-color: var(#{divider.$divider-line-color-var}, #{divider.$divider-line-color});
+}
+
+/// Segment de trait horizontal (largeur flexible, hauteur 2px)
+@mixin divider-segment-row {
+  flex: 1 1 0;
+  align-self: center;
+  width: auto;
+  min-width: 0;
+  @include divider-lock-height;
+}
+
+/// Segment de trait vertical en grille (hauteur = cellule, largeur 2px)
+@mixin divider-segment-column-grid {
+  justify-self: center;
+  align-self: stretch;
+  @include divider-lock-width;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+}
+
+/// Masque un pseudo-élément (placement start/end)
+@mixin divider-segment-hidden {
+  flex: 0 0 0;
+  width: 0;
+  min-width: 0;
+  max-width: 0;
+  height: 0;
+  min-height: 0;
+  max-height: 0;
+}
+
+/// Trait continu sans libellé — horizontal
+@mixin divider-solid-row {
+  gap: 0;
+  width: 100%;
+  @include divider-lock-height;
+  background-color: var(#{divider.$divider-line-color-var}, #{divider.$divider-line-color});
+
+  &::before,
+  &::after {
+    content: none;
+    display: none;
+  }
+}
+
+/// Trait continu sans libellé — vertical
+@mixin divider-solid-column {
+  gap: 0;
+  height: 100%;
+  @include divider-lock-width;
+  background-color: var(#{divider.$divider-line-color-var}, #{divider.$divider-line-color});
+
+  &::before,
+  &::after {
+    content: none;
+    display: none;
+  }
+}
+
+/// Layout flex : trait horizontal entre blocs empilés
+@mixin divider-row-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: divider.$divider-gap;
+  width: 100%;
+  height: auto;
+  margin-block: divider.$divider-margin-block;
+  margin-inline: 0;
+
+  &::before,
+  &::after {
+    @include divider-line-pseudo;
+    @include divider-segment-row;
+  }
+
+  &:empty {
+    @include divider-solid-row;
+  }
+}
+
+/// Layout grid : trait vertical entre blocs côte à côte
+@mixin divider-vertical-line {
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  align-content: stretch;
+  text-align: center;
+  width: auto;
+  min-width: max-content;
+  height: auto;
+  margin-block: 0;
+  margin-inline: divider.$divider-margin-inline;
+  row-gap: divider.$divider-gap;
+
+  &::before {
+    grid-row: 1;
+    @include divider-line-pseudo;
+    @include divider-segment-column-grid;
+  }
+
+  &::after {
+    grid-row: 3;
+    @include divider-line-pseudo;
+    @include divider-segment-column-grid;
+  }
+
+  &:empty {
+    @include divider-solid-column;
+  }
+}
+
+/// Placement du libellé — trait horizontal
+@mixin divider-label-start-row {
+  &:not(:empty)::before {
+    @include divider-segment-hidden;
+  }
+
+  &:not(:empty)::after {
+    @include divider-segment-row;
+  }
+}
+
+@mixin divider-label-end-row {
+  &:not(:empty)::before {
+    @include divider-segment-row;
+  }
+
+  &:not(:empty)::after {
+    @include divider-segment-hidden;
+  }
+}
+
+/// Placement du libellé — trait vertical
+@mixin divider-label-start-column {
+  &:not(:empty) {
+    grid-template-rows: auto 1fr;
+
+    &::before {
+      display: none;
+    }
+
+    &::after {
+      grid-row: 2;
+    }
+  }
+}
+
+@mixin divider-label-end-column {
+  &:not(:empty) {
+    grid-template-rows: 1fr auto;
+
+    &::before {
+      grid-row: 1;
+    }
+
+    &::after {
+      display: none;
+    }
+  }
+}
+
+@mixin divider-neutral {
+  #{divider.$divider-text-color-var}: #{divider.$divider-text-color};
+  #{divider.$divider-line-color-var}: #{theme.sys-color-var('outline')};
+}
+
+@mixin divider-color-variant($role) {
+  $semantic: theme.sys-color-var($role);
+
+  #{divider.$divider-text-color-var}: #{$semantic};
+  #{divider.$divider-line-color-var}: color-mix(
+    in srgb,
+    #{$semantic} divider.$divider-line-tint-ratio,
+    #{theme.sys-color-var('outline-variant')}
+  );
+}
+
+@mixin divider-color-variants {
+  &--neutral {
+    @include divider-neutral;
+  }
+
+  @each $name, $role in divider.$divider-color-roles {
+    @if $name != 'neutral' {
+      &--#{$name} {
+        @include divider-color-variant($role);
+      }
+    }
+  }
+}
+
+/// @deprecated Alias — conserver pour compatibilité interne
+@mixin divider-root {
+  @include divider-base;
+  @include divider-row-layout;
+}

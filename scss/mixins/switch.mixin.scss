@@ -1,0 +1,592 @@
+/// @file switch.mixin.scss
+/// @brief Mixins switch Material 3
+
+@use '../tokens/switch.token' as switch;
+@use '../tokens/theme.token' as theme;
+@use '../tokens/motion.token' as motion;
+@use '../tokens/spacing.token' as spacing;
+@use '../mixins/motion.mixin' as motion-mixin;
+@use '../mixins/state.mixin' as state;
+
+/**
+ * Mixin de base pour tous les switches
+ */
+@mixin switch-base(
+  $width: switch.$md-sys-switch-width,
+  $height: switch.$md-sys-switch-height,
+  $handle-size: switch.$md-sys-switch-handle-size,
+  $track-height: switch.$md-sys-switch-track-height
+) {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  outline: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  vertical-align: top;
+  
+  // Hauteur minimale pour la zone de touch target
+  min-height: 48px;
+}
+
+/**
+ * Mixin pour le track (rail) du switch
+ */
+@mixin switch-track(
+  $width: switch.$md-sys-switch-width,
+  $height: switch.$md-sys-switch-track-height
+) {
+  position: relative;
+  width: $width;
+  height: $height;
+  border-radius: switch.$md-sys-switch-track-border-radius;
+  background-color: var(--md-sys-color-surface-container-highest);
+  overflow: hidden;
+  border: switch.$md-sys-switch-track-border-width solid switch.$md-sys-switch-track-border-color-unchecked;
+  transition: background-color motion.$md-sys-motion-duration-standard motion.$md-sys-motion-easing-standard,
+              border-color motion.$md-sys-motion-duration-standard motion.$md-sys-motion-easing-standard;
+              
+  .switch--checked & {
+    background-color: var(--md-sys-color-primary);
+    border: none;
+  }
+}
+
+/**
+ * Mixin pour le style compact (Material Design 2)
+ * Le track est plus petit que le handle, le handle dépasse verticalement
+ * Le handle doit couvrir les extrémités du track
+ */
+@mixin switch-compact {
+  .switch__track {
+    height: switch.$md-sys-switch-compact-track-height;
+    overflow: visible;
+    border: none;
+  }
+
+  // Le handle doit être positionné pour couvrir les extrémités du track
+  // Le handle doit couvrir complètement le track : bord gauche à 0px quand unchecked, bord droit à 52px quand checked
+  .switch__handle {
+    // Position unchecked : le bord gauche du handle doit être aligné avec le bord gauche du track (0px)
+    // Donc left = 0px (le centre est à 12px, le bord gauche est à 0px)
+    left: 0px !important;
+    
+    // Position checked : le bord droit du handle doit être à 52px (bord droit du track)
+    // Donc le centre doit être à 52px - 12px (rayon) = 40px
+    // Depuis left: 0px, le centre initial est à 12px, donc translateX = 40px - 12px = 28px
+    .switch--checked & {
+      transform: translateY(-50%) translateX(28px) !important;
+    }
+
+    // Positionnement RTL pour le style compact
+    [dir="rtl"] &,
+    .switch--rtl & {
+      left: auto !important;
+      right: 0px !important;
+    }
+
+    // Position checked RTL : même logique inversée
+    // Depuis right: 0px, le centre initial est à 12px depuis la droite, donc translateX = -28px
+    [dir="rtl"] .switch--checked &,
+    .switch--rtl.switch--checked & {
+      transform: translateY(-50%) translateX(-28px) !important;
+    }
+  }
+}
+
+/**
+ * Mixin pour le handle (bouton qui glisse) du switch
+ */
+@mixin switch-handle(
+  $size: switch.$md-sys-switch-handle-size,
+  $padding: switch.$md-sys-switch-handle-padding
+) {
+  position: absolute;
+  width: $size;
+  height: $size;
+  border-radius: switch.$md-sys-switch-handle-border-radius;
+  background-color: var(--md-sys-color-outline);
+  box-shadow: none;
+  border: none;
+  top: 50%;
+  
+  // Positionnement par défaut (LTR)
+  left: $padding;
+  
+  // Positionnement RTL : utiliser right au lieu de left
+  [dir="rtl"] .switch &,
+  .switch--rtl & {
+    left: auto;
+    right: $padding;
+  }
+  
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2; // Au-dessus du state layer
+  transition: transform motion.$md-sys-motion-duration-emphasized motion.$md-sys-motion-easing-emphasized,
+              width motion.$md-sys-motion-duration-emphasized motion.$md-sys-motion-easing-emphasized,
+              height motion.$md-sys-motion-duration-emphasized motion.$md-sys-motion-easing-emphasized,
+              left motion.$md-sys-motion-duration-emphasized motion.$md-sys-motion-easing-emphasized,
+              right motion.$md-sys-motion-duration-emphasized motion.$md-sys-motion-easing-emphasized,
+              background-color motion.$md-sys-motion-duration-standard motion.$md-sys-motion-easing-standard;
+  .switch--checked & {
+    background-color: var(--md-sys-color-on-primary);
+  }
+}
+
+/**
+ * Mixin pour l'icône dans le handle
+ * Supporte les icônes font (Material Icons avec texte) et SVG
+ */
+@mixin switch-icon($size: switch.$md-sys-switch-icon-size) {
+  width: $size;
+  height: $size;
+  font-size: $size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  line-height: 1;
+  font-style: normal;
+  font-weight: normal;
+  user-select: none;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+}
+
+/**
+ * Mixin pour le texte dans le handle
+ * Affiche du texte à la place d'une icône
+ */
+@mixin switch-text {
+  font-size: switch.$md-sys-switch-text-size;
+  font-weight: 600;
+  line-height: 1;
+  color: inherit;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/**
+ * Mixin pour le state layer (zone de touch interactif)
+ * Le state layer suit le handle pour rester centré sur lui
+ * Le handle est à left: 4px (padding), son centre est à 4px + 12px = 16px
+ * Le state layer fait 40px, donc pour être centré sur le handle, son left doit être à 16px - 20px = -4px
+ */
+@mixin switch-state-layer {
+  position: absolute;
+  top: 50%;
+  // Position initiale : centré sur le handle (handle center = 4px + 12px = 16px, state layer center = 20px, donc left = -4px)
+  left: calc(#{switch.$md-sys-switch-handle-padding} + #{switch.$md-sys-switch-handle-size} / 2 - #{switch.$md-sys-switch-state-layer-size} / 2);
+  width: switch.$md-sys-switch-state-layer-size;
+  height: switch.$md-sys-switch-state-layer-size;
+  border-radius: switch.$md-sys-switch-state-layer-shape;
+  background-color: var(--md-sys-color-on-surface);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%);
+  // Synchroniser exactement avec la transition du handle pour éviter les décalages
+  // Utiliser les mêmes durées et courbes que le handle
+  transition: opacity motion.$md-sys-motion-duration-exiting motion.$md-sys-motion-easing-standard,
+              transform motion.$md-sys-motion-duration-emphasized motion.$md-sys-motion-easing-emphasized;
+  z-index: 1; // Au-dessus du track mais en dessous du handle
+  transform-origin: center center; // Même origine que le handle pour les animations
+  
+  // Positionnement RTL : utiliser right au lieu de left
+  [dir="rtl"] .switch &,
+  .switch--rtl & {
+    left: auto;
+    right: calc(#{switch.$md-sys-switch-handle-padding} + #{switch.$md-sys-switch-handle-size} / 2 - #{switch.$md-sys-switch-state-layer-size} / 2);
+  }
+
+  // Quand le switch est checked, le state layer suit le handle qui se déplace
+  // Le handle se déplace de 20px (52px - 4px - 24px - 4px = 20px)
+  // IMPORTANT: Ne pas appliquer pour le style compact, il sera géré dans switch.module.scss
+  .switch--checked:not([data-style="compact"]) & {
+    transform: translateY(-50%) translateX(20px);
+  }
+
+  // Position checked RTL : mouvement inverse
+  [dir="rtl"] .switch--checked:not([data-style="compact"]) &,
+  .switch--rtl.switch--checked:not([data-style="compact"]) & {
+    transform: translateY(-50%) translateX(-20px);
+  }
+  
+  .switch:hover:not(.switch--disabled):not(.switch--pressed) & {
+    opacity: switch.$md-sys-switch-state-layer-opacity-hover;
+  }
+
+  .switch--focused:not(.switch--disabled) & {
+    opacity: switch.$md-sys-switch-state-layer-opacity-focus;
+  }
+
+  .switch--pressed:not(.switch--disabled) & {
+    opacity: switch.$md-sys-switch-state-layer-opacity-pressed;
+  }
+}
+
+/**
+ * Mixin pour le label du switch
+ */
+@mixin switch-label {
+  font-size: var(--md-sys-typescale-body-large-size);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  color: var(--md-sys-color-on-surface);
+  user-select: none;
+  cursor: pointer;
+  flex: 1;
+  min-width: 0;
+}
+
+/**
+ * Mixin pour les états hover et focus
+ */
+@mixin switch-states {
+  &:hover:not(.switch--disabled):not(:active) {
+    .switch__handle:not(.switch__handle--haptic) {
+      box-shadow: none !important;
+      filter: none !important;
+      transform: translateY(-50%);
+    }
+
+    &.switch--checked .switch__handle:not(.switch__handle--haptic) {
+      box-shadow: none !important;
+      filter: none !important;
+      transform: translateY(-50%) translateX(20px);
+    }
+    
+    .switch__track {
+      box-shadow: none !important;
+      filter: none !important;
+    }
+  }
+
+  &.switch--focused:not(.switch--disabled) {
+    .switch__track::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: switch.$md-sys-switch-track-border-radius;
+      outline: 2px solid var(--md-sys-color-primary);
+      outline-offset: 2px;
+      pointer-events: none;
+    }
+  }
+  &.switch--disabled {
+    @include state.state-disabled();
+    cursor: not-allowed;
+    opacity: 0.38;
+
+    .switch__track {
+      background-color: var(--md-sys-color-surface-container-highest);
+      border: 1px solid var(--md-sys-color-outline-variant);
+      box-shadow: none;
+    }
+
+    .switch--checked & .switch__track {
+      background-color: var(--md-sys-color-primary);
+      border: 1px solid var(--md-sys-color-primary);
+    }
+
+    .switch__handle {
+      background-color: var(--md-sys-color-outline);
+      box-shadow: none;
+    }
+
+    .switch--checked & .switch__handle {
+      background-color: var(--md-sys-color-on-primary);
+    }
+  }
+}
+
+/**
+ * Mixin pour la variante outlined du switch
+ */
+@mixin switch-outlined {
+  .switch__track {
+    background-color: switch.$md-sys-switch-outlined-background;
+    border: switch.$md-sys-switch-outlined-border-width solid switch.$md-sys-switch-outlined-border-color;
+    box-shadow: none;
+  }
+
+  .switch--checked & .switch__track {
+    background-color: switch.$md-sys-switch-outlined-background;
+    border-color: switch.$md-sys-switch-outlined-checked-border-color;
+  }
+
+  // Hover pour outlined - pas d'ombre, seulement changement de couleur de bordure
+  &:hover:not(.switch--disabled) {
+    .switch__track {
+      border-color: var(--md-sys-color-primary);
+    }
+  }
+
+  // Focus pour outlined
+  &.switch--focused:not(.switch--disabled) {
+    .switch__track {
+      border-color: var(--md-sys-color-primary);
+    }
+  }
+
+  // Disabled pour outlined
+  &.switch--disabled {
+    .switch__track {
+      background-color: switch.$md-sys-switch-outlined-background;
+      border-color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 12%);
+    }
+
+    .switch--checked & .switch__track {
+      border-color: color-mix(in srgb, var(--md-sys-color-primary), transparent 62%);
+    }
+  }
+}
+
+/**
+ * Mixin pour les dimensions du switch
+ */
+@mixin switch-size {
+  &__track {
+    width: switch.$md-sys-switch-width;
+    height: switch.$md-sys-switch-track-height;
+  }
+
+  &__handle {
+    width: switch.$md-sys-switch-handle-size;
+    height: switch.$md-sys-switch-handle-size;
+    
+    // Position checked par défaut (style normal)
+    .switch--checked & {
+      transform: translateY(-50%) translateX(20px);
+    }
+
+    // Inversion RTL : en RTL, le handle glisse de droite à gauche
+    [dir="rtl"] .switch--checked &,
+    .switch--rtl.switch--checked & {
+      transform: translateY(-50%) translateX(-20px) !important;
+    }
+
+    // Le mode compact doit surcharger cette valeur
+    // Note: Cette règle est surchargée par le mixin switch-compact avec plus de spécificité
+  }
+
+  &__icon {
+    @include switch-icon(switch.$md-sys-switch-icon-size);
+  }
+}
+
+/**
+ * Animations haptic pour le mouvement du handle
+ * Deux animations séparées selon l'état checked pour préserver les transforms
+ * Effet haptic subtil : léger rebond horizontal pour donner un retour tactile visuel
+ */
+@keyframes switch-haptic-unchecked {
+  0% {
+    transform: translateY(-50%);
+  }
+  30% {
+    transform: translateY(-50%) translateX(-1px);
+  }
+  60% {
+    transform: translateY(-50%) translateX(1px);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes switch-haptic-checked {
+  0% {
+    transform: translateY(-50%) translateX(20px);
+  }
+  30% {
+    transform: translateY(-50%) translateX(19px);
+  }
+  60% {
+    transform: translateY(-50%) translateX(21px);
+  }
+  100% {
+    transform: translateY(-50%) translateX(20px);
+  }
+}
+
+@keyframes switch-haptic-checked-rtl {
+  0% {
+    transform: translateY(-50%) translateX(-20px);
+  }
+  30% {
+    transform: translateY(-50%) translateX(-21px);
+  }
+  60% {
+    transform: translateY(-50%) translateX(-19px);
+  }
+  100% {
+    transform: translateY(-50%) translateX(-20px);
+  }
+}
+
+/**
+ * Animations haptic pour le mode compact
+ * Le handle glisse de left: 0px (centre à 12px) à translateX(28px) (centre à 40px)
+ */
+@keyframes switch-haptic-unchecked-compact {
+  0% {
+    transform: translateY(-50%);
+  }
+  30% {
+    transform: translateY(-50%) translateX(-1px);
+  }
+  60% {
+    transform: translateY(-50%) translateX(1px);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes switch-haptic-checked-compact {
+  0% {
+    transform: translateY(-50%) translateX(28px);
+  }
+  30% {
+    transform: translateY(-50%) translateX(29px);
+  }
+  60% {
+    transform: translateY(-50%) translateX(27px);
+  }
+  100% {
+    transform: translateY(-50%) translateX(28px);
+  }
+}
+
+@keyframes switch-haptic-checked-compact-rtl {
+  0% {
+    transform: translateY(-50%) translateX(-28px);
+  }
+  30% {
+    transform: translateY(-50%) translateX(-29px);
+  }
+  60% {
+    transform: translateY(-50%) translateX(-27px);
+  }
+  100% {
+    transform: translateY(-50%) translateX(-28px);
+  }
+}
+
+/**
+ * Animations pour l'effet switch (transition classique avec léger scale)
+ */
+@keyframes switch-activate-unchecked {
+  0% {
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    transform: translateY(-50%) scale(1.05);
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+@keyframes switch-activate-checked {
+  0% {
+    transform: translateY(-50%) translateX(20px) scale(1);
+  }
+  50% {
+    transform: translateY(-50%) translateX(20px) scale(1.05);
+  }
+  100% {
+    transform: translateY(-50%) translateX(20px) scale(1);
+  }
+}
+
+/**
+ * Animations pour l'effet switch en mode compact
+ * Le handle glisse de left: 0px (centre à 12px) à translateX(28px) (centre à 40px)
+ */
+@keyframes switch-activate-unchecked-compact {
+  0% {
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    transform: translateY(-50%) scale(1.05);
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+@keyframes switch-activate-checked-compact {
+  0% {
+    transform: translateY(-50%) translateX(28px) scale(1);
+  }
+  50% {
+    transform: translateY(-50%) translateX(28px) scale(1.05);
+  }
+  100% {
+    transform: translateY(-50%) translateX(28px) scale(1);
+  }
+}
+
+@keyframes switch-activate-unchecked-compact-rtl {
+  0% {
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    transform: translateY(-50%) scale(1.05);
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+@keyframes switch-activate-checked-compact-rtl {
+  0% {
+    transform: translateY(-50%) translateX(-28px) scale(1);
+  }
+  50% {
+    transform: translateY(-50%) translateX(-28px) scale(1.05);
+  }
+  100% {
+    transform: translateY(-50%) translateX(-28px) scale(1);
+  }
+}
+
+@keyframes switch-activate-unchecked-rtl {
+  0% {
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    transform: translateY(-50%) scale(1.05);
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+@keyframes switch-activate-checked-rtl {
+  0% {
+    transform: translateY(-50%) translateX(-20px) scale(1);
+  }
+  50% {
+    transform: translateY(-50%) translateX(-20px) scale(1.05);
+  }
+  100% {
+    transform: translateY(-50%) translateX(-20px) scale(1);
+  }
+}
+

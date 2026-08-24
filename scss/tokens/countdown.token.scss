@@ -1,0 +1,36 @@
+/**
+ * @fileoverview Tokens de design pour Countdown
+ * @description Variables pour le compte à rebours Material Design 3
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'motion.token' as motion;
+
+// ============================================================================
+// COULEURS
+// ============================================================================
+
+/** Couleur du texte du countdown */
+$countdown-text-color: var(--md-sys-color-on-surface, #1d1b20) !default;
+/** Couleur du texte quand terminé (optionnel) */
+$countdown-text-color-ended: var(--md-sys-color-on-surface-variant, #49454f) !default;
+
+// ============================================================================
+// TYPOGRAPHIE
+// ============================================================================
+
+/** Taille de police par défaut */
+$countdown-font-size: 1.25rem !default;
+/** Graisse de police */
+$countdown-font-weight: 500 !default;
+/** Hauteur de ligne */
+$countdown-line-height: 1.5 !default;
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+/** Durée de transition pour les changements de chiffres */
+$countdown-transition-duration: motion.$md-sys-motion-duration-short !default;
+$countdown-transition-easing: motion.$md-sys-motion-easing-standard !default;

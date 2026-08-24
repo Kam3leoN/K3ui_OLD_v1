@@ -1,0 +1,52 @@
+/// @file drag.mixin.scss
+/// @brief Mixins drag pour K3UI
+/// @description Mixins pour appliquer les styles de drag
+
+@use '../tokens' as tokens;
+
+/**
+ * Mixin pour appliquer les styles de base d'un élément draggable
+ * @param {number} $z-index - Z-index de l'élément
+ */
+@mixin drag-base($z-index: tokens.$md-sys-drag-z-index) {
+  position: fixed;
+  display: inline-flex;
+  z-index: $z-index;
+}
+
+/**
+ * Mixin pour activer les transitions de drag
+ * @param {string} $duration - Durée de la transition
+ * @param {string} $easing - Fonction d'easing
+ */
+@mixin drag-transition($duration: tokens.$md-sys-drag-transition-duration, $easing: tokens.$md-sys-drag-easing) {
+  transition: transform $duration $easing;
+}
+
+/**
+ * Mixin pour désactiver les transitions de drag
+ */
+@mixin drag-no-transition() {
+  transition: none;
+}
+
+/**
+ * Mixin complet pour un élément draggable
+ * @param {number} $z-index - Z-index de l'élément
+ * @param {boolean} $enable-transition - Activer les transitions
+ * @param {string} $duration - Durée de la transition
+ * @param {string} $easing - Fonction d'easing
+ */
+@mixin drag($z-index: tokens.$md-sys-drag-z-index, $enable-transition: true, $duration: tokens.$md-sys-drag-transition-duration, $easing: tokens.$md-sys-drag-easing) {
+  @include drag-base($z-index);
+  
+  @if $enable-transition {
+    @include drag-transition($duration, $easing);
+  } @else {
+    @include drag-no-transition();
+  }
+}
+
+
+
+

@@ -1,0 +1,67 @@
+/**
+ * @file divider.token.scss
+ * @description Tokens pour le composant Divider (séparateur horizontal ou vertical)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'spacing.token' as spacing;
+@use 'typography.token' as typography;
+@use 'theme.token' as theme;
+@use 'border.token' as border;
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+/** Épaisseur du trait (horizontal ou vertical) */
+$divider-thickness: border.$md-sys-border-width-thick !default;
+
+/** Custom property exposée sur .divider */
+$divider-thickness-var: --divider-thickness !default;
+
+/** Espacement entre le trait et le libellé */
+$divider-gap: spacing.$md-sys-spacing-md !default;
+
+/** Marge externe — trait horizontal entre blocs empilés */
+$divider-margin-block: spacing.$md-sys-spacing-md !default;
+
+/** Marge externe — trait vertical entre blocs côte à côte */
+$divider-margin-inline: spacing.$md-sys-spacing-md !default;
+
+// ============================================================================
+// COULEURS (custom properties consommées par les mixins)
+// ============================================================================
+
+$divider-line-color-var: --divider-line-color !default;
+$divider-text-color-var: --divider-text-color !default;
+
+$divider-line-color: theme.sys-color-var('outline-variant') !default;
+$divider-text-color: theme.sys-color-var('on-surface-variant') !default;
+
+/** Intensité du teintage sémantique sur la ligne */
+$divider-line-tint-ratio: 42% !default;
+
+/**
+ * Rôles MD3 par variante BEM (accent = tertiary)
+ */
+$divider-color-roles: (
+  'neutral': 'outline',
+  'primary': 'primary',
+  'secondary': 'secondary',
+  'accent': 'tertiary',
+  'success': 'success',
+  'warning': 'warning',
+  'info': 'info',
+  'error': 'error',
+) !default;
+
+// ============================================================================
+// TYPOGRAPHIE
+// ============================================================================
+
+$divider-font-family: var(--md-sys-typescale-label-small-font-family, 'Roboto', sans-serif) !default;
+$divider-font-size: var(--md-sys-typescale-label-small-size, 0.6875rem) !default;
+$divider-font-weight: var(--md-sys-typescale-label-small-weight, 500) !default;
+$divider-line-height: var(--md-sys-typescale-label-small-line-height, 1rem) !default;
+$divider-letter-spacing: var(--md-sys-typescale-label-small-tracking, 0.03125rem) !default;

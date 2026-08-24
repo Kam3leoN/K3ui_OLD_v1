@@ -1,0 +1,432 @@
+/**
+ * Textarea Mixins - Mixins pour le composant textarea Material Design 3
+ * Basé sur les spécifications Material Design 3 Expressive
+ */
+
+@use 'sass:map';
+@use '../tokens/textarea.token' as textarea;
+@use '../tokens/color.token' as color;
+@use '../tokens/spacing.token' as spacing;
+@use '../tokens/typography.token' as typography;
+@use './typography.mixin' as typo;
+@use './motion.mixin' as motionmix;
+
+// ========================================
+// CONTAINER
+// ========================================
+
+/**
+ * Mixin pour le container du textarea
+ * S'adapte à la hauteur du textarea au lieu d'avoir une hauteur fixe
+ * Selon Material Design 3 Expressive
+ */
+@mixin textarea-container {
+  position: relative;
+  display: flex;
+  flex-direction: column; // Pour que le textarea puisse s'étendre
+  min-height: textarea.$md-sys-textarea-min-height; // 96px minimum selon MD3
+  height: textarea.$md-sys-textarea-height-filled; // 122px pour le container
+  padding: textarea.$md-sys-textarea-padding-vertical textarea.$md-sys-textarea-padding-right
+    textarea.$md-sys-textarea-padding-vertical textarea.$md-sys-textarea-padding-left;
+  transition: box-shadow textarea.$md-sys-textarea-transition-duration
+    textarea.$md-sys-textarea-transition-easing;
+  
+  // Assurer que le textarea remplit l'espace disponible
+  .textarea {
+    flex: 1;
+    height: 100%;
+    min-height: unset;
+  }
+}
+
+// ========================================
+// VARIANT FILLED
+// ========================================
+
+/**
+ * Mixin pour le variant filled (par défaut)
+ * Utilise box-shadow pour simuler une bordure bottom
+ */
+@mixin textarea-filled {
+  box-shadow: inset 0 calc(-1 * #{textarea.$md-sys-textarea-border-width-default}px)
+    0 0 rgb(var(--md-sys-color-on-surface-variant-rgb));
+  background-color: var(--k3ui-field-filled-bg, var(--md-sys-color-surface-container-highest));
+  border-radius: textarea.$md-sys-textarea-border-radius-filled-top
+    textarea.$md-sys-textarea-border-radius-filled-top 0 0;
+}
+
+/**
+ * Mixin pour le variant filled en hover
+ */
+@mixin textarea-filled-hover {
+  box-shadow: inset 0 calc(-1 * #{textarea.$md-sys-textarea-border-width-hover}px) 0
+    0 rgb(var(--md-sys-color-on-surface-rgb));
+}
+
+/**
+ * Mixin pour le variant filled en focus
+ */
+@mixin textarea-filled-focused {
+  box-shadow: inset 0 calc(-1 * #{textarea.$md-sys-textarea-border-width-focused}px)
+    0 0 rgb(var(--md-sys-color-primary-rgb));
+}
+
+/**
+ * Mixin pour le variant filled disabled
+ */
+@mixin textarea-filled-disabled {
+  box-shadow: inset 0 calc(-1 * #{textarea.$md-sys-textarea-border-width-disabled}px)
+    0 0 rgba(var(--md-sys-color-on-surface-rgb), 0.38);
+  background-color: rgba(var(--md-sys-color-on-surface-rgb), 0.04);
+}
+
+/**
+ * Mixin pour le variant filled en état invalide
+ */
+@mixin textarea-filled-invalid {
+  box-shadow: inset 0 calc(-1 * #{textarea.$md-sys-textarea-border-width-default}px)
+    0 0 rgb(var(--md-sys-color-error-rgb));
+}
+
+/**
+ * Mixin pour le variant filled en état invalide en hover
+ */
+@mixin textarea-filled-invalid-hover {
+  box-shadow: inset 0 calc(-1 * #{textarea.$md-sys-textarea-border-width-hover}px) 0
+    0 rgb(var(--md-sys-color-error-rgb));
+}
+
+/**
+ * Mixin pour le variant filled en état invalide en focus
+ */
+@mixin textarea-filled-invalid-focused {
+  box-shadow: inset 0 calc(-1 * #{textarea.$md-sys-textarea-border-width-focused}px)
+    0 0 rgb(var(--md-sys-color-error-rgb));
+}
+
+// ========================================
+// VARIANT OUTLINED
+// ========================================
+
+/**
+ * Mixin pour le variant outlined
+ * Utilise une bordure complète
+ */
+@mixin textarea-outlined {
+  border: #{textarea.$md-sys-textarea-border-width-default}px solid
+    rgb(var(--md-sys-color-outline-rgb));
+  background-color: transparent;
+  border-radius: textarea.$md-sys-textarea-border-radius-outlined;
+}
+
+/**
+ * Mixin pour le variant outlined en hover
+ */
+@mixin textarea-outlined-hover {
+  border-color: rgb(var(--md-sys-color-on-surface-rgb));
+}
+
+/**
+ * Mixin pour le variant outlined en focus
+ */
+@mixin textarea-outlined-focused {
+  border-color: rgb(var(--md-sys-color-primary-rgb));
+  border-width: #{textarea.$md-sys-textarea-border-width-focused}px;
+}
+
+/**
+ * Mixin pour le variant outlined disabled
+ */
+@mixin textarea-outlined-disabled {
+  border-color: rgba(var(--md-sys-color-on-surface-rgb), 0.38);
+}
+
+/**
+ * Mixin pour le variant outlined en état invalide
+ */
+@mixin textarea-outlined-invalid {
+  border-color: rgb(var(--md-sys-color-error-rgb));
+}
+
+/**
+ * Mixin pour le variant outlined en état invalide en hover
+ */
+@mixin textarea-outlined-invalid-hover {
+  border-color: rgb(var(--md-sys-color-error-rgb));
+}
+
+/**
+ * Mixin pour le variant outlined en état invalide en focus
+ */
+@mixin textarea-outlined-invalid-focused {
+  border-color: rgb(var(--md-sys-color-error-rgb));
+  border-width: #{textarea.$md-sys-textarea-border-width-focused}px;
+}
+
+// ========================================
+// LABEL
+// ========================================
+
+/**
+ * Mixin pour le label de base
+ */
+@mixin textarea-label {
+  position: absolute;
+  left: textarea.$md-sys-textarea-padding-left;
+  top: 20px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--md-sys-color-on-surface-variant);
+  @include motionmix.transition-properties(
+    (color, top, transform, font-size, line-height, max-width, opacity),
+    textarea.$md-sys-textarea-transition-duration,
+    textarea.$md-sys-textarea-transition-easing
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+/**
+ * Mixin pour le label outlined
+ */
+@mixin textarea-label-outlined {
+  top: 16px;
+}
+
+/**
+ * Mixin pour le label outlined en hover
+ */
+@mixin textarea-label-outlined-hover {
+  color: var(--md-sys-color-on-surface);
+}
+
+/**
+ * Mixin pour le label en focus
+ */
+@mixin textarea-label-focused {
+  color: var(--md-sys-color-primary);
+}
+
+/**
+ * Mixin pour le label en état invalide
+ */
+@mixin textarea-label-invalid {
+  color: var(--md-sys-color-error);
+}
+
+/**
+ * Mixin pour le label en état invalide en hover
+ */
+@mixin textarea-label-invalid-hover {
+  color: var(--md-sys-color-error);
+}
+
+/**
+ * Mixin pour le label filled actif
+ */
+@mixin textarea-label-filled-active {
+  top: 4px;
+  font-size: 12px;
+  line-height: 1.33;
+}
+
+/**
+ * Mixin pour le label filled actif avec icône
+ */
+@mixin textarea-label-filled-active-with-icon {
+  left: textarea.$md-sys-textarea-padding-left-with-icon;
+}
+
+/**
+ * Mixin pour le label outlined actif
+ */
+@mixin textarea-label-outlined-active {
+  top: -8px;
+  font-size: 12px;
+  line-height: 1.33;
+  background-color: var(--md-sys-color-surface);
+  padding: 0 4px;
+}
+
+// ========================================
+// HELPER TEXT
+// ========================================
+
+/**
+ * Mixin pour le texte d'aide
+ */
+@mixin textarea-helper-text {
+  margin-top: 4px;
+  padding: 0 textarea.$md-sys-textarea-padding-left;
+  font-size: 12px;
+  line-height: 1.33;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+// ========================================
+// COUNTER
+// ========================================
+
+/**
+ * Mixin pour le compteur de caractères
+ */
+@mixin textarea-counter {
+  position: static; // Position statique pour être en dessous du container
+  margin-top: 8px; // Espacement augmenté avec le container du textarea
+  padding: 0 textarea.$md-sys-textarea-padding-right;
+  font-size: 12px;
+  line-height: 1.33;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: right;
+  pointer-events: none; // Empêcher les interactions avec le counter
+}
+
+@mixin textarea-helper-bottom {
+  position: static; // Position statique pour être en dessous du container
+  margin-top: 8px; // Espacement avec le container du textarea
+  padding: 0 textarea.$md-sys-textarea-padding-left;
+  font-size: 12px;
+  line-height: 1.33;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: left;
+  pointer-events: none; // Empêcher les interactions avec le helper
+}
+
+// ========================================
+// AUTOSIZE
+// ========================================
+
+/**
+ * Mixin pour le redimensionnement automatique
+ */
+@mixin textarea-autosize {
+  .textarea {
+    resize: none;
+    overflow: hidden;
+    min-height: calc(var(--rows, 3) * 24px + 16px);
+    height: auto;
+  }
+}
+
+// ========================================
+// TEXTAREA ELEMENT
+// ========================================
+
+/**
+ * Mixin pour le textarea natif
+ * Supprime tous les styles natifs du navigateur
+ */
+@mixin textarea-element {
+  .textarea {
+    // Supprimer toutes les bordures natives
+    border: none !important;
+    outline: none !important;
+    
+    // Supprimer le resize handle natif
+    resize: none !important;
+    
+    // Supprimer les styles natifs du navigateur
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    
+  // Supprimer tous les styles de focus natifs
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  
+  // Forcer la suppression de tous les styles natifs du navigateur
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -ms-box-shadow: none !important;
+  -o-box-shadow: none !important;
+    
+    // Styles de base
+    width: 100%;
+    height: 66px !important; // Hauteur ajustée pour tenir compte du padding interne (90px - 24px de padding)
+    min-height: 66px;
+    background: transparent;
+    color: var(--md-sys-color-on-surface);
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 1.5;
+    
+    // Supprimer les marges par défaut et ajouter du padding interne
+    margin: 0;
+    padding: 12px 0; // Padding par défaut (sera surchargé par les variants)
+    
+    // Remplir complètement le container
+    box-sizing: border-box;
+    
+    // Forcer le textarea à remplir l'espace disponible
+    flex: 1;
+    
+    // Supprimer la hauteur fixe des rows
+    resize: none !important;
+    
+    // Focus styles
+    &:focus {
+      outline: none !important;
+      border: none !important;
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      -moz-box-shadow: none !important;
+      -ms-box-shadow: none !important;
+      -o-box-shadow: none !important;
+    }
+    
+    &:focus-visible {
+      outline: none !important;
+      border: none !important;
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      -moz-box-shadow: none !important;
+      -ms-box-shadow: none !important;
+      -o-box-shadow: none !important;
+    }
+    
+    &:focus-within {
+      outline: none !important;
+      border: none !important;
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      -moz-box-shadow: none !important;
+      -ms-box-shadow: none !important;
+      -o-box-shadow: none !important;
+    }
+    
+    // Disabled styles
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+}
+
+// ========================================
+// SCROLLBAR
+// ========================================
+
+/**
+ * Mixin pour les styles de scrollbar
+ */
+@mixin textarea-scrollbar {
+  .textarea {
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(var(--md-sys-color-on-surface-variant-rgb), 0.3);
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(var(--md-sys-color-on-surface-variant-rgb), 0.5);
+    }
+  }
+}

@@ -1,0 +1,46 @@
+/**
+ * @fileoverview Mixins pour le composant IsoFilter (K3UI)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/isofilter.token' as iso;
+
+/**
+ * Bloc racine IsoFilter
+ */
+@mixin isofilter-root() {
+  width: iso.$isofilter-root-width;
+}
+
+/**
+ * Rangée des contrôles de filtre (flex wrap)
+ */
+@mixin isofilter-controls() {
+  display: flex;
+  flex-wrap: wrap;
+  gap: iso.$isofilter-controls-gap;
+}
+
+/**
+ * Contrôle de filtre (bouton, chip, etc.)
+ */
+@mixin isofilter-control() {
+  cursor: iso.$isofilter-control-cursor;
+  user-select: none;
+}
+
+/**
+ * Contrôle actuellement sélectionné
+ */
+@mixin isofilter-control-active() {
+  outline: iso.$isofilter-control-active-outline-width solid iso.$isofilter-control-active-outline-color;
+  outline-offset: iso.$isofilter-control-active-outline-offset;
+}
+
+/**
+ * Items Mason masqués par IsoFilter : pas d’interaction pendant le masquage
+ */
+@mixin isofilter-mason-hidden-pointer() {
+  pointer-events: none;
+}

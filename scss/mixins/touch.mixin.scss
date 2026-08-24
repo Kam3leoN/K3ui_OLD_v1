@@ -1,0 +1,96 @@
+/**
+ * @fileoverview Mixins interaction tactile (LOT 3 — smartphone-ready)
+ * @description touch-action, tap-highlight et extension de cible ≥ 48dp
+ */
+
+@use '../tokens/touch.token' as touch;
+
+/**
+ * Surface interactive standard (boutons, liens d’action, onglets…)
+ */
+@mixin touch-interactive-surface {
+  touch-action: touch.$md-sys-touch-action-interactive;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/**
+ * Zone de drag (empêche le scroll navigateur pendant le drag)
+ */
+@mixin touch-drag-surface {
+  touch-action: touch.$md-sys-touch-action-drag;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/**
+ * Dimensions minimales de cible tactile (48×48 dp)
+ */
+@mixin touch-target-min-size($size: touch.$md-sys-touch-target-min) {
+  min-width: $size;
+  min-height: $size;
+}
+
+/**
+ * Étend la zone cliquable autour d’un visuel plus petit sans agrandir le glyphe.
+ * Le parent doit être `position: relative` et `display: inline-flex` (ou flex) centré.
+ * @param {number} $visual-width - Largeur visuelle du contrôle
+ * @param {number} $visual-height - Hauteur visuelle (défaut = largeur)
+ */
+@mixin touch-target-center-padding(
+  $visual-width,
+  $visual-height: $visual-width,
+  $target: touch.$md-sys-touch-target-min
+) {
+  $pad-x: max(0px, calc(($target - $visual-width) / 2));
+  $pad-y: max(0px, calc(($target - $visual-height) / 2));
+  box-sizing: border-box;
+  padding: $pad-y $pad-x;
+  min-width: $target;
+  min-height: $target;
+}
+
+/**
+ * Règles globales pour les contrôles K3UI interactifs (à inclure dans reset.module)
+ */
+@mixin touch-interactive-globals {
+  button,
+  input[type='button'],
+  input[type='submit'],
+  input[type='reset'],
+  input[type='checkbox'],
+  input[type='radio'],
+  select,
+  summary,
+  [role='button']:not([role='presentation']),
+  [role='tab'],
+  [role='menuitem'],
+  [role='option'],
+  [role='switch'],
+  .btn,
+  .btn-icon,
+  .button-icon,
+  .chip,
+  .checkbox,
+  .radio,
+  .switch,
+  .tabs__tab,
+  .menu-item,
+  .list-item:not(.list-item--subheader):not(.subheader):not(.optgroup):not(.list-item--gap),
+  .pagination__page-btn,
+  .pagination__nav-btn,
+  .navigation-bar__item,
+  .counter__btn {
+    @include touch-interactive-surface;
+  }
+
+  // Zones de drag : priorité sur manipulation (spécificité équivalente, ordre de déclaration)
+  .slider,
+  k3ui-slider,
+  .signature canvas,
+  .color-picker__area,
+  .sheet-drag-handle,
+  .perspective--draggable,
+  .timepicker__clock-dial,
+  .counter__number {
+    @include touch-drag-surface;
+  }
+}

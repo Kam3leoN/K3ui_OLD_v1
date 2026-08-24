@@ -1,0 +1,183 @@
+/**
+ * @file drawer.token.scss
+ * @description Tokens Material Design 3 Expressive pour le composant Drawer
+ * @see https://m3.material.io/components/navigation-drawer/overview
+ */
+
+@use 'sass:map';
+@use 'theme.token' as theme;
+@use 'elevation.token' as elevation;
+@use 'animation.token' as animation;
+@use 'spacing.token' as spacing;
+@use 'radius.token' as radius;
+@use 'motion.token' as motion;
+
+// ============================================================================
+// DIMENSIONS ET LAYOUT
+// ============================================================================
+
+// Largeurs du drawer
+$md-sys-drawer-width: 360px;
+$md-sys-drawer-width-compact: 320px;
+$md-sys-drawer-width-modal: 400px;
+
+// Hauteur et position
+$md-sys-drawer-height: 100vh;
+$md-sys-drawer-top: 0;
+$md-sys-drawer-left: 0;
+$md-sys-drawer-right: auto;
+
+// Padding et marges
+$md-sys-drawer-padding: 16px;
+$md-sys-drawer-padding-compact: 12px;
+$md-sys-drawer-padding-large: 24px;
+$md-sys-drawer-margin: 0;
+
+// Padding spécifique pour le drawer-body (réduit pour optimiser l'espace)
+$md-sys-drawer-body-padding: 8px;
+$md-sys-drawer-body-padding-compact: 6px;
+
+// ============================================================================
+// COULEURS ET SURFACES
+// ============================================================================
+
+// Couleurs de surface (thème clair)
+$md-sys-drawer-surface: theme.$md-ref-palette-neutral99;
+$md-sys-drawer-on-surface: theme.$md-ref-palette-neutral10;
+$md-sys-drawer-surface-variant: theme.$md-ref-palette-neutral96;
+$md-sys-drawer-on-surface-variant: theme.$md-ref-palette-neutral30;
+
+// Couleurs de surface (thème sombre)
+$md-sys-drawer-surface-dark: theme.$md-ref-palette-neutral10;
+$md-sys-drawer-on-surface-dark: theme.$md-ref-palette-neutral90;
+$md-sys-drawer-surface-variant-dark: theme.$md-ref-palette-neutral20;
+$md-sys-drawer-on-surface-variant-dark: theme.$md-ref-palette-neutral80;
+
+// Couleurs d'état
+$md-sys-drawer-state-hover: theme.$md-ref-palette-neutral95;
+$md-sys-drawer-state-hover-dark: theme.$md-ref-palette-neutral20;
+$md-sys-drawer-state-selected: theme.$md-ref-palette-primary95;
+$md-sys-drawer-state-selected-dark: theme.$md-ref-palette-primary20;
+$md-sys-drawer-on-state-selected: theme.$md-ref-palette-primary10;
+$md-sys-drawer-on-state-selected-dark: theme.$md-ref-palette-primary90;
+
+// Couleurs de bordure et séparateur
+$md-sys-drawer-divider: theme.$md-ref-palette-neutral90;
+$md-sys-drawer-divider-dark: theme.$md-ref-palette-neutral20;
+$md-sys-drawer-outline: theme.$md-ref-palette-neutral80;
+$md-sys-drawer-outline-dark: theme.$md-ref-palette-neutral30;
+
+// ============================================================================
+// ÉLÉVATION ET OMBRES
+// ============================================================================
+
+// Niveaux d'élévation
+$md-sys-drawer-elevation: elevation.$md-sys-elevation-level1;
+$md-sys-drawer-elevation-hover: elevation.$md-sys-elevation-level2;
+$md-sys-drawer-elevation-focus: elevation.$md-sys-elevation-level3;
+
+// Z-index — drawer temporaire (modal) au-dessus du navigation-rail docs (1200)
+$md-sys-drawer-z-index: 1300;
+$md-sys-drawer-z-index-overlay: 1299;
+
+// ============================================================================
+// ANIMATIONS ET TRANSITIONS
+// ============================================================================
+
+// Durées de transition (M3 Expressive — spatial pour le panneau)
+$md-sys-drawer-transition-duration: motion.spring-duration(spatial, default);
+$md-sys-drawer-transition-duration-fast: motion.spring-duration(spatial, fast);
+$md-sys-drawer-transition-duration-slow: motion.spring-duration(spatial, slow);
+
+// Fonctions d'accélération (spatial pour transform, effects pour overlay)
+$md-sys-drawer-transition-easing: motion.spring-easing(spatial, default);
+$md-sys-drawer-transition-easing-emphasized: motion.spring-easing(spatial, fast);
+
+// Valeurs de transformation
+$md-sys-drawer-transform-left: translateX(-100%);
+$md-sys-drawer-transform-right: translateX(100%);
+$md-sys-drawer-transform-open: translateX(0);
+
+// ============================================================================
+// BORDER RADIUS ET FORMES
+// ============================================================================
+
+// Border radius du drawer principal selon la position
+// Drawer gauche : radius en haut et en bas à droite (0,16,16,0dp)
+$md-sys-drawer-border-radius-left: 0 16px 16px 0;
+// Drawer droit : radius en haut et en bas à gauche (16,0,0,16dp)
+$md-sys-drawer-border-radius-right: 16px 0 0 16px;
+// Border radius par défaut (pour les variantes)
+$md-sys-drawer-border-radius-default: 16px;
+
+// ============================================================================
+// TYPOGRAPHIE
+// ============================================================================
+
+// Tailles de police
+$md-sys-drawer-font-size-small: 12px;
+$md-sys-drawer-font-size-medium: 14px;
+$md-sys-drawer-font-size-large: 16px;
+$md-sys-drawer-font-size-title: 20px;
+
+// Poids de police
+$md-sys-drawer-font-weight-regular: 400;
+$md-sys-drawer-font-weight-medium: 500;
+$md-sys-drawer-font-weight-semibold: 600;
+
+// Hauteur de ligne
+$md-sys-drawer-line-height: 1.5;
+$md-sys-drawer-line-height-compact: 1.2;
+
+// ============================================================================
+// COMPOSANTS INTERNES
+// ============================================================================
+
+// Header
+$md-sys-drawer-header-padding: 24px 16px 16px;
+$md-sys-drawer-header-padding-compact: 16px 12px 12px;
+$md-sys-drawer-header-border: 1px solid;
+
+// Navigation
+$md-sys-drawer-nav-item-height: 48px;
+$md-sys-drawer-nav-item-padding: 0 12px;
+$md-sys-drawer-nav-item-margin: 0 4px;
+$md-sys-drawer-nav-item-border-radius: 100px;
+
+// User view
+$md-sys-drawer-user-padding: 32px 32px 0;
+$md-sys-drawer-user-padding-compact: 24px 24px 0;
+$md-sys-drawer-user-avatar-size: 64px;
+$md-sys-drawer-user-avatar-size-compact: 48px;
+
+// Footer
+$md-sys-drawer-footer-padding: 16px;
+$md-sys-drawer-footer-padding-compact: 12px;
+$md-sys-drawer-footer-border: 1px solid;
+
+// ============================================================================
+// RESPONSIVE
+// ============================================================================
+
+// Breakpoints
+$md-sys-drawer-breakpoint-tablet: 768px;
+$md-sys-drawer-breakpoint-mobile: 480px;
+
+// Largeurs responsives
+$md-sys-drawer-width-tablet: 320px;
+$md-sys-drawer-width-mobile: 280px;
+
+// ============================================================================
+// ACCESSIBILITÉ
+// ============================================================================
+
+// Focus
+$md-sys-drawer-focus-outline: 2px solid;
+$md-sys-drawer-focus-outline-offset: 2px;
+
+// Drag target
+$md-sys-drawer-drag-target-width: 10px;
+
+// Overlay
+$md-sys-drawer-overlay-opacity: 0.5;
+$md-sys-drawer-overlay-opacity-dark: 0.7;

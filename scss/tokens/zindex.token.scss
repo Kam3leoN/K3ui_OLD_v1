@@ -1,0 +1,146 @@
+/**
+ * @fileoverview Tokens z-index Material Design 3
+ * @see https://m3.material.io/foundations/design-tokens/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use 'sass:map';
+
+// =============================================================================
+// TOKENS Z-INDEX - MATERIAL DESIGN 3
+// =============================================================================
+
+/**
+ * Map des couches z-index par catégorie
+ */
+$md-sys-zindex-layers: (
+  base: 1,
+  appbar: 500,
+  drawer: 999,
+  /** Sheet : au-dessus navbar/menu (1100+), sous Dialog (2000) / Snackbar / Toast */
+  sheet: 1600,
+  dialog: 1000,
+  menu: 1100,
+  select: 1200,
+  snackbar: 1300,
+  tooltip: 1400,
+  toast: 1500,
+  max: 999999
+) !default;
+
+/**
+ * Map des couches z-index par priorité
+ */
+$md-sys-zindex-priorities: (
+  low: 1,
+  medium: 100,
+  high: 500,
+  higher: 999,
+  highest: 1000,
+  critical: 1100,
+  urgent: 1200,
+  maximum: 999999
+) !default;
+
+/**
+ * Map des couches z-index par composant
+ */
+$md-sys-zindex-components: (
+  surface: 1,
+  menu: 100,
+  navigation: 500,
+  sidebar: 999,
+  modal: 1000,
+  notification: 1100,
+  overlay: 1200,
+  system: 999999
+) !default;
+
+// Variables individuelles pour compatibilité (dépréciées)
+$md-sys-zindex-base: map.get($md-sys-zindex-layers, 'base') !default;
+$md-sys-zindex-menu: map.get($md-sys-zindex-layers, 'menu') !default;
+$md-sys-zindex-select: map.get($md-sys-zindex-layers, 'select') !default;
+$md-sys-zindex-appbar: map.get($md-sys-zindex-layers, 'appbar') !default;
+$md-sys-zindex-drawer: map.get($md-sys-zindex-layers, 'drawer') !default;
+$md-sys-zindex-sheet: map.get($md-sys-zindex-layers, 'sheet') !default;
+$md-sys-zindex-dialog: map.get($md-sys-zindex-layers, 'dialog') !default;
+$md-sys-zindex-toast: map.get($md-sys-zindex-layers, 'toast') !default;
+$md-sys-zindex-tooltip: map.get($md-sys-zindex-layers, 'tooltip') !default;
+$md-sys-zindex-max: map.get($md-sys-zindex-layers, 'max') !default;
+
+// Z-index pour le slider (Material Design 3 Expressive)
+$md-sys-z-index-slider-handle: 20 !default;
+$md-sys-z-index-slider-handle-active: 30 !default;
+$md-sys-z-index-slider-track-active: 10 !default;
+$md-sys-z-index-slider-discrete-points: 5 !default;
+$md-sys-z-index-slider-track-inactive: 0 !default;
+$md-sys-z-index-slider-value-label: 40 !default;
+
+// =============================================================================
+// FONCTIONS UTILITAIRES
+// =============================================================================
+
+/**
+ * Fonction pour récupérer une valeur z-index par couche
+ * @param {string} $layer - Nom de la couche (base, menu, select, appbar, drawer, sheet, dialog, toast, tooltip, max)
+ * @return {number} La valeur z-index
+ */
+@function zindex-layer($layer) {
+  @return map.get($md-sys-zindex-layers, $layer);
+}
+
+/**
+ * Fonction pour récupérer une valeur z-index par priorité
+ * @param {string} $priority - Niveau de priorité (low, medium, high, higher, highest, critical, urgent, maximum)
+ * @return {number} La valeur z-index
+ */
+@function zindex-priority($priority) {
+  @return map.get($md-sys-zindex-priorities, $priority);
+}
+
+/**
+ * Fonction pour récupérer une valeur z-index par composant
+ * @param {string} $component - Nom du composant (surface, menu, navigation, sidebar, modal, notification, overlay, system)
+ * @return {number} La valeur z-index
+ */
+@function zindex-component($component) {
+  @return map.get($md-sys-zindex-components, $component);
+}
+
+/**
+ * Fonction générique pour récupérer une valeur z-index
+ * @param {string} $type - Type de référence (layer, priority, component)
+ * @param {string} $key - Clé de la valeur
+ * @return {number} La valeur z-index
+ */
+@function zindex($type, $key) {
+  @if $type == 'layer' {
+    @return zindex-layer($key);
+  } @else if $type == 'priority' {
+    @return zindex-priority($key);
+  } @else if $type == 'component' {
+    @return zindex-component($key);
+  }
+  @warn "Unknown z-index type: #{$type}";
+  @return null;
+}
+
+/**
+ * Fonction pour générer des z-index personnalisés
+ * @param {number} $base - Valeur de base
+ * @param {number} $offset - Décalage à ajouter
+ * @return {number} La valeur z-index calculée
+ */
+@function zindex-custom($base, $offset: 0) {
+  @return $base + $offset;
+}
+
+/**
+ * Fonction pour vérifier si une valeur z-index est valide
+ * @param {number} $value - Valeur à vérifier
+ * @return {boolean} True si la valeur est valide
+ */
+@function zindex-valid($value) {
+  @return $value >= 0 and $value <= 999999;
+} 

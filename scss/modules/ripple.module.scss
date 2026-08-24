@@ -1,0 +1,94 @@
+/**
+ * Ripple Module
+ * Styles pour les effets ripple (state layers) Material Design 3
+ */
+
+@use '../tokens/motion.token' as motion;
+@use '../tokens/opacity.token' as opacity;
+
+/**
+ * Surface du ripple
+ * Conteneur principal pour les effets ripple
+ */
+.ripple-surface {
+  border-radius: inherit;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+  /**
+   * Couche hover (élément réel au lieu de ::before)
+   */
+  .ripple-hover-layer {
+    background-color: var(--md-ripple-hover-color, var(--md-sys-color-on-surface, #1d1b20));
+    border-radius: inherit;
+    inset: 0;
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 15ms linear,
+      background-color 15ms linear;
+  }
+
+  /**
+   * Couche pressed (élément réel au lieu de ::after)
+   */
+  .ripple-pressed-layer {
+    background: radial-gradient(
+      closest-side,
+      var(--md-ripple-pressed-color, var(--md-sys-color-on-surface, #1d1b20)) max(100% - 70px, 65%),
+      transparent 100%
+    );
+    transform-origin: center center;
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 375ms linear;
+    border-radius: 50%;
+  }
+
+  /**
+   * État hover activé
+   */
+  &.ripple-hovered .ripple-hover-layer {
+    background-color: var(--md-ripple-hover-color, var(--md-sys-color-on-surface, #1d1b20));
+    opacity: var(--md-ripple-hover-opacity, 0.08);
+  }
+
+  /**
+   * État pressed activé
+   */
+  &.ripple-pressed .ripple-pressed-layer {
+    opacity: var(--md-ripple-pressed-opacity, 0.12);
+    transition-duration: 105ms;
+  }
+
+  /**
+   * État désactivé
+   */
+  &.ripple-disabled {
+    display: none;
+  }
+}
+
+/**
+ * Classe utilitaire pour activer le ripple automatiquement
+ * Ajouter cette classe à un élément pour initialiser le ripple
+ */
+.ripple {
+  position: relative;
+  overflow: hidden;
+
+  /**
+   * Cacher le ripple en mode High Contrast
+   */
+  @media (forced-colors: active) {
+    .ripple-surface {
+      display: none;
+    }
+  }
+}
+

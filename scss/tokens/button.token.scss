@@ -1,0 +1,287 @@
+/**
+ * @fileoverview Tokens de design pour Button Material Design 3 Expressive
+ * @description Variables de design pour le composant Button conforme aux spécifications Material Design 3 'You' Expressive
+ * @see https://m3.material.io/components/buttons/overview
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'sass:map';
+@use 'radius.token' as radius;
+@use 'motion.token' as motion;
+@use 'typography.token' as typography;
+
+// ============================================================================
+// BUTTON SIZE TOKENS (Material 3 Expressive)
+// ============================================================================
+
+// XS - Extra Small (32dp)
+// ----------------------------------------------------------------------------
+/** Hauteur du bouton XS */
+$md-comp-button-xs-height: 2rem !default; // 32px
+/** Padding horizontal du bouton XS */
+$md-comp-button-xs-padding-horizontal: 0.75rem !default; // 12px
+/** Taille d'icône du bouton XS */
+$md-comp-button-xs-icon-size: 1.25rem !default; // 20px
+/** Gap entre icône et texte du bouton XS */
+$md-comp-button-xs-gap: 0.25rem !default; // 4px
+/** Border radius du bouton XS (pill par défaut) */
+$md-comp-button-xs-corner-radius: 9999px !default;
+
+// SM - Small (40dp) - Default
+// ----------------------------------------------------------------------------
+/** Hauteur du bouton SM */
+$md-comp-button-sm-height: 2.5rem !default; // 40px
+/** Padding horizontal du bouton S */
+$md-comp-button-sm-padding-horizontal: 1rem !default; // 16px
+/** Taille d'icône du bouton S */
+$md-comp-button-sm-icon-size: 1.25rem !default; // 20px
+/** Gap entre icône et texte du bouton S */
+$md-comp-button-sm-gap: 0.5rem !default; // 8px
+/** Border radius du bouton S (pill par défaut) */
+$md-comp-button-sm-corner-radius: 9999px !default;
+
+// MD - Medium (56dp)
+// ----------------------------------------------------------------------------
+/** Hauteur du bouton MD */
+$md-comp-button-md-height: 3.5rem !default; // 56px
+/** Padding horizontal du bouton M */
+$md-comp-button-md-padding-horizontal: 1.5rem !default; // 24px
+/** Taille d'icône du bouton M */
+$md-comp-button-md-icon-size: 1.5rem !default; // 24px
+/** Gap entre icône et texte du bouton M */
+$md-comp-button-md-gap: 0.5rem !default; // 8px
+/** Border radius du bouton M (pill par défaut) */
+$md-comp-button-md-corner-radius: 9999px !default;
+
+// LG - Large (96dp)
+// ----------------------------------------------------------------------------
+/** Hauteur du bouton LG */
+$md-comp-button-lg-height: 6rem !default; // 96px
+/** Padding horizontal du bouton L */
+$md-comp-button-lg-padding-horizontal: 3rem !default; // 48px
+/** Taille d'icône du bouton LG */
+$md-comp-button-lg-icon-size: 2rem !default; // 32px
+/** Gap entre icône et texte du bouton L */
+$md-comp-button-lg-gap: 0.75rem !default; // 12px
+/** Border radius du bouton L (pill par défaut) */
+$md-comp-button-lg-corner-radius: 9999px !default;
+
+// XL - Extra Large (136dp)
+// ----------------------------------------------------------------------------
+/** Hauteur du bouton XL */
+$md-comp-button-xl-height: 8.5rem !default; // 136px
+/** Padding horizontal du bouton XL */
+$md-comp-button-xl-padding-horizontal: 4rem !default; // 64px
+/** Taille d'icône du bouton XL */
+$md-comp-button-xl-icon-size: 2.5rem !default; // 40px
+/** Gap entre icône et texte du bouton XL */
+$md-comp-button-xl-gap: 1rem !default; // 16px
+/** Border radius du bouton XL (pill par défaut) */
+$md-comp-button-xl-corner-radius: 9999px !default;
+
+// ============================================================================
+// ICON BUTTON SIZE TOKENS (source: button-icon.token — default / narrow / wide + target)
+// Réexport pour button.mixin et autres consommateurs.
+// ============================================================================
+@use 'button-icon.token' as bi;
+
+$md-comp-icon-button-xs-icon-size: bi.$md-comp-icon-button-xs-icon-size !default;
+$md-comp-icon-button-xs-size: bi.$md-comp-icon-button-xs-size !default;
+$md-comp-icon-button-xs-narrow-width: bi.$md-comp-icon-button-xs-narrow-width !default;
+$md-comp-icon-button-xs-narrow-height: bi.$md-comp-icon-button-xs-narrow-height !default;
+$md-comp-icon-button-xs-wide-width: bi.$md-comp-icon-button-xs-wide-width !default;
+$md-comp-icon-button-xs-wide-height: bi.$md-comp-icon-button-xs-wide-height !default;
+
+$md-comp-icon-button-sm-icon-size: bi.$md-comp-icon-button-sm-icon-size !default;
+$md-comp-icon-button-sm-size: bi.$md-comp-icon-button-sm-size !default;
+$md-comp-icon-button-sm-narrow-width: bi.$md-comp-icon-button-sm-narrow-width !default;
+$md-comp-icon-button-sm-narrow-height: bi.$md-comp-icon-button-sm-narrow-height !default;
+$md-comp-icon-button-sm-wide-width: bi.$md-comp-icon-button-sm-wide-width !default;
+$md-comp-icon-button-sm-wide-height: bi.$md-comp-icon-button-sm-wide-height !default;
+
+$md-comp-icon-button-md-icon-size: bi.$md-comp-icon-button-md-icon-size !default;
+$md-comp-icon-button-md-size: bi.$md-comp-icon-button-md-size !default;
+$md-comp-icon-button-md-narrow-width: bi.$md-comp-icon-button-md-narrow-width !default;
+$md-comp-icon-button-md-narrow-height: bi.$md-comp-icon-button-md-narrow-height !default;
+$md-comp-icon-button-md-wide-width: bi.$md-comp-icon-button-md-wide-width !default;
+$md-comp-icon-button-md-wide-height: bi.$md-comp-icon-button-md-wide-height !default;
+
+$md-comp-icon-button-lg-icon-size: bi.$md-comp-icon-button-lg-icon-size !default;
+$md-comp-icon-button-lg-size: bi.$md-comp-icon-button-lg-size !default;
+$md-comp-icon-button-lg-narrow-width: bi.$md-comp-icon-button-lg-narrow-width !default;
+$md-comp-icon-button-lg-narrow-height: bi.$md-comp-icon-button-lg-narrow-height !default;
+$md-comp-icon-button-lg-wide-width: bi.$md-comp-icon-button-lg-wide-width !default;
+$md-comp-icon-button-lg-wide-height: bi.$md-comp-icon-button-lg-wide-height !default;
+
+$md-comp-icon-button-xl-icon-size: bi.$md-comp-icon-button-xl-icon-size !default;
+$md-comp-icon-button-xl-size: bi.$md-comp-icon-button-xl-size !default;
+$md-comp-icon-button-xl-narrow-width: bi.$md-comp-icon-button-xl-narrow-width !default;
+$md-comp-icon-button-xl-narrow-height: bi.$md-comp-icon-button-xl-narrow-height !default;
+$md-comp-icon-button-xl-wide-width: bi.$md-comp-icon-button-xl-wide-width !default;
+$md-comp-icon-button-xl-wide-height: bi.$md-comp-icon-button-xl-wide-height !default;
+
+// Taille du bouton icon SANS TYPE (sans décor, transparent) — restent dans button.token
+// ----------------------------------------------------------------------------
+/** Taille de l'icon button XS SANS TYPE (sans filled/tonal/etc, transparent) */
+$md-comp-icon-button-xs-size-no-type: 1.25rem !default; // 20px
+/** Taille de l'icon button SM SANS TYPE (sans filled/tonal/etc, transparent) */
+$md-comp-icon-button-sm-size-no-type: 1.5rem !default; // 24px
+/** Taille de l'icon button MD SANS TYPE (sans filled/tonal/etc, transparent) */
+$md-comp-icon-button-md-size-no-type: 1.5rem !default; // 24px
+/** Taille de l'icon button LG SANS TYPE (sans filled/tonal/etc, transparent) */
+$md-comp-icon-button-lg-size-no-type: 2rem !default; // 32px
+/** Taille de l'icon button XL SANS TYPE (sans filled/tonal/etc, transparent) */
+$md-comp-icon-button-xl-size-no-type: 2.5rem !default; // 40px
+
+// ============================================================================
+// SEGMENTED BUTTON TOKENS
+// ============================================================================
+
+/** Largeur de l'outline des segmented buttons */
+$md-comp-segmented-button-outline-width: 0.0625rem !default; // 1px
+/** Gap entre les items des segmented buttons */
+$md-comp-segmented-button-gap: 0 !default;
+
+// ============================================================================
+// BUTTON SHAPE TOKENS
+// ============================================================================
+
+/**
+ * BUTTON ROUNDED (Pill/Circular)
+ * @description Boutons avec bords complètement arrondis (full circular)
+ */
+
+/**
+ * Border radius initial pour btn--rounded selon les tailles (M3 Expressive)
+ * xs=16px, sm=20px, md=28px, lg=48px, xl=68px
+ */
+$md-comp-button-rounded-initial-xs-radius: 16px !default;
+$md-comp-button-rounded-initial-sm-radius: 20px !default;
+$md-comp-button-rounded-initial-md-radius: 28px !default;
+$md-comp-button-rounded-initial-lg-radius: 48px !default;
+$md-comp-button-rounded-initial-xl-radius: 68px !default;
+
+/** Border radius initial pour btn--rounded (alias legacy, full circular) */
+$md-comp-button-rounded-initial-radius: radius.$md-sys-shape-corner-full !default; // 999px (full circular)
+
+/**
+ * Border radius pressed/selected pour btn--rounded — morph automatique (toutes tailles)
+ * Rounded → 8px à l'état :active ou .btn--selected
+ */
+$md-comp-button-pressed-xs-radius: radius.$md-sys-shape-corner-small !default; // 8dp
+$md-comp-button-pressed-sm-radius: radius.$md-sys-shape-corner-small !default; // 8dp
+$md-comp-button-pressed-md-radius: radius.$md-sys-shape-corner-small !default; // 8dp
+$md-comp-button-pressed-lg-radius: radius.$md-sys-shape-corner-small !default; // 8dp
+$md-comp-button-pressed-xl-radius: radius.$md-sys-shape-corner-small !default; // 8dp
+
+/**
+ * Border radius selected pour btn--rounded — même valeur que pressed (morph automatique)
+ */
+$md-comp-button-selected-rounded-xs-radius: radius.$md-sys-shape-corner-small !default; // 8dp
+$md-comp-button-selected-rounded-sm-radius: radius.$md-sys-shape-corner-small !default; // 8dp
+$md-comp-button-selected-rounded-md-radius: radius.$md-sys-shape-corner-small !default; // 8dp
+$md-comp-button-selected-rounded-lg-radius: radius.$md-sys-shape-corner-small !default; // 8dp
+$md-comp-button-selected-rounded-xl-radius: radius.$md-sys-shape-corner-small !default; // 8dp
+
+/**
+ * BUTTON SQUARE
+ * @description Boutons avec coins arrondis selon la taille
+ */
+
+/** Border radius initial pour btn--square selon les tailles (M3 Expressive) xs=4px, sm=8px, md=10px, lg=16px, xl=20px */
+$md-comp-button-square-initial-xs-radius: 4px !default;
+$md-comp-button-square-initial-sm-radius: 8px !default;
+$md-comp-button-square-initial-md-radius: 10px !default;
+$md-comp-button-square-initial-lg-radius: 16px !default;
+$md-comp-button-square-initial-xl-radius: 20px !default;
+
+/**
+ * Border radius pressed pour btn--square (partagé avec rounded)
+ * @description Valeurs morphing vers rounded lors du pressed
+ * @note Utilise les mêmes tokens que btn--rounded pressed
+ */
+// Réutilise $md-comp-button-pressed-*-radius (défini ci-dessus)
+
+/**
+ * Border radius selected/pressed pour btn--square — morph automatique (pill)
+ * Square → 100px (pill) à l'état :active ou .btn--selected
+ */
+$md-comp-button-selected-square-radius: 100px !default; // pill (toutes tailles)
+
+// ============================================================================
+// SHAPE MORPHING TOKENS (Expressive)
+// ============================================================================
+
+/** Durée de l'animation de shape morphing normal → pressed (M3 spring Web — spatial fast) */
+$md-comp-button-shape-morph-duration: motion.spring-duration(spatial, fast) !default;
+/** Easing de l'animation de shape morphing */
+$md-comp-button-shape-morph-easing: motion.spring-easing(spatial, fast) !default;
+/** Scale du bouton lors du pressed */
+$md-comp-button-pressed-scale: 0.95 !default;
+
+// ============================================================================
+// BUTTON SHAPE SPRING ANIMATION TOKENS (Material Design 3 Expressive)
+// ============================================================================
+
+/**
+ * Button shape spring animation damping
+ * @description md.comp.button.pressed.container.corner-size.motion.spring.damping
+ * @see https://m3.material.io/components/buttons/specs
+ */
+$md-comp-button-pressed-container-corner-size-motion-spring-damping: 0.9 !default;
+
+/**
+ * Button shape spring animation stiffness
+ * @description md.comp.button.pressed.container.corner-size.motion.spring.stiffness
+ * @see https://m3.material.io/components/buttons/specs
+ */
+$md-comp-button-pressed-container-corner-size-motion-spring-stiffness: 1400 !default;
+
+// ============================================================================
+// ACCESSIBILITY TOKENS
+// ============================================================================
+
+/** Taille minimale de la zone tactile (touch target) */
+$md-comp-button-min-touch-target: 3rem !default; // 48px
+
+// ============================================================================
+// TYPOGRAPHY TOKENS (réutilisés depuis typography.token)
+// ============================================================================
+
+/** Typography pour les boutons - Label Large */
+$md-comp-button-typography-font-family: typography.typography-label('large', 'font-family-name') !default;
+$md-comp-button-typography-font-size: typography.typography-label('large', 'font-size') !default;
+$md-comp-button-typography-font-weight: typography.typography-label('large', 'font-weight') !default;
+$md-comp-button-typography-line-height: typography.typography-label('large', 'line-height') !default;
+$md-comp-button-typography-letter-spacing: typography.typography-label('large', 'letter-spacing') !default;
+
+/** Typography pour les boutons XS - 14pt / 20pt / 0.1pt / 500 */
+$md-comp-button-xs-typography-font-size: 0.875rem !default; // 14pt
+$md-comp-button-xs-typography-line-height: 1.25rem !default; // 20pt
+$md-comp-button-xs-typography-letter-spacing: 0.00625rem !default; // 0.1pt
+$md-comp-button-xs-typography-font-weight: 500 !default;
+
+/** Typography pour les boutons SM - 14pt / 20pt / 0.1pt / 500 */
+$md-comp-button-sm-typography-font-size: 0.875rem !default; // 14pt
+$md-comp-button-sm-typography-line-height: 1.25rem !default; // 20pt
+$md-comp-button-sm-typography-letter-spacing: 0.00625rem !default; // 0.1pt
+$md-comp-button-sm-typography-font-weight: 500 !default;
+
+/** Typography pour les boutons MD - 16pt / 24pt / 0.15pt / 500 */
+$md-comp-button-md-typography-font-size: 1rem !default; // 16pt
+$md-comp-button-md-typography-line-height: 1.5rem !default; // 24pt
+$md-comp-button-md-typography-letter-spacing: 0.009375rem !default; // 0.15pt
+$md-comp-button-md-typography-font-weight: 500 !default;
+
+/** Typography pour les boutons LG - 24pt / 32pt / 0pt / 400 */
+$md-comp-button-lg-typography-font-size: 1.5rem !default; // 24pt
+$md-comp-button-lg-typography-line-height: 2rem !default; // 32pt
+$md-comp-button-lg-typography-letter-spacing: 0 !default; // 0pt
+$md-comp-button-lg-typography-font-weight: 400 !default;
+
+/** Typography pour les boutons XL - 32pt / 40pt / 0pt / 400 */
+$md-comp-button-xl-typography-font-size: 2rem !default; // 32pt
+$md-comp-button-xl-typography-line-height: 2.5rem !default; // 40pt
+$md-comp-button-xl-typography-letter-spacing: 0 !default; // 0pt
+$md-comp-button-xl-typography-font-weight: 400 !default;

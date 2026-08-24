@@ -1,0 +1,203 @@
+/**
+ * @fileoverview Module Tilt
+ * @description Effet 3D parallax au survol (moteur natif K3UI)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/tilt.token' as tilt;
+@use '../mixins/tilt.mixin' as tilt-mixin;
+
+.tilt {
+  @include tilt-mixin.tilt-root;
+  overflow: visible;
+  // Marge de sécurité pour le flou `.tilt-shadow` (évite la coupe aux bords du conteneur)
+  margin: clamp(1rem, 3vw, 2rem);
+
+  &.tilt-rotate-touch,
+  &.tilt-rotate-scroll-x,
+  &.tilt-rotate-scroll-y,
+  &.atropos-rotate-touch,
+  &.atropos-rotate-scroll-x,
+  &.atropos-rotate-scroll-y {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+
+  &.tilt-rotate-touch-scroll-y,
+  &.atropos-rotate-touch-scroll-y {
+    touch-action: pan-y;
+  }
+
+  &.tilt-rotate-touch-scroll-x,
+  &.atropos-rotate-touch-scroll-x {
+    touch-action: pan-x;
+  }
+
+  &.tilt-rotate-touch,
+  &.atropos-rotate-touch {
+    touch-action: none;
+  }
+
+  &.tilt-active,
+  &.atropos-active {
+    z-index: 1;
+  }
+}
+
+.tilt .tilt-scale,
+.tilt .tilt-rotate,
+.tilt .atropos-scale,
+.tilt .atropos-rotate {
+  @include tilt-mixin.tilt-layer;
+  overflow: visible;
+}
+
+.tilt .tilt-shadow,
+.tilt .tilt-highlight,
+.tilt .atropos-shadow,
+.tilt .atropos-highlight {
+  @include tilt-mixin.tilt-effect-layer;
+}
+
+.tilt .tilt-shadow,
+.tilt .atropos-shadow {
+  z-index: -1;
+  background: #000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  filter: blur(tilt.$tilt-shadow-blur);
+}
+
+.tilt .tilt-highlight,
+.tilt .atropos-highlight {
+  left: -50%;
+  top: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: radial-gradient(
+    circle at 50%,
+    rgba(255, 255, 255, tilt.$tilt-highlight-opacity),
+    transparent 50%
+  );
+  z-index: 0;
+}
+
+.tilt .tilt-rotate,
+.tilt .atropos-rotate {
+  position: relative;
+}
+
+.tilt .tilt-inner,
+.tilt .atropos-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transform: translate3d(0, 0, 0);
+  display: block;
+}
+
+.tilt.tilt-active .tilt-shadow,
+.tilt.tilt-active .atropos-shadow,
+.tilt.atropos-active .tilt-shadow,
+.tilt.atropos-active .atropos-shadow {
+  opacity: 1 !important;
+}
+
+.tilt [data-tilt-offset],
+.tilt [data-tilt-opacity],
+.tilt [data-atropos-offset],
+.tilt [data-atropos-opacity] {
+  transition-property: transform;
+}
+
+.tilt [data-tilt-opacity],
+.tilt [data-atropos-opacity] {
+  transition-property: opacity;
+}
+
+.tilt [data-tilt-offset][data-tilt-opacity],
+.tilt [data-atropos-offset][data-atropos-opacity] {
+  transition-property: transform, opacity;
+}
+
+k3ui-tilt .tilt-hero-header__title,
+.tilt .tilt-hero-header__title,
+k3ui-tilt .tilt-hero-header__title-line,
+.tilt .tilt-hero-header__title-line,
+k3ui-tilt .tilt-hero-header__title-material,
+.tilt .tilt-hero-header__title-material {
+  text-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.15),
+    0 0 10px rgba(0, 0, 0, 0.375),
+    0 0 24px rgba(0, 0, 0, 0.25);
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.325));
+}
+
+k3ui-tilt .tilt-hero-header__title,
+.tilt .tilt-hero-header__title {
+  padding: 0.25rem 0.5rem;
+}
+
+k3ui-tilt .tilt-hero-header__title-line,
+.tilt .tilt-hero-header__title-line,
+k3ui-tilt .tilt-hero-header__title-material,
+.tilt .tilt-hero-header__title-material {
+  display: block;
+}
+
+k3ui-tilt .tilt__text--shadow-k3ui,
+.tilt .tilt__text--shadow-k3ui {
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  -webkit-text-stroke: 0;
+}
+
+.tilt--reduced-motion,
+html.k3ui-reduced-motion .tilt {
+  pointer-events: auto;
+
+  .tilt-shadow,
+  .tilt-highlight,
+  .atropos-shadow,
+  .atropos-highlight {
+    display: none !important;
+  }
+
+  .tilt-scale,
+  .tilt-rotate,
+  .atropos-scale,
+  .atropos-rotate,
+  [data-tilt-offset],
+  [data-tilt-opacity],
+  [data-atropos-offset],
+  [data-atropos-opacity] {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt .tilt-shadow,
+  .tilt .tilt-highlight,
+  .tilt .atropos-shadow,
+  .tilt .atropos-highlight {
+    display: none !important;
+  }
+
+  .tilt .tilt-scale,
+  .tilt .tilt-rotate,
+  .tilt .atropos-scale,
+  .tilt .atropos-rotate,
+  .tilt [data-tilt-offset],
+  .tilt [data-tilt-opacity],
+  .tilt [data-atropos-offset],
+  .tilt [data-atropos-opacity] {
+    transform: none !important;
+    transition: none !important;
+  }
+}

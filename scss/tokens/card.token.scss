@@ -1,0 +1,117 @@
+/**
+ * @fileoverview Tokens Card Material You 3 Expressive
+ * @author Kam3leon
+ * @version 2.0.0
+ */
+
+@use 'motion.token' as motion;
+
+// =============================================================================
+// TOKENS CARD - MATERIAL YOU 3 EXPRESSIVE
+// =============================================================================
+
+// Variantes de cartes
+$md-sys-card-variant-elevated: 'elevated';
+$md-sys-card-variant-filled: 'filled';
+$md-sys-card-variant-outlined: 'outlined';
+
+// Couleurs de surface pour les cartes (material-components-android Card.md)
+$md-sys-card-surface-elevated: var(--md-sys-color-surface-container-low);
+$md-sys-card-surface-filled: var(--md-sys-color-surface-container-highest);
+$md-sys-card-surface-outlined: var(--md-sys-color-surface);
+
+// Couleurs de texte pour les cartes
+$md-sys-card-on-surface-elevated: var(--md-sys-color-on-surface);
+$md-sys-card-on-surface-filled: var(--md-sys-color-on-surface);
+$md-sys-card-on-surface-outlined: var(--md-sys-color-on-surface);
+
+// Couleurs d'outline pour les cartes outlined
+$md-sys-card-outline: var(--md-sys-color-outline);
+$md-sys-card-outline-variant: var(--md-sys-color-outline-variant);
+
+// Élévations par défaut
+$md-sys-card-elevation-elevated: var(--md-sys-elevation-level1);
+$md-sys-card-elevation-filled: none;
+$md-sys-card-elevation-outlined: none;
+
+// Élévations par état — elevated (CardDefaults.cardElevation)
+$md-sys-card-elevation-elevated-default: var(--md-sys-elevation-level1);
+$md-sys-card-elevation-elevated-pressed: var(--md-sys-elevation-level1);
+$md-sys-card-elevation-elevated-focused: var(--md-sys-elevation-level1);
+$md-sys-card-elevation-elevated-hovered: var(--md-sys-elevation-level2);
+$md-sys-card-elevation-elevated-dragged: var(--md-sys-elevation-level2);
+
+// Élévations par état — outlined / filled (dragged = 8dp)
+$md-sys-card-elevation-flat-dragged: var(--md-sys-elevation-level4);
+
+// Rayons de bordure pour les cartes
+$md-sys-card-shape-corner: var(--md-sys-shape-corner-medium, 12px);
+$md-sys-card-shape-corner-large: var(--md-sys-shape-corner-large, 16px);
+$md-sys-card-shape-corner-large-increased: var(--md-sys-shape-corner-large-increased, 24px);
+
+// Espacement pour les cartes (M3 : 16dp)
+$md-sys-card-padding: var(--md-sys-spacing-md, 16px);
+$md-sys-card-padding-large: var(--md-sys-spacing-lg, 24px);
+$md-sys-card-padding-small: var(--md-sys-spacing-sm, 12px);
+$md-sys-card-padding-legacy: var(--md-sys-spacing-lg, 24px);
+
+// Espacement entre les éléments de la carte
+$md-sys-card-content-gap: var(--md-sys-spacing-sm, 8px);
+$md-sys-card-actions-gap: var(--md-sys-spacing-sm, 8px);
+$md-sys-card-actions-margin: var(--md-sys-spacing-sm, 8px);
+
+// Média
+$md-sys-card-media-height: 194px;
+
+// Typographie pour les cartes (M3 : title-medium pour headline)
+$md-sys-card-title-font: var(--md-sys-typescale-title-medium-font-family-name, 'Google Sans', Arial, sans-serif);
+$md-sys-card-title-size: var(--md-sys-typescale-title-medium-font-size, 16px);
+$md-sys-card-title-weight: var(--md-sys-typescale-title-medium-font-weight, 500);
+$md-sys-card-title-line-height: var(--md-sys-typescale-title-medium-line-height, 24px);
+$md-sys-card-title-letter-spacing: var(--md-sys-typescale-title-medium-letter-spacing, 0.15px);
+
+$md-sys-card-subtitle-font: var(--md-sys-typescale-body-medium-font-family-name, 'Google Sans', Arial, sans-serif);
+$md-sys-card-subtitle-size: var(--md-sys-typescale-body-medium-font-size, 14px);
+$md-sys-card-subtitle-weight: var(--md-sys-typescale-body-medium-font-weight, 400);
+$md-sys-card-subtitle-line-height: var(--md-sys-typescale-body-medium-line-height, 20px);
+
+$md-sys-card-content-font: var(--md-sys-typescale-body-medium-font-family-name, 'Google Sans', Arial, sans-serif);
+$md-sys-card-content-size: var(--md-sys-typescale-body-medium-font-size, 14px);
+$md-sys-card-content-weight: var(--md-sys-typescale-body-medium-font-weight, 400);
+$md-sys-card-content-line-height: var(--md-sys-typescale-body-medium-line-height, 20px);
+$md-sys-card-content-color: var(--md-sys-color-on-surface-variant);
+
+// États d'interaction
+$md-sys-card-hover-state-layer-opacity: var(--md-sys-state-hover-state-layer-opacity, 0.08);
+$md-sys-card-focus-state-layer-opacity: var(--md-sys-state-focus-state-layer-opacity, 0.12);
+$md-sys-card-pressed-state-layer-opacity: var(--md-sys-state-pressed-state-layer-opacity, 0.12);
+$md-sys-card-dragged-state-layer-opacity: var(--md-sys-state-dragged-state-layer-opacity, 0.16);
+
+// États désactivés
+$md-sys-card-disabled-opacity: var(--md-sys-state-disabled-content-opacity, 0.38);
+
+// Transitions et animations
+$md-sys-card-transition-duration: motion.spring-duration(effects, fast);
+$md-sys-card-transition-timing: motion.spring-easing(effects, fast);
+$md-sys-card-elevation-transition-duration: motion.spring-duration(effects, fast);
+$md-sys-card-elevation-transition-timing: motion.spring-easing(effects, fast);
+
+// Shape morph au press (M3 Expressive — pattern Button)
+$md-comp-card-shape-morph-duration: motion.spring-duration(spatial, fast);
+$md-comp-card-shape-morph-easing: motion.spring-easing(spatial, fast);
+$md-comp-card-shape-pressed-radius: var(--md-sys-shape-corner-small, 8px);
+
+// Checked icon (M3 Android)
+$md-sys-card-checked-icon-size: 24px;
+$md-sys-card-checked-icon-margin: 8px;
+
+// Dimensions minimales
+$md-sys-card-min-width: 280px;
+$md-sys-card-max-width: 400px;
+$md-sys-card-min-height: 80px;
+$md-sys-card-mobile-margin: 8px;
+
+// Z-index pour les cartes
+$md-sys-card-z-index: 1;
+$md-sys-card-z-index-hover: 2;
+$md-sys-card-z-index-focus: 3;

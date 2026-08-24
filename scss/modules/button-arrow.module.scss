@@ -1,0 +1,73 @@
+/**
+ * @fileoverview Module ButtonArrow Material Design 3 Expressive
+ * @description Split-button flèches — horizontal / vertical · filled / tonal / outlined
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/button-arrow.token' as tokens;
+@use '../mixins/button-arrow.mixin' as ba;
+
+// ============================================================================
+// BASE
+// ============================================================================
+
+.btn-arrow,
+.button-arrow {
+  @include ba.btn-arrow-base;
+
+  &[data-dir='vertical'],
+  &.btn-arrow--vertical,
+  &.button-arrow--vertical {
+    @include ba.btn-arrow-shape-vertical;
+  }
+
+  &[data-dir='horizontal'],
+  &.btn-arrow--horizontal,
+  &.button-arrow--horizontal,
+  &:not([data-dir='vertical']):not(.btn-arrow--vertical):not(.button-arrow--vertical) {
+    @include ba.btn-arrow-shape-horizontal;
+  }
+}
+
+.btn-arrow__btn,
+.button-arrow__btn {
+  @include ba.btn-arrow-half;
+}
+
+// ============================================================================
+// VARIANTES
+// ============================================================================
+
+.btn-arrow[data-variant='tonal'],
+.btn-arrow.btn-arrow--tonal,
+.button-arrow[data-variant='tonal'],
+.button-arrow.button-arrow--tonal {
+  @include ba.btn-arrow-tonal;
+}
+
+.btn-arrow[data-variant='outlined'],
+.btn-arrow.btn-arrow--outlined,
+.button-arrow[data-variant='outlined'],
+.button-arrow.button-arrow--outlined {
+  @include ba.btn-arrow-outlined;
+}
+
+// ============================================================================
+// REDUCED MOTION
+// ============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-arrow__btn,
+  .button-arrow__btn,
+  .btn-arrow__btn::before,
+  .button-arrow__btn::before,
+  .btn-arrow__btn .k3ui-icon,
+  .btn-arrow__btn i,
+  .btn-arrow__btn svg,
+  .button-arrow__btn .k3ui-icon,
+  .button-arrow__btn i,
+  .button-arrow__btn svg {
+    transition-duration: 0ms !important;
+  }
+}

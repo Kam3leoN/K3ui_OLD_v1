@@ -1,0 +1,28 @@
+/**
+ * @file alert.token.scss
+ * @description Tokens pour le composant Alert (encart d'information avec encoche titre)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'notch.token' as notch;
+
+// ============================================================================
+// SURFACE
+// ============================================================================
+
+/** Aligné sur --TR MYNT (pastille) — évite le croissant au coin encoché */
+$alert-surface-radius: notch.$notch-corner-radius !default;
+$alert-surface-padding: 20px !default;
+$alert-surface-line-height: 1.6 !default;
+
+$alert-surface-bg: var(--alert-surface-bg, var(--md-sys-color-primary-container)) !default;
+$alert-text-color: var(--alert-text-color, var(--md-sys-color-on-primary-container)) !default;
+
+// ============================================================================
+// TITRE (pastille notch)
+// ============================================================================
+
+$alert-title-font-size: 0.6875rem !default;
+$alert-title-font-weight: 700 !default;
+$alert-title-letter-spacing: 0.08em !default;

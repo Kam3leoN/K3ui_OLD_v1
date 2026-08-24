@@ -1,0 +1,143 @@
+/**
+ * @fileoverview Mixins pour ButtonFabMenu Material Design 3 Expressive
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/button-fab-menu.token' as bfm;
+
+/**
+ * Conteneur principal du FAB (position relative pour le positionnement absolu du FAB)
+ */
+@mixin button-fab-menu-container {
+  position: relative;
+  overflow: hidden;
+}
+
+/**
+ * Scrim (overlay au clic pour fermer — sans blur, fond transparent)
+ */
+@mixin button-fab-menu-scrim {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  z-index: bfm.$button-fab-menu-scrim-z;
+  transition: opacity bfm.$button-fab-menu-scrim-duration bfm.$button-fab-menu-scrim-easing;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/**
+ * Conteneur FAB + liste (position absolue, flex)
+ */
+@mixin button-fab-menu-fab-wrap {
+  position: absolute;
+  z-index: bfm.$button-fab-menu-fab-z;
+  display: flex;
+  flex-direction: column;
+  gap: bfm.$button-fab-menu-gap;
+}
+
+/**
+ * Liste des pills
+ */
+@mixin button-fab-menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: bfm.$button-fab-menu-gap;
+}
+
+/**
+ * Item (wrapper animé d’une pill)
+ */
+@mixin button-fab-menu-item {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(var(--button-fab-menu-dx, #{bfm.$button-fab-menu-translate-x}));
+  flex-shrink: 0;
+}
+
+/**
+ * Pill (bouton d’action)
+ */
+@mixin button-fab-menu-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 26px 0 18px;
+  height: bfm.$button-fab-menu-pill-height;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  background: bfm.$button-fab-menu-pill-bg;
+  color: bfm.$button-fab-menu-pill-color;
+  font-family: var(--md-sys-typescale-label-large-font-family-name, 'Google Sans', sans-serif);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  box-shadow: bfm.$button-fab-menu-pill-shadow;
+  position: relative;
+  overflow: hidden;
+}
+
+/**
+ * Bouton FAB principal
+ */
+@mixin button-fab-menu-btn {
+  width: bfm.$button-fab-menu-fab-size;
+  height: bfm.$button-fab-menu-fab-size;
+  border-radius: bfm.$button-fab-menu-fab-radius-closed;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: bfm.$button-fab-menu-fab-bg;
+  color: bfm.$button-fab-menu-fab-color;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  box-shadow: bfm.$button-fab-menu-fab-shadow;
+  transition:
+    border-radius bfm.$button-fab-menu-fab-morph-duration bfm.$button-fab-menu-fab-easing,
+    background bfm.$button-fab-menu-item-effects-duration bfm.$button-fab-menu-item-effects-easing,
+    box-shadow bfm.$button-fab-menu-item-effects-duration bfm.$button-fab-menu-item-effects-easing;
+}
+
+/**
+ * Icônes du menu FAB — héritent du contexte (pill / FAB), pas la couleur primary de `.k3ui-icon`.
+ */
+@mixin button-fab-menu-icon-inherit {
+  .k3ui-icon,
+  i[name],
+  span[name] {
+    color: inherit;
+    fill: currentColor;
+
+    svg {
+      fill: currentColor;
+
+      path,
+      circle,
+      rect,
+      polygon,
+      line,
+      polyline {
+        fill: currentColor !important;
+      }
+    }
+
+    &.k3ui-icon--multicolor {
+      color: inherit;
+      fill: currentColor;
+
+      svg,
+      svg path,
+      svg circle,
+      svg rect {
+        fill: currentColor !important;
+      }
+    }
+  }
+}

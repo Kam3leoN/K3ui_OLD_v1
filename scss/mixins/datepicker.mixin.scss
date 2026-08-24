@@ -1,0 +1,260 @@
+/**
+ * Datepicker Mixins - Mixins pour le composant datepicker
+ * Basé sur Material Design 3 Expressive
+ */
+
+@use 'sass:math';
+@use '../tokens/datepicker.token' as datepicker;
+@use '../tokens/motion.token' as motion;
+@use '../tokens/elevation.token' as elevation;
+@use '../tokens/state.token' as state;
+@use './state.mixin' as state-mixin;
+@use './typography.mixin' as typo;
+
+// ========================================
+// CONTAINER
+// ========================================
+
+/**
+ * Mixin pour le container du datepicker
+ */
+@mixin datepicker-container {
+    position: relative;
+    width: 100%;
+    max-width: datepicker.$datepicker-width;
+}
+
+/**
+ * Mixin pour le backdrop
+ */
+@mixin datepicker-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: datepicker.$datepicker-backdrop-color;
+    backdrop-filter: blur(datepicker.$datepicker-backdrop-blur);
+    z-index: datepicker.$datepicker-z-index-backdrop;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: datepicker.$datepicker-calendar-padding;
+    opacity: 0;
+    transition: opacity datepicker.$datepicker-modal-entrance-duration motion.$md-sys-motion-easing-emphasized-decelerate;
+
+    &--open {
+        opacity: 1;
+    }
+
+    &--closing {
+        opacity: 0;
+        transition: opacity datepicker.$datepicker-modal-exit-duration motion.$md-sys-motion-easing-emphasized-accelerate;
+    }
+}
+
+/**
+ * Mixin pour le modal
+ */
+@mixin datepicker-modal {
+    background-color: var(--md-sys-color-surface);
+    border-radius: datepicker.$datepicker-container-radius;
+    box-shadow: datepicker.$datepicker-modal-elevation;
+    width: 100%;
+    max-width: datepicker.$datepicker-width;
+    min-width: datepicker.$datepicker-min-width;
+    overflow: hidden;
+    z-index: datepicker.$datepicker-z-index-modal;
+    transform: translateY(16px) scale(0.95);
+    opacity: 0;
+    transition: transform datepicker.$datepicker-modal-entrance-duration motion.$md-sys-motion-easing-emphasized-decelerate,
+        opacity datepicker.$datepicker-modal-entrance-duration motion.$md-sys-motion-easing-emphasized-decelerate;
+
+    .datepicker__backdrop--open & {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+// ========================================
+// HEADER
+// ========================================
+
+/**
+ * Mixin pour le header
+ */
+@mixin datepicker-header {
+    // Harmonisation: Utiliser la même couleur que le modal (sera override dans le module si nécessaire)
+    background-color: var(--md-sys-color-surface);
+    padding: datepicker.$datepicker-header-padding;
+    padding-bottom: datepicker.$datepicker-calendar-padding;
+    min-height: datepicker.$datepicker-header-height;
+    border-radius: datepicker.$datepicker-header-radius;
+}
+
+// ========================================
+// INPUT
+// ========================================
+
+/**
+ * Mixin pour l'input
+ */
+@mixin datepicker-input {
+    width: 100%;
+    height: datepicker.$datepicker-input-height;
+    padding: datepicker.$datepicker-calendar-padding;
+    padding-top: datepicker.$datepicker-calendar-padding;
+    padding-bottom: math.div(datepicker.$datepicker-calendar-padding, 4);
+    background-color: var(--md-sys-color-surface);
+    border: datepicker.$datepicker-input-border-width solid var(--md-sys-color-outline);
+    border-radius: datepicker.$datepicker-input-radius;
+    @include typo.typography('body-large');
+    color: var(--md-sys-color-on-surface);
+    transition: border-color datepicker.$datepicker-transition-duration datepicker.$datepicker-transition-easing,
+        background-color datepicker.$datepicker-transition-duration datepicker.$datepicker-transition-easing;
+    cursor: text;
+
+    &:hover {
+        border-color: var(--md-sys-color-on-surface);
+    }
+
+    &:focus {
+        outline: none;
+        border-color: var(--md-sys-color-primary);
+    }
+
+    &:disabled {
+        @include state-mixin.state-disabled;
+        background-color: var(--md-sys-color-surface-variant);
+        border-color: var(--md-sys-color-outline-variant);
+        color: var(--md-sys-color-on-surface-variant);
+    }
+}
+
+// ========================================
+// CALENDAR
+// ========================================
+
+/**
+ * Mixin pour un jour du calendrier
+ */
+@mixin datepicker-day {
+    width: datepicker.$datepicker-day-size;
+    height: datepicker.$datepicker-day-size;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include typo.typography('body-medium');
+    background: none;
+    border: none;
+    border-radius: datepicker.$datepicker-day-radius;
+    cursor: pointer;
+    color: var(--md-sys-color-on-surface);
+    position: relative;
+    transition: background-color datepicker.$datepicker-transition-duration datepicker.$datepicker-transition-easing,
+        transform datepicker.$datepicker-transition-duration datepicker.$datepicker-transition-easing,
+        box-shadow datepicker.$datepicker-transition-duration datepicker.$datepicker-transition-easing,
+        color datepicker.$datepicker-transition-duration datepicker.$datepicker-transition-easing;
+    justify-self: center;
+
+    &:not(&--disabled):not(&--selected):not(&--outside-month) {
+        @include state-mixin.state-hover;
+    }
+
+    &--outside-month {
+        color: var(--md-sys-color-on-surface-variant);
+        opacity: 0.38;
+    }
+
+    &--today {
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 2px solid var(--md-sys-color-primary);
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: 1;
+        }
+    }
+
+    &--selected {
+        background-color: var(--md-sys-color-primary);
+        color: var(--md-sys-color-on-primary);
+        box-shadow: datepicker.$datepicker-day-selected-elevation;
+        transform: scale(1.05);
+        z-index: 2;
+
+        &:hover {
+            background-color: rgba(var(--md-sys-color-primary-rgb), 0.9);
+            box-shadow: elevation.$md-sys-elevation-level3;
+        }
+
+        &:active {
+            transform: scale(1.02);
+            box-shadow: elevation.$md-sys-elevation-level1;
+        }
+    }
+
+    &--disabled {
+        @include state-mixin.state-disabled;
+    }
+
+    &:focus-visible {
+        outline: datepicker.$datepicker-focus-ring-width solid var(--md-sys-color-primary);
+        outline-offset: datepicker.$datepicker-focus-ring-offset;
+    }
+}
+
+// ========================================
+// BUTTONS
+// ========================================
+
+/**
+ * Mixin pour un bouton d'action
+ */
+@mixin datepicker-button {
+    padding: datepicker.$datepicker-actions-gap datepicker.$datepicker-calendar-padding;
+    height: datepicker.$datepicker-button-height;
+    min-width: datepicker.$datepicker-button-min-width;
+    @include typo.typography('label-large');
+    border: none;
+    border-radius: datepicker.$datepicker-button-radius;
+    cursor: pointer;
+    transition: background-color datepicker.$datepicker-transition-duration datepicker.$datepicker-transition-easing,
+        box-shadow datepicker.$datepicker-transition-duration datepicker.$datepicker-transition-easing,
+        transform datepicker.$datepicker-transition-duration datepicker.$datepicker-transition-easing;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+
+    &--text {
+        background: none;
+        color: var(--md-sys-color-primary);
+        @include state-mixin.state-hover;
+    }
+
+    &--filled {
+        background-color: var(--md-sys-color-primary);
+        color: var(--md-sys-color-on-primary);
+        box-shadow: elevation.$md-sys-elevation-level1;
+
+        &:hover {
+            box-shadow: elevation.$md-sys-elevation-level2;
+            background-color: rgba(var(--md-sys-color-primary-rgb), 0.9);
+        }
+
+        &:active {
+            box-shadow: elevation.$md-sys-elevation-level1;
+            transform: scale(0.98);
+        }
+    }
+
+    &:focus-visible {
+        outline: datepicker.$datepicker-focus-ring-width solid var(--md-sys-color-primary);
+        outline-offset: datepicker.$datepicker-focus-ring-offset;
+    }
+
+    &:disabled {
+        @include state-mixin.state-disabled;
+    }
+}
+

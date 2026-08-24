@@ -1,0 +1,304 @@
+/**
+ * @file opacity.mixin.scss
+ * @description Mixins pour la gestion des opacités Material Design 3 Expressive
+ * @see https://m3.material.io/foundations/design-tokens/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use '../tokens/opacity.token' as tokens;
+
+// ============================================================================
+// MIXINS DE BASE
+// ============================================================================
+
+/**
+ * Mixin pour appliquer une opacité personnalisée
+ * @param {number} $opacity - Valeur d'opacité (0 à 1)
+ */
+@mixin opacity($opacity) {
+  opacity: $opacity;
+}
+
+/**
+ * Mixin pour appliquer une opacité de base (0, 5, 10, ..., 100)
+ * @param {string} $level - Niveau d'opacité (0, 5, 10, ..., 100)
+ */
+@mixin opacity-base($level) {
+  opacity: tokens.opacity-base($level);
+}
+
+// ============================================================================
+// MIXINS D'ÉTATS D'INTERACTION MATERIAL DESIGN 3
+// ============================================================================
+
+/**
+ * Mixin pour opacité disabled
+ * @see https://m3.material.io/foundations/interaction/states
+ */
+@mixin opacity-disabled {
+  opacity: tokens.opacity-state('disabled');
+}
+
+/**
+ * Mixin pour opacité hover
+ * @see https://m3.material.io/foundations/interaction/states
+ */
+@mixin opacity-hover {
+  opacity: tokens.opacity-state('hover');
+}
+
+/**
+ * Mixin pour opacité focus
+ * @see https://m3.material.io/foundations/interaction/states
+ */
+@mixin opacity-focus {
+  opacity: tokens.opacity-state('focus');
+}
+
+/**
+ * Mixin pour opacité pressed
+ * @see https://m3.material.io/foundations/interaction/states
+ */
+@mixin opacity-pressed {
+  opacity: tokens.opacity-state('pressed');
+}
+
+/**
+ * Mixin pour opacité dragged
+ * @see https://m3.material.io/foundations/interaction/states
+ */
+@mixin opacity-drag {
+  opacity: tokens.opacity-state('dragged');
+}
+
+/**
+ * Mixin pour opacité selected
+ * @see https://m3.material.io/foundations/interaction/states
+ */
+@mixin opacity-selected {
+  opacity: tokens.opacity-state('selected');
+}
+
+/**
+ * Mixin pour opacité activated
+ * @see https://m3.material.io/foundations/interaction/states
+ */
+@mixin opacity-activated {
+  opacity: tokens.opacity-state('activated');
+}
+
+// ============================================================================
+// MIXINS POUR LES OVERLAYS ET SURFACES
+// ============================================================================
+
+/**
+ * Mixin pour opacité overlay
+ * @see https://m3.material.io/foundations/layout/applying-layout/overlay
+ */
+@mixin opacity-overlay {
+  opacity: tokens.opacity-overlay('overlay');
+}
+
+/**
+ * Mixin pour opacité scrim
+ * @see https://m3.material.io/foundations/layout/applying-layout/overlay
+ */
+@mixin opacity-scrim {
+  opacity: tokens.opacity-overlay('scrim');
+}
+
+/**
+ * Mixin pour opacité state-layer
+ * @see https://m3.material.io/foundations/layout/applying-layout/overlay
+ */
+@mixin opacity-state-layer {
+  opacity: tokens.opacity-overlay('state-layer');
+}
+
+// ============================================================================
+// MIXINS POUR LES SURFACES CONTAINER
+// ============================================================================
+
+/**
+ * Mixin pour opacité surface-container-lowest
+ * @see https://m3.material.io/foundations/color/roles
+ */
+@mixin opacity-surface-container-lowest {
+  opacity: tokens.opacity-surface('lowest');
+}
+
+/**
+ * Mixin pour opacité surface-container-low
+ * @see https://m3.material.io/foundations/color/roles
+ */
+@mixin opacity-surface-container-low {
+  opacity: tokens.opacity-surface('low');
+}
+
+/**
+ * Mixin pour opacité surface-container
+ * @see https://m3.material.io/foundations/color/roles
+ */
+@mixin opacity-surface-container {
+  opacity: tokens.opacity-surface('standard');
+}
+
+/**
+ * Mixin pour opacité surface-container-high
+ * @see https://m3.material.io/foundations/color/roles
+ */
+@mixin opacity-surface-container-high {
+  opacity: tokens.opacity-surface('high');
+}
+
+/**
+ * Mixin pour opacité surface-container-highest
+ * @see https://m3.material.io/foundations/color/roles
+ */
+@mixin opacity-surface-container-highest {
+  opacity: tokens.opacity-surface('highest');
+}
+
+// ============================================================================
+// MIXINS DE TRANSITION ET ANIMATION
+// ============================================================================
+
+/**
+ * Mixin pour transition d'opacité
+ * @param {string} $duration - Durée de la transition (défaut: 0.2s)
+ * @param {string} $timing - Fonction de timing (défaut: ease-in-out)
+ */
+@mixin opacity-transition($duration: 0.2s, $timing: ease-in-out) {
+  transition: opacity $duration $timing;
+}
+
+/**
+ * Mixin pour transition d'opacité rapide
+ */
+@mixin opacity-transition-fast {
+  @include opacity-transition(0.15s, ease-out);
+}
+
+/**
+ * Mixin pour transition d'opacité lente
+ */
+@mixin opacity-transition-slow {
+  @include opacity-transition(0.4s, ease-in-out);
+}
+
+// ============================================================================
+// MIXINS D'ANIMATION
+// ============================================================================
+
+/**
+ * Mixin pour animation de fade-in
+ * @param {string} $duration - Durée de l'animation (défaut: 0.3s)
+ * @param {string} $timing - Fonction de timing (défaut: ease-in-out)
+ */
+@mixin opacity-fade-in($duration: 0.3s, $timing: ease-in-out) {
+  animation: fade-in $duration $timing;
+}
+
+/**
+ * Mixin pour animation de fade-out
+ * @param {string} $duration - Durée de l'animation (défaut: 0.3s)
+ * @param {string} $timing - Fonction de timing (défaut: ease-in-out)
+ */
+@mixin opacity-fade-out($duration: 0.3s, $timing: ease-in-out) {
+  animation: fade-out $duration $timing;
+}
+
+/**
+ * Mixin pour animation de fade-in rapide
+ */
+@mixin opacity-fade-in-fast {
+  @include opacity-fade-in(0.2s, ease-out);
+}
+
+/**
+ * Mixin pour animation de fade-out rapide
+ */
+@mixin opacity-fade-out-fast {
+  @include opacity-fade-out(0.2s, ease-out);
+}
+
+// ============================================================================
+// KEYFRAMES D'ANIMATION
+// ============================================================================
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+// ============================================================================
+// MIXINS UTILITAIRES
+// ============================================================================
+
+/**
+ * Mixin pour opacité conditionnelle
+ * @param {boolean} $condition - Condition pour appliquer l'opacité
+ * @param {number} $opacity - Valeur d'opacité à appliquer (défaut: 0.5)
+ */
+@mixin opacity-if($condition, $opacity: 0.5) {
+  @if $condition {
+    opacity: $opacity;
+  }
+}
+
+/**
+ * Mixin pour opacité responsive
+ * @param {map} $breakpoints - Map des breakpoints et opacités
+ * @example
+ *   @include opacity-responsive((
+ *     'default': 0.8,
+ *     '768px': 0.9,
+ *     '1024px': 1
+ *   ));
+ */
+@mixin opacity-responsive($breakpoints) {
+  @each $breakpoint, $opacity in $breakpoints {
+    @if $breakpoint == 'default' {
+      opacity: $opacity;
+    } @else {
+      @media (min-width: $breakpoint) {
+        opacity: $opacity;
+      }
+    }
+  }
+}
+
+/**
+ * Mixin pour opacité avec fallback
+ * @param {number} $opacity - Valeur d'opacité principale
+ * @param {number} $fallback - Valeur d'opacité de fallback (défaut: 1)
+ */
+@mixin opacity-with-fallback($opacity, $fallback: 1) {
+  opacity: $fallback; // Fallback pour les navigateurs non supportés
+  opacity: $opacity;
+}
+
+/**
+ * Mixin pour opacité avec support des navigateurs anciens
+ * @param {number} $opacity - Valeur d'opacité
+ */
+@mixin opacity-legacy($opacity) {
+  // Support pour les navigateurs anciens
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{round($opacity * 100)})";
+  filter: alpha(opacity=#{round($opacity * 100)});
+  opacity: $opacity;
+} 

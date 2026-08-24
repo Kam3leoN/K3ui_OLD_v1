@@ -1,0 +1,32 @@
+/**
+ * @fileoverview Module SCSS IsoFilter (encapsulation)
+ * @description
+ * - Styles UI pour les contrôles de filtrage
+ * - Coordination minimale avec Mason (désactive interactions sur items masqués)
+ *
+ * Note : IsoFilter pilote aussi l'opacité via FLIP ; on ne force pas `opacity: 0` ici
+ * pour éviter de casser les animations d'exit.
+ */
+
+@use '../mixins/isofilter.mixin' as iso-mx;
+
+.k3ui-isofilter {
+  @include iso-mx.isofilter-root;
+}
+
+.k3ui-isofilter__controls {
+  @include iso-mx.isofilter-controls;
+}
+
+.k3ui-isofilter__control {
+  @include iso-mx.isofilter-control;
+}
+
+.k3ui-isofilter__control--active {
+  @include iso-mx.isofilter-control-active;
+}
+
+/* Coordination Mason : empêcher les clics pendant que l'élément est masqué */
+.k3ui-mason [data-k3ui-mason-hidden='true'] {
+  @include iso-mx.isofilter-mason-hidden-pointer;
+}

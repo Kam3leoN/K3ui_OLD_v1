@@ -1,0 +1,274 @@
+/**
+ * @file shape.token.scss
+ * @description Tokens pour les shapes Material Design 3 Expressive
+ * @see https://m3.material.io/foundations/shape/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use 'sass:map';
+@use 'theme.token' as theme;
+@use 'animation.token' as animation;
+@use 'motion.token' as motion;
+
+// ============================================================================
+// CHEMINS DES ASSETS
+// ============================================================================
+
+/**
+ * Chemin vers les assets de shapes
+ * Utilise une variable CSS custom property définie par le composant TypeScript
+ * Par défaut, pointe vers /k3ui/assets/images/shapes/
+ * Peut être surchargé via l'option assetsPath du composant ou data-assets-path
+ */
+$shape-assets-path: '/k3ui/assets/images/shapes/' !default;
+
+// ============================================================================
+// SHAPES DISPONIBLES
+// ============================================================================
+
+/**
+ * Liste de toutes les shapes disponibles (basée sur les fichiers SVG existants)
+ */
+$shapes: (
+  'arch',
+  'arrow', 
+  'boom',
+  'boomsoft',
+  'bun',
+  'burst',
+  'burstsoft',
+  'circle',
+  'clamshell',
+  'diamond',
+  'fan',
+  'flower',
+  'gem',
+  'ghost',
+  'heart',
+  'leaf4',
+  'leaf8',
+  'oval',
+  'octagonal-circle',
+  'pentagon',
+  'pill',
+  'pixelcircle',
+  'pixeltriangle',
+  'puffy',
+  'puffydiamond',
+  'semicircle',
+  'sides4',
+  'sides6',
+  'sides7',
+  'sides9',
+  'sides12',
+  'slanted',
+  'square',
+  'sunny',
+  'sunnysoft',
+  'triangle'
+) !default;
+
+// ============================================================================
+// TAILLES
+// ============================================================================
+
+/**
+ * Tailles par défaut pour les shapes
+ */
+$shape-sizes: (
+  'xs': 24px,
+  'sm': 32px,
+  'md': 48px,
+  'lg': 64px,
+  'xl': 96px,
+  '2xl': 128px,
+  '3xl': 256px,
+  '4xl': 512px
+) !default;
+
+// ============================================================================
+// VARIANTES
+// ============================================================================
+
+/**
+ * Variantes de shapes disponibles
+ */
+$shape-variants: (
+  'mask': 'mask'      // Découpe l'image selon la shape
+) !default;
+
+// ============================================================================
+// Z-INDEX
+// ============================================================================
+
+/**
+ * Z-index pour les shapes
+ */
+$shape-z-index: 10 !default;
+
+// ============================================================================
+// TRANSITIONS ET ANIMATIONS
+// ============================================================================
+
+/**
+ * Transitions pour les shapes (sans `all` — aligné list.token)
+ */
+$shape-transition:
+  opacity animation.$animation-duration-fast animation.$animation-easing-cubic-bezier,
+  transform animation.$animation-duration-fast animation.$animation-easing-cubic-bezier,
+  background-color animation.$animation-duration-fast animation.$animation-easing-cubic-bezier,
+  border-color animation.$animation-duration-fast animation.$animation-easing-cubic-bezier,
+  box-shadow animation.$animation-duration-fast animation.$animation-easing-cubic-bezier,
+  clip-path animation.$animation-duration-fast animation.$animation-easing-cubic-bezier,
+  border-radius animation.$animation-duration-fast animation.$animation-easing-cubic-bezier !default;
+
+/**
+ * Durées d'animation pour les shapes
+ */
+$shape-animation-duration-fast: animation.$animation-duration-fast !default;
+$shape-animation-duration-normal: animation.$animation-duration-normal !default;
+$shape-animation-duration-slow: animation.$animation-duration-slow !default;
+
+/**
+ * Fonctions d'accélération pour les shapes
+ */
+$shape-easing-bounce: motion.spring-easing(spatial, default) !default;
+$shape-easing-elastic: motion.spring-easing(spatial, fast) !default;
+$shape-easing-fade: animation.$animation-easing-cubic-bezier !default;
+
+// ============================================================================
+// COULEURS
+// ============================================================================
+
+/**
+ * Couleurs par défaut pour les shapes
+ */
+$shape-color-border: theme.$md-ref-palette-neutral80 !default;
+$shape-color-outline: theme.$md-ref-palette-neutral60 !default;
+$shape-color-fill: theme.$md-ref-palette-primary40 !default;
+$shape-color-background: theme.$md-ref-palette-neutral99 !default;
+
+// ============================================================================
+// EFFETS
+// ============================================================================
+
+/**
+ * Valeurs de transformation pour les effets
+ */
+$shape-scale-hover: 1.05 !default;
+$shape-scale-active: 0.95 !default;
+$shape-scale-pulse: 1.05 !default;
+
+/**
+ * Filtres pour les effets
+ */
+$shape-filter-brightness-hover: 1.1 !default;
+$shape-filter-brightness-active: 0.9 !default;
+
+// ============================================================================
+// MAPS ET COLLECTIONS
+// ============================================================================
+
+/**
+ * Map des durées d'animation
+ */
+$shape-animation-durations: (
+  fast: $shape-animation-duration-fast,
+  normal: $shape-animation-duration-normal,
+  slow: $shape-animation-duration-slow
+) !default;
+
+/**
+ * Map des fonctions d'accélération
+ */
+$shape-easings: (
+  bounce: $shape-easing-bounce,
+  elastic: $shape-easing-elastic,
+  fade: $shape-easing-fade
+) !default;
+
+/**
+ * Map des transformations
+ */
+$shape-transforms: (
+  scale-hover: $shape-scale-hover,
+  scale-active: $shape-scale-active,
+  scale-pulse: $shape-scale-pulse
+) !default;
+
+/**
+ * Map des filtres
+ */
+$shape-filters: (
+  brightness-hover: $shape-filter-brightness-hover,
+  brightness-active: $shape-filter-brightness-active
+) !default;
+
+/**
+ * Map des couleurs
+ */
+$shape-colors: (
+  border: $shape-color-border,
+  outline: $shape-color-outline,
+  fill: $shape-color-fill,
+  background: $shape-color-background
+) !default;
+
+// ============================================================================
+// FONCTIONS UTILITAIRES
+// ============================================================================
+
+/**
+ * Fonction pour récupérer une taille de shape
+ * @param {string} $size - Taille de shape (xs, sm, md, lg, xl, 2xl, 3xl, 4xl)
+ * @return {string} Valeur de taille
+ */
+@function shape-size($size) {
+  @return map.get($shape-sizes, $size);
+}
+
+/**
+ * Fonction pour récupérer une durée d'animation
+ * @param {string} $duration - Type de durée (fast, normal, slow)
+ * @return {string} Valeur de durée
+ */
+@function shape-animation-duration($duration) {
+  @return map.get($shape-animation-durations, $duration);
+}
+
+/**
+ * Fonction pour récupérer une fonction d'accélération
+ * @param {string} $easing - Type d'accélération (bounce, elastic, fade)
+ * @return {string} Valeur d'accélération
+ */
+@function shape-easing($easing) {
+  @return map.get($shape-easings, $easing);
+}
+
+/**
+ * Fonction pour récupérer une transformation
+ * @param {string} $transform - Type de transformation (scale-hover, scale-active, scale-pulse)
+ * @return {string} Valeur de transformation
+ */
+@function shape-transform($transform) {
+  @return map.get($shape-transforms, $transform);
+}
+
+/**
+ * Fonction pour récupérer un filtre
+ * @param {string} $filter - Type de filtre (brightness-hover, brightness-active)
+ * @return {string} Valeur de filtre
+ */
+@function shape-filter($filter) {
+  @return map.get($shape-filters, $filter);
+}
+
+/**
+ * Fonction pour récupérer une couleur
+ * @param {string} $color - Type de couleur (border, outline, fill, background)
+ * @return {string} Valeur de couleur
+ */
+@function shape-color($color) {
+  @return map.get($shape-colors, $color);
+} 

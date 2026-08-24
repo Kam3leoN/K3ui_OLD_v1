@@ -1,0 +1,76 @@
+/**
+ * @fileoverview Tokens NavigationMenu (Material Design 3 Expressive / M3E nav-menu)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use './motion.token' as motion;
+
+$navigation-menu-padding-block: 8px;
+$navigation-menu-padding-inline: 12px;
+$navigation-menu-scrollbar-width: thin;
+$navigation-menu-scrollbar-color: var(--md-sys-color-outline-variant, #cac4d0);
+$navigation-menu-divider-margin: 4px;
+
+$navigation-menu-item-height: 56px;
+$navigation-menu-item-padding-inline: 12px;
+$navigation-menu-item-spacing: 12px;
+$navigation-menu-item-shape: 9999px;
+$navigation-menu-item-icon-size: 24px;
+$navigation-menu-item-inset: 16px;
+$navigation-menu-item-vertical-inset: 4px;
+
+$navigation-menu-item-font-size: 14px;
+$navigation-menu-item-font-weight: 500;
+$navigation-menu-item-line-height: 20px;
+$navigation-menu-item-tracking: 0.1px;
+
+$navigation-menu-item-label-color: var(--md-sys-color-on-surface-variant, #49454f);
+$navigation-menu-item-selected-label-color: var(--md-sys-color-on-secondary-container, #1d192b);
+$navigation-menu-item-selected-container-color: var(--md-sys-color-secondary-container, #e8def8);
+$navigation-menu-item-open-container-color: var(--md-sys-color-surface-container-highest, #ece6f0);
+$navigation-menu-item-disabled-opacity: 0.38;
+
+$navigation-menu-item-hover-bg: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 8%, transparent);
+$navigation-menu-item-focus-bg: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 12%, transparent);
+$navigation-menu-item-pressed-bg: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 12%, transparent);
+
+$navigation-menu-group-label-font-size: 11px;
+$navigation-menu-group-label-font-weight: 500;
+$navigation-menu-group-label-color: var(--md-sys-color-on-surface-variant, #49454f);
+$navigation-menu-group-label-inset: 16px;
+$navigation-menu-group-label-space: 8px;
+
+/** M3 Expressive — expand : spatial-default (rebond / overshoot) */
+$navigation-menu-expand-duration: var(--md-sys-motion-spatial-default-duration, #{motion.$md-sys-motion-expressive-spatial-default-duration});
+$navigation-menu-expand-easing: var(--md-sys-motion-spatial-default-easing, #{motion.$md-sys-motion-expressive-spatial-default-easing});
+/**
+ * M3 Expressive — collapse : décélération douce (pas d’overshoot).
+ * Un spring y>1 vers 0fr est clampé par le navigateur → fermeture brutale.
+ */
+$navigation-menu-collapse-duration: var(--md-sys-motion-spatial-default-duration, #{motion.$md-sys-motion-expressive-spatial-default-duration});
+$navigation-menu-collapse-easing: cubic-bezier(0.05, 0.7, 0.1, 1);
+/** Chevron : rebond à l’ouverture, douceur à la fermeture (même paires) */
+$navigation-menu-toggle-duration: var(--md-sys-motion-spatial-default-duration, #{motion.$md-sys-motion-expressive-spatial-default-duration});
+$navigation-menu-toggle-easing: var(--md-sys-motion-spatial-default-easing, #{motion.$md-sys-motion-expressive-spatial-default-easing});
+$navigation-menu-toggle-collapse-easing: cubic-bezier(0.05, 0.7, 0.1, 1);
+/** M3 Expressive — fade contenu (effects, sans overshoot) */
+$navigation-menu-effects-duration: var(--md-sys-motion-effects-default-duration, #{motion.$md-sys-motion-expressive-effects-default-duration});
+$navigation-menu-effects-easing: var(--md-sys-motion-effects-default-easing, #{motion.$md-sys-motion-expressive-effects-default-easing});
+$navigation-menu-effects-fast-duration: var(--md-sys-motion-effects-fast-duration, #{motion.$md-sys-motion-expressive-effects-fast-duration});
+$navigation-menu-effects-fast-easing: var(--md-sys-motion-effects-fast-easing, #{motion.$md-sys-motion-expressive-effects-fast-easing});
+/** Stagger léger contenu à l’ouverture (chorégraphie M3) */
+$navigation-menu-content-enter-delay: 40ms;
+$navigation-menu-content-offset-y: -6px;
+
+/**
+ * Indicateur de sélection (pilule) — M3E m3e-selection-indicator
+ * Ouverture horizontale scaleX(0→1), medium-2 + standard-decelerate
+ * @see https://matraic.github.io/m3e/ (nav-menu)
+ */
+$navigation-menu-indicator-duration: var(--md-sys-motion-duration-medium2, 300ms);
+$navigation-menu-indicator-easing: var(--md-sys-motion-easing-standard-decelerate, cubic-bezier(0, 0, 0, 1));
+$navigation-menu-indicator-fade-duration: var(--md-sys-motion-duration-short4, 200ms);
+
+$navigation-menu-badge-font-size: 14px;
+$navigation-menu-badge-font-weight: 500;

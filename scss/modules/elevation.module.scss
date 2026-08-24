@@ -1,0 +1,11 @@
+@use '../mixins/elevation.mixin' as elevation;
+
+/// @file elevation.module.scss
+/// @brief Classes utilitaires pour l'elevation Material 3
+
+.elevation-0 { @include elevation.elevation(0); }
+.elevation-1 { @include elevation.elevation(1); }
+.elevation-2 { @include elevation.elevation(2); }
+.elevation-3 { @include elevation.elevation(3); }
+.elevation-4 { @include elevation.elevation(4); }
+.elevation-5 { @include elevation.elevation(5); } 

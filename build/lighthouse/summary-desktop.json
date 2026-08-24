@@ -1,0 +1,16 @@
+{
+  "preset": "desktop",
+  "scores": {
+    "performance": 100,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100
+  },
+  "metrics": {
+    "fcp": "0.4 s",
+    "lcp": "0.7 s",
+    "tbt": "30 ms",
+    "cls": "0.039"
+  },
+  "date": "2026-07-23T07:44:55.650Z"
+}

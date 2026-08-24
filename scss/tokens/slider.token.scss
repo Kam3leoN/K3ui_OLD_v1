@@ -1,0 +1,123 @@
+/// @file slider.tokens.scss
+/// @brief Tokens slider Material 3 Expressive
+
+@use './radius.token' as radius;
+@use './motion.token' as motion;
+@use './spacing.token' as spacing;
+@use './zindex.token' as zindex;
+
+// Dimensions des sliders selon Material Design 3 Expressive
+// Spécifications officielles Material Design 3 You Expressive
+
+// Taille XS
+$md-sys-slider-xs-track-height: 16px; // 16dp
+$md-sys-slider-xs-handle-width: 4px; // 4dp
+$md-sys-slider-xs-handle-height: 44px; // 44dp (dépasse du track)
+$md-sys-slider-xs-track-shape: 8px; // 8dp border radius
+$md-sys-slider-xs-inner-radius: 2px; // 2dp inner radius
+$md-sys-slider-xs-handle-gap: 6px; // 6dp gap transparent autour du handle
+
+// Taille S
+$md-sys-slider-s-track-height: 24px; // 24dp
+$md-sys-slider-s-handle-width: 4px; // 4dp
+$md-sys-slider-s-handle-height: 44px; // 44dp (dépasse du track)
+$md-sys-slider-s-track-shape: 8px; // 8dp border radius
+$md-sys-slider-s-inner-radius: 2px; // 2dp inner radius
+$md-sys-slider-s-handle-gap: 6px; // 6dp gap transparent autour du handle
+
+// Taille M (Default)
+$md-sys-slider-m-track-height: 40px; // 40dp
+$md-sys-slider-m-handle-width: 4px; // 4dp
+$md-sys-slider-m-handle-height: 52px; // 52dp (dépasse du track)
+$md-sys-slider-m-track-shape: 12px; // 12dp border radius
+$md-sys-slider-m-inner-radius: 2px; // 2dp inner radius
+$md-sys-slider-m-handle-gap: 6px; // 6dp gap transparent autour du handle
+
+// Taille L
+$md-sys-slider-l-track-height: 56px; // 56dp
+$md-sys-slider-l-handle-width: 4px; // 4dp
+$md-sys-slider-l-handle-height: 68px; // 68dp (dépasse du track)
+$md-sys-slider-l-track-shape: 16px; // 16dp border radius
+$md-sys-slider-l-inner-radius: 2px; // 2dp inner radius
+$md-sys-slider-l-handle-gap: 6px; // 6dp gap transparent autour du handle
+
+// Taille XL
+$md-sys-slider-xl-track-height: 96px; // 96dp (corrigé selon Material Design 3)
+$md-sys-slider-xl-handle-width: 4px; // 4dp
+$md-sys-slider-xl-handle-height: 108px; // 108dp (dépasse du track)
+$md-sys-slider-xl-track-shape: 28px; // 28dp border radius
+$md-sys-slider-xl-inner-radius: 2px; // 2dp inner radius
+$md-sys-slider-xl-handle-gap: 6px; // 6dp gap transparent autour du handle
+
+// Couleurs
+$md-sys-slider-track-active-color: var(--md-sys-color-primary);
+$md-sys-slider-track-inactive-color: var(--md-sys-color-secondary-container);
+$md-sys-slider-handle-color: var(--md-sys-color-primary);
+$md-sys-slider-stop-indicator-color: var(--md-sys-color-on-secondary-container);
+$md-sys-slider-stop-indicator-color-selected: var(--md-sys-color-on-primary);
+$md-sys-slider-discrete-point-color: var(--md-sys-color-on-primary); // Sur track actif
+$md-sys-slider-discrete-point-inactive-color: var(--md-sys-color-primary); // Sur track inactif
+
+// États
+// Selon Material Design 3, le handle s'affine (devient plus fin) lors du drag, pas plus gros
+$md-sys-slider-handle-drag-scale: 0.85; // 15% plus fin lors du drag (s'affine)
+$md-sys-slider-handle-hover-scale: 1.15; // 15% plus large lors du hover (déprécié - ne plus utiliser)
+$md-sys-slider-handle-hover-height-scale: 1.2; // 20% plus haut lors du hover (déprécié - ne plus utiliser)
+
+// Durées de transition (Material Design 3)
+$md-sys-slider-transition-duration: motion.$md-sys-motion-duration-standard; // 250ms
+$md-sys-slider-transition-easing: motion.$md-sys-motion-easing-standard; // cubic-bezier(0.2, 0, 0, 1)
+$md-sys-slider-drag-duration: motion.$md-sys-motion-duration-emphasized; // 200ms pour le drag
+
+// Z-index
+$md-sys-slider-handle-z-index: 20;
+$md-sys-slider-track-active-z-index: 10;
+$md-sys-slider-track-inactive-z-index: 0;
+$md-sys-slider-stop-indicator-z-index: 12; // Au-dessus des tracks mais en dessous du handle
+$md-sys-slider-discrete-points-z-index: 15; // Au-dessus de tous les tracks
+$md-sys-slider-value-label-z-index: 1000; // Z-index élevé pour être au-dessus de tous les sliders
+
+// Padding pour les stop indicators et discrete points
+$md-sys-slider-stop-indicator-trailing-space: 4px; // 4dp trailing space selon Material Design 3
+$md-sys-slider-discrete-point-size: 4px; // 4dp pour les points discrets selon Material Design 3
+$md-sys-slider-stop-indicator-size: 4px; // 4dp pour les stop indicators selon Material Design 3
+
+// Hauteur verticale par défaut
+$md-sys-slider-vertical-height: 300px; // 300px pour les sliders verticaux
+
+// Label tokens
+$md-sys-slider-label-container-height: 44px; // 44dp de haut (horizontal)
+$md-sys-slider-label-container-width: 48px; // 48dp de large (horizontal)
+$md-sys-slider-label-container-height-vertical: 44px; // 44dp de haut (vertical)
+$md-sys-slider-label-container-width-vertical: 48px; // 48dp de large (vertical)
+$md-sys-slider-label-padding-x: 12px;
+$md-sys-slider-label-padding-y: 8px;
+$md-sys-slider-label-margin: 4px; // 4dp de marge entre le handle et la bulle
+$md-sys-slider-label-font-size: 14px;
+$md-sys-slider-label-font-weight: 500;
+$md-sys-slider-label-border-radius: 9999px; // rounded-full
+// Pas de flèche/carré en dessous
+
+// Icon sizes for M/L/XL (XS/S have no icons)
+$md-sys-slider-icon-size-m: 24px;
+$md-sys-slider-icon-size-l: 24px;
+$md-sys-slider-icon-size-xl: 32px;
+
+// Animation tokens
+$md-sys-slider-handle-drag-scale-width: 1.15; // 15% larger for width
+$md-sys-slider-handle-drag-scale-height: 1.2; // 20% larger for height
+
+// Elevation & Shadow tokens
+$md-sys-slider-handle-elevation: 0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 10px rgba(0, 0, 0, 0.12);
+$md-sys-slider-handle-active-elevation: 0 4px 8px rgba(0, 0, 0, 0.25), 0 2px 16px rgba(0, 0, 0, 0.15);
+$md-sys-slider-label-elevation: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+// Accessibility tokens
+$md-sys-slider-min-touch-target: 48px;
+$md-sys-slider-focus-ring-width: 2px;
+$md-sys-slider-focus-ring-color: var(--md-sys-color-primary);
+$md-sys-slider-focus-ring-offset: 2px;
+
+// Disabled state
+$md-sys-slider-disabled-opacity: 0.38;
+

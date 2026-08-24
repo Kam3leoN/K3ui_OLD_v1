@@ -1,0 +1,106 @@
+/**
+ * @fileoverview Mixins ImageEditor pour K3UI
+ * @description Mixins réutilisables pour l'éditeur d'images
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/imageeditor.token' as *;
+@use './motion.mixin' as motionmix;
+
+// ============================================================================
+// MIXINS IMAGEEDITOR
+// ============================================================================
+
+/// Canvas de l'éditeur
+@mixin editor-canvas {
+    border: $image-editor-canvas-border;
+    border-radius: $image-editor-canvas-radius;
+    background: $image-editor-canvas-bg;
+    cursor: move;
+    display: block;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+}
+
+/// Toolbar générique
+@mixin editor-toolbar {
+    background: $image-editor-toolbar-bg;
+    padding: $image-editor-toolbar-padding;
+    border-radius: $image-editor-toolbar-radius;
+    display: flex;
+    gap: $image-editor-toolbar-gap;
+    align-items: center;
+}
+
+/// Section d'outils
+@mixin editor-section {
+    display: flex;
+    flex-direction: column;
+    gap: $image-editor-section-gap;
+
+    h4 {
+        margin: 0;
+        font-size: $image-editor-section-title-size;
+        font-weight: $image-editor-section-title-weight;
+        color: var(--md-sys-color-on-surface);
+    }
+}
+
+/// Groupe de contrôles
+@mixin editor-controls {
+    display: flex;
+    align-items: center;
+    gap: $image-editor-control-gap;
+    height: $image-editor-control-height;
+}
+
+/// Info overlay
+@mixin editor-info-overlay {
+    position: absolute;
+    background: $image-editor-info-bg;
+    color: $image-editor-info-color;
+    padding: $image-editor-info-padding;
+    border-radius: $image-editor-info-radius;
+    font-size: $image-editor-info-font-size;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/// Séparateur de toolbar
+@mixin editor-separator {
+    width: $image-editor-separator-width;
+    height: 24px;
+    background: $image-editor-separator-color;
+    margin: 0 var(--md-sys-spacing-2);
+}
+
+/// Grille de position (watermark)
+@mixin editor-position-grid {
+    display: grid;
+    grid-template-columns: repeat(3, $image-editor-position-grid-size);
+    grid-template-rows: repeat(3, $image-editor-position-grid-size);
+    gap: $image-editor-position-grid-gap;
+
+    button {
+        width: $image-editor-position-grid-size;
+        height: $image-editor-position-grid-size;
+        padding: 0;
+        border: 1px solid var(--md-sys-color-outline);
+        background: var(--md-sys-color-surface);
+        border-radius: var(--md-sys-shape-corner-extra-small);
+        cursor: pointer;
+        @include motionmix.transition-surface(0.2s, ease);
+
+        &:hover {
+            background: var(--md-sys-color-surface-container-high);
+        }
+
+        &.active {
+            background: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
+            border-color: var(--md-sys-color-primary);
+        }
+    }
+}

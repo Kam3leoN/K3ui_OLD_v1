@@ -1,0 +1,286 @@
+/**
+ * @fileoverview Tokens de design pour CodeBlock (Material Design 3 Expressive)
+ * @description Variables pour blocs de code avec carte et toolbar
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'sass:map';
+@use 'fontface.token' as fontface;
+
+// ============================================================================
+// SURFACE & CARD
+// ============================================================================
+
+/** Surface de la carte (conteneur du bloc de code) — non utilisé comme fond unique (style Google card) */
+$codeblock-surface: var(--md-sys-color-surface-container-high, var(--k3ui-color-surface-container));
+/** Fond commun header + content — défaut = filled (aligné sur card) */
+$codeblock-card-fill: var(--md-sys-color-surface-container, var(--k3ui-color-surface-container));
+/** Couleur du texte/icônes sur la toolbar (sur card-fill) */
+$codeblock-toolbar-on-surface: var(--md-sys-color-on-surface, #1c1b1f);
+/** Fond de la toolbar — aligné sur card-fill */
+$codeblock-toolbar-surface: $codeblock-card-fill;
+
+// ============================================================================
+// ESPACEMENTS
+// ============================================================================
+
+/** Padding du contenu (pre/code) */
+$codeblock-content-padding: var(--md-sys-spacing-md, 16px);
+/** Padding de la toolbar */
+$codeblock-toolbar-padding: var(--md-sys-spacing-sm, 8px) var(--md-sys-spacing-md, 16px);
+/** Rayon des bords de la carte */
+$codeblock-radius: var(--md-sys-shape-corner-medium, 12px);
+/** Gap entre header et content — 2dp (style Google card) */
+$codeblock-card-gap: 2px;
+/** Rayon grand (coins extérieurs de la card) */
+$codeblock-radius-large: 16px;
+/** Rayon petit (jonction header/content) */
+$codeblock-radius-small: 4px;
+/** Hauteur repliée du bloc (mode collapsible) — peut être surchargée en JS via --codeblock-collapsed-height */
+$codeblock-collapsed-height: 150px;
+
+// ============================================================================
+// TYPOGRAPHIE
+// ============================================================================
+
+/** Taille de police du label (toolbar) */
+$codeblock-label-font-size: var(--md-sys-typescale-label-medium-font-size, 14px);
+/** Famille monospace pour le code (police spéciale code du projet) */
+$codeblock-font-family: fontface.$font-family-code;
+/** Taille du code (entre petit et grand pour la lisibilité) */
+$codeblock-font-size: 15px;
+/** Graisse du code (medium pour une meilleure lisibilité) */
+$codeblock-font-weight: 500;
+$codeblock-line-height: 1.5;
+
+// ============================================================================
+// ÉLÉVATION & BORDURE
+// ============================================================================
+
+/** Élévation de la carte (MD3 elevated) */
+$codeblock-elevation: var(--md-sys-elevation-level1, 0 1px 2px rgba(0, 0, 0, 0.3));
+/** Bordure outlined (optionnel) */
+$codeblock-outline: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.12));
+
+// ============================================================================
+// Z-INDEX
+// ============================================================================
+
+$codeblock-z-index: 0;
+
+// ============================================================================
+// THÈME ACTIF (material | okaidia)
+// ============================================================================
+
+$codeblock-syntax-theme: 'material' !default;
+
+// ============================================================================
+// COULEURS TOKENS — THÈME MATERIAL (Material Design 3)
+// ============================================================================
+
+$codeblock-token-material-comment: var(--md-sys-color-on-surface-variant, #6b7280);
+$codeblock-token-material-prolog: var(--md-sys-color-on-surface-variant, #6b7280);
+$codeblock-token-material-doctype: var(--md-sys-color-on-surface-variant, #6b7280);
+$codeblock-token-material-cdata: var(--md-sys-color-on-surface-variant, #6b7280);
+$codeblock-token-material-punctuation: var(--md-sys-color-on-surface, rgba(0, 0, 0, 0.87));
+$codeblock-token-material-namespace-opacity: 0.7;
+$codeblock-token-material-property: var(--md-sys-color-error, #b3261e);
+$codeblock-token-material-tag: var(--md-sys-color-error, #b3261e);
+$codeblock-token-material-constant: var(--md-sys-color-outline, #79747e);
+$codeblock-token-material-symbol: var(--md-sys-color-error, #b3261e);
+$codeblock-token-material-deleted: var(--md-sys-color-error, #b3261e);
+$codeblock-token-material-boolean: var(--md-sys-color-secondary, #625b71);
+$codeblock-token-material-number: var(--md-sys-color-secondary, #625b71);
+$codeblock-token-material-selector: var(--md-sys-color-primary, #6750a4);
+$codeblock-token-material-attr: var(--md-sys-color-on-surface-variant, #79747e);
+$codeblock-token-material-string: var(--md-sys-color-tertiary, #0d9488);
+$codeblock-token-material-char: var(--md-sys-color-tertiary, #0d9488);
+$codeblock-token-material-builtin: var(--md-sys-color-tertiary, #0d9488);
+$codeblock-token-material-inserted: var(--md-sys-color-tertiary, #0d9488);
+$codeblock-token-material-keyword: var(--md-sys-color-primary, #6750a4);
+$codeblock-token-material-operator: var(--md-sys-color-on-surface, rgba(0, 0, 0, 0.87));
+$codeblock-token-material-entity: var(--md-sys-color-on-surface, rgba(0, 0, 0, 0.87));
+$codeblock-token-material-url: var(--md-sys-color-tertiary, #0d9488);
+$codeblock-token-material-variable: var(--md-sys-color-inverse-primary, #d0bcff);
+$codeblock-token-material-atrule: var(--md-sys-color-tertiary, #0d9488);
+$codeblock-token-material-attr-value: var(--md-sys-color-on-surface-variant, #79747e);
+$codeblock-token-material-function: var(--md-sys-color-tertiary, #0d9488);
+$codeblock-token-material-class-name: var(--md-sys-color-tertiary, #0d9488);
+$codeblock-token-material-regex: var(--md-sys-color-tertiary, #0d9488);
+$codeblock-token-material-important: var(--md-sys-color-error, #b3261e);
+
+// ============================================================================
+// COULEURS TOKENS — THÈME OKAIDIA SOMBRE (PrismJS prism-okaidia.css)
+// ============================================================================
+
+$codeblock-token-okaidia-comment: #8292a2;
+$codeblock-token-okaidia-prolog: #8292a2;
+$codeblock-token-okaidia-doctype: #8292a2;
+$codeblock-token-okaidia-cdata: #8292a2;
+$codeblock-token-okaidia-punctuation: #f8f8f2;
+$codeblock-token-okaidia-namespace-opacity: 0.7;
+$codeblock-token-okaidia-property: #f92672;
+$codeblock-token-okaidia-tag: #f92672;
+$codeblock-token-okaidia-constant: #f92672;
+$codeblock-token-okaidia-symbol: #f92672;
+$codeblock-token-okaidia-deleted: #f92672;
+$codeblock-token-okaidia-boolean: #ae81ff;
+$codeblock-token-okaidia-number: #ae81ff;
+$codeblock-token-okaidia-selector: #a6e22e;
+$codeblock-token-okaidia-attr: #a6e22e;
+$codeblock-token-okaidia-string: #a6e22e;
+$codeblock-token-okaidia-char: #a6e22e;
+$codeblock-token-okaidia-builtin: #a6e22e;
+$codeblock-token-okaidia-inserted: #a6e22e;
+$codeblock-token-okaidia-keyword: #66d9ef;
+$codeblock-token-okaidia-operator: #f8f8f2;
+$codeblock-token-okaidia-entity: #f8f8f2;
+$codeblock-token-okaidia-url: #f8f8f2;
+$codeblock-token-okaidia-variable: #f8f8f2;
+$codeblock-token-okaidia-atrule: #e6db74;
+$codeblock-token-okaidia-attr-value: #e6db74;
+$codeblock-token-okaidia-function: #e6db74;
+$codeblock-token-okaidia-class-name: #e6db74;
+$codeblock-token-okaidia-regex: #fd971f;
+$codeblock-token-okaidia-important: #fd971f;
+
+// ============================================================================
+// COULEURS TOKENS — THÈME OKAIDIA CLAIR (fond clair, contraste lisible)
+// ============================================================================
+
+$codeblock-token-okaidia-light-comment: #6a9955;
+$codeblock-token-okaidia-light-prolog: #6a9955;
+$codeblock-token-okaidia-light-doctype: #6a9955;
+$codeblock-token-okaidia-light-cdata: #6a9955;
+$codeblock-token-okaidia-light-punctuation: #374151;
+$codeblock-token-okaidia-light-namespace-opacity: 0.7;
+$codeblock-token-okaidia-light-property: #b91c3c;
+$codeblock-token-okaidia-light-tag: #b91c3c;
+$codeblock-token-okaidia-light-constant: #7c3aed;
+$codeblock-token-okaidia-light-symbol: #b91c3c;
+$codeblock-token-okaidia-light-deleted: #b91c3c;
+$codeblock-token-okaidia-light-boolean: #7c3aed;
+$codeblock-token-okaidia-light-number: #7c3aed;
+$codeblock-token-okaidia-light-selector: #0d9488;
+$codeblock-token-okaidia-light-attr: #0d9488;
+$codeblock-token-okaidia-light-string: #0d9488;
+$codeblock-token-okaidia-light-char: #0d9488;
+$codeblock-token-okaidia-light-builtin: #0d9488;
+$codeblock-token-okaidia-light-inserted: #0d9488;
+$codeblock-token-okaidia-light-keyword: #0066ff;
+$codeblock-token-okaidia-light-operator: #374151;
+$codeblock-token-okaidia-light-entity: #374151;
+$codeblock-token-okaidia-light-url: #0d9488;
+$codeblock-token-okaidia-light-variable: #374151;
+$codeblock-token-okaidia-light-atrule: #b45309;
+$codeblock-token-okaidia-light-attr-value: #b45309;
+$codeblock-token-okaidia-light-function: #b45309;
+$codeblock-token-okaidia-light-class-name: #b45309;
+$codeblock-token-okaidia-light-regex: #c2410c;
+$codeblock-token-okaidia-light-important: #c2410c;
+
+// ============================================================================
+// VARIABLES ACTIVES (selon $codeblock-syntax-theme)
+// ============================================================================
+
+$codeblock-active-token-set: ();
+
+@if $codeblock-syntax-theme == 'okaidia' {
+  $codeblock-active-token-set: (
+    comment: $codeblock-token-okaidia-comment,
+    prolog: $codeblock-token-okaidia-prolog,
+    doctype: $codeblock-token-okaidia-doctype,
+    cdata: $codeblock-token-okaidia-cdata,
+    punctuation: $codeblock-token-okaidia-punctuation,
+    namespace-opacity: $codeblock-token-okaidia-namespace-opacity,
+    property: $codeblock-token-okaidia-property,
+    tag: $codeblock-token-okaidia-tag,
+    constant: $codeblock-token-okaidia-constant,
+    symbol: $codeblock-token-okaidia-symbol,
+    deleted: $codeblock-token-okaidia-deleted,
+    boolean: $codeblock-token-okaidia-boolean,
+    number: $codeblock-token-okaidia-number,
+    selector: $codeblock-token-okaidia-selector,
+    attr: $codeblock-token-okaidia-attr,
+    string: $codeblock-token-okaidia-string,
+    char: $codeblock-token-okaidia-char,
+    builtin: $codeblock-token-okaidia-builtin,
+    inserted: $codeblock-token-okaidia-inserted,
+    keyword: $codeblock-token-okaidia-keyword,
+    operator: $codeblock-token-okaidia-operator,
+    entity: $codeblock-token-okaidia-entity,
+    url: $codeblock-token-okaidia-url,
+    variable: $codeblock-token-okaidia-variable,
+    atrule: $codeblock-token-okaidia-atrule,
+    attr-value: $codeblock-token-okaidia-attr-value,
+    function: $codeblock-token-okaidia-function,
+    class-name: $codeblock-token-okaidia-class-name,
+    regex: $codeblock-token-okaidia-regex,
+    important: $codeblock-token-okaidia-important
+  );
+} @else {
+  $codeblock-active-token-set: (
+    comment: $codeblock-token-material-comment,
+    prolog: $codeblock-token-material-prolog,
+    doctype: $codeblock-token-material-doctype,
+    cdata: $codeblock-token-material-cdata,
+    punctuation: $codeblock-token-material-punctuation,
+    namespace-opacity: $codeblock-token-material-namespace-opacity,
+    property: $codeblock-token-material-property,
+    tag: $codeblock-token-material-tag,
+    constant: $codeblock-token-material-constant,
+    symbol: $codeblock-token-material-symbol,
+    deleted: $codeblock-token-material-deleted,
+    boolean: $codeblock-token-material-boolean,
+    number: $codeblock-token-material-number,
+    selector: $codeblock-token-material-selector,
+    attr: $codeblock-token-material-attr,
+    string: $codeblock-token-material-string,
+    char: $codeblock-token-material-char,
+    builtin: $codeblock-token-material-builtin,
+    inserted: $codeblock-token-material-inserted,
+    keyword: $codeblock-token-material-keyword,
+    operator: $codeblock-token-material-operator,
+    entity: $codeblock-token-material-entity,
+    url: $codeblock-token-material-url,
+    variable: $codeblock-token-material-variable,
+    atrule: $codeblock-token-material-atrule,
+    attr-value: $codeblock-token-material-attr-value,
+    function: $codeblock-token-material-function,
+    class-name: $codeblock-token-material-class-name,
+    regex: $codeblock-token-material-regex,
+    important: $codeblock-token-material-important
+  );
+}
+
+$codeblock-token-comment: map.get($codeblock-active-token-set, comment);
+$codeblock-token-prolog: map.get($codeblock-active-token-set, prolog);
+$codeblock-token-doctype: map.get($codeblock-active-token-set, doctype);
+$codeblock-token-cdata: map.get($codeblock-active-token-set, cdata);
+$codeblock-token-punctuation: map.get($codeblock-active-token-set, punctuation);
+$codeblock-token-namespace-opacity: map.get($codeblock-active-token-set, namespace-opacity);
+$codeblock-token-property: map.get($codeblock-active-token-set, property);
+$codeblock-token-tag: map.get($codeblock-active-token-set, tag);
+$codeblock-token-constant: map.get($codeblock-active-token-set, constant);
+$codeblock-token-symbol: map.get($codeblock-active-token-set, symbol);
+$codeblock-token-deleted: map.get($codeblock-active-token-set, deleted);
+$codeblock-token-boolean: map.get($codeblock-active-token-set, boolean);
+$codeblock-token-number: map.get($codeblock-active-token-set, number);
+$codeblock-token-selector: map.get($codeblock-active-token-set, selector);
+$codeblock-token-attr: map.get($codeblock-active-token-set, attr);
+$codeblock-token-string: map.get($codeblock-active-token-set, string);
+$codeblock-token-char: map.get($codeblock-active-token-set, char);
+$codeblock-token-builtin: map.get($codeblock-active-token-set, builtin);
+$codeblock-token-inserted: map.get($codeblock-active-token-set, inserted);
+$codeblock-token-keyword: map.get($codeblock-active-token-set, keyword);
+$codeblock-token-operator: map.get($codeblock-active-token-set, operator);
+$codeblock-token-entity: map.get($codeblock-active-token-set, entity);
+$codeblock-token-url: map.get($codeblock-active-token-set, url);
+$codeblock-token-variable: map.get($codeblock-active-token-set, variable);
+$codeblock-token-atrule: map.get($codeblock-active-token-set, atrule);
+$codeblock-token-attr-value: map.get($codeblock-active-token-set, attr-value);
+$codeblock-token-function: map.get($codeblock-active-token-set, function);
+$codeblock-token-class-name: map.get($codeblock-active-token-set, class-name);
+$codeblock-token-regex: map.get($codeblock-active-token-set, regex);
+$codeblock-token-important: map.get($codeblock-active-token-set, important);

@@ -1,0 +1,83 @@
+/**
+ * @fileoverview Module Upload pour K3UI
+ * @description Styles pour les lignes de progression d'upload (ProgressIndicator MD3)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/upload.token' as *;
+@use '../mixins/upload.mixin' as *;
+
+// ============================================================================
+// UPLOAD PROGRESS STYLES
+// ============================================================================
+
+.upload-progress {
+    @include upload-progress-base;
+
+    &__label {
+        @include upload-progress-label;
+    }
+
+    .progress-indicator {
+        @include upload-progress-indicator;
+    }
+
+    &__stats {
+        @include upload-progress-stats;
+    }
+
+    &--large {
+        @include upload-progress-large;
+    }
+
+    &--success {
+        @include upload-progress-success;
+    }
+
+    &--error {
+        @include upload-progress-error;
+    }
+}
+
+.upload-progress-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+// ============================================================================
+// UPLOAD COMPONENT (façade DropZone + ProgressIndicator)
+// ============================================================================
+
+.upload {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+
+    &__zone {
+        width: 100%;
+    }
+
+    &__preview {
+        width: 100%;
+    }
+
+    &__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        align-items: center;
+    }
+
+    &__progress {
+        width: 100%;
+    }
+
+    &--disabled {
+        opacity: 0.6;
+        pointer-events: none;
+    }
+}

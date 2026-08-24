@@ -1,0 +1,150 @@
+/**
+ * @fileoverview Mixins ButtonFabDial
+ */
+
+@use '../tokens/button-fab-dial.token' as bfd;
+
+@mixin button-fab-dial-root {
+  position: fixed;
+  z-index: bfd.$button-fab-dial-z-index;
+  width: var(--button-fab-dial-size, #{bfd.$button-fab-dial-trigger-size});
+  height: var(--button-fab-dial-size, #{bfd.$button-fab-dial-trigger-size});
+  overflow: visible;
+
+  &--static {
+    position: absolute;
+  }
+}
+
+@mixin button-fab-dial-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: bfd.$button-fab-dial-scrim-z;
+  border: 0;
+  padding: 0;
+  background: bfd.$button-fab-dial-scrim-bg;
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity bfd.$button-fab-dial-effects-duration bfd.$button-fab-dial-effects-easing;
+}
+
+@mixin button-fab-dial-menu {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@mixin button-fab-dial-slot {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+@mixin button-fab-dial-trigger-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--button-fab-dial-size, #{bfd.$button-fab-dial-trigger-size});
+  height: var(--button-fab-dial-size, #{bfd.$button-fab-dial-trigger-size});
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  box-shadow: bfd.$button-fab-dial-action-shadow;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition:
+    border-radius bfd.$button-fab-dial-effects-duration bfd.$button-fab-dial-effects-easing,
+    transform bfd.$button-fab-dial-effects-duration bfd.$button-fab-dial-effects-easing,
+    opacity bfd.$button-fab-dial-effects-duration bfd.$button-fab-dial-effects-easing;
+
+  &[data-pressed] {
+    border-radius: bfd.$button-fab-dial-press-radius;
+    transform: scale(0.92);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--md-sys-color-primary);
+    outline-offset: 3px;
+  }
+
+  .k3ui-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+@mixin button-fab-dial-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--button-fab-dial-item-size, #{bfd.$button-fab-dial-action-size});
+  height: var(--button-fab-dial-item-size, #{bfd.$button-fab-dial-action-size});
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  background: bfd.$button-fab-dial-action-bg;
+  color: bfd.$button-fab-dial-action-color;
+  box-shadow: bfd.$button-fab-dial-action-shadow;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition:
+    border-radius bfd.$button-fab-dial-effects-duration bfd.$button-fab-dial-effects-easing,
+    transform bfd.$button-fab-dial-effects-duration bfd.$button-fab-dial-effects-easing;
+
+  &[data-pressed] {
+    border-radius: bfd.$button-fab-dial-press-radius;
+    transform: scale(0.92);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--md-sys-color-primary);
+    outline-offset: 3px;
+  }
+}
+
+@mixin button-fab-dial-item {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transform: translate3d(0, 0, 0) scale(0.35);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+  transition:
+    transform bfd.$button-fab-dial-exit-duration bfd.$button-fab-dial-exit-easing var(--button-fab-dial-delay-out, 0ms),
+    opacity bfd.$button-fab-dial-effects-duration bfd.$button-fab-dial-effects-easing var(--button-fab-dial-delay-out, 0ms);
+}
+
+@mixin button-fab-dial-item-open {
+  transform: translate3d(var(--button-fab-dial-x, 0), var(--button-fab-dial-y, 0), 0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+  transition:
+    transform bfd.$button-fab-dial-spatial-duration bfd.$button-fab-dial-spatial-easing var(--button-fab-dial-delay-in, 0ms),
+    opacity bfd.$button-fab-dial-effects-duration bfd.$button-fab-dial-effects-easing var(--button-fab-dial-delay-in, 0ms);
+}
+
+@mixin button-fab-dial-label {
+  position: absolute;
+  inset-inline-end: calc(100% + 0.75rem);
+  white-space: nowrap;
+  font-size: 0.8125rem;
+  line-height: 1;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  background: bfd.$button-fab-dial-label-bg;
+  color: bfd.$button-fab-dial-label-color;
+  opacity: 0;
+  transform: translateX(0.5rem);
+  transition:
+    opacity bfd.$button-fab-dial-effects-duration bfd.$button-fab-dial-effects-easing,
+    transform bfd.$button-fab-dial-spatial-duration bfd.$button-fab-dial-spatial-easing;
+}

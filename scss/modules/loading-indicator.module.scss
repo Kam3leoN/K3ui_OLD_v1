@@ -1,0 +1,74 @@
+/**
+ * @fileoverview Module LoadingIndicator
+ * @description Indicateur de chargement avec rotation des 35 shapes K3UI
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'sass:math';
+@use '../tokens/loading-indicator.token' as li;
+@use '../mixins/loading-indicator.mixin' as lim;
+
+@keyframes loading-indicator-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/**
+ * Classe principale du composant LoadingIndicator
+ */
+.loading-indicator {
+  @include lim.loading-indicator-base;
+
+  /** Variante contained : fond circulaire M3 derrière la shape */
+  &--container {
+    @include lim.loading-indicator-container;
+    border-radius: 50% !important;
+    aspect-ratio: 1;
+    overflow: hidden;
+  }
+
+  /** Zone drawable shape — ratio token (42/48, headroom pill) */
+  &__shape-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin: auto;
+    overflow: visible;
+    width: calc(100% * #{li.$loading-indicator-shape-ratio});
+    height: calc(100% * #{li.$loading-indicator-shape-ratio});
+  }
+
+  &__wrapper {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__shape {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+  }
+
+  &__svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    color: inherit;
+    vertical-align: middle;
+
+    /* Pas de shape circle interne : seul le path morphé est visible */
+    circle {
+      display: none !important;
+    }
+  }
+}

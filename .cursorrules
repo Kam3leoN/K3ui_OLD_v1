@@ -1,0 +1,506 @@
+## Architecture des fichiers de K3ui
+
+### Structure du projet
+
+```text
+k3ui/
+├── dist/
+│   ├── css/
+│   │   ├── k3ui.css                # Version normale
+│   │   ├── k3ui.min.css            # Version minifiée
+│   │   └── *.css.map               # Source maps
+│   ├── js/
+│   │   ├── init.js                 # Configuration utilisateur
+│   │   ├── init-sample.js          # Exemple de configuration
+│   │   ├── k3ui.js                 # Version normale
+│   │   └── k3ui.min.js             # Version minifiée
+├── scss/
+│   ├── tokens/
+│   │   ├── alignment.token.scss    # Tokens d'alignement
+│   │   ├── animation.token.scss    # Tokens d'animation
+│   │   ├── appbar.token.scss       # Tokens AppBar
+│   │   ├── border.token.scss       # Tokens de bordure
+│   │   ├── button.token.scss       # Tokens de bouton
+│   │   ├── card.token.scss         # Tokens de carte
+│   │   ├── chip.token.scss         # Tokens de chip
+│   │   ├── color.token.scss        # Tokens Palette et variables de couleur
+│   │   ├── dialog.token.scss       # Tokens Dialog
+│   │   ├── drawer.token.scss       # Tokens Drawer
+│   │   ├── dropdown.token.scss     # Tokens Dropdown
+│   │   ├── elevation.token.scss    # Tokens Profondeur/ombres
+│   │   ├── field.token.scss        # Tokens Field
+│   │   ├── fontface.token.scss     # Tokens Font-face et familles
+│   │   ├── hero.token.scss         # Tokens Hero/sections visuelles
+│   │   ├── icon.token.scss         # Tokens Dimensions/espaces icônes
+│   │   ├── layout.token.scss       # Tokens Grilles et layout
+│   │   ├── motion.token.scss       # Tokens Durées/ courbes d'animation
+│   │   ├── opacity.token.scss      # Tokens Opacités
+│   │   ├── outline.token.scss      # Tokens Contours/focus rings
+│   │   ├── pin.token.scss          # Tokens PIN
+│   │   ├── radius.token.scss       # Tokens Rayons/arrondis
+│   │   ├── reset.token.scss        # Tokens Reset CSS
+│   │   ├── select.token.scss       # Tokens Select
+│   │   ├── shape.token.scss        # Tokens Formes (avatars, surfaces)
+│   │   ├── snackbar.token.scss     # Tokens Snackbar
+│   │   ├── spacing.token.scss      # Tokens Echelles d'espacement
+│   │   ├── state.token.scss        # Tokens d'états hover/focus/disabled
+│   │   ├── textarea.token.scss     # Tokens Textarea
+│   │   ├── theme.token.scss        # Tokens Thème (clair/sombre)
+│   │   ├── toast.token.scss        # Tokens Toast
+│   │   ├── tooltip.token.scss      # Tokens Tooltip
+│   │   ├── typography.token.scss   # Tokens Typographies
+│   │   ├── zindex.token.scss       # Tokens Z-index
+│   │   └── index.scss              # Entrypoint tokens/
+│   ├── mixins/
+│   │   ├── alignment.mixin.scss    # Mixins d'alignement
+│   │   ├── animation.mixin.scss    # Mixins d'animation
+│   │   ├── appbar.mixin.scss       # Mixins AppBar
+│   │   ├── border.mixin.scss       # Mixins de bordure
+│   │   ├── button.mixin.scss       # Mixins Button
+│   │   ├── card.mixin.scss         # Mixins Card
+│   │   ├── chip.mixin.scss         # Mixins Chip
+│   │   ├── color.mixin.scss        # Mixins de couleurs
+│   │   ├── dialog.mixin.scss       # Mixins Dialog
+│   │   ├── drawer.mixin.scss       # Mixins Drawer
+│   │   ├── dropdown.mixin.scss     # Mixins Dropdown
+│   │   ├── elevation.mixin.scss    # Mixins d'élévation
+│   │   ├── field.mixin.scss        # Mixins Field
+│   │   ├── fontface.mixin.scss     # Mixins Font-face
+│   │   ├── hero.mixin.scss         # Mixins Hero
+│   │   ├── icon.mixin.scss         # Mixins Icône
+│   │   ├── layout.mixin.scss       # Mixins Layout
+│   │   ├── motion.mixin.scss       # Mixins Motion
+│   │   ├── opacity.mixin.scss      # Mixins d'opacité
+│   │   ├── outline.mixin.scss      # Mixins de contour
+│   │   ├── pin.mixin.scss          # Mixins PIN
+│   │   ├── radius.mixin.scss       # Mixins de rayon
+│   │   ├── reset.mixin.scss        # Mixins Reset
+│   │   ├── scrollbar.mixin.scss    # Mixins Scrollbar
+│   │   ├── select.mixin.scss       # Mixins Select
+│   │   ├── shape.mixin.scss        # Mixins Shape
+│   │   ├── snackbar.mixin.scss     # Mixins Snackbar
+│   │   ├── spacing.mixin.scss      # Mixins d'espacement
+│   │   ├── state.mixin.scss        # Mixins d'état
+│   │   ├── textarea.mixin.scss     # Mixins Textarea
+│   │   ├── theme.mixin.scss        # Mixins Thème
+│   │   ├── toast.mixin.scss        # Mixins Toast
+│   │   ├── tooltip.mixin.scss      # Mixins Tooltip
+│   │   ├── typography.mixin.scss   # Mixins Typographie
+│   │   ├── zindex.mixin.scss       # Mixins Z-index
+│   │   └── index.scss              # Entrypoint mixins/
+│   ├── modules/
+│   │   ├── alignment.module.scss   # Module d'alignement
+│   │   ├── animation.module.scss   # Module d'animation
+│   │   ├── appbar.module.scss      # Module AppBar
+│   │   ├── border.module.scss      # Module de bordure
+│   │   ├── button.module.scss      # Module Button
+│   │   ├── card.module.scss        # Module Card
+│   │   ├── chip.module.scss        # Module Chip
+│   │   ├── color.module.scss       # Module de couleur
+│   │   ├── dialog.module.scss      # Module Dialog
+│   │   ├── drawer.module.scss      # Module Drawer
+│   │   ├── dropdown.module.scss    # Module Dropdown
+│   │   ├── elevation.module.scss   # Module d'élévation
+│   │   ├── field.module.scss       # Module Field
+│   │   ├── fontface.module.scss    # Module @font-face
+│   │   ├── hero.module.scss        # Module Hero/sections
+│   │   ├── icon.module.scss        # Module Icône
+│   │   ├── layout.module.scss      # Module Grilles/mises en page
+│   │   ├── motion.module.scss      # Module Motion
+│   │   ├── opacity.module.scss     # Module opacité
+│   │   ├── outline.module.scss     # Module contour/focus
+│   │   ├── pin.module.scss         # Module PIN
+│   │   ├── radius.module.scss      # Module de rayon
+│   │   ├── reset.module.scss       # Module Reset CSS
+│   │   ├── select.module.scss      # Module Select
+│   │   ├── shape.module.scss       # Module Shape
+│   │   ├── snackbar.module.scss    # Module Snackbar
+│   │   ├── spacing.module.scss     # Module d'espacement
+│   │   ├── state.module.scss       # Module d'états hover/focus/disabled
+│   │   ├── textarea.module.scss    # Module Textarea
+│   │   ├── theme.module.scss       # Module Thème (classes)
+│   │   ├── toast.module.scss       # Module Toast
+│   │   ├── tooltip.module.scss     # Module Tooltip
+│   │   ├── typography.module.scss  # Module typo
+│   │   ├── zindex.module.scss      # Module z-index
+│   │   └── index.scss              # Entrypoint modules/
+│   ├── bases/
+│   │   ├── footer.scss             # Style spécifique au footer
+│   │   ├── global.scss             # Styles globaux
+│   │   ├── variables.scss          # Variables
+│   │   └── index.scss              # Entrypoint bases/
+│   └── index.scss                  # Entrypoint scss/
+├── src/
+│   ├── core/
+│   │   ├── base/
+│   │   │   ├── Component.ts        # Classe de base pour tous les composants
+│   │   │   └── index.ts            # Entrypoint base
+│   │   ├── factories/
+│   │   │   ├── ManagerFactory.ts   # Factory pour créer les managers
+│   │   │   └── index.ts            # Entrypoint factories
+│   │   ├── managers/
+│   │   │   ├── CookieManager.ts    # Gestion des cookies
+│   │   │   ├── IconManager.ts      # Gestion des icônes
+│   │   │   ├── LoggerManager.ts    # Système de logging en console
+│   │   │   ├── SoundFXManager.ts   # Effets sonores
+│   │   │   ├── ThemeManager.ts     # Thèmes (dark/light/auto/system)
+│   │   │   └── index.ts            # Entrypoint managers
+│   │   ├── registries/
+│   │   │   ├── ComponentRegistry.ts# Registre des composants
+│   │   │   ├── ManagerRegistry.ts  # Registre des managers
+│   │   │   └── index.ts            # Entrypoint registries
+│   │   └── index.ts                # Point d'entrée du core
+│   ├── components/
+│   │   ├── AppBar.ts               # Barre d'application
+│   │   ├── Card.ts                 # Composant de carte
+│   │   ├── Chips.ts                # Composant de chips
+│   │   ├── Dialog.ts               # Composant de dialogue
+│   │   ├── Drawer.ts               # Composant de tiroir
+│   │   ├── Dropdown.ts             # Composant de menu déroulant
+│   │   ├── Field.ts                # Composant de champ de saisie
+│   │   ├── Pin.ts                  # Composant de code PIN
+│   │   ├── Select.ts               # Composant de sélection
+│   │   ├── Shape.ts                # Composant de forme
+│   │   ├── Snackbar.ts             # Composant de notification snackbar
+│   │   ├── Textarea.ts             # Composant de zone de texte
+│   │   ├── Toast.ts                # Composant de notification toast
+│   │   └── Tooltips.ts             # Composant d'infobulles
+│   ├── utils/
+│   │   ├── dom/                    # Utilitaires DOM (elements, positioning, touch, aria, etc.)
+│   │   ├── effects/                # Effets visuels (ripple/waves)
+│   │   ├── options/                # Gestion des options (optionHandler)
+│   │   ├── storage/                # Stockage (localStorage)
+│   │   ├── validation/             # Validation (InputPattern)
+│   │   └── helpers/                # Helpers génériques (clipboard, guid, objects, performance)
+│   ├── specs/
+│   │   ├── common/                 # Spécifications communes (animations, responsive, theme, validation)
+│   │   └── components/             # Spécifications par composant (appbar, card, dialog, etc.)
+│   ├── libs/
+│   │   ├── js/                     # Bibliothèques JS externes (anime, jquery, mapbox)
+│   │   └── ts/                     # Bibliothèques TS externes
+│   ├── config/
+│   │   ├── defaults.ts             # Configurations par défaut (Icon, SoundFX, Component options)
+│   │   ├── selectors.ts            # Sélecteurs CSS par défaut (AutoInit)
+│   │   └── index.ts                # Point d'entrée des configurations
+│   ├── types/
+│   │   ├── base/                   # Types de base (dom, element, interfaces, options, priority)
+│   │   ├── components/             # Types des composants (base, registry, events)
+│   │   ├── managers/               # Types pour les managers
+│   │   └── utils/                  # Types utilitaires
+│   └── index.ts                    # Point d'entrée src/
+├── package.json            # Dépendances et scripts NPM
+├── jest.config.js          # Configuration Jest (tests unitaires)
+├── generate-docs.js        # Génération de la documentation (docs)
+├── tsconfig.json           # Configuration TypeScript (compilation stricte)
+├── vite.config.js          # Configuration Vite (exclut les assets du build)
+├── .cursorrules            # Règles Cursor/éditeur pour le repo
+└── README.md               # Documentation du projet (guide d’utilisation)
+```
+
+## Configuration et initialisation
+
+### AutoInit par défaut
+
+```html
+<script src="dist/js/k3ui.min.js"></script>
+<div class="chip">Chip automatique</div>
+<div class="dialog">
+  <div class="dialog__content">Contenu du dialogue</div>
+</div>
+```
+
+### Configuration personnalisée
+
+```html
+<script src="dist/js/init.js"></script>
+<script src="dist/js/k3ui.min.js"></script>
+```
+
+```javascript
+// Dans dist/js/init.js
+window.K3UI_OPTIONS = {
+  AppBar: {
+    /* options */
+  },
+  Card: {
+    /* options */
+  },
+  Chips: {
+    /* options */
+  },
+  Dialog: {
+    /* options */
+  },
+  Dropdown: {
+    /* options */
+  },
+  Drawer: {
+    /* options */
+  },
+  Field: {
+    /* options */
+  },
+  Hero: {
+    /* options */
+  },
+  Pin: {
+    /* options */
+  },
+  Select: {
+    /* options */
+  },
+  Shape: {
+    /* options */
+  },
+  Snackbar: {
+    /* options */
+  },
+  Textarea: {
+    /* options */
+  },
+  Toast: {
+    /* options */
+  },
+  Tooltips: {
+    /* options */
+  },
+};
+```
+
+# K3UI - Règles de développement
+
+### Code professionnel
+
+- **Code propre** : Toujours écrire un code professionnel, propre et maintenable
+- **JSDoc obligatoire** : Documentation complète avec JSDoc pour toutes les méthodes publiques
+- **Standards de qualité** : Respecter les standards de développement professionnel
+- **Non-régression** : Lors d'un refactor ou de manière générale, ne jamais introduire de régression ni casser un comportement existant (API, UI, accessibilité, performance). Vérifier build, lint, tests et le comportement concerné avant de finaliser
+- **Tests anti-régression** : Ajouter tous les tests pertinents (cas nominaux, limites, bugs corrigés) pour verrouiller le comportement modifié. En refactor, compléter la couverture existante avant ou pendant le changement. `npm run test:ci` doit passer avant de finaliser
+
+### TypeScript
+
+- **Strict typing** : Toutes les interfaces et types doivent être définis
+- **JSDoc** : Documentation complète pour toutes les méthodes publiques
+- **Generics** : Utiliser les génériques pour la flexibilité
+- **Correction d'erreurs** : Corriger immédiatement toutes les erreurs de build
+
+### SCSS
+
+- **Design tokens** : Définir les tokens dans `scss/tokens/`
+- **Mixins** : Créer des mixins réutilisables dans `scss/mixins/`
+- **Modules** : Organiser les styles en modules dans `scss/modules/`
+- **Organisation** : Ajouter les entrypoints dans les index des dossiers tokens/, mixins/, modules/, bases/
+- **Réutilisation** : Reprendre les portions de code existantes via @forward ou @use
+
+### JavaScript/TypeScript
+
+- **Pattern éprouvé** : Suivre le pattern établi pour la cohérence
+- **Instance management** : Stocker les instances sur les éléments DOM
+- **Event handling** : Gérer proprement les événements avec cleanup
+- **Error handling** : Gérer les erreurs avec le LoggerManager
+- **Utilitaires obligatoires** : Toujours utiliser les fichiers `src/core/` et `src/utils/`
+- **Réutilisation des utilitaires** : AVANT de créer une nouvelle fonction utilitaire, TOUJOURS se référer au dossier `src/utils/` pour vérifier si une méthode ou fonction similaire existe déjà. Consulter notamment `src/utils/helpers/`, `src/utils/dom/`, `src/utils/effects/`, `src/utils/options/`, `src/utils/storage/` et `src/utils/validation/` pour éviter les doublons et maintenir la cohérence du code
+- **Utilitaires ARIA obligatoires** : TOUJOURS utiliser les utilitaires ARIA de `src/utils/dom/aria.ts` (`setAriaAttribute`, `removeAriaAttribute`, `getAriaAttribute`, `setAriaAttributes`) dans tous les composants pour gérer les attributs ARIA. Ne JAMAIS utiliser directement `setAttribute()`, `removeAttribute()` ou `getAttribute()` pour les attributs ARIA. Ces utilitaires garantissent une gestion cohérente et valide des attributs d'accessibilité dans tout le projet.
+- **Pattern d'initialisation des composants** : Dans `src/index.ts`, TOUJOURS utiliser le pattern de configuration centralisée pour l'initialisation des composants. Utiliser une structure `componentConfig` avec un tableau d'objets de configuration contenant `name`, `selector`, `initFn`, `options`, et optionnellement `alwaysInit`. Définir le type `ComponentInitFn` pour typer les fonctions d'initialisation. Utiliser `forEach` pour itérer sur la configuration et éviter la répétition de code. Ce pattern garantit la maintenabilité et l'extensibilité du code d'initialisation.
+
+## Rappels importants
+
+- Toujours utiliser le préfixe **K\_** pour les instances stockées sur les éléments DOM
+- L'AutoInit est **activé par défaut**
+- Le fichier `init.js` permet de **surcharger** la configuration par défaut
+- Tous les composants doivent suivre le pattern établi avec `getInstance()`, `init()`, `defaults`, `destroy()`
+- Utiliser l'événement `k3ui-ready` pour synchroniser les configurations personnalisées
+- **Interface et defaults** : Tous les composants doivent avoir une `export interface ComponentOptions extends BaseOptions` et une `const _defaults: ComponentOptions`
+- **Callbacks obligatoires** : Tous les composants doivent inclure les callbacks `onOpenStart`, `onOpenEnd`, `onCloseStart`, `onCloseEnd`
+- **Structure des fichiers de sortie** : TOUJOURS respecter la structure `dist/css/`, `dist/js/` SANS dossier `dist/assets/`
+- **Chemins des assets** : Les assets doivent être dans `assets/` à la racine
+- **Configuration Vite** : Maintenir la configuration optimisée qui EXCLUT les assets du build
+- **Gestion des événements** : TOUJOURS utiliser EventManager pour la gestion des événements
+- **IconManager** : Utilise la détection automatique des chemins relatifs vers `assets/`
+- **Chemins SCSS** : Utiliser des chemins relatifs `../assets/` dans les mixins et tokens
+- **Documentation Material Design** : Toujours consulter la documentation officielle Google Material Design 3 Expressive
+- **Configuration centralisée** : TOUJOURS utiliser `src/config/` pour les réglages par défaut et les sélecteurs. Ne JAMAIS définir directement les valeurs de configuration ou les sélecteurs CSS dans le code, toujours importer depuis `src/config/defaults.ts` et `src/config/selectors.ts`
+- **Référence utils obligatoire** : TOUJOURS se référer au dossier `src/utils/` avant de créer une nouvelle fonction utilitaire. Vérifier dans `src/utils/helpers/` (clipboard, guid, objects, performance), `src/utils/dom/` (elements, keyboard, mouse, positioning, touch), `src/utils/effects/` (waves), `src/utils/options/` (optionHandler), `src/utils/storage/` (storage) et `src/utils/validation/` (InputPattern) pour éviter les doublons de code
+- **Interactions** : TOUJOURS utiliser les utilitaires `Keyboard` et `Mouse` de `src/core/managers/` (KeyboardManager.ts, MouseManager.ts) pour gérer les interactions clavier et souris. Ne JAMAIS utiliser directement `addEventListener` pour les événements `keydown`, `keyup`, `mouseenter`, `mouseleave`, `mousedown`, `mouseup`, `mousemove`, etc. Toujours créer des instances de `Keyboard` et `Mouse` avec les callbacks appropriés. Ces utilitaires fournissent une gestion unifiée et cohérente des événements.
+- **Enrichissement des utilitaires** : Si une fonctionnalité manque dans `Keyboard` ou `Mouse` (callback, événement, etc.), TOUJOURS enrichir ces utilitaires plutôt que de créer du code dupliqué ailleurs. Ajouter les interfaces TypeScript dans `src/types/base/dom.ts`, implémenter dans `src/core/managers/KeyboardManager.ts` ou `src/core/managers/MouseManager.ts`, et mettre à jour la documentation. Cela garantit la cohérence et la réutilisabilité du code dans tout le projet.
+
+- Avant de répondre ou de dupliquer du code, TOUJOURS vérifier `src/utils/`, `src/config/`, `src/types/`, `src/specs/`, `src/core/`.
+
+## Architecture Core vs Utils
+
+- **Séparation stricte** : `src/core/` contient les managers et la logique métier, `src/utils/` contient les utilitaires techniques
+- **Keyboard et Mouse** : Les gestionnaires `Keyboard` et `Mouse` sont dans `src/core/managers/` (KeyboardManager.ts, MouseManager.ts), PAS dans `src/utils/dom/`
+- **Imports** : TOUJOURS importer Keyboard/Mouse depuis `src/core/managers/` ou `src/core/managers/KeyboardManager` / `src/core/managers/MouseManager`
+- **Pas de dépendances circulaires** : Les fichiers dans `src/utils/` ne doivent JAMAIS importer depuis `src/core/` (sauf types). Utiliser `console.warn()` ou `console.error()` dans utils au lieu de LoggerManager
+
+## Pattern V5 - Gestion des événements
+
+- **registerEvent() obligatoire** : TOUJOURS utiliser `this.registerEvent()` dans les composants pour enregistrer des événements, JAMAIS `addEventListener` directement
+- **Cleanup automatique** : Les événements enregistrés via `registerEvent()` sont automatiquement nettoyés lors de la destruction du composant
+- **removeEventListener interdit** : Ne JAMAIS utiliser `removeEventListener` manuellement dans les composants. Le cleanup est géré automatiquement par `registerEvent()`
+- **Pattern d'utilisation** :
+  ```typescript
+  // ✅ CORRECT
+  this.registerEvent(this.el, 'click', this.handleClick.bind(this));
+  this.registerEvent(window, 'resize', this.handleResize.bind(this));
+  
+  // ❌ INCORRECT
+  this.el.addEventListener('click', this.handleClick.bind(this));
+  this.el.removeEventListener('click', this.handleClick.bind(this));
+  ```
+- **Événements dynamiques** : Pour les événements attachés/détachés dynamiquement, stocker la fonction de cleanup retournée par `registerEvent()` et l'appeler manuellement si nécessaire
+
+## Dépendances circulaires - Interdiction stricte
+
+- **RÈGLE ABSOLUE** : Les fichiers dans `src/utils/` ne doivent JAMAIS importer depuis `src/core/` (sauf types TypeScript)
+- **LoggerManager interdit dans utils** : Dans `src/utils/`, utiliser `console.warn()` ou `console.error()` au lieu de `LoggerManager`
+- **Exceptions** : Seuls les types TypeScript peuvent être importés depuis `src/core/` dans `src/utils/`
+- **Pattern de logging** :
+  ```typescript
+  // ✅ CORRECT dans src/utils/
+  console.warn('[ModuleName] Message', data);
+  console.error('[ModuleName] Erreur:', error);
+  
+  // ❌ INCORRECT dans src/utils/
+  import { LoggerManager } from '../../core/managers/LoggerManager';
+  LoggerManager.global.warn('Message');
+  ```
+
+## Sécurité et code de production
+
+- **Fetch localhost interdit** : Ne JAMAIS utiliser `fetch()` vers localhost (127.0.0.1, localhost, IPs privées) en production
+- **console.log interdit** : Ne JAMAIS utiliser `console.log()` dans le code source. Utiliser :
+  - `LoggerManager.create('[Module]').debug/info/warn/error()` dans `src/core/` et `src/components/`
+  - `console.warn()` ou `console.error()` dans `src/utils/` (pour éviter dépendances circulaires)
+- **Logs de debug** : Supprimer immédiatement tous les logs de debug après résolution d'un problème
+- **Code propre** : Maintenir un code sans pollution de logs en production
+
+## Terminologie : Menu remplace Dropdown
+
+- **RÈGLE ABSOLUE** : Le terme "dropdown" n'existe plus dans le projet K3UI. Il a été complètement remplacé par "menu".
+- **INTERDICTION STRICTE** : Ne JAMAIS utiliser le terme "dropdown", "Dropdown", "DROPDOWN" ou toute variation dans le code, les commentaires, les noms de variables, les noms de fonctions, les noms de classes CSS, les tokens SCSS, ou la documentation.
+- **UTILISATION OBLIGATOIRE** : TOUJOURS utiliser "menu", "Menu", "MENU" à la place de "dropdown".
+- **Exemples de remplacement** :
+  - `dropdown` → `menu`
+  - `Dropdown` → `Menu`
+  - `dropdownOptions` → `menuOptions`
+  - `setDropdownPosition` → `setMenuPosition`
+  - `.dropdown-content` → `.menu-content`
+  - `.navbar-dropdown-container` → `.navbar-menu-container`
+  - `$dropdown-*` → `$menu-*`
+  - `select-dropdown` → `select-menu`
+- **Vérification** : Avant chaque commit ou modification, vérifier qu'aucune référence à "dropdown" n'existe dans le code.
+
+## Debug et résolution d'erreurs
+
+### Logs temporaires pour diagnostic
+
+- **AJOUTER** des logs de debug (console.log) avec des emojis 🔍 pour identifier les erreurs
+- **SUPPRIMER** immédiatement tous les logs de debug après résolution du problème
+- **MAINTENIR** un code propre sans pollution de logs en production
+
+### Exemple de pattern de debug
+
+```typescript
+// Pendant le debug
+console.log("🔍 Debug - Variable:", variable);
+console.log("🔍 Debug - État:", state);
+
+// Après résolution - SUPPRIMER tous les logs
+```
+
+### Règle stricte
+
+- ✅ Ajouter des logs pour diagnostiquer
+- ✅ Résoudre le problème
+- ✅ Nettoyer immédiatement les logs
+- ❌ Ne jamais laisser de logs de debug en production
+
+## Build automatique après modifications
+
+- **OBLIGATOIRE** : Après TOUTE modification de fichiers SCSS ou TypeScript, lancer IMMÉDIATEMENT un build pour régénérer `dist/js/*` et `dist/css/*`.
+- **SYSTÉMATIQUE** : Le build doit être exécuté automatiquement après chaque modification, sans attendre une demande explicite de l'utilisateur.
+- **NE JAMAIS OUBLIER** : Le build est requis après chaque modification pour tester avec les assets compilés.
+- **Script** : Toujours utiliser `npm run build` (défini dans `package.json`).
+- **PRIORITÉ** : Cette règle est MANDATORE et doit être suivie systématiquement.
+
+## Pattern des boutons K3UI
+
+- **TOUJOURS** utiliser le pattern suivant pour les boutons dans les pages de documentation et exemples :
+  - Bouton filled (primaire) : `<button class="btn btn--filled btn--sm btn--primary ripple">Texte</button>`
+  - Bouton filled (secondaire) : `<button class="btn btn--filled btn--sm ripple">Texte</button>`
+  - Bouton text : `<button class="btn btn--text btn--sm ripple">Texte</button>`
+  - Bouton outlined : `<button class="btn btn--outlined btn--sm ripple">Texte</button>`
+  - Bouton icon : `<button class="btn btn--icon btn--sm ripple"><i class="icon">icon_name</i></button>`
+- **Classes obligatoires** : Toujours inclure `btn`, le modificateur de style (`btn--filled`, `btn--text`, `btn--outlined`, `btn--icon`), la taille `btn--sm`, et optionnellement `btn--primary` pour les boutons primaires et `ripple` pour l'effet Material Design.
+- **Boutons d'action dans les dialogs** : Dans les `dialog-footer`, les boutons peuvent être soit avec texte (`btn btn--filled btn--sm`) soit avec icône (`btn btn--icon btn--sm`), selon le besoin. Ne pas hésiter à utiliser du texte comme "Close", "Save", "Cancel", "Confirmer" au lieu d'icônes uniquement.
+
+## Vérification dans le navigateur
+
+- **OBLIGATOIRE** : Tu dois toujours regarder le changement dans le navigateur pour voir et constater que la demande est bien répondue.
+- **SYSTÉMATIQUE** : Après chaque modification qui affecte l'interface utilisateur ou le comportement visuel, utiliser les outils de navigation du navigateur pour vérifier que les changements fonctionnent correctement.
+- **VALIDATION** : Ne jamais considérer une tâche comme terminée sans avoir vérifié visuellement dans le navigateur que le résultat correspond à la demande de l'utilisateur.
+
+
+## Cursor – Règles STRICTES de contexte et d'IA (ANTI-GASPILLAGE)
+
+### RÈGLE ABSOLUE : MINIMISATION DU CONTEXTE
+
+- **INTERDICTION FORMELLE** : Ne JAMAIS lire ou inclure des fichiers non explicitement demandés par l'utilisateur
+- **INTERDICTION FORMELLE** : Ne JAMAIS analyser le projet entier, même pour "comprendre le contexte"
+- **INTERDICTION FORMELLE** : Ne JAMAIS utiliser l'index du codebase ou des outils de recherche globale
+- **INTERDICTION FORMELLE** : Ne JAMAIS inclure automatiquement des fichiers "liés" ou "similaires"
+- **INTERDICTION FORMELLE** : Ne JAMAIS lire plusieurs fichiers en parallèle "au cas où"
+- **INTERDICTION FORMELLE** : Ne JAMAIS reformuler ou résumer le contexte dans la réponse
+
+### Contexte autorisé UNIQUEMENT
+
+- ✅ Le fichier actuellement ouvert dans l'éditeur (si explicitement mentionné)
+- ✅ La sélection active de l'utilisateur (si fournie)
+- ✅ Les fichiers explicitement nommés par l'utilisateur dans sa demande
+- ❌ RIEN D'AUTRE sans autorisation explicite
+
+### Règle absolue de travail
+
+- ✅ Ne travailler QUE sur :
+  - le fichier actuellement ouvert (si mentionné)
+  - OU la sélection active UNIQUEMENT
+- ❌ Ne JAMAIS lire d'autres fichiers "pour comprendre"
+- ❌ Ne JAMAIS déduire ou supposer le contenu d'autres fichiers
+- ❌ Ne JAMAIS résumer ou analyser l'architecture globale
+- ❌ Ne JAMAIS faire de recherches dans le codebase
+
+### Politique de réponse STRICTE
+
+- **Réponses minimales** : Répondre uniquement à la question posée
+- **Pas de contexte** : Ne pas inclure de contexte non demandé dans la réponse
+- **Pas de reformulation** : Ne pas répéter ou reformuler la demande
+- **Pas de résumé** : Ne pas résumer le projet ou l'architecture
+- **Pas de rappel** : Ne pas rappeler les règles sauf si explicitement demandé
+- **Code uniquement** : Fournir du code uniquement si demandé
+- **Pas d'explication** : Pas d'explication hors demande explicite
+
+### Sécurité tokens (PRIORITÉ ABSOLUE)
+
+- **Minimiser TOUJOURS** : Toujours minimiser le contexte envoyé à l'IA
+- **Correction locale** : Toujours préférer une correction locale plutôt qu'une refactorisation globale
+- **Demander avant** : Si une modification touche plusieurs fichiers, DEMANDER explicitement lesquels avant d'agir
+- **Un fichier à la fois** : Ne jamais lire plusieurs fichiers simultanément sans nécessité absolue
+- **Pas de recherche préventive** : Ne jamais faire de recherches "au cas où"
+
+### Modèles IA
+
+- ❌ Ne pas exploiter la "compréhension globale" du projet
+- ❌ Ne pas utiliser d'heuristiques basées sur l'index
+- ❌ Ne pas faire de suppositions sur l'architecture
+- ✅ Considérer chaque demande comme isolée et indépendante
+- ✅ Travailler uniquement sur ce qui est explicitement demandé
+
+### Vérification avant chaque action
+
+Avant de lire un fichier ou d'utiliser un outil, se demander :
+1. L'utilisateur a-t-il explicitement demandé ce fichier ?
+2. Ce fichier est-il absolument nécessaire pour répondre à la demande ?
+3. Puis-je répondre sans ce fichier ?
+
+Si la réponse est NON à l'une de ces questions → NE PAS lire le fichier

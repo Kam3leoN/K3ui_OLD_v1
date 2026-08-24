@@ -1,0 +1,53 @@
+/**
+ * @fileoverview Tokens pour ButtonArrow Material Design 3 Expressive
+ * @description Split-button flèches — Small (S) : 48×48 · gap 2 · outer-r 24 · inner-r 4
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'motion.token' as motion;
+
+// ============================================================================
+// GÉOMÉTRIE — Small (S)
+// ============================================================================
+
+/** Taille d'une moitié (dp) */
+$btn-arrow-size: 48px !default;
+
+/** Gap entre les deux moitiés */
+$btn-arrow-gap: 2px !default;
+
+/** Rayon extérieur (pill = size / 2) */
+$btn-arrow-outer-radius: 24px !default;
+
+/** Rayon intérieur (jonction) */
+$btn-arrow-inner-radius: 4px !default;
+
+/** Taille d'icône */
+$btn-arrow-icon-size: 28px !default;
+
+/** Décalage hover de l'icône (subtil) */
+$btn-arrow-icon-hover-offset: 0.5px !default;
+
+// ============================================================================
+// MOTION
+// ============================================================================
+
+$btn-arrow-ease: motion.spring-easing(effects, fast) !default;
+$btn-arrow-duration: motion.spring-duration(effects, fast) !default;
+$btn-arrow-icon-duration: 120ms !default;
+
+// ============================================================================
+// COULEURS — alignées sur Button (filled / tonal / outlined)
+// ============================================================================
+
+$btn-arrow-filled-bg: var(--md-sys-color-primary) !default;
+$btn-arrow-filled-fg: var(--md-sys-color-on-primary) !default;
+
+$btn-arrow-tonal-bg: var(--md-sys-color-secondary-container) !default;
+$btn-arrow-tonal-fg: var(--md-sys-color-on-secondary-container) !default;
+
+$btn-arrow-outlined-fg: var(--md-sys-color-on-surface-variant) !default;
+$btn-arrow-outline: var(--md-sys-color-outline) !default;
+$btn-arrow-outline-hover: var(--md-sys-color-on-surface-variant) !default;
+$btn-arrow-focus-ring: var(--md-sys-color-primary) !default;

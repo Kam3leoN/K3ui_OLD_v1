@@ -1,0 +1,254 @@
+/**
+ * @fileoverview Module Counter
+ * @description Classes CSS pour le compteur. Les boutons +/- utilisent les classes .btn (Button).
+ * @author K3UI Team
+ * @version 1.0.0
+ *
+ * Note : n’utiliser que `.counter` (pas `k3ui-counter` en parent BEM).
+ * Le custom element reçoit la classe `.counter` à l’init ; un parent `k3ui-counter`
+ * générerait des sélecteurs invalides du type `k3ui-counter__wrapper` (PurgeCSS les
+ * conserve via /^k3ui-/ tout en purgeant les vrais `.counter__*`).
+ */
+
+@use '../tokens/counter.token' as t;
+@use '../mixins/counter.mixin' as m;
+
+.counter {
+    display: inline-block;
+
+    &__wrapper {
+        @include m.counter-wrapper;
+        transition: background-color 0.2s ease;
+        position: relative;
+    }
+
+    &__error {
+        margin-top: 0.25rem;
+        font-size: 0.75rem;
+        color: t.$counter-error-color;
+        min-height: 1.25rem;
+
+        &:empty,
+        &[hidden] {
+            display: none;
+        }
+    }
+
+    /* État erreur de validation */
+    &--error &__wrapper {
+        background-color: t.$counter-error-bg;
+    }
+
+    &--error &__btn:not(:disabled) {
+        background-color: t.$counter-btn-disabled-bg;
+        color: t.$counter-btn-disabled-color;
+        box-shadow: none;
+    }
+
+    /* État disabled global */
+    &--disabled &__wrapper {
+        opacity: 0.6;
+        pointer-events: none;
+    }
+
+    /* État readonly (boutons désactivés visuellement déjà gérés par disabled) */
+    &--readonly &__wrapper {
+        cursor: default;
+    }
+
+    &__loading {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(255, 255, 255, 0.7);
+        border-radius: inherit;
+        pointer-events: none;
+        z-index: 1;
+
+        &::after {
+            content: '';
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid var(--k3ui-color-primary, #6750a4);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: counter-spin 0.6s linear infinite;
+        }
+
+        &[hidden] {
+            display: none;
+        }
+    }
+
+    &--loading &__wrapper {
+        pointer-events: none;
+    }
+
+    /* ========== Pill : container s’élargit si la valeur passe en pill, "-" et "+" toujours visibles ========== */
+    &__wrapper--counter {
+        background-color: t.$counter-pill-bg;
+        box-shadow: t.$counter-pill-shadow;
+        justify-content: space-between;
+        align-items: stretch;
+        overflow: visible;
+        padding: 0;
+        gap: t.$counter-pill-value-gap;
+        width: max-content;
+        min-width: 0;
+
+        &--xs {
+            min-width: t.$counter-pill-min-width-xs;
+            height: t.$counter-pill-circle-xs;
+            border-radius: 9999px;
+        }
+
+        &--sm {
+            min-width: t.$counter-pill-min-width-sm;
+            height: t.$counter-pill-circle-sm;
+            border-radius: 9999px;
+        }
+
+        &--md {
+            min-width: t.$counter-pill-min-width;
+            height: t.$counter-pill-circle;
+            border-radius: 9999px;
+        }
+
+        &--lg {
+            min-width: t.$counter-pill-min-width-lg;
+            height: t.$counter-pill-circle-lg;
+            border-radius: 9999px;
+        }
+
+        &--xl {
+            min-width: t.$counter-pill-min-width-xl;
+            height: t.$counter-pill-circle-xl;
+            border-radius: 9999px;
+        }
+    }
+
+    /* Boutons − et + : même taille que le cercle valeur, touchent le bord du pill */
+    &__wrapper--counter &__btn {
+        flex-shrink: 0;
+        padding: 0;
+        border-radius: 9999px;
+        line-height: 1;
+
+        &:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+    }
+
+    &__wrapper--counter--xs &__btn {
+        width: t.$counter-pill-circle-xs;
+        height: t.$counter-pill-circle-xs;
+        min-width: t.$counter-pill-circle-xs;
+        min-height: t.$counter-pill-circle-xs;
+        font-size: 0.9rem;
+    }
+
+    &__wrapper--counter--sm &__btn {
+        width: t.$counter-pill-circle-sm;
+        height: t.$counter-pill-circle-sm;
+        min-width: t.$counter-pill-circle-sm;
+        min-height: t.$counter-pill-circle-sm;
+        font-size: 1rem;
+    }
+
+    &__wrapper--counter--md &__btn {
+        width: t.$counter-pill-circle;
+        height: t.$counter-pill-circle;
+        min-width: t.$counter-pill-circle;
+        min-height: t.$counter-pill-circle;
+        font-size: 1.15rem;
+    }
+
+    &__wrapper--counter--lg &__btn {
+        width: t.$counter-pill-circle-lg;
+        height: t.$counter-pill-circle-lg;
+        min-width: t.$counter-pill-circle-lg;
+        min-height: t.$counter-pill-circle-lg;
+        font-size: 1.35rem;
+    }
+
+    &__wrapper--counter--xl &__btn {
+        width: t.$counter-pill-circle-xl;
+        height: t.$counter-pill-circle-xl;
+        min-width: t.$counter-pill-circle-xl;
+        min-height: t.$counter-pill-circle-xl;
+        font-size: 1.5rem;
+    }
+
+    /* Valeur : dans le flux pour que le container s’élargisse ; cercle ou pill selon le contenu */
+    &__number {
+        flex-shrink: 0;
+        border-radius: 9999px;
+        font-weight: 600;
+        touch-action: none;
+        cursor: grab;
+        user-select: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s ease;
+        background-color: t.$counter-pill-number-bg;
+        color: t.$counter-pill-number-color;
+        z-index: 1;
+        width: max-content;
+        white-space: nowrap;
+        box-sizing: border-box;
+        padding: t.$counter-pill-number-inner-gap;
+
+        &:hover {
+            cursor: grab;
+        }
+
+        &:active {
+            cursor: grabbing;
+        }
+
+        .counter__wrapper--counter--xs & {
+            min-width: t.$counter-pill-circle-xs;
+            height: t.$counter-pill-circle-xs;
+            min-height: t.$counter-pill-circle-xs;
+            font-size: 0.9rem;
+        }
+
+        .counter__wrapper--counter--sm & {
+            min-width: t.$counter-pill-circle-sm;
+            height: t.$counter-pill-circle-sm;
+            min-height: t.$counter-pill-circle-sm;
+            font-size: 1rem;
+        }
+
+        .counter__wrapper--counter--md & {
+            min-width: t.$counter-pill-circle;
+            height: t.$counter-pill-circle;
+            min-height: t.$counter-pill-circle;
+            font-size: 1.15rem;
+        }
+
+        .counter__wrapper--counter--lg & {
+            min-width: t.$counter-pill-circle-lg;
+            height: t.$counter-pill-circle-lg;
+            min-height: t.$counter-pill-circle-lg;
+            font-size: 1.35rem;
+        }
+
+        .counter__wrapper--counter--xl & {
+            min-width: t.$counter-pill-circle-xl;
+            height: t.$counter-pill-circle-xl;
+            min-height: t.$counter-pill-circle-xl;
+            font-size: 1.5rem;
+        }
+    }
+}
+
+@keyframes counter-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

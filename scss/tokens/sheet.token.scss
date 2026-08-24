@@ -1,0 +1,214 @@
+/**
+ * @file sheet.token.scss
+ * @description Tokens Material Design 3 Expressive pour le composant Sheet (Side Sheets et Bottom Sheets)
+ * @see https://m3.material.io/components/side-sheets/overview
+ */
+
+@use 'sass:map';
+@use 'theme.token' as theme;
+@use 'elevation.token' as elevation;
+@use 'animation.token' as animation;
+@use 'spacing.token' as spacing;
+@use 'radius.token' as radius;
+@use 'zindex.token' as zindex;
+
+// ============================================================================
+// DIMENSIONS ET LAYOUT — Material Design 3 Expressive
+// @see https://m3.material.io/components/bottom-sheets/overview
+// @see https://m3.material.io/components/side-sheets/overview
+// ============================================================================
+
+// Fenêtres M3 (dp)
+$md-sys-sheet-breakpoint-compact: 600px; // < 600 : compact
+$md-sys-sheet-breakpoint-expanded: 840px; // ≥ 840 : expanded
+
+// Side sheet — largeurs M3 (max recommandé 400dp)
+$md-sys-sheet-side-width-small: 280px;
+$md-sys-sheet-side-width: 360px; // défaut
+$md-sys-sheet-side-width-large: 400px;
+$md-sys-sheet-side-width-half: 50%;
+$md-sys-sheet-side-width-full: 100%;
+$md-sys-sheet-side-max-width: 400px;
+
+// Side sheet — hauteur (plein viewport)
+$md-sys-sheet-side-height: 100dvh;
+
+// Bottom / top sheet
+$md-sys-sheet-bottom-height: auto;
+// Bande haute M3 : 56dp compact, 72dp medium+ (via --md-sys-sheet-inset-top)
+$md-sys-sheet-inset-top: max(56px, env(safe-area-inset-top, 0px));
+$md-sys-sheet-inset-top-medium: max(72px, env(safe-area-inset-top, 0px));
+$md-sys-sheet-bottom-max-height: calc(100dvh - var(--md-sys-sheet-inset-top, 56px));
+$md-sys-sheet-bottom-max-width: 640px; // plafond M3 bottom sheet
+$md-sys-sheet-top: 0;
+$md-sys-sheet-left: 0;
+$md-sys-sheet-right: auto;
+$md-sys-sheet-bottom: 0;
+
+// Padding et marges
+$md-sys-sheet-padding: 24px;
+$md-sys-sheet-padding-compact: 16px;
+$md-sys-sheet-padding-large: 32px;
+$md-sys-sheet-margin: 0;
+
+// Drag handle (MD3) — barre 32×4 dans une cible tactile 48dp
+$md-sys-sheet-drag-handle-width: 32px;
+$md-sys-sheet-drag-handle-height: 4px;
+$md-sys-sheet-drag-handle-region: 48px;
+$md-sys-sheet-drag-handle-margin-top: 0;
+$md-sys-sheet-drag-handle-margin-bottom: 0;
+$md-sys-sheet-drag-handle-border-radius: 999px;
+$md-sys-sheet-drag-handle-bg: theme.$md-ref-palette-neutral-variant30;
+$md-sys-sheet-drag-handle-opacity: 0.4;
+$md-sys-sheet-drag-handle-color: theme.$md-ref-palette-neutral30;
+
+// ============================================================================
+// COULEURS ET SURFACES
+// ============================================================================
+
+// Couleurs de surface (thème clair)
+$md-sys-sheet-surface: theme.$md-ref-palette-neutral99;
+$md-sys-sheet-on-surface: theme.$md-ref-palette-neutral10;
+$md-sys-sheet-surface-variant: theme.$md-ref-palette-neutral96;
+$md-sys-sheet-on-surface-variant: theme.$md-ref-palette-neutral30;
+
+// Couleurs de surface (thème sombre)
+$md-sys-sheet-surface-dark: theme.$md-ref-palette-neutral10;
+$md-sys-sheet-on-surface-dark: theme.$md-ref-palette-neutral90;
+$md-sys-sheet-surface-variant-dark: theme.$md-ref-palette-neutral20;
+$md-sys-sheet-on-surface-variant-dark: theme.$md-ref-palette-neutral80;
+
+// Couleurs d'état
+$md-sys-sheet-state-hover: theme.$md-ref-palette-neutral95;
+$md-sys-sheet-state-hover-dark: theme.$md-ref-palette-neutral20;
+$md-sys-sheet-state-selected: theme.$md-ref-palette-primary95;
+$md-sys-sheet-state-selected-dark: theme.$md-ref-palette-primary20;
+$md-sys-sheet-on-state-selected: theme.$md-ref-palette-primary10;
+$md-sys-sheet-on-state-selected-dark: theme.$md-ref-palette-primary90;
+
+// Couleurs de bordure et séparateur
+$md-sys-sheet-divider: theme.$md-ref-palette-neutral90;
+$md-sys-sheet-divider-dark: theme.$md-ref-palette-neutral20;
+$md-sys-sheet-outline: theme.$md-ref-palette-neutral80;
+$md-sys-sheet-outline-dark: theme.$md-ref-palette-neutral30;
+
+// ============================================================================
+// ÉLÉVATION ET OMBRES
+// ============================================================================
+
+// Niveaux d'élévation
+$md-sys-sheet-elevation: elevation.$md-sys-elevation-level1;
+$md-sys-sheet-elevation-hover: elevation.$md-sys-elevation-level2;
+$md-sys-sheet-elevation-focus: elevation.$md-sys-elevation-level3;
+
+// Z-index — au-dessus de la chrome (navbar), sous Dialog (2000) / Snackbar / Toast
+$md-sys-sheet-z-index-overlay: zindex.$md-sys-zindex-sheet !default;
+$md-sys-sheet-z-index: zindex.$md-sys-zindex-sheet + 1 !default;
+
+// ============================================================================
+// ANIMATIONS ET TRANSITIONS
+// ============================================================================
+
+// Durées de transition
+$md-sys-sheet-transition-duration: animation.$animation-duration-normal;
+$md-sys-sheet-transition-duration-fast: animation.$animation-duration-fast;
+$md-sys-sheet-transition-duration-slow: animation.$animation-duration-slow;
+
+// Fonctions d'accélération
+$md-sys-sheet-transition-easing: animation.$animation-easing-cubic-bezier;
+$md-sys-sheet-transition-easing-emphasized: animation.$animation-easing-cubic-bezier-smooth;
+
+// Valeurs de transformation
+$md-sys-sheet-transform-left: translateX(-100%);
+$md-sys-sheet-transform-right: translateX(100%);
+$md-sys-sheet-transform-bottom: translateY(100%);
+$md-sys-sheet-transform-top: translateY(-100%);
+$md-sys-sheet-transform-open: translate(0, 0);
+
+// ============================================================================
+// BORDER RADIUS ET FORMES
+// ============================================================================
+
+// Border radius du sheet principal selon la position (M3 Expressive extra-large = 28dp)
+// Side sheet gauche : radius en haut et en bas à droite
+$md-sys-sheet-border-radius-left: 0 28px 28px 0;
+// Side sheet droit : radius en haut et en bas à gauche
+$md-sys-sheet-border-radius-right: 28px 0 0 28px;
+// Bottom sheet : radius en haut
+$md-sys-sheet-border-radius-bottom: 28px 28px 0 0;
+// Top sheet : radius en bas
+$md-sys-sheet-border-radius-top: 0 0 28px 28px;
+// Border radius par défaut
+$md-sys-sheet-border-radius-default: 0;
+
+// ============================================================================
+// TYPOGRAPHIE
+// ============================================================================
+
+// Tailles de police
+$md-sys-sheet-font-size-small: 12px;
+$md-sys-sheet-font-size-medium: 14px;
+$md-sys-sheet-font-size-large: 16px;
+$md-sys-sheet-font-size-title: 22px;
+
+// Poids de police
+$md-sys-sheet-font-weight-regular: 400;
+$md-sys-sheet-font-weight-medium: 500;
+$md-sys-sheet-font-weight-semibold: 600;
+
+// Hauteur de ligne
+$md-sys-sheet-line-height: 1.5;
+$md-sys-sheet-line-height-compact: 1.2;
+
+// ============================================================================
+// COMPOSANTS INTERNES
+// ============================================================================
+
+// Header
+$md-sys-sheet-header-padding: 24px;
+$md-sys-sheet-header-padding-compact: 16px;
+$md-sys-sheet-header-border: 1px solid;
+/** Écart titre ↔ actions (M3 side sheet header) */
+$md-sys-sheet-header-gap: 12px;
+/** Hauteur mini header (alignée icon-button 48dp) */
+$md-sys-sheet-header-min-height: 64px;
+
+// Close — Icon button standard M3 (48dp cible tactile, icône 24dp)
+$md-sys-sheet-close-size: 48px;
+$md-sys-sheet-close-icon-size: 24px;
+/** Compensation optique : aligne le glyphe sur le padding header ( (48-24)/2 = 12 ) */
+$md-sys-sheet-close-inline-offset: -12px;
+
+// Content
+$md-sys-sheet-content-padding: 24px;
+$md-sys-sheet-content-padding-compact: 16px;
+
+// Footer
+$md-sys-sheet-footer-padding: 24px;
+$md-sys-sheet-footer-padding-compact: 16px;
+$md-sys-sheet-footer-border: 1px solid;
+
+// ============================================================================
+// RESPONSIVE (alias historiques → fenêtres M3)
+// ============================================================================
+
+$md-sys-sheet-breakpoint-tablet: $md-sys-sheet-breakpoint-compact;
+$md-sys-sheet-breakpoint-mobile: 480px;
+
+// Compact : side sheet plus étroit ; bottom reste full-bleed (< 640)
+$md-sys-sheet-side-width-tablet: 360px;
+$md-sys-sheet-side-width-mobile: 280px;
+$md-sys-sheet-side-max-width-mobile: 100vw;
+
+// ============================================================================
+// ACCESSIBILITÉ
+// ============================================================================
+
+// Focus
+$md-sys-sheet-focus-outline: 2px solid;
+$md-sys-sheet-focus-outline-offset: 2px;
+
+// Overlay
+$md-sys-sheet-overlay-opacity: 0.32;
+$md-sys-sheet-overlay-opacity-dark: 0.64;
+

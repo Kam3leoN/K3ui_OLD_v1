@@ -1,0 +1,21 @@
+/**
+ * @file quote.token.scss
+ * @description Tokens pour le composant Quote (citation motivante)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'notch.token' as notch;
+
+// ============================================================================
+// SURFACE
+// ============================================================================
+
+/** Aligné sur --TR MYNT (pastille) — évite le croissant au coin encoché */
+$quote-surface-radius: notch.$notch-corner-radius !default;
+$quote-surface-padding: 20px !default;
+$quote-surface-min-height: 100px !default;
+$quote-surface-line-height: 1.75 !default;
+
+$quote-surface-bg: var(--quote-surface-bg, var(--md-sys-color-surface-container-low)) !default;
+$quote-text-color: var(--quote-text-color, var(--md-sys-color-on-surface)) !default;

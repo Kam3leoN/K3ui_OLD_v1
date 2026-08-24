@@ -1,0 +1,229 @@
+/**
+ * @fileoverview Module AppBar
+ * @description Top App Bar M3 Expressive — search, small, medium/large flexible
+ * @see https://m3.material.io/components/app-bars/overview
+ * @author K3UI Team
+ * @version 1.1.0
+ */
+
+@use '../tokens/appbar.token' as appbar;
+@use '../tokens/skeleton.token' as sk;
+@use '../mixins/appbar.mixin' as appbar-mixin;
+
+.appbar {
+  @include appbar-mixin.appbar-component;
+  @include appbar-mixin.appbar-icon-load-stable;
+
+  &--fixed {
+    position: fixed;
+    inset-inline: 0;
+  }
+
+  &--top {
+    position: sticky;
+    inset-block-start: 0;
+  }
+
+  &--bottom {
+    position: sticky;
+    inset-block-end: 0;
+    inset-block-start: auto;
+  }
+
+  &--small,
+  &--center {
+    @include appbar-mixin.appbar-variant-small;
+  }
+
+  &--search {
+    @include appbar-mixin.appbar-variant-search;
+    @include appbar-mixin.appbar-search-region;
+  }
+
+  &--medium {
+    @include appbar-mixin.appbar-variant-medium-large(
+      appbar.$appbar-height-medium-expanded,
+      appbar.$appbar-height-medium-collapsed
+    );
+    @include appbar-mixin.appbar-flexible-layout(
+      appbar.$appbar-title-medium-expanded-font-size,
+      appbar.$appbar-title-medium-expanded-line-height
+    );
+  }
+
+  &--large {
+    @include appbar-mixin.appbar-variant-medium-large(
+      appbar.$appbar-height-large-expanded,
+      appbar.$appbar-height-large-collapsed
+    );
+    @include appbar-mixin.appbar-flexible-layout(
+      appbar.$appbar-title-large-expanded-font-size,
+      appbar.$appbar-title-large-expanded-line-height
+    );
+  }
+
+  &--scrolled {
+    @include appbar-mixin.appbar-scrolled;
+  }
+
+  &--hidden.appbar--top {
+    @include appbar-mixin.appbar-hidden-top;
+  }
+
+  &--hidden.appbar--bottom {
+    @include appbar-mixin.appbar-hidden-bottom;
+  }
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: appbar.$appbar-padding-inline;
+    gap: appbar.$appbar-gap;
+    min-block-size: inherit;
+  }
+
+  &__navigation,
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: appbar.$appbar-gap;
+    flex: 0 0 auto;
+  }
+
+  &__title-section {
+    display: flex;
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+
+    &--with-chip {
+      flex-wrap: nowrap;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+
+  &--center .appbar__title-section {
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__title-sep {
+    display: inline-block;
+    width: 1px;
+    height: 1em;
+    background-color: appbar.$appbar-color-on-container-secondary;
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+
+  &__version-chip {
+    display: inline-flex;
+    flex-shrink: 0;
+
+    .chip {
+      padding: 0.125rem 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      line-height: 1.25;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-size: appbar.$appbar-title-large-font-size;
+    line-height: appbar.$appbar-title-large-line-height;
+    font-weight: 400;
+    color: appbar.$appbar-color-on-container;
+
+    &--center {
+      text-align: center;
+      inline-size: 100%;
+    }
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-size: appbar.$appbar-subtitle-expanded-font-size;
+    line-height: appbar.$appbar-subtitle-expanded-line-height;
+    color: appbar.$appbar-color-on-container-secondary;
+  }
+}
+
+k3ui-appbar {
+  @include appbar-mixin.appbar-component;
+  @include appbar-mixin.appbar-icon-load-stable;
+
+  &[position='top'] {
+    position: sticky;
+    inset-block-start: 0;
+  }
+
+  &[position='bottom'] {
+    position: sticky;
+    inset-block-start: auto;
+    inset-block-end: 0;
+  }
+
+  &[variant='small'],
+  &[variant='center'] {
+    @include appbar-mixin.appbar-variant-small;
+  }
+
+  &[variant='search'] {
+    @include appbar-mixin.appbar-variant-search;
+    @include appbar-mixin.appbar-search-region;
+  }
+
+  &[variant='medium'] {
+    @include appbar-mixin.appbar-variant-medium-large(
+      appbar.$appbar-height-medium-expanded,
+      appbar.$appbar-height-medium-collapsed
+    );
+    @include appbar-mixin.appbar-flexible-layout(
+      appbar.$appbar-title-medium-expanded-font-size,
+      appbar.$appbar-title-medium-expanded-line-height
+    );
+  }
+
+  &[variant='large'] {
+    @include appbar-mixin.appbar-variant-medium-large(
+      appbar.$appbar-height-large-expanded,
+      appbar.$appbar-height-large-collapsed
+    );
+    @include appbar-mixin.appbar-flexible-layout(
+      appbar.$appbar-title-large-expanded-font-size,
+      appbar.$appbar-title-large-expanded-line-height
+    );
+  }
+
+  &.appbar--scrolled {
+    @include appbar-mixin.appbar-scrolled;
+  }
+
+  &.appbar--hidden[position='top'] {
+    @include appbar-mixin.appbar-hidden-top;
+  }
+
+  &.appbar--hidden[position='bottom'] {
+    @include appbar-mixin.appbar-hidden-bottom;
+  }
+}
+
+@keyframes appbar-icon-skeleton-pulse {
+  0%,
+  100% {
+    opacity: sk.$skeleton-opacity-rest;
+  }
+
+  50% {
+    opacity: sk.$skeleton-opacity-peak;
+  }
+}
+

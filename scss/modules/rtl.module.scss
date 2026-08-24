@@ -1,0 +1,131 @@
+/// @file rtl.module.scss
+/// @brief Module RTL/LTR pour la gestion de la direction de texte
+
+@use '../mixins/rtl.mixin' as rtl;
+@use '../tokens/rtl.token' as tokens;
+
+/**
+ * Classe utilitaire pour forcer la direction LTR
+ */
+[dir="ltr"],
+.direction-ltr {
+  direction: ltr;
+}
+
+/**
+ * Classe utilitaire pour forcer la direction RTL
+ */
+[dir="rtl"],
+.direction-rtl {
+  direction: rtl;
+}
+
+/**
+ * Classe utilitaire pour détecter et appliquer automatiquement la direction
+ * Utile pour les composants qui doivent s'adapter automatiquement
+ */
+.rtl-aware {
+  // Les styles seront appliqués via les mixins dans les composants
+}
+
+/**
+ * Utilities pour les propriétés logiques (margin, padding)
+ * Ces classes permettent d'utiliser les propriétés CSS logiques facilement
+ */
+.margin-inline-start {
+  @include rtl.logical-property(margin, start, inherit);
+}
+
+.margin-inline-end {
+  @include rtl.logical-property(margin, end, inherit);
+}
+
+.margin-block-start {
+  @include rtl.logical-property(margin, blockStart, inherit);
+}
+
+.margin-block-end {
+  @include rtl.logical-property(margin, blockEnd, inherit);
+}
+
+.padding-inline-start {
+  @include rtl.logical-property(padding, start, inherit);
+}
+
+.padding-inline-end {
+  @include rtl.logical-property(padding, end, inherit);
+}
+
+.padding-block-start {
+  @include rtl.logical-property(padding, blockStart, inherit);
+}
+
+.padding-block-end {
+  @include rtl.logical-property(padding, blockEnd, inherit);
+}
+
+/**
+ * Utilities pour le positionnement logique
+ */
+.inset-inline-start {
+  inset-inline-start: inherit;
+}
+
+.inset-inline-end {
+  inset-inline-end: inherit;
+}
+
+.inset-block-start {
+  inset-block-start: inherit;
+}
+
+.inset-block-end {
+  inset-block-end: inherit;
+}
+
+/**
+ * Utilities pour l'inversion automatique en RTL
+ */
+.rtl-flip-x {
+  [dir="rtl"] &,
+  &[dir="rtl"] {
+    transform: scaleX(-1);
+  }
+}
+
+.rtl-flip-y {
+  [dir="rtl"] &,
+  &[dir="rtl"] {
+    transform: scaleY(-1);
+  }
+}
+
+.rtl-flip {
+  [dir="rtl"] &,
+  &[dir="rtl"] {
+    transform: scale(-1, 1);
+  }
+}
+
+/**
+ * Utilities pour le flex-direction adaptatif
+ */
+.rtl-row {
+  @include rtl.rtl-flex-direction(row);
+}
+
+.rtl-row-reverse {
+  @include rtl.rtl-flex-direction(row-reverse);
+}
+
+/**
+ * Utilities pour text-align adaptatif
+ */
+.rtl-text-left {
+  @include rtl.rtl-text-align(left);
+}
+
+.rtl-text-right {
+  @include rtl.rtl-text-align(right);
+}
+

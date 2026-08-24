@@ -1,0 +1,14 @@
+/**
+ * @fileoverview Module SwipeDeck — Stack deck compact + ombre front only
+ */
+
+@use './swipe-deck.mixin' as swipe-deck-mixin;
+
+.swipe-deck {
+  @include swipe-deck-mixin.swipe-deck-host;
+}
+
+.swipe-deck__card,
+.swipe-deck > .stack__item {
+  @include swipe-deck-mixin.swipe-deck-card;
+}

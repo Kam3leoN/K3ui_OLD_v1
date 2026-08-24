@@ -1,0 +1,143 @@
+/**
+ * @fileoverview Mixins pour le composant Gauge
+ * @description Mixins Material Design 3 Expressive — arc 270°, typo cqi
+ * @author K3UI Team
+ * @version 2.0.0
+ */
+
+@use '../tokens/gauge.token' as gauge;
+
+/**
+ * Conteneur principal (carré, container queries)
+ */
+@mixin gauge-container {
+  position: relative;
+  display: grid;
+  place-items: center;
+  container-type: inline-size;
+  --size: #{gauge.$gauge-size};
+  width: var(--size);
+  aspect-ratio: 1;
+  flex: 0 1 auto;
+  min-width: 0;
+  cursor: default;
+}
+
+@mixin gauge-container-lg {
+  --size: #{gauge.$gauge-size-lg};
+}
+
+@mixin gauge-container-sm {
+  --size: #{gauge.$gauge-size-sm};
+}
+
+@mixin gauge-frame {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--g-frame, transparent);
+  opacity: var(--g-frame-opacity, 1);
+  pointer-events: none;
+}
+
+@mixin gauge-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+
+  path,
+  line {
+    fill: none;
+  }
+}
+
+@mixin gauge-track {
+  stroke: gauge.$gauge-track;
+  stroke-width: gauge.$gauge-track-stroke-width;
+  stroke-linecap: round;
+}
+
+@mixin gauge-progress {
+  stroke-width: gauge.$gauge-track-stroke-width;
+  stroke-linecap: round;
+  transition: stroke gauge.$gauge-stroke-transition;
+}
+
+@mixin gauge-tick {
+  stroke: var(--g-tick, gauge.$gauge-on-surface-variant);
+  stroke-width: 1.2;
+  opacity: 0.35;
+  stroke-linecap: round;
+}
+
+@mixin gauge-marker {
+  stroke: var(--g-marker, #fff);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+@mixin gauge-content {
+  display: grid;
+  justify-items: center;
+  row-gap: 0.5cqi;
+  width: 64%;
+  min-width: 0;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+@mixin gauge-icon {
+  width: 15cqi;
+  height: 15cqi;
+  color: gauge.$gauge-icon-color;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg,
+  .k3ui-icon {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+}
+
+@mixin gauge-label {
+  font-size: 15cqi;
+  font-weight: 700;
+  line-height: 1.15;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: gauge.$gauge-on-surface;
+}
+
+@mixin gauge-value {
+  font-weight: 500;
+  line-height: 1.06;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: gauge.$gauge-on-surface;
+}
+
+@mixin gauge-unit {
+  font-size: 8cqi;
+  color: gauge.$gauge-on-surface-variant;
+}
+
+@mixin gauge-fraction {
+  position: absolute;
+  bottom: 0;
+  inset-inline: 0;
+  text-align: center;
+  font-size: 15cqi;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: gauge.$gauge-on-surface;
+  z-index: 1;
+}

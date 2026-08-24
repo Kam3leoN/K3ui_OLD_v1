@@ -1,0 +1,39 @@
+/**
+ * @file divider.module.scss
+ * @description Module Divider — séparateur horizontal ou vertical avec libellé optionnel
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../mixins/divider.mixin' as divider;
+
+.divider {
+  @include divider.divider-base;
+  @include divider.divider-color-variants;
+
+  /// Trait horizontal entre blocs empilés (défaut)
+  &:not(&--horizontal) {
+    @include divider.divider-row-layout;
+  }
+
+  /// Trait vertical (`.divider--horizontal` = entre blocs côte à côte)
+  &--horizontal {
+    @include divider.divider-vertical-line;
+
+    &.divider--start {
+      @include divider.divider-label-start-column;
+    }
+
+    &.divider--end {
+      @include divider.divider-label-end-column;
+    }
+  }
+
+  &--start:not(&--horizontal) {
+    @include divider.divider-label-start-row;
+  }
+
+  &--end:not(&--horizontal) {
+    @include divider.divider-label-end-row;
+  }
+}

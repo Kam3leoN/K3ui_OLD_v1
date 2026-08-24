@@ -1,0 +1,97 @@
+/**
+ * @fileoverview Module Holo — foil holographique irisé (3 variantes Pokémon)
+ * @author K3UI Team — effets originaux @simeydotme (GPL-3.0)
+ * @version 2.1.0
+ */
+
+@use './holo.token' as holo;
+@use './holo.mixin' as holo-mixin;
+
+.holo {
+  @include holo-mixin.holo-container;
+}
+
+.holo__tilt {
+  @include holo-mixin.holo-tilt;
+}
+
+.holo__content {
+  @include holo-mixin.holo-content;
+}
+
+.holo__shine {
+  @include holo-mixin.holo-shine-glitter-base;
+}
+
+.holo__glitter {
+  @include holo-mixin.holo-shine-glitter-base;
+  display: none;
+  z-index: 2;
+}
+
+.holo__glare {
+  @include holo-mixin.holo-glare-base;
+}
+
+.holo__glare2 {
+  @include holo-mixin.holo-glare-base;
+  display: none;
+}
+
+.holo__shine,
+.holo__shine::before,
+.holo__shine::after,
+.holo__glitter,
+.holo__glitter::before,
+.holo__glitter::after,
+.holo__glare,
+.holo__glare::after,
+.holo__glare2 {
+  @include holo-mixin.holo-layer-clip-reset;
+}
+
+.holo.holo--masked .holo__shine,
+.holo.holo--masked .holo__shine::before,
+.holo.holo--masked .holo__shine::after {
+  -webkit-mask-image: var(--mask);
+  mask-image: var(--mask);
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  -webkit-mask-position: center center;
+  mask-position: center center;
+  -webkit-mask-mode: luminance;
+  mask-mode: luminance;
+}
+
+/* RAYON (ex. double rare) */
+.holo[data-variant='rayon'],
+.holo[data-variant='double-rare'] {
+  @include holo-mixin.holo-variant-rayon;
+}
+
+/* SPACE (ex. hyper rare) */
+.holo[data-variant='space'],
+.holo[data-variant='hyper-rare'] {
+  @include holo-mixin.holo-variant-space;
+}
+
+/* RAINBOW ALT */
+.holo[data-variant='rainbow'] {
+  @include holo-mixin.holo-variant-rainbow;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .holo__shine,
+  .holo__glitter,
+  .holo__glare,
+  .holo__glare2 {
+    transition: opacity 200ms ease-out;
+  }
+}
+
+html.k3ui-reduced-motion .holo__shine,
+html.k3ui-reduced-motion .holo__glitter,
+html.k3ui-reduced-motion .holo__glare,
+html.k3ui-reduced-motion .holo__glare2 {
+  transition: opacity 200ms ease-out;
+}

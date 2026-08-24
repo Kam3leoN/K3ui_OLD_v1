@@ -1,0 +1,49 @@
+/**
+ * @file alert.mixin.scss
+ * @description Mixins pour le composant Alert
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/alert.token' as alert;
+@use '../mixins/notch.mixin' as notch-mixin;
+
+@mixin alert-base {
+  position: relative;
+  display: flex;
+  width: 100%;
+  overflow: visible;
+  font-size: 1rem;
+}
+
+@mixin alert-surface {
+  position: relative;
+  width: 100%;
+  border-radius: alert.$alert-surface-radius;
+  background-color: alert.$alert-surface-bg;
+  color: alert.$alert-text-color;
+  box-sizing: border-box;
+  line-height: alert.$alert-surface-line-height;
+  padding: alert.$alert-surface-padding;
+  /* Pastille + rounders à l’intérieur (réf. MYNT .card { overflow:hidden }) */
+  overflow: hidden;
+}
+
+@mixin alert-text {
+  margin: 0;
+  line-height: alert.$alert-surface-line-height;
+  font-size: 0.9375rem;
+}
+
+@mixin alert-title {
+  font-size: alert.$alert-title-font-size;
+  font-weight: alert.$alert-title-font-weight;
+  letter-spacing: alert.$alert-title-letter-spacing;
+  text-transform: uppercase;
+}
+
+@mixin alert-variant($surface-bg, $text, $label-color) {
+  --alert-surface-bg: #{$surface-bg};
+  --alert-text-color: #{$text};
+  --notch-label-color: #{$label-color};
+}

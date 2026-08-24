@@ -1,0 +1,122 @@
+/**
+ * @file outline.module.scss
+ * @description Module utilitaire générant les classes d'outline à partir des mixins.
+ * @use '../mixins/outline.mixin.scss' pour accéder aux mixins d'outline.
+ */
+
+@use '../tokens/outline.token' as tokens;
+@use '../mixins/outline.mixin' as outline;
+
+// ============================================================================
+// CLASSES UTILITAIRES D'OUTLINE
+// ============================================================================
+
+/**
+ * Classes pour les outlines de base
+ */
+.outline {
+  @include outline.outline-default;
+}
+
+.outline-variant {
+  @include outline.outline-variant;
+}
+
+.outline-none {
+  @include outline.outline-none;
+}
+
+// ============================================================================
+// CLASSES POUR LES ÉTATS D'INTERACTION
+// ============================================================================
+
+/**
+ * Classes pour les états d'interaction
+ */
+.outline-focus {
+  @include outline.outline-focus;
+}
+
+.outline-error {
+  @include outline.outline-error;
+}
+
+.outline-focus-with-offset {
+  @include outline.outline-focus-with-offset;
+}
+
+// ============================================================================
+// CLASSES POUR LES DIFFÉRENTS STYLES
+// ============================================================================
+
+/**
+ * Classes pour les différents styles d'outline
+ */
+.outline-dashed {
+  @include outline.outline-dashed;
+}
+
+.outline-dotted {
+  @include outline.outline-dotted;
+}
+
+.outline-double {
+  @include outline.outline-double;
+}
+
+// ============================================================================
+// CLASSES POUR LES DIFFÉRENTES LARGEURS
+// ============================================================================
+
+/**
+ * Classes pour les différentes largeurs d'outline
+ */
+.outline-thin {
+  @include outline.outline-thin;
+}
+
+.outline-thick {
+  @include outline.outline-thick;
+}
+
+.outline-thicker {
+  @include outline.outline-thicker;
+}
+
+// ============================================================================
+// CLASSES COMBINÉES
+// ============================================================================
+
+/**
+ * Classes combinées pour des cas d'usage spécifiques
+ */
+.outline-thin-dashed {
+  @include outline.outline-thin('dashed');
+}
+
+.outline-thick-dotted {
+  @include outline.outline-thick('dotted');
+}
+
+.outline-focus-thick {
+  @include outline.outline-focus('thick');
+}
+
+.outline-error-thick {
+  @include outline.outline-error('thick');
+}
+
+// ============================================================================
+// CLASSES AVEC OFFSET
+// ============================================================================
+
+/**
+ * Classes avec offset pour l'accessibilité
+ */
+.outline-with-offset {
+  @include outline.outline-with-offset;
+}
+
+.outline-focus-with-offset-thick {
+  @include outline.outline-focus-with-offset(4px);
+} 

@@ -1,0 +1,249 @@
+/// @file checkbox.mixin.scss
+/// @brief Mixins checkbox Material 3 Expressive
+
+@use '../tokens/checkbox.token' as checkbox;
+@use '../tokens/theme.token' as theme;
+@use '../tokens/motion.token' as motion;
+@use '../tokens/spacing.token' as spacing;
+@use '../mixins/motion.mixin' as motion-mixin;
+@use '../mixins/state.mixin' as state;
+
+/**
+ * Mixin de base pour tous les checkboxes
+ */
+@mixin checkbox-base {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  outline: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  vertical-align: top;
+  width: auto;
+  min-height: checkbox.$md-sys-checkbox-target-size;
+
+  > div:first-child {
+    position: relative;
+    cursor: pointer;
+    touch-action: manipulation;
+    overflow: visible;
+  }
+
+  &__label {
+    cursor: pointer;
+    user-select: text;
+  }
+}
+
+/**
+ * Container — contour en box-shadow inset (comme radio)
+ * Animations conservées : fill entrée/sortie + rebond scale
+ */
+@mixin checkbox-container {
+  position: relative;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  width: checkbox.$md-sys-checkbox-container-size;
+  height: checkbox.$md-sys-checkbox-container-size;
+  border: 0;
+  border-radius: checkbox.$md-sys-checkbox-container-corner-shape;
+  background-color: transparent;
+  box-shadow: inset 0 0 0 checkbox.$md-sys-checkbox-unselected-outline-width var(--md-sys-color-outline);
+  z-index: 1;
+  flex-shrink: 0;
+  transform: scale(1);
+  transform-origin: center center;
+  // SORTIE : le fond attend que la coche ait fini de se rétracter
+  transition:
+    background-color motion.spring-duration(effects, fast) motion.spring-easing(effects, fast) checkbox.$md-sys-checkbox-fill-exit-delay,
+    box-shadow motion.spring-duration(effects, fast) motion.spring-easing(effects, fast) checkbox.$md-sys-checkbox-fill-exit-delay,
+    transform motion.spring-duration(spatial, fast) motion.spring-easing(spatial, fast);
+
+  .checkbox--checked &,
+  .checkbox--indeterminate & {
+    background-color: var(--md-sys-color-primary);
+    box-shadow: inset 0 0 0 0 transparent;
+    transform: scale(checkbox.$md-sys-checkbox-selected-scale);
+    // ENTRÉE : le fond se remplit tout de suite
+    transition:
+      background-color motion.spring-duration(effects, fast) motion.spring-easing(effects, fast),
+      box-shadow motion.spring-duration(effects, fast) motion.spring-easing(effects, fast),
+      transform motion.spring-duration(spatial, fast) motion.spring-easing(spatial, fast);
+  }
+
+  .checkbox--error:not(.checkbox--checked):not(.checkbox--indeterminate) & {
+    box-shadow: inset 0 0 0 checkbox.$md-sys-checkbox-unselected-outline-width var(--md-sys-color-error);
+  }
+
+  .checkbox--error.checkbox--checked &,
+  .checkbox--error.checkbox--indeterminate & {
+    background-color: var(--md-sys-color-error);
+    box-shadow: inset 0 0 0 0 transparent;
+  }
+}
+
+/**
+ * Coche SVG — centrée par grid, taille verrouillée, animation stroke-dashoffset
+ */
+@mixin checkbox-check {
+  grid-area: 1 / 1;
+  justify-self: center;
+  align-self: center;
+  box-sizing: border-box;
+  width: checkbox.$md-sys-checkbox-icon-size;
+  height: checkbox.$md-sys-checkbox-icon-size;
+  min-width: checkbox.$md-sys-checkbox-icon-size;
+  min-height: checkbox.$md-sys-checkbox-icon-size;
+  max-width: checkbox.$md-sys-checkbox-icon-size;
+  max-height: checkbox.$md-sys-checkbox-icon-size;
+  stroke: var(--md-sys-color-on-primary);
+  stroke-width: checkbox.$md-sys-checkbox-check-stroke-width;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  stroke-dasharray: checkbox.$md-sys-checkbox-check-dasharray;
+  stroke-dashoffset: checkbox.$md-sys-checkbox-check-dasharray;
+  overflow: visible;
+  // SORTIE : rétraction immédiate
+  transition: stroke-dashoffset checkbox.$md-sys-checkbox-check-retract-duration motion.spring-easing(effects, default);
+  pointer-events: none;
+
+  .checkbox--checked & {
+    stroke-dashoffset: 0;
+    // ENTRÉE : tracé après le début du remplissage
+    transition: stroke-dashoffset checkbox.$md-sys-checkbox-check-draw-duration motion.spring-easing(effects, default) checkbox.$md-sys-checkbox-check-enter-delay;
+  }
+
+  .checkbox--error.checkbox--checked & {
+    stroke: var(--md-sys-color-on-error);
+  }
+}
+
+/**
+ * Tiret indeterminate — inset + margin:auto (centrage exact), scaleX animé
+ */
+@mixin checkbox-dash {
+  grid-area: 1 / 1;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: checkbox.$md-sys-checkbox-dash-width;
+  height: checkbox.$md-sys-checkbox-dash-height;
+  border-radius: 2px;
+  background-color: var(--md-sys-color-on-primary);
+  transform: scaleX(0);
+  transform-origin: center center;
+  transition: transform checkbox.$md-sys-checkbox-check-retract-duration motion.spring-easing(effects, default);
+  pointer-events: none;
+
+  .checkbox--indeterminate & {
+    transform: scaleX(1);
+    transition: transform checkbox.$md-sys-checkbox-check-draw-duration motion.spring-easing(effects, default) checkbox.$md-sys-checkbox-check-enter-delay;
+  }
+
+  .checkbox--error.checkbox--indeterminate & {
+    background-color: var(--md-sys-color-on-error);
+  }
+}
+
+/**
+ * @deprecated Conservé pour compat — préférer checkbox-check / checkbox-dash
+ */
+@mixin checkbox-icon {
+  @include checkbox-check;
+}
+
+/**
+ * State layer (halo circulaire avec scale expressive)
+ */
+@mixin checkbox-state-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: checkbox.$md-sys-checkbox-state-layer-shape;
+  background-color: var(--md-sys-color-on-surface);
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+  z-index: 0;
+  transition:
+    opacity motion.spring-duration(effects, fast) motion.spring-easing(effects, fast),
+    transform motion.spring-duration(spatial, fast) motion.spring-easing(spatial, fast);
+
+  .checkbox:hover:not(.checkbox--disabled):not(.checkbox--pressed) & {
+    opacity: checkbox.$md-sys-checkbox-state-layer-opacity-hover;
+    transform: scale(1);
+  }
+
+  .checkbox--focused:not(.checkbox--disabled) & {
+    opacity: checkbox.$md-sys-checkbox-state-layer-opacity-focus;
+    transform: scale(1);
+  }
+
+  .checkbox--pressed:not(.checkbox--disabled) & {
+    opacity: checkbox.$md-sys-checkbox-state-layer-opacity-pressed;
+    transform: scale(1);
+  }
+
+  .checkbox--error & {
+    background-color: var(--md-sys-color-error);
+  }
+
+  .checkbox--disabled & {
+    opacity: 0 !important;
+  }
+}
+
+/**
+ * Mixin pour le label du checkbox
+ */
+@mixin checkbox-label {
+  font-size: var(--md-sys-typescale-body-large-size);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  color: var(--md-sys-color-on-surface);
+  user-select: none;
+  cursor: pointer;
+  margin-left: 8px;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+/**
+ * Mixin pour les états hover et focus
+ */
+@mixin checkbox-states {
+  &.checkbox--disabled {
+    @include state.state-disabled();
+    cursor: not-allowed;
+    opacity: 1;
+
+    .checkbox__container {
+      background-color: transparent;
+      box-shadow: inset 0 0 0 checkbox.$md-sys-checkbox-unselected-outline-width
+        color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+    }
+
+    &.checkbox--checked .checkbox__container,
+    &.checkbox--indeterminate .checkbox__container {
+      background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+      box-shadow: inset 0 0 0 0 transparent;
+      transform: scale(1);
+    }
+
+    .checkbox__check {
+      stroke: var(--md-sys-color-surface);
+    }
+
+    .checkbox__dash {
+      background-color: var(--md-sys-color-surface);
+    }
+
+    .checkbox__label {
+      color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+    }
+  }
+}

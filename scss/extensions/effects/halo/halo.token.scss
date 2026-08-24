@@ -1,0 +1,69 @@
+/**
+ * @fileoverview Tokens de design pour Halo
+ * @description Variables de design pour l'effet de lumière animée
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+// ============================================================================
+// COULEURS
+// ============================================================================
+
+/** Couleur par défaut du halo (primary tonal MD3) */
+$halo-color-default: var(--md-sys-color-primary-container);
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+/** Padding par défaut autour de l'enfant */
+$halo-padding-default: 2px;
+
+/** Rayon de bordure par défaut (doit correspondre à l'enfant) */
+$halo-radius-default: 0.75rem;
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+/** Durée du cycle d'animation */
+$halo-duration-default: 6s;
+
+/** Courbe d'animation par défaut */
+$halo-timing-default: linear;
+
+/** Durée de fondu pour le déclencheur hover */
+$halo-fade-default: 320ms;
+
+// ============================================================================
+// FLOU & OPACITÉ
+// ============================================================================
+
+$halo-blur-default: 4px;
+$halo-blur-far-default: 16px;
+$halo-opacity-default: 0.7;
+$halo-opacity-far-default: 0.3;
+
+// ============================================================================
+// TAILLES (padding + flou)
+// ============================================================================
+
+$halo-size-xs-padding: 0px;
+$halo-size-xs-blur: 3px;
+$halo-size-xs-blur-far: 10px;
+
+$halo-size-sm-padding: 1px;
+$halo-size-sm-blur: 3px;
+$halo-size-sm-blur-far: 12px;
+
+$halo-size-md-padding: 2px;
+$halo-size-md-blur: 4px;
+$halo-size-md-blur-far: 16px;
+
+$halo-size-lg-padding: 3px;
+$halo-size-lg-blur: 5px;
+$halo-size-lg-blur-far: 20px;
+
+$halo-size-xl-padding: 4px;
+$halo-size-xl-blur: 6px;
+$halo-size-xl-blur-far: 26px;

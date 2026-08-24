@@ -1,0 +1,13 @@
+/**
+ * @fileoverview Module ColorPicker
+ * @description Styles Material Design 3 pour le sélecteur de couleur
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../mixins/color-picker.mixin' as cp;
+
+k3ui-color-picker.color-picker {
+  display: block;
+  @include cp.color-picker-container('&');
+}

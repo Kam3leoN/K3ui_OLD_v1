@@ -1,0 +1,25 @@
+@use '../tokens' as tokens;
+
+/// @file border.mixin.scss
+/// @brief Mixin border Material 3
+@mixin border($type: 'default', $width: null, $radius: null) {
+  $border-width: var(--md-sys-border-width-thin, #{tokens.$md-sys-border-width-thin});
+  $border-style: var(--md-sys-border-style, #{tokens.$md-sys-border-style});
+  $border-radius: var(--md-sys-border-radius-default, #{tokens.$md-sys-border-radius-default});
+
+  @if $width != null {
+    $border-width: $width;
+  }
+
+  @if $radius != null {
+    $border-radius: $radius;
+  }
+  @if $type == 'default' {
+    border: #{$border-width} #{$border-style} var(--md-sys-color-outline, #79747e);
+  } @else if $type == 'variant' {
+    border: #{$border-width} #{$border-style} var(--md-sys-color-outline-variant, #cac4d0);
+  }
+  @if $radius != null or $radius == null {
+    border-radius: #{$border-radius};
+  }
+} 

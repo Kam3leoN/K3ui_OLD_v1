@@ -1,0 +1,24 @@
+@use '../tokens/alignment.token' as alignment;
+
+/// @file alignment.mixin.scss
+/// @brief Mixin alignement horizontal, vertical, flex
+@mixin align($type: 'center', $axis: 'horizontal') {
+  @if $axis == 'horizontal' {
+    @if $type == 'left' { text-align: var(--md-sys-align-left, #{alignment.$md-sys-align-left}); }
+    @else if $type == 'center' { text-align: var(--md-sys-align-center, #{alignment.$md-sys-align-center}); }
+    @else if $type == 'right' { text-align: var(--md-sys-align-right, #{alignment.$md-sys-align-right}); }
+    @else if $type == 'justify' { text-align: var(--md-sys-align-justify, #{alignment.$md-sys-align-justify}); }
+  } @else if $axis == 'vertical' {
+    @if $type == 'top' { vertical-align: var(--md-sys-align-top, #{alignment.$md-sys-align-top}); }
+    @else if $type == 'middle' { vertical-align: var(--md-sys-align-middle, #{alignment.$md-sys-align-middle}); }
+    @else if $type == 'bottom' { vertical-align: var(--md-sys-align-bottom, #{alignment.$md-sys-align-bottom}); }
+  } @else if $axis == 'justify' {
+    @if $type == 'start' { justify-content: var(--md-sys-justify-start, #{alignment.$md-sys-justify-start}); }
+    @else if $type == 'center' { justify-content: var(--md-sys-justify-center, #{alignment.$md-sys-justify-center}); }
+    @else if $type == 'end' { justify-content: var(--md-sys-justify-end, #{alignment.$md-sys-justify-end}); }
+  } @else if $axis == 'items' {
+    @if $type == 'start' { align-items: var(--md-sys-items-start, #{alignment.$md-sys-items-start}); }
+    @else if $type == 'center' { align-items: var(--md-sys-items-center, #{alignment.$md-sys-items-center}); }
+    @else if $type == 'end' { align-items: var(--md-sys-items-end, #{alignment.$md-sys-items-end}); }
+  }
+} 

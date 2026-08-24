@@ -1,0 +1,182 @@
+/**
+ * @file outline.mixin.scss
+ * @description Mixins pour la gestion des outlines Material Design 3 Expressive
+ * @see https://m3.material.io/foundations/design-tokens/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use '../tokens/outline.token' as tokens;
+
+// ============================================================================
+// MIXINS DE BASE
+// ============================================================================
+
+/**
+ * Mixin pour appliquer un outline personnalisé
+ * @param {string} $width - Largeur de l'outline
+ * @param {string} $style - Style de l'outline
+ * @param {string} $color - Couleur de l'outline
+ */
+@mixin outline($width: tokens.$md-sys-outline-width, $style: tokens.$md-sys-outline-style, $color: tokens.$md-sys-outline-color) {
+  outline: $width $style $color;
+}
+
+/**
+ * Mixin pour outline par défaut
+ * @param {string} $width - Type de largeur (thin, default, thick, thicker)
+ */
+@mixin outline-default($width: 'default') {
+  outline: tokens.outline-width($width) tokens.outline-style('solid') tokens.outline-color('default');
+}
+
+/**
+ * Mixin pour outline variant
+ * @param {string} $width - Type de largeur (thin, default, thick, thicker)
+ */
+@mixin outline-variant($width: 'default') {
+  outline: tokens.outline-width($width) tokens.outline-style('solid') tokens.outline-color('variant');
+}
+
+// ============================================================================
+// MIXINS POUR LES ÉTATS D'INTERACTION
+// ============================================================================
+
+/**
+ * Mixin pour outline focus
+ * @param {string} $width - Type de largeur (thin, default, thick, thicker)
+ */
+@mixin outline-focus($width: 'default') {
+  outline: tokens.outline-width($width) tokens.outline-style('solid') tokens.outline-color('focus');
+}
+
+/**
+ * Mixin pour outline error
+ * @param {string} $width - Type de largeur (thin, default, thick, thicker)
+ */
+@mixin outline-error($width: 'default') {
+  outline: tokens.outline-width($width) tokens.outline-style('solid') tokens.outline-color('error');
+}
+
+// ============================================================================
+// MIXINS POUR LES DIFFÉRENTS STYLES
+// ============================================================================
+
+/**
+ * Mixin pour outline en pointillés
+ * @param {string} $width - Type de largeur (thin, default, thick, thicker)
+ * @param {string} $color - Type de couleur (default, variant, focus, error)
+ */
+@mixin outline-dashed($width: 'default', $color: 'default') {
+  outline: tokens.outline-width($width) tokens.outline-style('dashed') tokens.outline-color($color);
+}
+
+/**
+ * Mixin pour outline en tirets
+ * @param {string} $width - Type de largeur (thin, default, thick, thicker)
+ * @param {string} $color - Type de couleur (default, variant, focus, error)
+ */
+@mixin outline-dotted($width: 'default', $color: 'default') {
+  outline: tokens.outline-width($width) tokens.outline-style('dotted') tokens.outline-color($color);
+}
+
+/**
+ * Mixin pour outline double
+ * @param {string} $width - Type de largeur (thin, default, thick, thicker)
+ * @param {string} $color - Type de couleur (default, variant, focus, error)
+ */
+@mixin outline-double($width: 'default', $color: 'default') {
+  outline: tokens.outline-width($width) tokens.outline-style('double') tokens.outline-color($color);
+}
+
+// ============================================================================
+// MIXINS POUR LES DIFFÉRENTES LARGEURS
+// ============================================================================
+
+/**
+ * Mixin pour outline fin
+ * @param {string} $style - Type de style (solid, dashed, dotted, double)
+ * @param {string} $color - Type de couleur (default, variant, focus, error)
+ */
+@mixin outline-thin($style: 'solid', $color: 'default') {
+  outline: tokens.outline-width('thin') tokens.outline-style($style) tokens.outline-color($color);
+}
+
+/**
+ * Mixin pour outline épais
+ * @param {string} $style - Type de style (solid, dashed, dotted, double)
+ * @param {string} $color - Type de couleur (default, variant, focus, error)
+ */
+@mixin outline-thick($style: 'solid', $color: 'default') {
+  outline: tokens.outline-width('thick') tokens.outline-style($style) tokens.outline-color($color);
+}
+
+/**
+ * Mixin pour outline très épais
+ * @param {string} $style - Type de style (solid, dashed, dotted, double)
+ * @param {string} $color - Type de couleur (default, variant, focus, error)
+ */
+@mixin outline-thicker($style: 'solid', $color: 'default') {
+  outline: tokens.outline-width('thicker') tokens.outline-style($style) tokens.outline-color($color);
+}
+
+// ============================================================================
+// MIXINS UTILITAIRES
+// ============================================================================
+
+/**
+ * Mixin pour supprimer l'outline
+ */
+@mixin outline-none {
+  outline: none;
+}
+
+/**
+ * Mixin pour outline avec offset
+ * @param {string} $width - Largeur de l'outline
+ * @param {string} $style - Style de l'outline
+ * @param {string} $color - Couleur de l'outline
+ * @param {string} $offset - Offset de l'outline
+ */
+@mixin outline-with-offset($width: tokens.$md-sys-outline-width, $style: tokens.$md-sys-outline-style, $color: tokens.$md-sys-outline-color, $offset: 2px) {
+  outline: $width $style $color;
+  outline-offset: $offset;
+}
+
+/**
+ * Mixin pour outline focus avec offset
+ * @param {string} $offset - Offset de l'outline (défaut: 2px)
+ */
+@mixin outline-focus-with-offset($offset: 2px) {
+  @include outline-focus;
+  outline-offset: $offset;
+}
+
+/**
+ * Mixin pour outline responsive
+ * @param {map} $breakpoints - Map des breakpoints et outlines
+ * @example
+ *   @include outline-responsive((
+ *     'default': (width: 'default', style: 'solid', color: 'default'),
+ *     '768px': (width: 'thick', style: 'solid', color: 'focus')
+ *   ));
+ */
+@mixin outline-responsive($breakpoints) {
+  @each $breakpoint, $outline in $breakpoints {
+    @if $breakpoint == 'default' {
+      @include outline(
+        tokens.outline-width(map.get($outline, 'width')),
+        tokens.outline-style(map.get($outline, 'style')),
+        tokens.outline-color(map.get($outline, 'color'))
+      );
+    } @else {
+      @media (min-width: $breakpoint) {
+        @include outline(
+          tokens.outline-width(map.get($outline, 'width')),
+          tokens.outline-style(map.get($outline, 'style')),
+          tokens.outline-color(map.get($outline, 'color'))
+        );
+      }
+    }
+  }
+} 

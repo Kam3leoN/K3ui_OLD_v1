@@ -1,0 +1,172 @@
+/**
+ * @fileoverview Mixins DropZone pour K3UI
+ * @description Mixins réutilisables pour les zones de dépôt de fichiers
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/dropzone.token' as *;
+
+// ============================================================================
+// DROPZONE MIXINS
+// ============================================================================
+
+/**
+ * Mixin de base pour la zone de dépôt
+ */
+@mixin dropzone-base {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 200px;
+    padding: $dropzone-padding;
+    border: $dropzone-border-width $dropzone-border-style $dropzone-border-color;
+    border-radius: $dropzone-border-radius;
+    background: $dropzone-background;
+    color: $dropzone-text-color;
+    text-align: center;
+    cursor: pointer;
+    transition: 
+        border-color $dropzone-transition-duration $dropzone-transition-timing,
+        background $dropzone-transition-duration $dropzone-transition-timing;
+    user-select: none;
+}
+
+/**
+ * Mixin pour l'état actif (fichier survolé)
+ */
+@mixin dropzone-active {
+    border-color: $dropzone-border-color-active;
+    background: $dropzone-background-active;
+}
+
+/**
+ * Mixin pour l'état invalide
+ */
+@mixin dropzone-invalid {
+    border-color: $dropzone-border-color-invalid;
+    animation: dropzone-shake 0.4s ease-in-out;
+}
+
+/**
+ * Mixin pour l'état désactivé
+ */
+@mixin dropzone-disabled {
+    background: $dropzone-background-disabled;
+    color: $dropzone-text-color-disabled;
+    cursor: not-allowed;
+    opacity: $dropzone-opacity-disabled;
+}
+
+/**
+ * Mixin pour l'icône de la zone de dépôt
+ */
+@mixin dropzone-icon {
+    font-size: $dropzone-icon-size;
+    color: $dropzone-icon-color;
+    line-height: 1;
+}
+
+/**
+ * Mixin pour le texte secondaire
+ */
+@mixin dropzone-text-secondary {
+    color: $dropzone-text-color-secondary;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+/**
+ * Mixin pour le conteneur de preview
+ */
+@mixin dropzone-preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $dropzone-preview-gap;
+    margin-top: $dropzone-gap;
+    width: 100%;
+}
+
+/**
+ * Mixin pour un item de preview
+ */
+@mixin dropzone-preview-item {
+    position: relative;
+    width: $dropzone-preview-item-size;
+    height: $dropzone-preview-item-size;
+    overflow: hidden;
+    border-radius: $dropzone-preview-item-radius;
+    background: var(--md-sys-color-surface-container-highest);
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+}
+
+/**
+ * Mixin pour le bouton de suppression de preview
+ */
+@mixin dropzone-preview-remove {
+    position: absolute;
+    top: $dropzone-preview-remove-offset;
+    right: $dropzone-preview-remove-offset;
+    width: $dropzone-preview-remove-size;
+    height: $dropzone-preview-remove-size;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--md-sys-color-error);
+    color: var(--md-sys-color-on-error);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform $dropzone-transition-duration $dropzone-transition-timing;
+    z-index: 1;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+}
+
+/**
+ * Mixin pour le nom de fichier dans la preview
+ */
+@mixin dropzone-preview-filename {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.25rem 0.5rem;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 0.75rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/**
+ * Animation de secousse pour l'état invalide
+ */
+@mixin dropzone-shake-animation {
+    @keyframes dropzone-shake {
+        0%, 100% {
+            transform: translateX(0);
+        }
+        10%, 30%, 50%, 70%, 90% {
+            transform: translateX(-5px);
+        }
+        20%, 40%, 60%, 80% {
+            transform: translateX(5px);
+        }
+    }
+}

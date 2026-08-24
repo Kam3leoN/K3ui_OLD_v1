@@ -1,0 +1,29 @@
+/**
+ * @fileoverview Mixins SwipeDeck — host Stack deck (peek bottom) + ombre front uniquement
+ */
+
+@use './swipe-deck.token' as *;
+@use '../../../mixins/stack.mixin' as stack;
+
+@mixin swipe-deck-host {
+  @include stack.stack-deck;
+  @include stack.stack-deck-peek('bottom');
+  position: relative;
+  width: $swipe-deck-width;
+  min-height: $swipe-deck-min-height;
+  touch-action: none;
+  user-select: none;
+  overflow: visible;
+}
+
+@mixin swipe-deck-card {
+  /* Géométrie deck (inset, ombre front) : stack-deck via .stack--deck sur le host */
+  border-radius: $swipe-deck-card-radius;
+  background: var(--md-sys-color-surface-container-high, #ece6f0);
+  overflow: hidden;
+
+  /* Style shadcn : coquilles visibles derrière, contenu masqué jusqu’au front */
+  &[data-behind] > * {
+    visibility: hidden;
+  }
+}

@@ -1,0 +1,523 @@
+/// @file slider.mixin.scss
+/// @brief Mixins slider Material 3 Expressive
+
+@use '../tokens/slider.token' as slider;
+@use '../tokens/theme.token' as theme;
+@use '../tokens/motion.token' as motion;
+@use '../tokens/spacing.token' as spacing;
+@use '../mixins/motion.mixin' as motion-mixin;
+@use '../mixins/state.mixin' as state;
+
+/**
+ * Mixin de base pour tous les sliders
+ */
+@mixin slider-base {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  touch-action: none;
+  outline: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  width: 100%;
+  
+  // Padding vertical uniforme pour toutes les tailles
+  // Calculer le padding pour que toutes les tailles aient le même espacement
+  // Le handle le plus haut est 108px (XL), donc on veut un padding uniforme
+  // Utiliser un padding fixe pour garantir un espacement uniforme
+  padding-top: 6px;
+  padding-bottom: 6px;
+  
+  // Hauteur minimale pour la zone de touch target
+  min-height: 48px;
+  
+  // Pour mode vertical, le custom element doit avoir une hauteur
+  &[data-vertical] {
+    width: auto;
+    height: slider.$md-sys-slider-vertical-height;
+    min-height: slider.$md-sys-slider-vertical-height;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+/**
+ * Mixin pour le track (rail) du slider
+ */
+@mixin slider-track($size: 'm') {
+  position: relative;
+  width: 100%;
+  height: slider.$md-sys-slider-m-track-height;
+  border-radius: slider.$md-sys-slider-m-track-shape;
+  background-color: transparent; // Track de fond transparent
+  overflow: visible; // Permettre au handle de dépasser du track
+  
+  // Tailles selon Material Design 3 Expressive
+  @if $size == 'xs' {
+    height: slider.$md-sys-slider-xs-track-height;
+    border-radius: slider.$md-sys-slider-xs-track-shape;
+  } @else if $size == 's' {
+    height: slider.$md-sys-slider-s-track-height;
+    border-radius: slider.$md-sys-slider-s-track-shape;
+  } @else if $size == 'm' {
+    height: slider.$md-sys-slider-m-track-height;
+    border-radius: slider.$md-sys-slider-m-track-shape;
+  } @else if $size == 'l' {
+    height: slider.$md-sys-slider-l-track-height;
+    border-radius: slider.$md-sys-slider-l-track-shape;
+  } @else if $size == 'xl' {
+    height: slider.$md-sys-slider-xl-track-height;
+    border-radius: slider.$md-sys-slider-xl-track-shape;
+  }
+  
+  // Pour mode vertical - les dimensions sont gérées par le mixin slider-vertical
+  // Le track doit avoir une hauteur définie (300px) et une largeur = track-height
+}
+
+/**
+ * Mixin pour le track actif
+ * Styles de base - les dimensions sont calculées dynamiquement en JavaScript
+ */
+@mixin slider-track-active($size: 'm') {
+  position: absolute;
+  background-color: slider.$md-sys-slider-track-active-color;
+  z-index: slider.$md-sys-slider-track-active-z-index;
+  transition: width slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              height slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              left slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              right slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              top slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              bottom slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              background-color slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              opacity slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing;
+  
+  // Par défaut pour horizontal (non centered, non vertical)
+  // Les styles inline de JavaScript surchargeront ces valeurs
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: slider.$md-sys-slider-m-track-shape;
+  
+  // Tailles selon Material Design 3 Expressive - border-radius seulement
+  @if $size == 'xs' {
+    border-radius: slider.$md-sys-slider-xs-track-shape;
+    border-top-right-radius: slider.$md-sys-slider-xs-inner-radius;
+    border-bottom-right-radius: slider.$md-sys-slider-xs-inner-radius;
+  } @else if $size == 's' {
+    border-radius: slider.$md-sys-slider-s-track-shape;
+    border-top-right-radius: slider.$md-sys-slider-s-inner-radius;
+    border-bottom-right-radius: slider.$md-sys-slider-s-inner-radius;
+  } @else if $size == 'm' {
+    border-radius: slider.$md-sys-slider-m-track-shape;
+    border-top-right-radius: slider.$md-sys-slider-m-inner-radius;
+    border-bottom-right-radius: slider.$md-sys-slider-m-inner-radius;
+  } @else if $size == 'l' {
+    border-radius: slider.$md-sys-slider-l-track-shape;
+    border-top-right-radius: slider.$md-sys-slider-l-inner-radius;
+    border-bottom-right-radius: slider.$md-sys-slider-l-inner-radius;
+  } @else if $size == 'xl' {
+    border-radius: slider.$md-sys-slider-xl-track-shape;
+    border-top-right-radius: slider.$md-sys-slider-xl-inner-radius;
+    border-bottom-right-radius: slider.$md-sys-slider-xl-inner-radius;
+  }
+  
+  // Pour mode vertical - styles de base (surchargés par JavaScript)
+  [data-vertical] & {
+    width: 100%;
+    height: auto;
+    bottom: 0;
+    top: auto;
+    left: 0;
+    border-radius: slider.$md-sys-slider-m-track-shape;
+    border-top-left-radius: slider.$md-sys-slider-m-inner-radius;
+    border-top-right-radius: slider.$md-sys-slider-m-inner-radius;
+    border-bottom-right-radius: slider.$md-sys-slider-m-track-shape;
+    border-bottom-left-radius: slider.$md-sys-slider-m-track-shape;
+  }
+  
+  // Pour mode centered - styles de base (surchargés par JavaScript)
+  [data-centered] & {
+    border-radius: slider.$md-sys-slider-m-inner-radius;
+  }
+}
+
+/**
+ * Mixin pour le track inactif
+ * Styles de base - les dimensions sont calculées dynamiquement en JavaScript
+ */
+@mixin slider-track-inactive($size: 'm') {
+  position: absolute;
+  background-color: slider.$md-sys-slider-track-inactive-color;
+  z-index: slider.$md-sys-slider-track-inactive-z-index;
+  transition: width slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              height slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              left slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              right slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              top slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              bottom slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              background-color slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              opacity slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing;
+  
+  // Par défaut pour horizontal (non centered, non vertical)
+  // Les styles inline de JavaScript surchargeront ces valeurs
+  top: 0;
+  right: 0;
+  height: 100%;
+  border-radius: slider.$md-sys-slider-m-track-shape;
+  
+  // Tailles selon Material Design 3 Expressive - border-radius seulement
+  @if $size == 'xs' {
+    border-radius: slider.$md-sys-slider-xs-track-shape;
+    border-top-left-radius: slider.$md-sys-slider-xs-inner-radius;
+    border-bottom-left-radius: slider.$md-sys-slider-xs-inner-radius;
+  } @else if $size == 's' {
+    border-radius: slider.$md-sys-slider-s-track-shape;
+    border-top-left-radius: slider.$md-sys-slider-s-inner-radius;
+    border-bottom-left-radius: slider.$md-sys-slider-s-inner-radius;
+  } @else if $size == 'm' {
+    border-radius: slider.$md-sys-slider-m-track-shape;
+    border-top-left-radius: slider.$md-sys-slider-m-inner-radius;
+    border-bottom-left-radius: slider.$md-sys-slider-m-inner-radius;
+  } @else if $size == 'l' {
+    border-radius: slider.$md-sys-slider-l-track-shape;
+    border-top-left-radius: slider.$md-sys-slider-l-inner-radius;
+    border-bottom-left-radius: slider.$md-sys-slider-l-inner-radius;
+  } @else if $size == 'xl' {
+    border-radius: slider.$md-sys-slider-xl-track-shape;
+    border-top-left-radius: slider.$md-sys-slider-xl-inner-radius;
+    border-bottom-left-radius: slider.$md-sys-slider-xl-inner-radius;
+  }
+  
+  // Pour mode vertical - styles de base (surchargés par JavaScript)
+  [data-vertical] & {
+    width: 100%;
+    height: auto;
+    top: 0;
+    bottom: auto;
+    right: auto;
+    left: 0;
+    border-radius: slider.$md-sys-slider-m-track-shape;
+    border-bottom-left-radius: slider.$md-sys-slider-m-inner-radius;
+    border-bottom-right-radius: slider.$md-sys-slider-m-inner-radius;
+    border-top-left-radius: slider.$md-sys-slider-m-track-shape;
+    border-top-right-radius: slider.$md-sys-slider-m-track-shape;
+  }
+}
+
+/**
+ * Mixin pour le handle (poignée) du slider
+ */
+@mixin slider-handle($size: 'm') {
+  position: absolute;
+  background-color: slider.$md-sys-slider-handle-color;
+  z-index: slider.$md-sys-slider-handle-z-index;
+  transition: width slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              height slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              left slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              right slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              top slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              bottom slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              background-color slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing,
+              opacity slider.$md-sys-slider-drag-duration slider.$md-sys-slider-transition-easing;
+  border-radius: 50%;
+  // Pas d'élévation (box-shadow) selon Material Design 3
+  pointer-events: none; // Par défaut, non cliquable (clic sur le track)
+  
+  // Par défaut pour horizontal
+  top: 50%;
+  transform: translateY(-50%);
+  
+  // Tailles selon Material Design 3 Expressive
+  @if $size == 'xs' {
+    width: slider.$md-sys-slider-xs-handle-width;
+    height: slider.$md-sys-slider-xs-handle-height;
+    border-radius: calc(#{slider.$md-sys-slider-xs-handle-width} / 2);
+  } @else if $size == 's' {
+    width: slider.$md-sys-slider-s-handle-width;
+    height: slider.$md-sys-slider-s-handle-height;
+    border-radius: calc(#{slider.$md-sys-slider-s-handle-width} / 2);
+  } @else if $size == 'm' {
+    width: slider.$md-sys-slider-m-handle-width;
+    height: slider.$md-sys-slider-m-handle-height;
+    border-radius: calc(#{slider.$md-sys-slider-m-handle-width} / 2);
+  } @else if $size == 'l' {
+    width: slider.$md-sys-slider-l-handle-width;
+    height: slider.$md-sys-slider-l-handle-height;
+    border-radius: calc(#{slider.$md-sys-slider-l-handle-width} / 2);
+  } @else if $size == 'xl' {
+    width: slider.$md-sys-slider-xl-handle-width;
+    height: slider.$md-sys-slider-xl-handle-height;
+    border-radius: calc(#{slider.$md-sys-slider-xl-handle-width} / 2);
+  }
+  
+  // Pour range slider, les handles sont cliquables directement
+  [data-range] & {
+    pointer-events: auto;
+    cursor: grab;
+    
+    &:active {
+      cursor: grabbing;
+    }
+  }
+  
+  // Minimum touch target pour l'accessibilité
+  &::before {
+    content: '';
+    position: absolute;
+    inset: calc((#{slider.$md-sys-slider-min-touch-target} - 100%) / 2);
+    min-width: slider.$md-sys-slider-min-touch-target;
+    min-height: slider.$md-sys-slider-min-touch-target;
+  }
+}
+
+/**
+ * Mixin pour les stop indicators
+ * @description Définit les styles de base pour les stop indicators (points aux extrémités du slider)
+ * Couleur par défaut : primary (sur track inactif)
+ * Couleur active : on-primary (sur track actif, définie dans le module avec !important)
+ */
+@mixin slider-stop-indicator {
+  position: absolute;
+  width: slider.$md-sys-slider-stop-indicator-size;
+  height: slider.$md-sys-slider-stop-indicator-size;
+  // Note: background-color défini dans le module avec !important pour garantir l'ordre
+  border-radius: 50%; // md.sys.shape.corner.full
+  z-index: slider.$md-sys-slider-stop-indicator-z-index;
+  pointer-events: none;
+  transition: background-color slider.$md-sys-slider-transition-duration slider.$md-sys-slider-transition-easing;
+  
+  // Positionnement horizontal par défaut
+  top: 50%;
+  transform: translateY(-50%);
+  
+  &[data-position="start"] {
+    left: slider.$md-sys-slider-stop-indicator-trailing-space;
+  }
+  
+  &[data-position="end"] {
+    right: slider.$md-sys-slider-stop-indicator-trailing-space;
+  }
+  
+  // Positionnement vertical
+  [data-vertical] & {
+    left: 50%;
+    top: auto;
+    transform: translateX(-50%);
+    
+    &[data-position="start"] {
+      bottom: slider.$md-sys-slider-stop-indicator-trailing-space;
+      top: auto;
+    }
+    
+    &[data-position="end"] {
+      top: slider.$md-sys-slider-stop-indicator-trailing-space;
+      bottom: auto;
+    }
+  }
+}
+
+/**
+ * Mixin pour les points discrets
+ */
+@mixin slider-discrete-point {
+  position: absolute;
+  background-color: slider.$md-sys-slider-discrete-point-inactive-color;
+  border-radius: 50%;
+  z-index: slider.$md-sys-slider-discrete-points-z-index;
+  pointer-events: none;
+  transition: background-color slider.$md-sys-slider-transition-duration slider.$md-sys-slider-transition-easing;
+}
+
+/**
+ * Mixin pour le label de valeur
+ * @description Bulle de valeur affichant la valeur actuelle du slider
+ */
+@mixin slider-value-label {
+  position: absolute;
+  pointer-events: none;
+  z-index: slider.$md-sys-slider-value-label-z-index;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity slider.$md-sys-slider-transition-duration slider.$md-sys-slider-transition-easing;
+  
+  // Par défaut pour horizontal
+  bottom: 100%;
+  left: 0;
+  transform: translateX(-50%);
+  margin-bottom: 12px;
+  
+  &-content {
+    background-color: var(--md-sys-color-on-surface);
+    color: var(--md-sys-color-surface);
+    width: slider.$md-sys-slider-label-container-width;
+    height: slider.$md-sys-slider-label-container-height;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: slider.$md-sys-slider-label-border-radius;
+    font-size: slider.$md-sys-slider-label-font-size;
+    font-weight: slider.$md-sys-slider-label-font-weight;
+    line-height: 1;
+    box-shadow: slider.$md-sys-slider-label-elevation;
+    position: relative;
+  }
+  
+  // Visible state
+  &--visible {
+    opacity: 1;
+  }
+  
+  // Pour mode vertical
+  [data-vertical] & {
+    left: 100%;
+    bottom: 0;
+    top: auto;
+    transform: translateY(50%) rotate(90deg);
+    margin-left: 16px;
+    margin-bottom: 0;
+    // S'assurer que la bulle peut dépasser du container
+    position: absolute;
+    z-index: 1000;
+  }
+}
+
+/**
+ * Mixin pour l'icône inset dans la barre
+ */
+@mixin slider-icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: color slider.$md-sys-slider-transition-duration slider.$md-sys-slider-transition-easing;
+}
+
+/**
+ * Mixin pour le label du slider
+ */
+@mixin slider-label {
+  font-size: var(--md-sys-typescale-body-large-size);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  color: var(--md-sys-color-on-surface);
+  user-select: none;
+  margin-bottom: 8px;
+}
+
+/**
+ * Mixin pour les états hover et focus
+ */
+@mixin slider-states {
+  // Pas de changement de couleur au hover selon Material Design 3
+  // Le handle s'affine seulement lors du drag, pas au hover
+
+  &[data-focused]:not([data-disabled]) {
+    .slider__handle {
+      outline: slider.$md-sys-slider-focus-ring-width solid slider.$md-sys-slider-focus-ring-color;
+      outline-offset: slider.$md-sys-slider-focus-ring-offset;
+    }
+  }
+  
+  &[data-disabled] {
+    @include state.state-disabled();
+    cursor: not-allowed;
+    opacity: slider.$md-sys-slider-disabled-opacity;
+    pointer-events: none;
+
+    .slider__track {
+      background-color: slider.$md-sys-slider-track-inactive-color;
+    }
+    
+    .slider__track-active {
+      // En mode disabled, le track actif doit utiliser la même couleur active que le vertical
+      // pour rester visible comme le slider vertical disabled
+      // Utiliser !important pour surcharger la règle vertical qui force aussi la couleur active
+      background-color: slider.$md-sys-slider-track-active-color !important;
+      opacity: 1;
+      z-index: slider.$md-sys-slider-track-active-z-index;
+    }
+
+    .slider__handle {
+      background-color: slider.$md-sys-slider-handle-color;
+      box-shadow: none;
+    }
+  }
+}
+
+/**
+ * Mixin pour le slider vertical
+ * Le slider vertical est identique au horizontal mais tourné à 90°
+ * Pour audio : descendre = baisser la valeur, monter = augmenter
+ */
+@mixin slider-vertical {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: slider.$md-sys-slider-vertical-height;
+  
+  // Container doit avoir une hauteur définie et permettre au handle de dépasser
+  .slider__container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: 100%;
+    min-height: slider.$md-sys-slider-vertical-height;
+    // Pas de max-width pour permettre au handle de dépasser
+    overflow: visible;
+    // S'assurer que le container peut dépasser pour permettre à la bulle de sortir
+    min-width: max-content;
+  }
+  
+  // Track : largeur = track-height, hauteur = 300px
+  // Pas de max-width pour permettre au handle de dépasser
+  .slider__track {
+    width: var(--track-height, 40px) !important;
+    height: slider.$md-sys-slider-vertical-height !important;
+    min-width: var(--track-height, 40px);
+    min-height: slider.$md-sys-slider-vertical-height;
+    max-height: slider.$md-sys-slider-vertical-height;
+    // Pas de max-width pour permettre au handle de dépasser du track
+    // S'assurer que le background est visible
+    background-color: transparent !important;
+    overflow: visible !important;
+  }
+  
+  // Track actif et inactif : dimensions inversées pour vertical
+  .slider__track-active {
+    width: 100% !important;
+    height: auto;
+    // S'assurer que le background est visible
+    background-color: slider.$md-sys-slider-track-active-color !important;
+  }
+  
+  .slider__track-inactive {
+    width: 100% !important;
+    height: auto;
+    // S'assurer que le background est visible
+    background-color: slider.$md-sys-slider-track-inactive-color !important;
+  }
+  
+  // Handle : centré horizontalement, positionné verticalement
+  // Le handle doit pouvoir dépasser du track (largeur = handleHeight)
+  .slider__handle {
+    left: 50%;
+    top: auto;
+    transform: translateX(-50%);
+    // S'assurer que le handle peut dépasser (pas de max-width)
+    // Les dimensions sont gérées par JavaScript (width = handleHeight, height = handleWidth)
+  }
+}
+
+/**
+ * Mixin pour le slider centré
+ * Le track actif part du centre (50%) - géré par JavaScript
+ */
+@mixin slider-centered {
+  // Styles gérés dynamiquement par JavaScript
+}
+

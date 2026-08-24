@@ -1,0 +1,116 @@
+/**
+ * @fileoverview Animation trigger FAB partagée — Dial / Rail (alignée ButtonFabMenu)
+ */
+
+@use '../tokens/button-fab-menu.token' as bfm;
+
+/// Animation rebondissante + → × sur le trigger (overshoot/wiggle façon ButtonFabMenu).
+/// @param {String} $block - Préfixe BEM (`button-fab-dial` | `button-fab-rail`)
+/// @param {String} $rotate-var - Custom property de rotation ouverte (ex. `--button-fab-dial-rotate`)
+@mixin button-fab-speed-dial-trigger($block, $rotate-var) {
+  $in-name: #{$block}-icon-plus-in;
+  $out-name: #{$block}-icon-plus-out;
+
+  .#{$block}__trigger-wrap .button-fab .button-fab__icon {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .#{$block}__icon-rotator {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(0deg);
+    transform-origin: center;
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+
+  .#{$block}__icon-rotator--open {
+    animation: #{$in-name} bfm.$button-fab-menu-icon-plus-duration bfm.$button-fab-menu-icon-plus-easing forwards;
+  }
+
+  .#{$block}__icon-rotator--closing {
+    animation: #{$out-name} bfm.$button-fab-menu-icon-plus-duration bfm.$button-fab-menu-icon-plus-easing forwards;
+  }
+
+  .#{$block} .button-fab--rounded-state .button-fab__btn {
+    background: color-mix(in srgb, var(--md-sys-color-primary) 95%, white);
+  }
+
+  .#{$block}__trigger-wrap .button-fab .button-fab__btn:active {
+    transform: none;
+    transition: none;
+  }
+
+  .#{$block}__trigger-wrap .button-fab .button-fab__btn:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  @keyframes #{$in-name} {
+    0% {
+      transform: rotate(0deg) scale(1);
+    }
+
+    20% {
+      transform: rotate(calc(var(#{$rotate-var}, 135deg) * 1.333)) scale(0.93);
+    }
+
+    55% {
+      transform: rotate(calc(var(#{$rotate-var}, 135deg) * 0.778)) scale(0.97);
+    }
+
+    80% {
+      transform: rotate(calc(var(#{$rotate-var}, 135deg) * 1.067)) scale(0.94);
+    }
+
+    100% {
+      transform: rotate(var(#{$rotate-var}, 135deg)) scale(0.95);
+    }
+  }
+
+  @keyframes #{$out-name} {
+    0% {
+      transform: rotate(var(#{$rotate-var}, 135deg)) scale(0.95);
+    }
+
+    20% {
+      transform: rotate(calc(var(#{$rotate-var}, 135deg) - 60deg)) scale(1);
+    }
+
+    55% {
+      transform: rotate(calc(var(#{$rotate-var}, 135deg) - 35deg)) scale(1);
+    }
+
+    80% {
+      transform: rotate(calc(var(#{$rotate-var}, 135deg) - 48deg)) scale(1);
+    }
+
+    100% {
+      transform: rotate(0deg) scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .#{$block}__icon-rotator--open,
+    .#{$block}__icon-rotator--closing {
+      animation: none !important;
+    }
+
+    .#{$block}__icon-rotator--open {
+      transform: rotate(var(#{$rotate-var}, 135deg)) scale(0.95);
+    }
+
+    .#{$block}__icon-rotator--closing {
+      transform: rotate(0deg) scale(1);
+    }
+
+    .#{$block} .button-fab--rounded-state .button-fab__btn {
+      animation: none !important;
+    }
+  }
+}

@@ -1,0 +1,155 @@
+/**
+ * @file stack.mixin.scss
+ * @description Mixins Stack — overlap + deck compact (orientations)
+ * @author K3UI Team
+ * @version 1.1.0
+ */
+
+@use '../tokens/stack.token' as stack;
+
+/**
+ * Conteneur de base
+ */
+@mixin stack-base {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  #{stack.$stack-offset-var}: #{stack.$stack-overlap-offset};
+  #{stack.$stack-depth-var}: #{stack.$stack-deck-depth-max};
+  #{stack.$stack-scale-step-var}: #{stack.$stack-deck-scale-step};
+  #{stack.$stack-opacity-step-var}: #{stack.$stack-deck-opacity-step};
+}
+
+/**
+ * Variante overlap (ligne avec chevauchement)
+ * @param {string} $direction - start | end | left | right
+ */
+@mixin stack-overlap($direction: 'start') {
+  @include stack-base;
+
+  $is-end: $direction == 'end' or $direction == 'right';
+
+  @if $is-end {
+    flex-direction: row-reverse;
+    padding-inline-start: stack.$stack-overlap-end-padding;
+  } @else {
+    flex-direction: row;
+    padding-inline-end: stack.$stack-overlap-end-padding;
+  }
+
+  > *:not(.stack__remaining),
+  > .stack__item {
+    position: relative;
+    flex-shrink: 0;
+
+    @if $is-end {
+      margin-inline-end: calc(-1 * var(#{stack.$stack-offset-var}, #{stack.$stack-overlap-offset}));
+
+      &:first-child {
+        margin-inline-end: 0;
+      }
+    } @else {
+      margin-inline-start: calc(-1 * var(#{stack.$stack-offset-var}, #{stack.$stack-overlap-offset}));
+
+      &:first-child {
+        margin-inline-start: 0;
+      }
+    }
+  }
+}
+
+/**
+ * Scroll horizontal pour piles overlap longues
+ */
+@mixin stack-scroll {
+  max-width: 100%;
+  overflow: hidden;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+/**
+ * Variante deck compact (collapsed) — pas de dé-stack en colonne
+ * Ombre uniquement sur [data-stack-index="0"]
+ */
+@mixin stack-deck {
+  @include stack-base;
+  display: block;
+  touch-action: none;
+  overflow: visible;
+
+  #{stack.$stack-offset-var}: #{stack.$stack-deck-offset};
+
+  > *:not(.stack__remaining),
+  > .stack__item {
+    position: absolute;
+    inset: 0;
+    will-change: transform;
+    box-shadow: none;
+  }
+
+  > [data-stack-index='0'],
+  > .stack__item[data-stack-index='0'] {
+    box-shadow: stack.$stack-deck-front-shadow;
+  }
+
+  > [data-behind],
+  > .stack__item[data-behind] {
+    box-shadow: none;
+    pointer-events: none;
+  }
+}
+
+/**
+ * Espace de peek selon l’orientation du deck
+ * @param {string} $direction - top | bottom | left | right
+ */
+@mixin stack-deck-peek($direction: 'top') {
+  $peek: calc(var(#{stack.$stack-offset-var}, #{stack.$stack-deck-offset}) * 2);
+
+  @if $direction == 'top' {
+    padding-top: $peek;
+  } @else if $direction == 'bottom' {
+    padding-bottom: $peek;
+  } @else if $direction == 'left' {
+    padding-inline-start: $peek;
+  } @else if $direction == 'right' {
+    padding-inline-end: $peek;
+  }
+}
+
+/**
+ * Indicateur +N
+ */
+@mixin stack-remaining {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: stack.$stack-remaining-size;
+  height: stack.$stack-remaining-size;
+  padding-inline: 0.5rem;
+  border-radius: 50%;
+  background: stack.$stack-remaining-bg;
+  color: stack.$stack-remaining-color;
+  font-size: stack.$stack-remaining-font-size;
+  font-weight: 500;
+  z-index: 0;
+  margin-inline-start: calc(-1 * var(#{stack.$stack-offset-var}, #{stack.$stack-overlap-offset}));
+}
+
+/**
+ * Alignement du conteneur overlap
+ * @param {string} $align - start | center | end
+ */
+@mixin stack-align($align: 'start') {
+  @if $align == 'center' {
+    justify-content: center;
+  } @else if $align == 'end' {
+    justify-content: flex-end;
+  } @else {
+    justify-content: flex-start;
+  }
+}

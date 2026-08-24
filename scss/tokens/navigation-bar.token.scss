@@ -1,0 +1,37 @@
+/**
+ * @fileoverview Tokens pour NavigationBar (Material Design 3 - Bottom Navigation)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use './motion.token' as motion;
+@use './navigation-item.token' as navitem;
+
+$navigation-bar-z-index: 1000;
+$navigation-bar-height: 80px;
+$navigation-bar-icon-size: 28px;
+$navigation-bar-pill-width: navitem.$nav-item-indicator-width-bar;
+$navigation-bar-pill-height: navitem.$nav-item-indicator-height-vertical;
+$navigation-bar-icon-label-gap: 4px;
+$navigation-bar-pill-radius: navitem.$nav-item-indicator-radius-vertical;
+
+$navigation-bar-surface: var(--md-sys-color-surface-container, #fffbfe);
+$navigation-bar-border: var(--md-sys-color-outline-variant, #e8def8);
+/** Indicateur actif : MD3 = secondary-container (tonal). Label/icône actifs : onSurface (pas blanc, pas on-primary). */
+$navigation-bar-pill-bg: var(--md-sys-color-secondary-container, #e8def8);
+$navigation-bar-label-inactive: var(--md-sys-color-on-surface-variant, #49454f);
+$navigation-bar-label-active: var(--md-sys-color-on-surface, #1c1b1f);
+$navigation-bar-hover-bg: rgba(73, 69, 79, 0.04);
+$navigation-bar-hover-bg-dark: rgba(255, 255, 255, 0.08);
+$navigation-bar-focus-outline: var(--md-sys-color-primary, #6750a4);
+
+$navigation-bar-label-font-size: 12px;
+$navigation-bar-label-font-weight: 500;
+$navigation-bar-label-letter-spacing: 0.5px;
+
+$navigation-bar-pill-duration: navitem.$nav-item-indicator-duration;
+$navigation-bar-pill-fade-duration: navitem.$nav-item-indicator-fade-duration;
+$navigation-bar-pill-scale-from: navitem.$nav-item-indicator-scale-from;
+$navigation-bar-pill-easing: navitem.$nav-item-indicator-easing;
+$navigation-bar-pill-easing-emphasized: navitem.$nav-item-indicator-easing;
+$navigation-bar-hover-duration: navitem.$nav-item-hover-duration;

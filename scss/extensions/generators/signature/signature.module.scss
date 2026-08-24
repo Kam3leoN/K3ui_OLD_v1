@@ -1,0 +1,51 @@
+/**
+ * @fileoverview Module Signature
+ * @description Classes CSS pour le composant Signature
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use "./signature.token" as signature;
+@use "./signature.mixin" as signature-mixin;
+@use "../../../mixins/state.mixin" as state;
+
+/**
+ * Classe principale du composant Signature
+ */
+.signature {
+  @include signature-mixin.signature-component;
+
+  // États
+  &:hover {
+    canvas {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 3px rgba(0, 0, 0, 0.28);
+    }
+  }
+
+  &:focus {
+    canvas {
+      outline: 2px solid signature.$signature-border-color;
+      outline-offset: 2px;
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+/**
+ * Conteneur de signature
+ */
+.signature-container {
+  @include signature-mixin.signature-container;
+}
+
+/**
+ * Actions de signature
+ */
+.signature-actions {
+  @include signature-mixin.signature-actions;
+}
+

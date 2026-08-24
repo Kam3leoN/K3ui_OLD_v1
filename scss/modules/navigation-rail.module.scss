@@ -1,0 +1,295 @@
+/**
+ * @fileoverview Module NavigationRail (Material Design 3 - Navigation Rail Expressive)
+ * Indicateur unique (modèle M3E) — pas de ::before expanded ni hacks collapsing.
+ */
+
+@use '../tokens/navigation-rail.token' as tokens;
+@use '../tokens/motion.token' as motion;
+@use '../mixins/navigation-rail.mixin' as rail;
+
+.navigation-rail {
+  @include rail.navigation-rail-container;
+
+  &__chrome {
+    @include rail.navigation-rail-chrome;
+  }
+
+  &__fab {
+    @include rail.navigation-rail-fab;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+
+    &:focus,
+    &:focus-visible,
+    &:active {
+      outline: none !important;
+      outline-offset: 0;
+      box-shadow: none !important;
+    }
+
+    /* Logo marque : conserve le fond FAB (primary), pas d’outline double */
+    &:has(.logo) {
+      background: var(--md-sys-color-primary, #6750a4);
+      color: var(--md-sys-color-on-primary, #fff);
+      outline: none !important;
+    }
+
+    &:has(.logo):focus,
+    &:has(.logo):focus-visible,
+    &:has(.logo):active {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+  }
+
+  &__fab-icon {
+    width: tokens.$navigation-rail-icon-size;
+    height: tokens.$navigation-rail-icon-size;
+    flex-shrink: 0;
+  }
+
+  /**
+   * Logo marque dans le FAB header — même taille collapsed / extended
+   * (80 % du FAB 56dp, comme Extended FAB M3).
+   */
+  &__fab .logo,
+  &__fab-icon.logo {
+    width: calc(#{tokens.$navigation-rail-fab-size} * 0.8) !important;
+    height: calc(#{tokens.$navigation-rail-fab-size} * 0.8) !important;
+    min-width: calc(#{tokens.$navigation-rail-fab-size} * 0.8) !important;
+    min-height: calc(#{tokens.$navigation-rail-fab-size} * 0.8) !important;
+    font-size: inherit !important;
+    color: inherit;
+    flex-shrink: 0;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  }
+
+  &__fab-label {
+    display: none;
+    font-size: tokens.$navigation-rail-label-font-size-expanded;
+    font-weight: tokens.$navigation-rail-label-font-weight;
+    white-space: nowrap;
+    transition:
+      opacity tokens.$navigation-rail-effects-duration tokens.$navigation-rail-effects-easing,
+      transform tokens.$navigation-rail-expand-duration tokens.$navigation-rail-expand-easing;
+  }
+
+  &--expanded &__fab-label,
+  &.navigation-rail--expanded &__fab-label {
+    display: inline;
+    text-align: start;
+    flex: 0 1 auto;
+  }
+
+  &__toggle {
+    @include rail.navigation-rail-toggle;
+
+    &:focus,
+    &:focus-visible {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    i,
+    .navigation-rail__icon-classic {
+      transition: opacity tokens.$navigation-rail-hover-duration motion.$md-sys-motion-easing-standard;
+    }
+  }
+
+  &__toggle-icon--expand {
+    display: block;
+  }
+  &__toggle-icon--collapse {
+    display: none !important;
+  }
+  &--expanded &__toggle-icon--expand {
+    display: none !important;
+  }
+  &--expanded &__toggle-icon--collapse {
+    display: block !important;
+  }
+
+  &__items {
+    @include rail.navigation-rail-items-wrapper;
+  }
+
+  &__items-shell {
+    @include rail.navigation-rail-items-shell;
+  }
+
+  &__main {
+    @include rail.navigation-rail-main;
+  }
+
+  &__footer {
+    @include rail.navigation-rail-footer;
+  }
+
+  &__divider {
+    @include rail.navigation-rail-divider;
+  }
+
+  &__item {
+    @include rail.navigation-rail-item;
+
+    html[data-theme='dark'] &:hover:not(.navigation-rail__item--active) .navigation-rail__pill {
+      background-color: tokens.$navigation-rail-hover-bg-dark;
+    }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme='light']) &:hover:not(.navigation-rail__item--active) .navigation-rail__pill {
+        background-color: tokens.$navigation-rail-hover-bg-dark;
+      }
+    }
+
+    &--active {
+      .navigation-rail__pill {
+        @include rail.navigation-rail-pill--active;
+      }
+
+      .navigation-rail__label {
+        color: tokens.$navigation-rail-label-active;
+        font-weight: tokens.$navigation-rail-label-font-weight-active;
+      }
+      .navigation-rail__icon-outlined {
+        display: none;
+      }
+      .navigation-rail__icon-filled {
+        display: block;
+        color: tokens.$navigation-rail-icon-active;
+      }
+      .navigation-rail__icon-classic {
+        color: tokens.$navigation-rail-icon-active;
+      }
+    }
+  }
+
+  /* Entrée sélection M3E : même keyframes Bar + Rail (scaleX 0.4→1 + fade 1/5) */
+  &__item--active.navigation-rail__item--pill-anim .navigation-rail__pill {
+    @include rail.navigation-rail-pill--anim-enter;
+  }
+
+  &__item-content {
+    @include rail.navigation-rail-item-content;
+  }
+
+  &__icon {
+    @include rail.navigation-rail-icon-wrapper;
+  }
+
+  &__pill {
+    @include rail.navigation-rail-pill;
+  }
+
+  /* Expanded : icon + label au-dessus de l’indicateur */
+  &--expanded &__icon,
+  &--expanded &__label,
+  &.navigation-rail--expanded &__icon,
+  &.navigation-rail--expanded &__label {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__icon-outlined,
+  &__icon-filled {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: tokens.$navigation-rail-icon-size;
+    height: tokens.$navigation-rail-icon-size;
+    transition: opacity tokens.$navigation-rail-effects-duration tokens.$navigation-rail-effects-easing;
+    z-index: 1;
+  }
+
+  &__icon-outlined {
+    display: block;
+    fill: none;
+    stroke: tokens.$navigation-rail-label-inactive;
+    stroke-width: 2;
+  }
+
+  &__icon-filled {
+    display: none;
+    fill: tokens.$navigation-rail-icon-active;
+    stroke: none;
+  }
+
+  &__icon-classic {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: tokens.$navigation-rail-icon-size;
+    height: tokens.$navigation-rail-icon-size;
+    color: tokens.$navigation-rail-label-inactive;
+    transition: color tokens.$navigation-rail-effects-duration tokens.$navigation-rail-effects-easing;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  &__label {
+    @include rail.navigation-rail-label;
+  }
+}
+
+.navigation-rail-panel,
+.navigation-rail .active-page {
+  display: none;
+
+  &.navigation-rail-panel--active,
+  &.show {
+    display: block;
+  }
+}
+
+.navigation-rail-stack {
+  @include rail.navigation-rail-stack;
+
+  > .navigation-rail__scrollbar {
+    @include rail.navigation-rail-scrollbar;
+
+    .navigation-rail__scrollbar-thumb {
+      @include rail.navigation-rail-scrollbar-thumb;
+    }
+
+    &.is-hovering .navigation-rail__scrollbar-thumb,
+    &.is-dragging .navigation-rail__scrollbar-thumb,
+    .navigation-rail__scrollbar-thumb:hover {
+      @include rail.navigation-rail-scrollbar-thumb-active;
+    }
+
+    &.is-dragging .navigation-rail__scrollbar-thumb {
+      cursor: grabbing;
+    }
+  }
+}
+
+.navigation-rail-container {
+  --k3-navigation-rail-width: #{tokens.$navigation-rail-width-collapsed};
+  /*
+   * Padding en valeur explicite (pas seulement via var) : transitionner
+   * `padding-inline-start: var(--x)` quand `--x` change laisse Chrome
+   * parfois bloqué à l’ancienne valeur → rail 256px + pad 96px = décrochage
+   * (header z-1100 recouvre le haut-droit du rail).
+   */
+  padding-inline-start: #{tokens.$navigation-rail-width-collapsed};
+  transition: padding-inline-start tokens.$navigation-rail-expand-duration tokens.$navigation-rail-expand-easing;
+
+  &:has(.navigation-rail--expanded) {
+    --k3-navigation-rail-width: #{tokens.$navigation-rail-width-expanded};
+    padding-inline-start: #{tokens.$navigation-rail-width-expanded};
+  }
+}
+
+body:has(.navigation-rail-container) {
+  --k3ui-rail-inset-left-default: #{tokens.$navigation-rail-width-collapsed};
+}
+
+body:has(.navigation-rail-container .navigation-rail--expanded) {
+  --k3ui-rail-inset-left-default: #{tokens.$navigation-rail-width-expanded};
+}

@@ -1,0 +1,97 @@
+/**
+ * @file notch.token.scss
+ * @description Tokens pour la primitive d'encoche Material You (concave corner + pastille)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'radius.token' as radius;
+@use 'motion.token' as motion;
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+/** Taille des quartiers SVG de l'encoche (= --R / $rounder-size réf. qt-rounder) */
+$notch-rounder-size: 20px !default;
+
+/**
+ * @deprecated Conservé pour compat — la géométrie qt-rounder utilise `-(size)` exact, pas d’overlap.
+ */
+$notch-rounder-overlap: 0px !default;
+
+/** Hauteur minimale de la pastille (= --tab-h référence MYNT) */
+$notch-label-height: 40px !default;
+
+/**
+ * Épaisseur pastille sur les bords (moitié des coins) :
+ * - haut/bas  → hauteur
+ * - gauche/droite → largeur (profondeur dans la surface)
+ */
+$notch-label-height-edge: 20px !default;
+
+/** Rounders des bords — même ratio MYNT que les coins (R = tab/2) */
+$notch-rounder-size-edge: 10px !default;
+
+/** Rayon intérieur pastille bord (= épaisseur / 2) */
+$notch-label-radius-edge: 10px !default;
+
+/** Padding horizontal interne de la pastille */
+$notch-label-padding-x: 14px !default;
+
+/** Réserve padding hôte — bords haut/bas */
+$notch-edge-host-reserve-y: 26px !default;
+
+/** Réserve padding hôte — bords gauche/droite */
+$notch-edge-host-reserve-x: 28px !default;
+
+/**
+ * Rayon unique pastille + surface hôte (= --TR référence MYNT).
+ * Doit être IDENTIQUE au border-radius de la surface (alert/quote/card),
+ * sinon un croissant du fond surface reste visible au coin externe.
+ */
+$notch-label-radius: 20px !default;
+
+/** Alias explicite du rayon d’angle partagé (réf. --TR) */
+$notch-corner-radius: $notch-label-radius !default;
+
+/** Largeur du float spacer coin haut (référence .card--tl / .card--tr ::before) */
+$notch-float-width: 38px !default;
+
+/** Hauteur du float spacer coin haut */
+$notch-float-height: 52px !default;
+
+/** Hauteur minimale de la surface hôte (quote, card, etc.) */
+$notch-host-min-height: 100px !default;
+
+/** Padding interne de la surface hôte */
+$notch-host-padding: 20px !default;
+
+/** Espace bas réservé sous le texte pour le chevauchement de la pastille auteur */
+$notch-host-author-reserve: 28px !default;
+
+/** Interligne de la surface hôte */
+$notch-host-line-height: 1.75 !default;
+
+// ============================================================================
+// ANIMATION
+// ============================================================================
+
+/** Durée d'animation de la largeur de la pastille */
+$notch-label-width-duration: 0.4s !default;
+
+/** Courbe d'animation */
+$notch-label-width-easing: motion.$md-sys-motion-easing-emphasized-decelerate !default;
+
+// ============================================================================
+// COULEURS (CSS custom properties)
+// ============================================================================
+
+/** Couleur de remplissage des SVG — doit correspondre au fond derrière le conteneur */
+$notch-fill: var(--notch-fill, var(--md-sys-color-background)) !default;
+
+/** Fond de la pastille — aligné sur --notch-fill (fond parent, référence MYNT) */
+$notch-label-bg: var(--notch-label-bg, var(--notch-fill, var(--md-sys-color-background))) !default;
+
+/** Couleur du texte de la pastille */
+$notch-label-color: var(--notch-label-color, var(--md-sys-color-on-surface)) !default;

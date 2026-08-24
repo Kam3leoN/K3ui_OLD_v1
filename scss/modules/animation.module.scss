@@ -1,0 +1,562 @@
+/**
+ * Animation Modules
+ * Définit les classes utilitaires pour les animations du système de design
+ */
+
+@use '../tokens/animation.token' as animation;
+@use '../tokens/motion.token' as motion;
+@use '../mixins/animation.mixin' as animation-mixin;
+
+/**
+ * Conteneur d'animation avec gestion des états
+ */
+.animation-container {
+  position: relative;
+  overflow: hidden;
+  
+  // État de chargement
+  &.loading {
+    @include animation-mixin.pulse-animation;
+  }
+  
+  // État d'erreur
+  &.error {
+    @include animation-mixin.shake-animation;
+  }
+  
+  // État de succès
+  &.success {
+    @include animation-mixin.popup-animation;
+  }
+}
+
+/**
+ * Élément animé avec transitions fluides
+ */
+.animated-element {
+  transition:
+    transform animation.$animation-duration-normal motion.$md-sys-motion-expressive-effects-default-easing,
+    opacity animation.$animation-duration-normal motion.$md-sys-motion-expressive-effects-default-easing;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+/**
+ * Indicateur de chargement avec rotation
+ */
+.loading-spinner {
+  @include animation-mixin.spin-animation;
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  border-top-color: transparent;
+}
+
+/**
+ * Bouton avec effet de pulsation
+ */
+.pulse-button {
+  @include animation-mixin.pulse-animation;
+  
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+/**
+ * Notification avec effet de glissement (animation décorative lente)
+ */
+.notification {
+  @include animation-mixin.slide-down-animation;
+  
+  &.notification-up {
+    @include animation-mixin.slide-up-animation;
+  }
+}
+
+/**
+ * Carte avec effet de flottement
+ */
+.floating-card {
+  @include animation-mixin.float-animation;
+  
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+/**
+ * Texte avec effet de dégradé animé
+ */
+.gradient-text {
+  @include animation-mixin.gradient-animation;
+  font-weight: bold;
+  background: linear-gradient(
+    270deg,
+    animation.$animation-gradient-color-1,
+    animation.$animation-gradient-color-2 25.52%,
+    animation.$animation-gradient-color-3 50%,
+    animation.$animation-gradient-color-4 76.04%,
+    animation.$animation-gradient-color-1
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: animation.$animation-gradient-position auto;
+}
+
+/**
+ * Icône avec rotation ciblée
+ */
+.icon-spin-right {
+  @include animation-mixin.spin-to-right-fast-animation;
+}
+
+.icon-spin-left {
+  @include animation-mixin.spin-to-left-fast-animation;
+}
+
+/**
+ * Élément avec effet de secousse
+ */
+.shake-element {
+  @include animation-mixin.shake-animation;
+  
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+/**
+ * Élément avec effet de tremblement
+ */
+.rumble-element {
+  @include animation-mixin.rumble-animation;
+  
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+/**
+ * Élément avec effet de glitch
+ */
+.glitch-element {
+  @include animation-mixin.glitch-animation;
+  position: relative;
+  
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+/**
+ * Élément avec effet de battement de cœur
+ */
+.heartbeat-element {
+  @include animation-mixin.heartbeat-animation;
+  
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+/**
+ * Élément avec effet de ping
+ */
+.ping-element {
+  @include animation-mixin.ping-animation;
+  
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+/**
+ * Élément avec effet de balayage
+ */
+.scan-element {
+  @include animation-mixin.scan-animation;
+  position: relative;
+  
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+/**
+ * Élément avec effet de secoueur
+ */
+.shaker-element {
+  @include animation-mixin.shaker-animation;
+  
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+// Animation de rebond
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(animation.$animation-bounce-height);
+  }
+  60% {
+    transform: translateY(animation.$animation-bounce-height-small);
+  }
+}
+
+.bounce {
+  @include animation-mixin.bounce-animation;
+}
+
+
+// Animation de flottement
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(animation.$animation-float-height);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.float {
+  @include animation-mixin.float-animation;
+}
+
+// Animation de vol
+@keyframes fly {
+  0%, to {
+    transform: translateY(animation.$animation-fly-height);
+  }
+  50% {
+    transform: translateY(0);
+  }
+}
+
+.fly {
+  @include animation-mixin.fly-animation;
+}
+
+// Effet de glitch
+@keyframes glitch {
+  @each $percentage, $clip in animation.$animation-glitch-clip-values {
+    #{$percentage} {
+      clip: $clip;
+    }
+  }
+}
+
+.glitch {
+  @include animation-mixin.glitch-animation;
+}
+
+// Animation de dégradé
+@keyframes gradient {
+  to {
+    background-position: animation.$animation-gradient-position;
+  }
+}
+
+.gradient {
+  -webkit-text-fill-color: transparent;
+  background: linear-gradient(
+    270deg,
+    animation.$animation-gradient-color-1,
+    animation.$animation-gradient-color-2 25.52%,
+    animation.$animation-gradient-color-3 50%,
+    animation.$animation-gradient-color-4 76.04%,
+    animation.$animation-gradient-color-1
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-size: animation.$animation-gradient-position auto;
+  animation: gradient 3s linear infinite;
+}
+
+// Animation de pulsation
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: animation.$animation-opacity-visible;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: animation.$animation-opacity-pulse;
+  }
+}
+
+.pulse {
+  @include animation-mixin.pulse-animation;
+}
+
+// Animation de secousse
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-3px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(3px);
+  }
+}
+
+.shake {
+  @include animation-mixin.shake-animation;
+}
+
+// Animation de rotation
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  @include animation-mixin.spin-animation;
+}
+
+// Animation de glissement vers le bas
+@keyframes slide-down {
+  from {
+    transform: translateY(-100%);
+    opacity: animation.$animation-opacity-transparent;
+  }
+  to {
+    transform: translateY(0);
+    opacity: animation.$animation-opacity-visible;
+  }
+}
+
+.slide-down {
+  @include animation-mixin.slide-down-animation;
+}
+
+// Animation de glissement vers le haut
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: animation.$animation-opacity-transparent;
+  }
+  to {
+    transform: translateY(0);
+    opacity: animation.$animation-opacity-visible;
+  }
+}
+
+.slide-up {
+  @include animation-mixin.slide-up-animation;
+}
+
+
+
+// Animation de rebondissement vers le haut
+@keyframes bounce-up {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-30px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.bounce-up {
+  animation: bounce-up animation.$animation-duration-normal animation.$animation-easing-ease-in-out;
+}
+
+// Animation de rebondissement vers le bas
+@keyframes bounce-down {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(30px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.bounce-down {
+  animation: bounce-down animation.$animation-duration-normal animation.$animation-easing-ease-in-out;
+}
+
+// Animation de rotation vers la droite
+@keyframes spin-right {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin-right {
+  animation: spin-right animation.$animation-duration-normal linear infinite;
+}
+
+// Animation de rotation vers la gauche
+@keyframes spin-left {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.spin-left {
+  animation: spin-left animation.$animation-duration-normal linear infinite;
+}
+
+// Animation de rotation rapide vers la droite
+@keyframes spin-right-fast {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin-right-fast {
+  animation: spin-right-fast animation.$animation-duration-fast linear infinite;
+}
+
+// Animation de rotation rapide vers la gauche
+@keyframes spin-left-fast {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.spin-left-fast {
+  animation: spin-left-fast animation.$animation-duration-fast linear infinite;
+}
+
+// Animation de tremblement
+@keyframes rumble {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-3px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(3px);
+  }
+}
+
+.rumble {
+  animation: rumble animation.$animation-duration-normal animation.$animation-easing-ease-in-out;
+}
+
+// Animation de battement de cœur
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.3);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.3);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+
+.heartbeat {
+  animation: heartbeat animation.$animation-duration-slow animation.$animation-easing-ease-in-out infinite;
+}
+
+// Animation de ping
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.ping {
+  animation: ping animation.$animation-duration-normal animation.$animation-easing-ease-in-out;
+}
+
+// Animation de balayage
+@keyframes scan {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.scan {
+  animation: scan animation.$animation-duration-normal animation.$animation-easing-ease-in-out;
+}
+
+// Animation de secoueur
+@keyframes shaker {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-3px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(3px);
+  }
+}
+
+.shaker {
+  animation: shaker animation.$animation-duration-normal animation.$animation-easing-ease-in-out;
+}
+
+// Animation de popup
+@keyframes popup {
+  0% {
+    transform: scale(0);
+    opacity: animation.$animation-opacity-transparent;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: animation.$animation-opacity-visible;
+  }
+}
+
+.popup {
+  animation: popup animation.$animation-duration-normal animation.$animation-easing-ease-in-out;
+} 

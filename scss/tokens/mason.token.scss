@@ -1,0 +1,33 @@
+/**
+ * @fileoverview Tokens pour le composant Mason (layout Masonry minimal K3UI)
+ * @description Conteneur relatif, items en position absolue ; coordination animation avec IsoFilter (FLIP + hauteur)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+// ============================================================================
+// CONTENEUR
+// ============================================================================
+
+/** Hauteur minimale du conteneur avant le premier layout (évite un “saut” visuel) */
+$mason-root-min-height: 1px !default;
+
+// ============================================================================
+// VARIABLE CSS — durée animation (IsoFilter / FLIP), surchargeable en inline
+// ============================================================================
+
+/** Valeur par défaut de --k3ui-mason-flip-duration (alignée sur motion / IsoFilter) */
+$mason-flip-duration-default: 350ms !default;
+
+/** Easing transitions Mason + IsoFilter sur le conteneur */
+$mason-transition-easing: ease !default;
+
+// ============================================================================
+// MOTION — items (transform + opacity) et conteneur (height)
+// ============================================================================
+
+/** Durée de transition pour transform / opacity des items en mode animate */
+$mason-item-flip-duration: $mason-flip-duration-default !default;
+
+/** Durée de transition de hauteur du conteneur (coordination IsoFilter) */
+$mason-container-height-duration: $mason-flip-duration-default !default;

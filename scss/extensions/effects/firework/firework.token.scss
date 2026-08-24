@@ -1,0 +1,29 @@
+/**
+ * @fileoverview Tokens de design pour Firework
+ * @description Variables de design pour le composant feux d'artifice
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+// ============================================================================
+// Z-INDEX
+// ============================================================================
+
+/** Z-index par défaut (derrière le contenu) */
+$firework-z-index: -1 !default;
+
+/** Z-index devant le contenu (sous appbar/dialog, sans bloquer les interactions) */
+$firework-z-index-front: 450 !default;
+
+// ============================================================================
+// CANVAS
+// ============================================================================
+
+/** Mode de fusion des canvas */
+$firework-blend-mode: lighten !default;
+
+/** Fond du conteneur canvas */
+$firework-canvas-bg: #000 !default;
+
+/** Fond transparent (superposition sur la page) */
+$firework-canvas-bg-transparent: transparent !default;

@@ -1,0 +1,12 @@
+@use './barcode.mixin' as barcode-mixin;
+
+.barcode,
+k3ui-barcode {
+  @include barcode-mixin.barcode-container;
+  @include barcode-mixin.barcode-preview;
+
+  .barcode__svg,
+  &__svg {
+    @include barcode-mixin.barcode-svg;
+  }
+}

@@ -1,0 +1,103 @@
+/**
+ * @fileoverview Mixins pour Guideline (Do / Don't)
+ * @description Mixins réutilisables pour les cartes de bonnes pratiques MD3
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/guideline.token' as tokens;
+@use '../tokens/layout.token' as layout;
+@use '../mixins/typography.mixin' as typography;
+
+/**
+ * Grille responsive Do / Don't (2 colonnes desktop, 1 colonne mobile)
+ */
+@mixin guideline-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: tokens.$guideline-grid-gap;
+    width: 100%;
+
+    @media (max-width: layout.$breakpoint-s) {
+        grid-template-columns: 1fr;
+    }
+}
+
+/**
+ * Conteneur visuel : empile le bloc média (haut) et le bandeau label (bas)
+ * avec une séparation entre les deux blocs.
+ */
+@mixin guideline-root {
+    display: flex;
+    flex-direction: column;
+    gap: tokens.$guideline-visual-gap;
+}
+
+/**
+ * Zone média (image ou contenu de démonstration) — bloc arrondi et bordé.
+ * @param {Color} $bg - Couleur de fond de la zone média
+ */
+@mixin guideline-media($bg: tokens.$guideline-do-media-bg) {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: tokens.$guideline-media-aspect-ratio;
+    padding: tokens.$guideline-media-padding;
+    overflow: hidden;
+    background-color: $bg;
+    // Pattern MD3 groupé : coins externes (haut) larges, coins internes (bas, face au gap) à 4px
+    border-radius: tokens.$guideline-radius-outer tokens.$guideline-radius-outer
+        tokens.$guideline-radius-inner tokens.$guideline-radius-inner;
+
+    img,
+    picture,
+    video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+/**
+ * Bandeau Do / Don't / Caution (icône + label) — bloc arrondi et bordé,
+ * séparé du bloc média par un espace.
+ * @param {Color} $fg - Couleur du texte et de l'icône
+ * @param {Color} $bg - Couleur de fond du bandeau
+ */
+@mixin guideline-label($fg, $bg) {
+    display: flex;
+    align-items: center;
+    gap: tokens.$guideline-label-icon-gap;
+    width: 100%;
+    padding: tokens.$guideline-label-padding-y tokens.$guideline-label-padding-x;
+    background-color: $bg;
+    color: $fg;
+    // Pattern MD3 groupé : coins internes (haut, face au gap) à 4px, coins externes (bas) larges
+    border-radius: tokens.$guideline-radius-inner tokens.$guideline-radius-inner
+        tokens.$guideline-radius-outer tokens.$guideline-radius-outer;
+    font-family: tokens.$guideline-label-font-family;
+    font-size: tokens.$guideline-label-font-size;
+    font-weight: tokens.$guideline-label-font-weight;
+    line-height: tokens.$guideline-label-line-height;
+    letter-spacing: tokens.$guideline-label-letter-spacing;
+
+    .k3ui-icon,
+    .icon {
+        flex-shrink: 0;
+        width: tokens.$guideline-label-icon-size;
+        height: tokens.$guideline-label-icon-size;
+        font-size: tokens.$guideline-label-icon-size;
+    }
+}
+
+/**
+ * Texte explicatif sous la carte
+ */
+@mixin guideline-text {
+    margin: tokens.$guideline-text-margin-top 0 0;
+    color: tokens.$guideline-text-color;
+    @include typography.typography('body-medium');
+}

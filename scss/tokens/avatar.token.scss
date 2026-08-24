@@ -1,0 +1,235 @@
+/**
+ * @fileoverview Tokens de design pour Avatar
+ * @description Variables de design pour le composant Avatar Material Design 3
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'sass:map';
+@use 'color.token' as color;
+@use 'spacing.token' as spacing;
+@use 'typography.token' as typography;
+@use 'radius.token' as radius;
+@use 'elevation.token' as elevation;
+@use 'motion.token' as motion;
+
+// ============================================================================
+// TAILLES
+// ============================================================================
+
+/**
+ * Map des tailles d'avatar
+ */
+$avatar-sizes: (
+  'xs': 20px,
+  'sm': 28px,
+  'md': 36px,
+  'lg': 48px,
+  'xl': 64px,
+  '2xl': 80px,
+  '3xl': 96px,
+  '4xl': 128px,
+  '5xl': 160px
+) !default;
+
+/**
+ * Map des tailles de police pour les initiales
+ */
+$avatar-font-sizes: (
+  'xs': 0.5rem,     // 8px
+  'sm': 0.625rem,   // 10px
+  'md': 0.75rem,    // 12px
+  'lg': 1rem,       // 16px
+  'xl': 1.25rem,    // 20px
+  '2xl': 1.5rem,    // 24px
+  '3xl': 1.875rem,  // 30px
+  '4xl': 2.25rem,   // 36px
+  '5xl': 3rem       // 48px
+) !default;
+
+// ============================================================================
+// FORMES
+// ============================================================================
+
+/**
+ * Rayons de bordure pour les formes
+ */
+$avatar-radius-circle: 50% !default;
+$avatar-radius-rounded: 0.5rem !default;
+$avatar-radius-square: 0.25rem !default;
+
+// ============================================================================
+// COULEURS
+// ============================================================================
+
+/**
+ * Palettes de couleurs pour les avatars
+ */
+$avatar-color-blue: map.get(color.$blue, 'base') !default;
+$avatar-color-red: map.get(color.$red, 'base') !default;
+$avatar-color-green: map.get(color.$green, 'base') !default;
+$avatar-color-purple: map.get(color.$purple, 'base') !default;
+$avatar-color-orange: map.get(color.$orange, 'base') !default;
+$avatar-color-gray: map.get(color.$grey, 'base') !default;
+
+/**
+ * Couleurs de texte pour les avatars
+ */
+$avatar-text-color: #ffffff !default;
+
+/**
+ * Couleur de bordure pour les variants outlined
+ */
+$avatar-border-color: rgba(0, 0, 0, 0.12) !default;
+
+// ============================================================================
+// BADGES / STATUS INDICATORS
+// ============================================================================
+
+/**
+ * Taille du badge de statut (diamètre)
+ * @default 20px
+ */
+$avatar-status-size: 20px !default;
+
+/**
+ * Espacement autour du badge (gap)
+ * @default 5px
+ */
+$avatar-status-gap: 5px !default;
+
+/**
+ * Décalage depuis la circonférence de l'avatar
+ * @default 0px
+ */
+$avatar-status-offset: 0px !default;
+
+/**
+ * Angle de position du badge sur la circonférence (en degrés)
+ * @default 125deg
+ */
+$avatar-status-angle: 125deg !default;
+
+/**
+ * Tailles de badge selon la taille d'avatar (pour compatibilité)
+ */
+$avatar-badge-sizes: (
+  'xs': 6px,
+  'sm': 8px,
+  'md': 10px,
+  'lg': 12px,
+  'xl': 14px,
+  '2xl': 16px,
+  '3xl': 20px,
+  '4xl': 24px,
+  '5xl': 28px
+) !default;
+
+/**
+ * Couleurs des badges de statut
+ */
+$avatar-badge-online: rgb(0, 255, 135) !default;
+$avatar-badge-offline: slategrey !default;
+$avatar-badge-idle: rgb(255, 185, 51) !default;
+$avatar-badge-dnd: rgb(255, 40, 80) !default;
+
+/**
+ * Couleurs de compatibilité (anciennes valeurs)
+ */
+$avatar-badge-busy: $avatar-badge-dnd !default;
+$avatar-badge-away: $avatar-badge-idle !default;
+
+/**
+ * Épaisseur de bordure du badge (désactivée pour le nouveau système)
+ */
+$avatar-badge-border-width: 0px !default;
+$avatar-badge-border-color: transparent !default;
+
+// ============================================================================
+// ESPACEMENTS
+// ============================================================================
+
+/**
+ * Padding pour les avatars avec initiales
+ */
+$avatar-padding: spacing.$md-sys-spacing-xs !default;
+
+// ============================================================================
+// ÉLÉVATION
+// ============================================================================
+
+/**
+ * Élévation pour le variant elevated
+ */
+$avatar-elevation: elevation.$md-sys-elevation-level2 !default;
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+/**
+ * Durée de transition
+ */
+$avatar-transition-duration: motion.$md-sys-motion-duration-entering !default;
+
+/**
+ * Courbe d'animation
+ */
+$avatar-transition-easing: motion.$md-sys-motion-easing-standard !default;
+
+/**
+ * Transition complète (sans `all`)
+ */
+$avatar-transition:
+  opacity $avatar-transition-duration $avatar-transition-easing,
+  transform $avatar-transition-duration $avatar-transition-easing,
+  box-shadow $avatar-transition-duration $avatar-transition-easing,
+  color $avatar-transition-duration $avatar-transition-easing,
+  background-color $avatar-transition-duration $avatar-transition-easing,
+  border-color $avatar-transition-duration $avatar-transition-easing !default;
+
+// ============================================================================
+// GROUPES D'AVATARS
+// ============================================================================
+
+/**
+ * Décalage pour l'empilement des avatars (aligné sur Stack overlap)
+ */
+$avatar-group-offset: 12px !default;
+
+/**
+ * Z-index de base pour les groupes (géré par Stack en JS)
+ */
+$avatar-group-z-index-base: 1 !default;
+
+// ============================================================================
+// FONCTIONS UTILITAIRES
+// ============================================================================
+
+/**
+ * Fonction pour récupérer une taille d'avatar
+ * @param {string} $size - Taille (xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl)
+ * @return {string} Valeur de taille
+ */
+@function avatar-size($size) {
+  @return map.get($avatar-sizes, $size);
+}
+
+/**
+ * Fonction pour récupérer une taille de police
+ * @param {string} $size - Taille (xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl)
+ * @return {string} Valeur de taille de police
+ */
+@function avatar-font-size($size) {
+  @return map.get($avatar-font-sizes, $size);
+}
+
+/**
+ * Fonction pour récupérer une taille de badge
+ * @param {string} $size - Taille (xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl)
+ * @return {string} Valeur de taille de badge
+ */
+@function avatar-badge-size($size) {
+  @return map.get($avatar-badge-sizes, $size);
+}
+

@@ -1,0 +1,32 @@
+/**
+ * @fileoverview Tokens de design pour ColorPicker
+ * @description Variables Material Design 3 pour le sélecteur de couleur
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+$color-picker-preview-size: 64px !default;
+$color-picker-area-aspect: 1.5 !default;
+$color-picker-area-max-height: 140px !default;
+$color-picker-handle-size: 20px !default;
+$color-picker-hue-height: 12px !default;
+$color-picker-hue-handle-size: 16px !default;
+
+// ============================================================================
+// BORDERS & RADIUS
+// ============================================================================
+
+$color-picker-border-radius: 12px !default;
+$color-picker-hue-radius: 6px !default;
+
+// ============================================================================
+// ESPACEMENTS
+// ============================================================================
+
+$color-picker-gap: 1rem !default;
+$color-picker-margin-bottom: 1.5rem !default;
+$color-picker-values-gap: 0.5rem !default;

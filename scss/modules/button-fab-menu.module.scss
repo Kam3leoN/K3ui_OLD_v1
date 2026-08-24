@@ -1,0 +1,524 @@
+/**
+ * @fileoverview Module ButtonFabMenu Material Design 3 Expressive
+ * @description FAB Speed Dial — FAB + menu de pills avec animations spring
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/button-fab-menu.token' as bfm;
+@use '../mixins/button-fab-menu.mixin' as mix;
+@use '../mixins/floating-chrome.mixin' as fc;
+
+// ============================================================================
+// CONTAINER
+// ============================================================================
+
+.button-fab-menu,
+k3ui-button-fab-menu {
+  @include mix.button-fab-menu-container;
+}
+
+// ============================================================================
+// SCRIM
+// ============================================================================
+
+.button-fab-menu__scrim {
+  @include mix.button-fab-menu-scrim;
+  border: none !important;
+  outline: none !important;
+
+  &.button-fab-menu__scrim--on {
+    opacity: 1;
+    /* Laisser passer les clics pour interagir avec le reste de la page (fermeture uniquement via le trigger) */
+    pointer-events: none;
+  }
+}
+
+// ============================================================================
+// FAB WRAP
+// ============================================================================
+
+.button-fab-menu__fab {
+  @include mix.button-fab-menu-fab-wrap;
+}
+
+// ============================================================================
+// LIST
+// ============================================================================
+
+.button-fab-menu__list {
+  @include mix.button-fab-menu-list;
+}
+
+// ============================================================================
+// ITEM (wrapper animé)
+// ============================================================================
+
+.button-fab-menu__item {
+  @include mix.button-fab-menu-item;
+
+  &.button-fab-menu__item--closing {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Ouverture M3 : FastEffects (opacité) + FastSpatial (translation), stagger 35ms */
+.button-fab-menu__item--opening {
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateX(var(--button-fab-menu-dx));
+  animation:
+    button-fab-menu-item-fade-in bfm.$button-fab-menu-item-effects-duration bfm.$button-fab-menu-item-effects-easing forwards,
+    button-fab-menu-item-slide-in bfm.$button-fab-menu-item-spatial-duration bfm.$button-fab-menu-item-spatial-easing forwards;
+  animation-delay: var(--button-fab-menu-item-delay, 0ms);
+}
+
+.button-fab-menu__item--open {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+/* Fermeture M3 : même springs, stagger 25ms (item éloigné du FAB en premier) */
+.button-fab-menu__item--closing {
+  pointer-events: none;
+  animation:
+    button-fab-menu-item-fade-out bfm.$button-fab-menu-item-effects-duration bfm.$button-fab-menu-item-effects-easing forwards,
+    button-fab-menu-item-slide-out bfm.$button-fab-menu-item-spatial-duration bfm.$button-fab-menu-item-spatial-easing forwards;
+  animation-delay: var(--button-fab-menu-item-delay, 0ms);
+}
+
+@keyframes button-fab-menu-item-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes button-fab-menu-item-slide-in {
+  from { transform: translateX(var(--button-fab-menu-dx)); }
+  to { transform: translateX(0); }
+}
+
+@keyframes button-fab-menu-item-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes button-fab-menu-item-slide-out {
+  from { transform: translateX(0); }
+  to { transform: translateX(var(--button-fab-menu-dx)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button-fab-menu__item--opening,
+  .button-fab-menu__item--closing {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+  }
+}
+
+// ============================================================================
+// PILL
+// ============================================================================
+
+.button-fab-menu__pill {
+  @include mix.button-fab-menu-pill;
+
+  &:active {
+    transform: scale(0.96);
+    transition: transform bfm.$button-fab-menu-item-effects-duration bfm.$button-fab-menu-item-effects-easing;
+  }
+}
+
+.button-fab-menu__pill--rev {
+  flex-direction: row-reverse;
+  padding: 0 18px 0 26px;
+}
+
+.button-fab-menu__pill-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: bfm.$button-fab-menu-pill-icon-color;
+  @include mix.button-fab-menu-icon-inherit;
+}
+
+// ============================================================================
+// FAB BUTTON — réutilise le composant ButtonFab (.button-fab dans __fab)
+// ============================================================================
+
+.button-fab-menu__fab .button-fab {
+  flex-shrink: 0;
+}
+
+.button-fab-menu__fab .button-fab .button-fab__btn {
+  background: bfm.$button-fab-menu-fab-bg;
+  color: bfm.$button-fab-menu-fab-color;
+  box-shadow: bfm.$button-fab-menu-fab-shadow;
+  @include mix.button-fab-menu-icon-inherit;
+}
+
+/* État ouvert (menu) : morph carré → rond (bounce M3) + léger fond */
+.button-fab-menu .button-fab--rounded-state .button-fab__btn {
+  background: color-mix(in srgb, bfm.$button-fab-menu-fab-bg 95%, white);
+}
+
+.button-fab-menu__fab .button-fab .button-fab__btn:active {
+  transform: none;
+  transition: none;
+}
+
+/* Pas de contour focus-visible au clic (anneau disgracieux) */
+.button-fab-menu__fab .button-fab .button-fab__btn:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+// ============================================================================
+// ICÔNES + / × (dans le FAB ButtonFab)
+// ============================================================================
+
+.button-fab-menu__fab .button-fab .button-fab__icon {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.button-fab-menu__icon-rotator {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(0deg);
+  transform-origin: center;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* Ouverture : rotation rebondissante + → × (overshoot/wiggle façon CodePen) */
+.button-fab-menu__icon-rotator--open {
+  animation: button-fab-menu-icon-plus-in bfm.$button-fab-menu-icon-plus-duration bfm.$button-fab-menu-icon-plus-easing forwards;
+}
+
+/* Fermeture : rotation rebondissante × → + */
+.button-fab-menu__icon-rotator--closing {
+  animation: button-fab-menu-icon-plus-out bfm.$button-fab-menu-icon-plus-duration bfm.$button-fab-menu-icon-plus-easing forwards;
+}
+
+[dir='rtl'] .button-fab-menu__icon-rotator--open,
+.button-fab-menu[dir='rtl'] .button-fab-menu__icon-rotator--open {
+  animation-name: button-fab-menu-icon-plus-in-rtl;
+}
+
+[dir='rtl'] .button-fab-menu__icon-rotator--closing,
+.button-fab-menu[dir='rtl'] .button-fab-menu__icon-rotator--closing {
+  animation-name: button-fab-menu-icon-plus-out-rtl;
+}
+
+@keyframes button-fab-menu-icon-plus-in {
+  0%   { transform: rotate(0) scale(1); }
+  20%  { transform: rotate(60deg) scale(0.93); }
+  55%  { transform: rotate(35deg) scale(0.97); }
+  80%  { transform: rotate(48deg) scale(0.94); }
+  100% { transform: rotate(45deg) scale(0.95); }
+}
+
+@keyframes button-fab-menu-icon-plus-out {
+  0%   { transform: rotate(45deg) scale(0.95); }
+  20%  { transform: rotate(-15deg) scale(1); }
+  55%  { transform: rotate(10deg) scale(1); }
+  80%  { transform: rotate(-3deg) scale(1); }
+  100% { transform: rotate(0) scale(1); }
+}
+
+@keyframes button-fab-menu-icon-plus-in-rtl {
+  0%   { transform: rotate(0) scale(1); }
+  20%  { transform: rotate(-60deg) scale(0.93); }
+  55%  { transform: rotate(-35deg) scale(0.97); }
+  80%  { transform: rotate(-48deg) scale(0.94); }
+  100% { transform: rotate(-45deg) scale(0.95); }
+}
+
+@keyframes button-fab-menu-icon-plus-out-rtl {
+  0%   { transform: rotate(-45deg) scale(0.95); }
+  20%  { transform: rotate(15deg) scale(1); }
+  55%  { transform: rotate(-10deg) scale(1); }
+  80%  { transform: rotate(3deg) scale(1); }
+  100% { transform: rotate(0) scale(1); }
+}
+
+.button-fab-menu__icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Bascule explicite (xmark / cross) quand fabIcon !== add ou fabCloseIcon défini */
+.button-fab-menu__icon-rotator--swap {
+  animation: none !important;
+  transform: none !important;
+}
+
+.button-fab-menu__icon-rotator--swap .button-fab-menu__icon--plus,
+.button-fab-menu__icon-rotator--swap .button-fab-menu__icon--close {
+  transition:
+    opacity bfm.$button-fab-menu-icon-fade-duration bfm.$button-fab-menu-icon-fade-easing,
+    transform bfm.$button-fab-menu-icon-fade-duration bfm.$button-fab-menu-icon-fade-easing;
+}
+
+.button-fab-menu__icon-rotator--swap .button-fab-menu__icon--close {
+  opacity: 0;
+  transform: scale(0.85);
+  pointer-events: none;
+}
+
+.button-fab-menu__icon-rotator--swap-open .button-fab-menu__icon--plus {
+  opacity: 0;
+  transform: scale(0.85);
+}
+
+.button-fab-menu__icon-rotator--swap-open .button-fab-menu__icon--close {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button-fab-menu__icon-rotator--swap .button-fab-menu__icon--plus,
+  .button-fab-menu__icon-rotator--swap .button-fab-menu__icon--close {
+    transition: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button-fab-menu__icon-rotator--open,
+  .button-fab-menu__icon-rotator--closing,
+  [dir='rtl'] .button-fab-menu__icon-rotator--open,
+  [dir='rtl'] .button-fab-menu__icon-rotator--closing {
+    animation: none !important;
+  }
+
+  .button-fab-menu__icon-rotator--open {
+    transform: rotate(bfm.$button-fab-menu-icon-rotation-open-ltr);
+  }
+
+  [dir='rtl'] .button-fab-menu__icon-rotator--open,
+  .button-fab-menu[dir='rtl'] .button-fab-menu__icon-rotator--open {
+    transform: rotate(bfm.$button-fab-menu-icon-rotation-open-rtl);
+  }
+
+  .button-fab-menu__icon-rotator--closing {
+    transform: rotate(0deg);
+  }
+
+  .button-fab-menu .button-fab--rounded-state .button-fab__btn {
+    animation: none !important;
+  }
+}
+
+// ============================================================================
+// LAYER (couche globale — pas de CSS dans la page, tout ici)
+// ============================================================================
+
+.fab-menu-layer {
+  position: fixed !important;
+  inset: 0 !important;
+  pointer-events: none;
+  z-index: bfm.$button-fab-menu-layer-z-index;
+  overflow: visible !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.fab-menu-layer__slot {
+  position: absolute;
+  pointer-events: none;
+  overflow: visible;
+  width: bfm.$button-fab-menu-layer-slot-width;
+  min-height: bfm.$button-fab-menu-layer-slot-min-height;
+  padding: 0;
+  margin: 0;
+  border: none !important;
+  outline: none !important;
+
+  .button-fab-menu {
+    position: absolute;
+    overflow: visible !important;
+  }
+
+  /* Seuls le FAB et les pills captent les clics — le reste laisse passer */
+  .button-fab-menu__fab .button-fab {
+    pointer-events: auto;
+  }
+}
+
+/* Slots : bottom/top mis à jour par le JS selon appbar ; left/right selon navigation-rail.
+   Transition spring (animation.token). Safe-area pour notch/barre d'accueil. */
+.fab-menu-layer:not(.fab-menu-layer--positioned) .fab-menu-layer__slot {
+  transition: none !important;
+}
+
+.fab-menu-layer__slot--bottom-left,
+.fab-menu-layer__slot--bottom-right {
+  top: auto !important;
+  bottom: calc(
+    bfm.$button-fab-menu-layer-inset +
+    var(--k3ui-bottom-inset, 0px) +
+    var(--k3ui-navigation-bar-offset, 0px) +
+    var(--k3ui-appbar-bottom-offset, 0px) +
+    env(safe-area-inset-bottom, 0px)
+  ) !important;
+  width: max-content !important;
+  min-width: bfm.$button-fab-menu-layer-slot-width;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 0 !important; /* aucun padding : FAB touche les bords du slot */
+  line-height: 0 !important; /* évite strut ~3–4px sous le FAB */
+  @include fc.floating-chrome-position-motion;
+
+  .button-fab-menu {
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    margin: 0 !important; /* touche les bords du slot (pas de gap) */
+    display: flex !important;
+    flex-direction: column !important;
+    width: max-content !important;
+    min-width: bfm.$button-fab-menu-layer-slot-width;
+    line-height: 0 !important;
+  }
+
+  /* Dans la layer le slot donne déjà l’inset 16px : __fab sans offset pour ne pas doubler */
+  .button-fab-menu__fab {
+    position: relative !important;
+    top: auto !important;
+    bottom: 0 !important;
+    margin: 0 !important; /* touche le bas du slot */
+  }
+}
+
+.fab-menu-layer__slot--bottom-left {
+  /* Piloté par --k3ui-rail-inset-left (body) — pas d’inline JS left (évite retard à l’expand) */
+  left: calc(
+    var(--k3ui-rail-inset-left, 0px) + bfm.$button-fab-menu-layer-inset + env(safe-area-inset-left, 0px)
+  ) !important;
+  right: auto !important;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end; /* FAB et pills collés au bas du slot (touchent le bord) */
+
+  .button-fab-menu__fab {
+    left: 0 !important;
+    right: auto !important;
+  }
+  .button-fab-menu__list {
+    align-items: flex-start !important;
+  }
+}
+
+.fab-menu-layer__slot--bottom-right {
+  right: calc(
+    var(--k3ui-rail-inset-right, 0px) +
+    bfm.$button-fab-menu-layer-inset +
+    env(safe-area-inset-right, 0px)
+  ) !important;
+  left: auto !important;
+  @include fc.floating-chrome-scrollbar-compensation;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end; /* FAB et pills collés au bas du slot (touchent le bord) */
+
+  .button-fab-menu__fab {
+    left: auto !important;
+    right: 0 !important;
+  }
+  .button-fab-menu__list {
+    align-items: flex-end !important;
+  }
+}
+
+/* FAB dans la layer : pas de marge sur le .button-fab pour qu’il touche le bord du slot */
+.fab-menu-layer .button-fab-menu__fab .button-fab {
+  margin: 0 !important;
+}
+
+.fab-menu-layer__slot--top-left {
+  top: calc(bfm.$button-fab-menu-layer-inset + env(safe-area-inset-top, 0px)) !important;
+  left: calc(
+    var(--k3ui-rail-inset-left, 0px) + bfm.$button-fab-menu-layer-inset + env(safe-area-inset-left, 0px)
+  ) !important;
+  right: auto !important;
+  @include fc.floating-chrome-position-motion;
+
+  .button-fab-menu {
+    left: auto !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: max-content !important;
+    min-width: bfm.$button-fab-menu-layer-slot-width;
+  }
+
+  .button-fab-menu__list {
+    align-items: flex-start !important;
+  }
+}
+
+.fab-menu-layer__slot--top-right {
+  top: calc(bfm.$button-fab-menu-layer-inset + env(safe-area-inset-top, 0px)) !important;
+  right: calc(
+    var(--k3ui-rail-inset-right, 0px) + bfm.$button-fab-menu-layer-inset + env(safe-area-inset-right, 0px)
+  ) !important;
+  left: auto !important;
+  @include fc.floating-chrome-scrollbar-compensation;
+  @include fc.floating-chrome-position-motion;
+
+  .button-fab-menu {
+    right: auto !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: max-content !important;
+    min-width: bfm.$button-fab-menu-layer-slot-width;
+  }
+
+  .button-fab-menu__list {
+    align-items: flex-end !important;
+  }
+}
+
+/* Items et pills : largeur selon le label (comme React .fm-item / .fm-pill), pas de largeur identique forcée */
+.fab-menu-layer .button-fab-menu__item {
+  width: max-content !important;
+  min-width: 0;
+  max-width: none; /* pas de max-width 100% qui pourrait contraindre dans un flex */
+}
+
+.fab-menu-layer .button-fab-menu__list {
+  width: max-content; /* liste = largeur du pill le plus long (flex-start/end déjà sur slot) */
+}
+
+.fab-menu-layer .button-fab-menu__pill {
+  width: max-content !important;
+  min-width: 0;
+}
+
+/* En layer : le scrim couvre visuellement la page (sans blur) mais pointer-events: none laisse interagir avec le contenu */
+.fab-menu-layer .button-fab-menu__scrim--on {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+}

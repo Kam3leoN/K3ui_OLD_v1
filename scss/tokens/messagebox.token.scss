@@ -1,0 +1,95 @@
+/**
+ * @fileoverview Tokens de design pour MessageBox (boîte de dialogue ALTTP)
+ * @description Variables de design : police, sprites, dimensions natives, couleurs.
+ *              Basé sur la spritesheet Solarus `dialog_box.png`.
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+// ============================================================================
+// POLICE
+// ============================================================================
+
+/// @type {String} Famille de police pixel-art
+$messagebox-font-family: 'Alttp', monospace !default;
+/// @type {String} Chemin de la police ALTTP
+$messagebox-font-path: '../assets/fonts/alttp/alttp.ttf' !default;
+
+// ============================================================================
+// SPRITES (découpés depuis dialog_box.png)
+// ============================================================================
+
+/// @type {String} Cadre seul (220x60)
+$messagebox-frame-img: '../assets/images/messagebox/dialog_box_frame.png' !default;
+/// @type {String} Flèche « page suivante » (16 x 24 = 3 frames de 16x8)
+$messagebox-next-img: '../assets/images/messagebox/dialog_box_next.png' !default;
+/// @type {String} Curseur de sélection (16 x 48 = 3 frames de 16x16)
+$messagebox-last-img: '../assets/images/messagebox/dialog_box_last.png' !default;
+
+// ============================================================================
+// ÉCHELLE & COULEUR
+// ============================================================================
+
+/// @type {Number} Échelle de rendu du pixel-art
+$messagebox-scale: 2 !default;
+/// @type {Color} Fond intérieur du cadre (masque le liseré sombre du sprite)
+$messagebox-inner-bg: #ffffff !default;
+/// @type {Color} Couleur du texte (encre du cadre ALTTP)
+$messagebox-text-color: #483018 !default;
+
+// ============================================================================
+// DIMENSIONS NATIVES DU CADRE
+// ============================================================================
+
+/// @type {Number} Largeur native du cadre
+$messagebox-frame-w: 220px !default;
+/// @type {Number} Hauteur native du cadre
+$messagebox-frame-h: 60px !default;
+/// @type {Number} Épaisseur du liseré (px natifs) pour le border-image
+$messagebox-frame-slice: 6 !default;
+
+// ============================================================================
+// SPRITES DE CURSEUR (frames natives)
+// ============================================================================
+
+/// @type {Number} Largeur sprite « next »
+$messagebox-next-w: 16px !default;
+/// @type {Number} Hauteur sprite « next »
+$messagebox-next-h: 8px !default;
+/// @type {Number} Nombre de frames « next »
+$messagebox-next-frames: 3 !default;
+
+/// @type {Number} Largeur sprite « last »
+$messagebox-last-w: 16px !default;
+/// @type {Number} Hauteur sprite « last »
+$messagebox-last-h: 16px !default;
+/// @type {Number} Nombre de frames « last »
+$messagebox-last-frames: 3 !default;
+
+/// @type {Number} Délai d'une frame d'animation (100 ms, cf. dialog_box_message_end.dat)
+$messagebox-frame-delay: 0.1s !default;
+
+// ============================================================================
+// MISE EN PAGE
+// ============================================================================
+
+/// @type {Number} Hauteur de ligne du texte
+$messagebox-line-height: 1.45 !default;
+
+/// @type {Number} Z-index de la boîte (au-dessus toast 3600 / tooltip 10000)
+$messagebox-z-index: 10001 !default;
+
+// ============================================================================
+// OVERLAY (voile noir / flou derrière la boîte)
+// ============================================================================
+
+/// @type {Number} Z-index de l'overlay (juste sous la boîte)
+$messagebox-overlay-z-index: 10000 !default;
+/// @type {Color} Couleur du voile (l'opacité est pilotée à l'exécution)
+$messagebox-overlay-color: #000000 !default;
+/// @type {Number} Opacité par défaut du voile (0..1)
+$messagebox-overlay-opacity: 0.5 !default;
+/// @type {Number} Flou par défaut de l'arrière-plan (px)
+$messagebox-overlay-blur: 4px !default;
+/// @type {Number} Durée de la transition d'apparition/disparition
+$messagebox-overlay-duration: 0.2s !default;

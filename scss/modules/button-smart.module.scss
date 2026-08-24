@@ -1,0 +1,233 @@
+/**
+ * @fileoverview Module ButtonSmart — tuile réglages rapides Material You
+ * @description Morph pill ⇄ squircle, marquee AOSP, RTL natif
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/button-smart.token' as tokens;
+@use '../mixins/button-smart.mixin' as bsmart;
+
+// ============================================================================
+// BASE — btn-smart / button-smart (alias)
+// ============================================================================
+
+.btn-smart,
+.button-smart {
+  @include bsmart.btn-smart-tokens;
+
+  display: flex;
+  align-items: center;
+  gap: var(--btn-smart-inset);
+
+  width: 100%;
+  min-width: 0;
+  height: var(--btn-smart-height);
+  padding-block: var(--btn-smart-inset);
+  padding-inline-start: var(--btn-smart-inset);
+  padding-inline-end: var(--btn-smart-padding-inline-end);
+  border: none;
+  cursor: pointer;
+
+  font: inherit;
+  text-align: start;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+
+  background-color: var(--btn-smart-off-bg);
+  color: var(--btn-smart-off-fg);
+  border-radius: var(--btn-smart-radius-off);
+
+  transition:
+    border-radius var(--btn-smart-duration) var(--btn-smart-ease),
+    background-color var(--btn-smart-duration) var(--btn-smart-ease),
+    color var(--btn-smart-duration) var(--btn-smart-ease);
+
+  &:focus-visible {
+    outline: tokens.$btn-smart-focus-outline-width solid tokens.$btn-smart-focus-outline;
+    outline-offset: tokens.$btn-smart-focus-outline-offset;
+  }
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    opacity: tokens.$btn-smart-disabled-opacity;
+    cursor: not-allowed;
+  }
+}
+
+// ============================================================================
+// Icône
+// ============================================================================
+
+.btn-smart__icon,
+.button-smart__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+
+  width: var(--btn-smart-icon-size);
+  height: var(--btn-smart-icon-size);
+  border-radius: 50%;
+
+  background-color: var(--btn-smart-off-icon-bg);
+  color: var(--btn-smart-off-fg);
+
+  transition:
+    border-radius var(--btn-smart-duration) var(--btn-smart-ease),
+    background-color var(--btn-smart-duration) var(--btn-smart-ease),
+    color var(--btn-smart-duration) var(--btn-smart-ease);
+
+  svg,
+  img,
+  .icon,
+  i.icon {
+    width: var(--btn-smart-glyph-size);
+    height: var(--btn-smart-glyph-size);
+    display: block;
+    fill: currentColor;
+  }
+}
+
+// ============================================================================
+// Texte & marquee
+// ============================================================================
+
+.btn-smart__text,
+.button-smart__text {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-smart__marquee,
+.button-smart__marquee {
+  overflow: hidden;
+  white-space: nowrap;
+
+  &--scrolling {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      #000 0,
+      #000 calc(100% - var(--btn-smart-fade)),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      #000 0,
+      #000 calc(100% - var(--btn-smart-fade)),
+      transparent 100%
+    );
+
+    &:dir(rtl) {
+      -webkit-mask-image: linear-gradient(
+        to left,
+        #000 0,
+        #000 calc(100% - var(--btn-smart-fade)),
+        transparent 100%
+      );
+      mask-image: linear-gradient(
+        to left,
+        #000 0,
+        #000 calc(100% - var(--btn-smart-fade)),
+        transparent 100%
+      );
+    }
+  }
+}
+
+.btn-smart__track,
+.button-smart__track {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  max-width: none;
+  gap: var(--btn-smart-marquee-gap, 0px);
+  will-change: transform;
+}
+
+.btn-smart__label,
+.button-smart__label {
+  /* Override reset global `* { max-width: 100% }` — sinon libellé + fantôme
+     se compressent dans la fenêtre et le texte se chevauche au défilement. */
+  max-width: none;
+  font-size: var(--btn-smart-label-size);
+  font-weight: tokens.$btn-smart-label-weight;
+  line-height: 1.25;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.btn-smart__label--ghost,
+.button-smart__label--ghost {
+  display: none;
+
+  .btn-smart__marquee--scrolling &,
+  .button-smart__marquee--scrolling & {
+    display: block;
+    max-width: none;
+    flex: 0 0 auto;
+  }
+}
+
+.btn-smart__subtitle,
+.button-smart__subtitle {
+  font-size: var(--btn-smart-subtitle-size);
+  font-weight: tokens.$btn-smart-subtitle-weight;
+  line-height: 1.3;
+  opacity: 0.85;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// ============================================================================
+// État ON
+// ============================================================================
+
+.btn-smart--on,
+.button-smart--on {
+  background-color: var(--btn-smart-on-bg);
+  color: var(--btn-smart-on-fg);
+  border-radius: var(--btn-smart-radius-on);
+
+  .btn-smart__icon,
+  .button-smart__icon {
+    border-radius: calc(var(--btn-smart-radius-on) - var(--btn-smart-inset));
+    background-color: var(--btn-smart-on-icon-bg);
+    color: var(--btn-smart-on-icon-fg);
+  }
+}
+
+// ============================================================================
+// Grille parente recommandée
+// ============================================================================
+
+.btn-smart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+
+  .btn-smart--span-2,
+  .button-smart--span-2 {
+    grid-column: span 2;
+  }
+}
+
+// ============================================================================
+// Accessibilité — mouvement réduit
+// ============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-smart,
+  .button-smart,
+  .btn-smart__icon,
+  .button-smart__icon {
+    transition: none;
+  }
+
+  .btn-smart__marquee,
+  .button-smart__marquee {
+    text-overflow: ellipsis;
+  }
+}

@@ -1,0 +1,208 @@
+/**
+ * Timepicker Mixins - Mixins pour le composant timepicker
+ * Basé sur Material Design 3 Expressive
+ */
+
+@use 'sass:math';
+@use '../tokens/timepicker.token' as timepicker;
+@use '../tokens/motion.token' as motion;
+@use '../tokens/elevation.token' as elevation;
+@use '../tokens/state.token' as state;
+@use './state.mixin' as state-mixin;
+@use './typography.mixin' as typo;
+
+// ========================================
+// CONTAINER
+// ========================================
+
+/**
+ * Mixin pour le container du timepicker
+ */
+@mixin timepicker-container {
+    position: relative;
+    width: 100%;
+    max-width: timepicker.$timepicker-width;
+}
+
+/**
+ * Mixin pour le backdrop
+ */
+@mixin timepicker-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: timepicker.$timepicker-backdrop-color;
+    backdrop-filter: blur(timepicker.$timepicker-backdrop-blur);
+    z-index: timepicker.$timepicker-z-index-backdrop;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: timepicker.$timepicker-time-padding-vertical;
+    opacity: 0;
+    transition: opacity timepicker.$timepicker-modal-entrance-duration motion.$md-sys-motion-easing-emphasized-decelerate;
+
+    &--open {
+        opacity: 1;
+    }
+
+    &--closing {
+        opacity: 0;
+        transition: opacity timepicker.$timepicker-modal-exit-duration motion.$md-sys-motion-easing-emphasized-accelerate;
+    }
+}
+
+/**
+ * Mixin pour le modal
+ */
+@mixin timepicker-modal {
+    background-color: var(--md-sys-color-surface);
+    border-radius: timepicker.$timepicker-container-radius;
+    box-shadow: timepicker.$timepicker-modal-elevation;
+    width: 100%;
+    max-width: timepicker.$timepicker-width;
+    min-width: timepicker.$timepicker-min-width;
+    overflow: hidden;
+    z-index: timepicker.$timepicker-z-index-modal;
+    transform: translateY(16px) scale(0.95);
+    opacity: 0;
+    transition: transform timepicker.$timepicker-modal-entrance-duration motion.$md-sys-motion-easing-emphasized-decelerate,
+        opacity timepicker.$timepicker-modal-entrance-duration motion.$md-sys-motion-easing-emphasized-decelerate;
+
+    .timepicker__backdrop--open & {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+// ========================================
+// HEADER
+// ========================================
+
+/**
+ * Mixin pour le header
+ */
+@mixin timepicker-header {
+    background-color: var(--md-sys-color-surface);
+    padding: timepicker.$timepicker-header-padding;
+    padding-bottom: timepicker.$timepicker-time-padding-vertical;
+    min-height: timepicker.$timepicker-header-height;
+    border-radius: timepicker.$timepicker-header-radius;
+}
+
+// ========================================
+// TIME VIEW
+// ========================================
+
+/**
+ * Mixin pour le container des heures/minutes
+ */
+@mixin timepicker-time-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: timepicker.$timepicker-time-gap;
+    padding: timepicker.$timepicker-time-padding-vertical timepicker.$timepicker-time-padding-horizontal;
+}
+
+/**
+ * Mixin pour les listes d'heures/minutes
+ */
+@mixin timepicker-list-wrapper {
+    position: relative;
+    height: timepicker.$timepicker-list-height;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/**
+ * Mixin pour les listes d'heures/minutes
+ */
+@mixin timepicker-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: timepicker.$timepicker-time-padding-vertical 0;
+    gap: 0;
+}
+
+/**
+ * Mixin pour un élément heure/minute
+ */
+@mixin timepicker-item {
+    @include typo.typography('body-large');
+    min-width: timepicker.$timepicker-item-size;
+    min-height: timepicker.$timepicker-item-size;
+    width: timepicker.$timepicker-item-size;
+    height: timepicker.$timepicker-item-size;
+    border-radius: timepicker.$timepicker-item-radius;
+    border: none;
+    background-color: transparent;
+    color: var(--md-sys-color-on-surface);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color timepicker.$timepicker-transition-duration timepicker.$timepicker-transition-easing,
+        color timepicker.$timepicker-transition-duration timepicker.$timepicker-transition-easing;
+
+    &:hover:not(&--disabled):not(&--selected) {
+        background-color: var(--md-sys-color-primary-container);
+        color: var(--md-sys-color-on-primary-container);
+    }
+
+    &--selected {
+        background-color: var(--md-sys-color-primary);
+        color: var(--md-sys-color-on-primary);
+        box-shadow: timepicker.$timepicker-item-selected-elevation;
+    }
+
+    &--disabled {
+        @include state-mixin.state-disabled;
+        cursor: not-allowed;
+    }
+}
+
+// ========================================
+// SEPARATOR
+// ========================================
+
+/**
+ * Mixin pour le séparateur heures:minutes
+ */
+@mixin timepicker-separator {
+    @include typo.typography('headline-large');
+    color: var(--md-sys-color-on-surface);
+    padding: 0 timepicker.$timepicker-time-gap;
+}
+
+// ========================================
+// FOOTER
+// ========================================
+
+/**
+ * Mixin pour le footer
+ */
+@mixin timepicker-footer {
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+    padding: timepicker.$timepicker-actions-padding;
+}
+
+/**
+ * Mixin pour les actions
+ */
+@mixin timepicker-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: timepicker.$timepicker-actions-gap;
+}
+
+
+
+
+
+

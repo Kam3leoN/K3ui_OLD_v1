@@ -1,0 +1,220 @@
+/**
+ * @fileoverview Mixins pour Button Split Material Design 3 Expressive
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/button-split.token' as bs;
+
+/**
+ * Coins leading (inline-start) : outer sur le bord du split, inner vers le trailing
+ */
+@mixin button-split-leading-radius($outer, $inner, $important: false) {
+  @if $important {
+    border-start-start-radius: $outer !important;
+    border-end-start-radius: $outer !important;
+    border-start-end-radius: $inner !important;
+    border-end-end-radius: $inner !important;
+  } @else {
+    border-start-start-radius: $outer;
+    border-end-start-radius: $outer;
+    border-start-end-radius: $inner;
+    border-end-end-radius: $inner;
+  }
+}
+
+/**
+ * Coins trailing (inline-end) : inner vers le leading, outer sur le bord du split
+ */
+@mixin button-split-trailing-radius($outer, $inner, $important: false) {
+  @if $important {
+    border-start-start-radius: $inner !important;
+    border-end-start-radius: $inner !important;
+    border-start-end-radius: $outer !important;
+    border-end-end-radius: $outer !important;
+  } @else {
+    border-start-start-radius: $inner;
+    border-end-start-radius: $inner;
+    border-start-end-radius: $outer;
+    border-end-end-radius: $outer;
+  }
+}
+
+/** Cap externe trailing (pill) — RTL-safe */
+@mixin button-split-trailing-end-cap($outer, $important: false) {
+  @if $important {
+    border-start-end-radius: $outer !important;
+    border-end-end-radius: $outer !important;
+  } @else {
+    border-start-end-radius: $outer;
+    border-end-end-radius: $outer;
+  }
+}
+
+/** Cap externe leading (square) — RTL-safe */
+@mixin button-split-leading-end-cap($outer, $important: false) {
+  @if $important {
+    border-start-start-radius: $outer !important;
+    border-end-start-radius: $outer !important;
+  } @else {
+    border-start-start-radius: $outer;
+    border-end-start-radius: $outer;
+  }
+}
+
+/**
+ * Conteneur split — flex, gap 3dp
+ */
+@mixin button-split-container {
+  display: inline-flex;
+  align-items: center;
+  gap: bs.$button-split-gap;
+  flex-wrap: nowrap;
+}
+
+/**
+ * Bouton principal (leading) — base commune
+ */
+@mixin button-split-leading-base($height: bs.$button-split-md-height, $pl: bs.$button-split-md-main-pl, $pr: bs.$button-split-md-main-pr, $gap: bs.$button-split-md-main-gap, $font: bs.$button-split-md-font, $icon-size: bs.$button-split-md-icon, $outer-radius: bs.$button-split-md-outer-radius, $inner-radius: bs.$button-split-md-inner-radius) {
+  display: inline-flex;
+  align-items: center;
+  gap: $gap;
+  height: $height;
+  padding-left: $pl;
+  padding-right: $pr;
+  font-size: $font;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
+  border: none;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  font-family: var(--md-sys-typescale-label-large-font-family-name, 'Google Sans', Arial, sans-serif);
+  transition: background-color bs.$button-split-effects-duration bs.$button-split-effects-easing,
+    box-shadow bs.$button-split-effects-duration bs.$button-split-effects-easing,
+    transform bs.$button-split-spatial-duration bs.$button-split-spatial-easing;
+  @include button-split-leading-radius($outer-radius, $inner-radius);
+
+  &:active {
+    transform: scale(bs.$button-split-pressed-scale);
+  }
+
+  .button-split__icon {
+    font-size: $icon-size;
+    width: $icon-size;
+    height: $icon-size;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    .k3ui-icon,
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+/**
+ * Bouton trailing — carré (width = height), radius gauche = inner
+ */
+@mixin button-split-trailing-base($height: bs.$button-split-md-height, $outer-radius: bs.$button-split-md-outer-radius, $inner-radius: bs.$button-split-md-inner-radius, $icon-size: bs.$button-split-md-trailing-icon) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: $height;
+  height: $height;
+  min-width: $height;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  border: none;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  font-family: var(--md-sys-typescale-label-large-font-family-name, 'Google Sans', Arial, sans-serif);
+  transition: background-color bs.$button-split-effects-duration bs.$button-split-effects-easing,
+    box-shadow bs.$button-split-effects-duration bs.$button-split-effects-easing,
+    transform bs.$button-split-spatial-duration bs.$button-split-spatial-easing,
+    border-start-start-radius bs.$button-split-trailing-rotation-duration bs.$button-split-trailing-rotation-easing,
+    border-end-start-radius bs.$button-split-trailing-rotation-duration bs.$button-split-trailing-rotation-easing,
+    border-start-end-radius bs.$button-split-trailing-rotation-duration bs.$button-split-trailing-rotation-easing,
+    border-end-end-radius bs.$button-split-trailing-rotation-duration bs.$button-split-trailing-rotation-easing;
+  @include button-split-trailing-radius($outer-radius, $inner-radius);
+
+  &:active {
+    transform: scale(bs.$button-split-pressed-scale);
+  }
+
+  &.split-btn__trailing--expanded,
+  &.split-button__trailing--expanded {
+    border-radius: 50%;
+  }
+
+  .button-split__icon {
+    font-size: $icon-size;
+    width: $icon-size;
+    height: $icon-size;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform bs.$button-split-trailing-rotation-duration bs.$button-split-trailing-rotation-easing;
+    .k3ui-icon,
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+/**
+ * Segment icon-only (leading + trailing) : carré identique, icône centrée, tap-target M3
+ * @param {number} $height - Hauteur token de la taille (xs…xl)
+ * @param {number} $icon-size - Taille d’icône (identique des deux côtés en miroir)
+ * @param {number} $touch-min - Minimum zone tactile (défaut token 48dp)
+ */
+@mixin button-split-icon-only-segment(
+  $height,
+  $icon-size,
+  $touch-min: bs.$button-split-touch-target-min
+) {
+  $segment: max($height, $touch-min);
+
+  width: $segment !important;
+  min-width: $segment !important;
+  max-width: $segment !important;
+  height: $segment !important;
+  min-height: $segment !important;
+  max-height: $segment !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+
+  .button-split__icon {
+    width: $icon-size !important;
+    height: $icon-size !important;
+    font-size: $icon-size !important;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    .k3ui-icon,
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

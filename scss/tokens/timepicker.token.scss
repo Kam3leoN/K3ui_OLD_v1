@@ -1,0 +1,172 @@
+/**
+ * Timepicker Tokens - Tokens pour le composant timepicker
+ * Basé sur Material Design 3 Expressive
+ */
+
+@use 'sass:map';
+@use './spacing.token' as spacing;
+@use './radius.token' as radius;
+@use './motion.token' as motion;
+@use './elevation.token' as elevation;
+@use './zindex.token' as zindex;
+
+// ========================================
+// DIMENSIONS
+// ========================================
+
+/** Largeur du timepicker modal (328px selon MD3 Expressive) */
+$timepicker-width: 328px !default;
+
+/** Largeur minimale */
+$timepicker-min-width: 280px !default;
+
+/** Largeur maximale */
+$timepicker-max-width: 328px !default;
+
+/** Hauteur du header (80px selon MD3 Expressive) */
+$timepicker-header-height: 80px !default;
+
+/** Hauteur du header mobile */
+$timepicker-header-height-mobile: 70px !default;
+
+/** Taille d'un élément heure/minute (48px selon MD3 Expressive) */
+$timepicker-item-size: 48px !default;
+
+/** Taille d'un élément mobile */
+$timepicker-item-size-mobile: 40px !default;
+
+/** Hauteur de l'input */
+$timepicker-input-height: 56px !default;
+
+/** Hauteur de la liste d'heures/minutes */
+$timepicker-list-height: 240px !default;
+
+/** Hauteur des boutons */
+$timepicker-button-height: 40px !default;
+
+/** Largeur minimale des boutons */
+$timepicker-button-min-width: 64px !default;
+
+// ========================================
+// BORDER & RADIUS
+// ========================================
+
+/** Border radius du container */
+$timepicker-container-radius: radius.$md-sys-shape-corner-extra-large !default;
+
+/** Border radius du header */
+$timepicker-header-radius: 28px 28px 0 0 !default;
+
+/** Border radius de l'input */
+$timepicker-input-radius: radius.$md-sys-shape-corner-medium !default;
+
+/** Border radius d'un élément heure/minute */
+$timepicker-item-radius: radius.$md-sys-shape-corner-full !default;
+
+/** Border radius des boutons */
+$timepicker-button-radius: radius.$md-sys-shape-corner-full !default;
+
+/** Épaisseur de la bordure de l'input */
+$timepicker-input-border-width: 2px !default;
+
+/** Épaisseur du focus ring */
+$timepicker-focus-ring-width: 2px !default;
+
+/** Offset du focus ring */
+$timepicker-focus-ring-offset: 2px !default;
+
+// ========================================
+// ELEVATION
+// ========================================
+
+/** Élévation du modal */
+$timepicker-modal-elevation: elevation.$md-sys-elevation-level3 !default;
+
+/** Élévation de l'input */
+$timepicker-input-elevation: elevation.$md-sys-elevation-level0 !default;
+
+/** Élévation d'un élément sélectionné */
+$timepicker-item-selected-elevation: elevation.$md-sys-elevation-level2 !default;
+
+// ========================================
+// MOTION
+// ========================================
+
+/** Durée de transition standard */
+$timepicker-transition-duration: motion.$md-sys-motion-duration-emphasized !default;
+
+/** Easing de transition */
+$timepicker-transition-easing: motion.$md-sys-motion-easing-emphasized !default;
+
+/** Durée d'entrée du modal */
+$timepicker-modal-entrance-duration: motion.$md-sys-motion-duration-standard !default;
+
+/** Durée de sortie du modal */
+$timepicker-modal-exit-duration: motion.$md-sys-motion-duration-exiting !default;
+
+// ========================================
+// SPACING
+// ========================================
+
+/** Padding horizontal du header (24px selon MD3 Expressive) */
+$timepicker-header-padding-horizontal: spacing.$md-sys-spacing-lg !default;
+
+/** Padding vertical du header (16px top selon MD3 Expressive) */
+$timepicker-header-padding-top: spacing.$md-sys-spacing-md !default;
+
+/** Padding du header (legacy) */
+$timepicker-header-padding: spacing.$md-sys-spacing-xl !default;
+
+/** Padding horizontal du timepicker (24px selon MD3 Expressive) */
+$timepicker-time-padding-horizontal: spacing.$md-sys-spacing-lg !default;
+
+/** Padding vertical du timepicker */
+$timepicker-time-padding-vertical: spacing.$md-sys-spacing-md !default;
+
+/** Gap entre les heures et minutes */
+$timepicker-time-gap: spacing.$md-sys-spacing-xs !default;
+
+/** Padding des actions */
+$timepicker-actions-padding: spacing.$md-sys-spacing-sm spacing.$md-sys-spacing-xl spacing.$md-sys-spacing-xl !default;
+
+/** Gap entre les boutons d'action */
+$timepicker-actions-gap: spacing.$md-sys-spacing-sm !default;
+
+// ========================================
+// Z-INDEX
+// ========================================
+
+/** Z-index du backdrop */
+$timepicker-z-index-backdrop: map.get(zindex.$md-sys-zindex-layers, 'dialog') !default;
+
+/** Z-index du modal */
+$timepicker-z-index-modal: map.get(zindex.$md-sys-zindex-layers, 'dialog') + 1 !default;
+
+// ========================================
+// BACKDROP
+// ========================================
+
+/** Couleur du backdrop */
+$timepicker-backdrop-color: rgba(0, 0, 0, 0.5) !default;
+
+/** Blur du backdrop */
+$timepicker-backdrop-blur: 4px !default;
+
+// ========================================
+// SCROLLBAR
+// ========================================
+
+/** Largeur de la scrollbar */
+$timepicker-scrollbar-width: 8px !default;
+
+/** Couleur de la track de la scrollbar */
+$timepicker-scrollbar-track-color: rgba(0, 0, 0, 0.1) !default;
+
+/** Couleur du thumb de la scrollbar */
+$timepicker-scrollbar-thumb-color: rgba(0, 0, 0, 0.3) !default;
+
+
+
+
+
+

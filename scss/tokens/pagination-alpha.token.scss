@@ -1,0 +1,82 @@
+/**
+ * @fileoverview Tokens de design pour PaginationAlpha
+ * @description Index alphabétique A–Z MD3 Expressive
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'motion.token' as motion;
+
+// ============================================================================
+// COULEURS (MD3)
+// ============================================================================
+
+$pagination-alpha-color-primary: var(--md-sys-color-primary, var(--k3ui-color-primary, #6750a4));
+$pagination-alpha-color-on-primary: var(--md-sys-color-on-primary, #ffffff);
+$pagination-alpha-color-primary-container: var(--md-sys-color-primary-container, #eaddfb);
+$pagination-alpha-color-on-primary-container: var(--md-sys-color-on-primary-container, #21005d);
+
+$pagination-alpha-color-secondary: var(--md-sys-color-secondary, #625b71);
+$pagination-alpha-color-secondary-container: var(--md-sys-color-secondary-container, #e8def8);
+$pagination-alpha-color-on-surface: var(--md-sys-color-on-surface, #1c1b1f);
+$pagination-alpha-color-on-surface-variant: var(--md-sys-color-on-surface-variant, #49454f);
+$pagination-alpha-color-surface-variant: var(--md-sys-color-surface-variant, #e7e0ec);
+$pagination-alpha-color-outline-variant: var(--md-sys-color-outline-variant, #cac4d0);
+
+// ============================================================================
+// DIMENSIONS – TAILLE DES BOUTONS (sm | md | lg)
+// ============================================================================
+
+$pagination-alpha-tile-width-sm: 32px;
+$pagination-alpha-tile-width-md: 42px;
+$pagination-alpha-tile-width-lg: 52px;
+
+$pagination-alpha-tile-height-sm: 32px;
+$pagination-alpha-tile-height-md: 42px;
+$pagination-alpha-tile-height-lg: 52px;
+
+$pagination-alpha-tile-height-with-count-sm: 40px;
+$pagination-alpha-tile-height-with-count-md: 52px;
+$pagination-alpha-tile-height-with-count-lg: 64px;
+
+$pagination-alpha-font-letter-sm: 14px;
+$pagination-alpha-font-letter-md: 18px;
+$pagination-alpha-font-letter-lg: 24px;
+
+$pagination-alpha-font-count-sm: 9px;
+$pagination-alpha-font-count-md: 11px;
+$pagination-alpha-font-count-lg: 13px;
+
+// ============================================================================
+// RAYONS ET ÉLÉVATION
+// ============================================================================
+
+$pagination-alpha-radius-sm: 4px;
+$pagination-alpha-radius-md: 8px;
+$pagination-alpha-radius-lg: 12px;
+
+$pagination-alpha-elevation-1: 0 1px 2px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
+$pagination-alpha-elevation-2: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.08);
+
+// ============================================================================
+// DENSITÉ (gap entre boutons)
+// ============================================================================
+
+$pagination-alpha-gap-compact: 2px;
+$pagination-alpha-gap-normal: 4px;
+$pagination-alpha-gap-spacious: 6px;
+
+// ============================================================================
+// MOTION
+// ============================================================================
+
+$pagination-alpha-duration: 180ms;
+$pagination-alpha-easing: motion.spring-easing(effects, fast);
+$pagination-alpha-easing-emphasized: motion.spring-easing(spatial, default);
+
+// ============================================================================
+// VERTICAL SCROLL
+// ============================================================================
+
+/** Vertical : max-height du nav pour permettre le scroll (letters A–Z) */
+$pagination-alpha-vertical-nav-max-height: min(80vh, 480px);

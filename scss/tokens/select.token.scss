@@ -1,0 +1,154 @@
+/**
+ * Select Tokens
+ * Tokens Material Design 3 pour le composant Select
+ */
+
+@use 'sass:map';
+@use 'spacing.token' as spacing;
+@use 'icon.token' as icon;
+@use 'radius.token' as radius;
+@use 'motion.token' as motion;
+
+// ============================================================================
+// SELECT TOKENS - MATERIAL DESIGN 3
+// ============================================================================
+
+// Dimensions
+$select-height: 3rem !default;
+$select-min-width: 8rem !default;
+$select-max-width: 20rem !default;
+$select-padding: spacing.$md-sys-spacing-md spacing.$md-sys-spacing-lg !default; // 16px 24px (au lieu de 0.75rem 1rem)
+$select-padding-small: spacing.$md-sys-spacing-sm spacing.$md-sys-spacing-md !default; // 8px 16px (au lieu de 0.5rem 0.75rem)
+$select-padding-large: spacing.$md-sys-spacing-lg spacing.$md-sys-spacing-xl !default; // 24px 32px (au lieu de 1rem 1.25rem)
+
+// Border radius - Material Design 3 Expressive (rayons plus importants)
+$select-border-radius: radius.$md-sys-shape-corner-medium !default; // 12px (au lieu de 4px)
+$select-border-radius-small: radius.$md-sys-shape-corner-small !default; // 8px (au lieu de 2px)
+$select-border-radius-large: radius.$md-sys-shape-corner-large !default; // 16px (au lieu de 6px)
+
+// Menu
+$select-menu-max-height: 20rem !default;
+$select-menu-min-width: 8rem !default;
+$select-menu-z-index: 1000 !default;
+$select-menu-gap: spacing.$md-sys-spacing-xs !default; // 4px (au lieu de 0.25rem)
+
+// Icones (glyphes M3 Expressive — map icon)
+$select-icon-size: map.get(icon.$md-sys-icon-sizes, 'md') !default; // 24dp
+$select-icon-size-small: map.get(icon.$md-sys-icon-sizes, 'xs') !default; // 20dp
+$select-icon-size-large: map.get(icon.$md-sys-icon-sizes, 'lg') !default; // 32dp
+
+// Transitions
+$select-transition-duration: 0.2s !default;
+$select-transition-timing: motion.spring-easing(effects, fast) !default;
+
+// ============================================================================
+// COULEURS - MATERIAL DESIGN 3
+// ============================================================================
+
+// Background
+$select-background: var(--md-sys-color-surface) !default;
+$select-background-hover: var(--md-sys-color-surface-variant) !default;
+$select-background-disabled: var(--md-sys-color-surface-variant) !default;
+$select-background-focus: var(--md-sys-color-surface) !default;
+
+// Text
+$select-text: var(--md-sys-color-on-surface) !default;
+$select-text-disabled: var(--md-sys-color-on-surface-variant) !default;
+$select-text-placeholder: var(--md-sys-color-on-surface-variant) !default;
+
+// Border
+$select-border: var(--md-sys-color-outline-variant) !default;
+$select-border-hover: var(--md-sys-color-outline) !default;
+$select-border-focus: var(--md-sys-color-primary) !default;
+$select-border-error: var(--md-sys-color-error) !default;
+$select-border-disabled: var(--md-sys-color-outline-variant) !default;
+
+// Caret
+$select-caret-color: var(--md-sys-color-on-surface-variant) !default;
+$select-caret-color-hover: var(--md-sys-color-on-surface) !default;
+$select-caret-color-focus: var(--md-sys-color-primary) !default;
+$select-caret-color-disabled: var(--md-sys-color-on-surface-variant) !default;
+
+// ============================================================================
+// OPTIONS MENU
+// ============================================================================
+
+// Background options
+$select-option-background: transparent !default;
+$select-option-background-hover: var(--md-sys-color-surface-container-highest) !default; // Unifié avec List
+$select-option-background-selected: var(--md-sys-color-secondary-container) !default;
+$select-option-background-focus: var(--md-sys-color-surface-container-highest) !default; // Unifié avec List
+
+// Text options
+$select-option-text: var(--md-sys-color-on-surface) !default;
+$select-option-text-hover: var(--md-sys-color-on-surface) !default;
+$select-option-text-selected: var(--md-sys-color-on-secondary-container) !default;
+$select-option-text-disabled: var(--md-sys-color-on-surface-variant) !default;
+
+// ============================================================================
+// OPTGROUPS
+// ============================================================================
+
+// Background optgroups
+$select-optgroup-background: var(--md-sys-color-surface-variant) !default;
+$select-optgroup-text: var(--md-sys-color-on-surface-variant) !default;
+$select-optgroup-border: var(--md-sys-color-outline-variant) !default;
+
+// ============================================================================
+// ÉTATS
+// ============================================================================
+
+// Success
+$select-success-color: var(--md-sys-color-success) !default;
+$select-success-background: var(--md-sys-color-success-container) !default;
+$select-success-text: var(--md-sys-color-on-success-container) !default;
+
+// Error
+$select-error-color: var(--md-sys-color-error) !default;
+$select-error-background: var(--md-sys-color-error-container) !default;
+$select-error-text: var(--md-sys-color-on-error-container) !default;
+
+// ============================================================================
+// SHADOWS
+// ============================================================================
+
+$select-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !default;
+$select-shadow-hover: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !default;
+$select-shadow-focus: 0 0 0 3px rgba(var(--md-sys-color-primary-rgb), 0.1) !default;
+$select-shadow-menu: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !default;
+
+// ============================================================================
+// TYPOGRAPHY
+// ============================================================================
+
+$select-font-family: var(--md-sys-typescale-body-large-font-family-name) !default;
+$select-font-size: var(--md-sys-typescale-body-large-font-size) !default;
+$select-font-weight: var(--md-sys-typescale-body-large-font-weight) !default;
+$select-line-height: var(--md-sys-typescale-body-large-line-height) !default;
+$select-letter-spacing: var(--md-sys-typescale-body-large-letter-spacing) !default;
+
+// Label
+$select-label-font-size: var(--md-sys-typescale-body-small-font-size) !default;
+$select-label-font-weight: var(--md-sys-typescale-body-small-font-weight) !default;
+$select-label-line-height: var(--md-sys-typescale-body-small-line-height) !default;
+
+// Helper text
+$select-helper-font-size: var(--md-sys-typescale-body-small-font-size) !default;
+$select-helper-font-weight: var(--md-sys-typescale-body-small-font-weight) !default;
+$select-helper-line-height: var(--md-sys-typescale-body-small-line-height) !default;
+
+// ============================================================================
+// RESPONSIVE BREAKPOINTS
+// ============================================================================
+
+$select-mobile-max-width: 20rem !default;
+$select-tablet-max-width: 24rem !default;
+$select-desktop-max-width: 28rem !default;
+
+// ============================================================================
+// ACCESSIBILITY
+// ============================================================================
+
+$select-focus-ring-width: 2px !default;
+$select-focus-ring-offset: 2px !default;
+$select-focus-ring-color: var(--md-sys-color-primary) !default;

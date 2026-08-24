@@ -1,0 +1,182 @@
+/**
+ * @file notch.module.scss
+ * @description Primitive encoche Material You — 4 coins + 4 bords (réf. qt-rounder)
+ * @author K3UI Team
+ * @version 3.0.0
+ */
+
+@use '../tokens/notch.token' as notch;
+@use '../mixins/notch.mixin' as notch-mixin;
+
+.notch {
+  @include notch-mixin.notch-base;
+
+  &__label {
+    @include notch-mixin.notch-label;
+  }
+
+  &__rounder {
+    @include notch-mixin.notch-rounder-box;
+
+    path {
+      fill: notch.$notch-fill;
+      stroke: none;
+    }
+  }
+
+  // ── Coins ──────────────────────────────────────────────────
+
+  &--bottom-end {
+    @include notch-mixin.notch-position-bottom-end;
+
+    &.card {
+      overflow: hidden;
+      min-height: 0;
+      border-radius: notch.$notch-corner-radius;
+
+      .card__content {
+        @include notch-mixin.notch-host-surface;
+      }
+    }
+
+    .quote__surface,
+    .alert__surface {
+      @include notch-mixin.notch-host-surface;
+    }
+  }
+
+  &--top-end {
+    @include notch-mixin.notch-position-top-end;
+
+    &.card {
+      overflow: hidden;
+      min-height: 0;
+      border-radius: notch.$notch-corner-radius;
+
+      .card__content {
+        @include notch-mixin.notch-host-surface-top-end;
+      }
+    }
+
+    .quote__surface,
+    .alert__surface {
+      @include notch-mixin.notch-host-surface-top-end;
+    }
+  }
+
+  &--top-start {
+    @include notch-mixin.notch-position-top-start;
+
+    &.card {
+      overflow: hidden;
+      min-height: 0;
+      border-radius: notch.$notch-corner-radius;
+
+      .card__content {
+        @include notch-mixin.notch-host-surface-top-start;
+      }
+    }
+
+    .quote__surface,
+    .alert__surface {
+      @include notch-mixin.notch-host-surface-top-start;
+    }
+  }
+
+  &--bottom-start {
+    @include notch-mixin.notch-position-bottom-start;
+
+    &.card {
+      overflow: hidden;
+      min-height: 0;
+      border-radius: notch.$notch-corner-radius;
+
+      .card__content {
+        @include notch-mixin.notch-host-surface;
+      }
+    }
+
+    .quote__surface,
+    .alert__surface {
+      @include notch-mixin.notch-host-surface;
+    }
+  }
+
+  // ── Bords ──────────────────────────────────────────────────
+
+  &--top-center {
+    @include notch-mixin.notch-position-top-center;
+
+    &.card {
+      overflow: hidden;
+      min-height: 0;
+      border-radius: notch.$notch-corner-radius;
+
+      .card__content {
+        @include notch-mixin.notch-host-surface-top-center;
+      }
+    }
+
+    .quote__surface,
+    .alert__surface {
+      @include notch-mixin.notch-host-surface-top-center;
+    }
+  }
+
+  &--bottom-center {
+    @include notch-mixin.notch-position-bottom-center;
+
+    &.card {
+      overflow: hidden;
+      min-height: 0;
+      border-radius: notch.$notch-corner-radius;
+
+      .card__content {
+        @include notch-mixin.notch-host-surface-bottom-center;
+      }
+    }
+
+    .quote__surface,
+    .alert__surface {
+      @include notch-mixin.notch-host-surface-bottom-center;
+    }
+  }
+
+  &--left-center {
+    @include notch-mixin.notch-position-left-center;
+
+    &.card {
+      overflow: hidden;
+      min-height: 0;
+      border-radius: notch.$notch-corner-radius;
+
+      .card__content {
+        @include notch-mixin.notch-host-surface-left-center;
+      }
+    }
+
+    .quote__surface,
+    .alert__surface {
+      @include notch-mixin.notch-host-surface-left-center;
+    }
+  }
+
+  &--right-center {
+    @include notch-mixin.notch-position-right-center;
+
+    &.card {
+      overflow: hidden;
+      min-height: 0;
+      border-radius: notch.$notch-corner-radius;
+
+      .card__content {
+        @include notch-mixin.notch-host-surface-right-center;
+      }
+    }
+
+    .quote__surface,
+    .alert__surface {
+      @include notch-mixin.notch-host-surface-right-center;
+    }
+  }
+}

@@ -1,0 +1,300 @@
+/**
+ * @fileoverview Mixins pour ButtonShape Material Design 3 Expressive
+ * @description Pastille filled/tonal + slots shape overhang + morph press
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/button-shape.token' as bst;
+@use '../tokens/button.token' as button;
+@use '../tokens/motion.token' as motion;
+@use '../tokens/opacity.token' as opacity;
+
+// ============================================================================
+// BASE
+// ============================================================================
+
+@mixin btn-shape-base {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+  overflow: visible;
+  border: none;
+  box-shadow: none;
+  /* Rayon au repos via --btn-shape-radius (posé par taille = Button rounded-initial) */
+  border-radius: var(--btn-shape-radius, #{bst.$md-comp-button-shape-pill-radius});
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  text-decoration: none;
+  vertical-align: middle;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color motion.spring-duration(effects, fast) motion.spring-easing(effects, fast),
+    color motion.spring-duration(effects, fast) motion.spring-easing(effects, fast),
+    border-radius button.$md-comp-button-shape-morph-duration button.$md-comp-button-shape-morph-easing;
+
+  // State layer — suit le border-radius (morph inclus)
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-color: currentColor;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity motion.spring-duration(effects, fast) motion.spring-easing(effects, fast);
+  }
+
+  &:hover:not(:disabled):not([disabled])::after {
+    opacity: bst.$md-comp-button-shape-state-hover;
+  }
+
+  &:focus-visible:not(:disabled):not([disabled]) {
+    outline: 2px solid var(--md-sys-color-primary, #6750a4);
+    outline-offset: 2px;
+
+    &::after {
+      opacity: bst.$md-comp-button-shape-state-focus;
+    }
+  }
+
+  &:active:not(:disabled):not([disabled])::after {
+    opacity: bst.$md-comp-button-shape-state-pressed;
+  }
+
+  &:disabled,
+  &[disabled],
+  &[aria-disabled='true'] {
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 1;
+    color: rgba(var(--md-sys-color-on-surface-rgb, 28, 27, 31), opacity.opacity-state('disabled')) !important;
+    background-color: rgba(var(--md-sys-color-on-surface-rgb, 28, 27, 31), opacity.opacity-surface('standard')) !important;
+
+    &::after {
+      opacity: 0;
+    }
+
+    .btn-shape__slot,
+    .button-shape__slot {
+      opacity: 0.38;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &::after {
+      transition: none;
+    }
+  }
+}
+
+@mixin btn-shape-morph-pressing {
+  /* Même cible que .btn--rounded.pressing */
+  border-radius: button.$md-comp-button-pressed-md-radius !important;
+}
+
+// ============================================================================
+// VARIANTES
+// ============================================================================
+
+@mixin btn-shape-filled {
+  --btn-shape-bg: var(--md-sys-color-primary, #6750a4);
+  --btn-shape-fg: var(--md-sys-color-on-primary, #ffffff);
+  --btn-shape-slot-bg: var(--md-sys-color-secondary-container, #e8def8);
+  --btn-shape-slot-fg: var(--md-sys-color-on-secondary-container, #1d192b);
+
+  background-color: var(--btn-shape-bg);
+  color: var(--btn-shape-fg);
+  box-shadow: none;
+}
+
+@mixin btn-shape-tonal {
+  --btn-shape-bg: var(--md-sys-color-secondary-container, #e8def8);
+  --btn-shape-fg: var(--md-sys-color-on-secondary-container, #1d192b);
+  --btn-shape-slot-bg: var(--md-sys-color-on-secondary-container, #1d192b);
+  --btn-shape-slot-fg: var(--md-sys-color-secondary-container, #e8def8);
+
+  background-color: var(--btn-shape-bg);
+  color: var(--btn-shape-fg);
+  box-shadow: none;
+}
+
+// ============================================================================
+// TAILLES
+// ============================================================================
+
+@mixin btn-shape-size(
+  $height,
+  $pad-x,
+  $icon,
+  $font,
+  $lh,
+  $oct,
+  $overhang,
+  $gap,
+  $inset,
+  $radius
+) {
+  --btn-shape-oct: #{$oct};
+  --btn-shape-overhang: #{$overhang};
+  --btn-shape-gap: #{$gap};
+  --btn-shape-inset: #{$inset};
+  --btn-shape-icon-size: #{$icon};
+  /* Même rayon initial que Button rounded (pastille visuelle = h/2) — évite morph 999→8 */
+  --btn-shape-radius: #{$radius};
+
+  height: $height;
+  min-height: $height;
+  padding: 0 $pad-x;
+  font-size: $font;
+  line-height: $lh;
+  border-radius: var(--btn-shape-radius);
+
+  .btn-shape__slot .icon,
+  .button-shape__slot .icon,
+  .btn-shape__slot i,
+  .button-shape__slot i {
+    font-size: $icon;
+    width: $icon;
+    height: $icon;
+    line-height: 1;
+  }
+}
+
+@mixin btn-shape-size-xs {
+  @include btn-shape-size(
+    bst.$md-comp-button-shape-xs-height,
+    bst.$md-comp-button-shape-xs-padding-x,
+    bst.$md-comp-button-shape-xs-icon-size,
+    bst.$md-comp-button-shape-xs-font-size,
+    bst.$md-comp-button-shape-xs-line-height,
+    bst.$md-comp-button-shape-xs-oct,
+    bst.$md-comp-button-shape-xs-overhang,
+    bst.$md-comp-button-shape-xs-gap,
+    bst.$md-comp-button-shape-xs-inset,
+    button.$md-comp-button-rounded-initial-xs-radius
+  );
+}
+
+@mixin btn-shape-size-sm {
+  @include btn-shape-size(
+    bst.$md-comp-button-shape-sm-height,
+    bst.$md-comp-button-shape-sm-padding-x,
+    bst.$md-comp-button-shape-sm-icon-size,
+    bst.$md-comp-button-shape-sm-font-size,
+    bst.$md-comp-button-shape-sm-line-height,
+    bst.$md-comp-button-shape-sm-oct,
+    bst.$md-comp-button-shape-sm-overhang,
+    bst.$md-comp-button-shape-sm-gap,
+    bst.$md-comp-button-shape-sm-inset,
+    button.$md-comp-button-rounded-initial-sm-radius
+  );
+}
+
+@mixin btn-shape-size-md {
+  @include btn-shape-size(
+    bst.$md-comp-button-shape-md-height,
+    bst.$md-comp-button-shape-md-padding-x,
+    bst.$md-comp-button-shape-md-icon-size,
+    bst.$md-comp-button-shape-md-font-size,
+    bst.$md-comp-button-shape-md-line-height,
+    bst.$md-comp-button-shape-md-oct,
+    bst.$md-comp-button-shape-md-overhang,
+    bst.$md-comp-button-shape-md-gap,
+    bst.$md-comp-button-shape-md-inset,
+    button.$md-comp-button-rounded-initial-md-radius
+  );
+}
+
+@mixin btn-shape-size-lg {
+  @include btn-shape-size(
+    bst.$md-comp-button-shape-lg-height,
+    bst.$md-comp-button-shape-lg-padding-x,
+    bst.$md-comp-button-shape-lg-icon-size,
+    bst.$md-comp-button-shape-lg-font-size,
+    bst.$md-comp-button-shape-lg-line-height,
+    bst.$md-comp-button-shape-lg-oct,
+    bst.$md-comp-button-shape-lg-overhang,
+    bst.$md-comp-button-shape-lg-gap,
+    bst.$md-comp-button-shape-lg-inset,
+    button.$md-comp-button-rounded-initial-lg-radius
+  );
+}
+
+@mixin btn-shape-size-xl {
+  @include btn-shape-size(
+    bst.$md-comp-button-shape-xl-height,
+    bst.$md-comp-button-shape-xl-padding-x,
+    bst.$md-comp-button-shape-xl-icon-size,
+    bst.$md-comp-button-shape-xl-font-size,
+    bst.$md-comp-button-shape-xl-line-height,
+    bst.$md-comp-button-shape-xl-oct,
+    bst.$md-comp-button-shape-xl-overhang,
+    bst.$md-comp-button-shape-xl-gap,
+    bst.$md-comp-button-shape-xl-inset,
+    button.$md-comp-button-rounded-initial-xl-radius
+  );
+}
+
+// ============================================================================
+// SLOTS
+// ============================================================================
+
+@mixin btn-shape-slot {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--btn-shape-oct);
+  height: var(--btn-shape-oct);
+  display: grid;
+  place-items: center;
+  background-color: var(--btn-shape-slot-bg);
+  color: var(--btn-shape-slot-fg);
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+  // Mask appliqué en inline par ButtonShape (url via --k3ui-shape-path)
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-mode: alpha;
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+
+  .icon,
+  i {
+    color: inherit;
+    pointer-events: none;
+  }
+}
+
+@mixin btn-shape-slot-leading {
+  left: calc(var(--btn-shape-overhang) * -1);
+  // Centrage horizontal du slot : le centre est à overhang depuis le bord gauche externe
+  // left: -overhang place le bord gauche ; on veut le centre du oct au bord gauche du pill
+  // → left: -overhang, width: oct → centre à -overhang + oct/2... 
+  // Spec demo: left overhang outside — slot overhangs by overhang amount
+  // Using left: -overhang means left edge of slot is overhang outside the pill.
+}
+
+@mixin btn-shape-slot-trailing {
+  right: calc(var(--btn-shape-overhang) * -1);
+  left: auto;
+}
+
+@mixin btn-shape-has-leading {
+  margin-left: var(--btn-shape-overhang);
+  padding-left: var(--btn-shape-inset);
+}
+
+@mixin btn-shape-has-trailing {
+  margin-right: var(--btn-shape-overhang);
+  padding-right: var(--btn-shape-inset);
+}

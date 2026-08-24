@@ -1,0 +1,99 @@
+/**
+ * @fileoverview Mixins pour PaginationAlpha
+ * @description Index alphabétique A–Z MD3 Expressive
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use "../tokens/pagination-alpha.token" as pa;
+@use "../tokens/motion.token" as motion;
+@use "../mixins/state.mixin" as state;
+
+@mixin pagination-alpha-root {
+  display: flex;
+  align-items: flex-end;
+  padding: 4px;
+  gap: pa.$pagination-alpha-gap-compact;
+}
+
+@mixin pagination-alpha-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: pa.$pagination-alpha-gap-compact;
+  border: none;
+  margin: 0;
+  padding: 0;
+  background: none;
+}
+
+@mixin pagination-alpha-nav--vertical {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  max-height: pa.$pagination-alpha-vertical-nav-max-height;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+@mixin pagination-alpha-letter-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 4px 2px;
+  font-family: var(--md-sys-typescale-label-large-font-family-name, "Roboto", sans-serif);
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  outline: none;
+  flex-shrink: 0;
+  border-radius: pa.$pagination-alpha-radius-sm;
+  background-color: pa.$pagination-alpha-color-surface-variant;
+  color: pa.$pagination-alpha-color-on-surface;
+  box-shadow: none;
+  transition: background-color pa.$pagination-alpha-duration pa.$pagination-alpha-easing,
+    color pa.$pagination-alpha-duration pa.$pagination-alpha-easing,
+    transform pa.$pagination-alpha-duration pa.$pagination-alpha-easing,
+    box-shadow pa.$pagination-alpha-duration pa.$pagination-alpha-easing;
+
+  &:hover:not(:disabled):not(.pagination-alpha__letter-btn--active) {
+    background-color: pa.$pagination-alpha-color-primary-container;
+    color: pa.$pagination-alpha-color-on-primary-container;
+    filter: none;
+  }
+
+  &:focus-visible:not(:disabled) {
+    outline: 2px solid pa.$pagination-alpha-color-primary;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    @include state.state-disabled();
+    color: pa.$pagination-alpha-color-outline-variant;
+  }
+}
+
+@mixin pagination-alpha-letter-btn--active {
+  background-color: pa.$pagination-alpha-color-primary;
+  color: pa.$pagination-alpha-color-on-primary;
+  box-shadow: pa.$pagination-alpha-elevation-2;
+}
+
+@mixin pagination-alpha-letter-btn--active-animated {
+  transform: scale(1.06) translateY(-1px);
+}
+
+@mixin pagination-alpha-letter {
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+@mixin pagination-alpha-count {
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: pa.$pagination-alpha-color-on-surface-variant;
+}

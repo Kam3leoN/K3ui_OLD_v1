@@ -1,0 +1,87 @@
+/**
+ * @fileoverview Mixins timeline chrome flottant (ScrollToTop, FAB, FabMenu, coins fixes)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/floating-chrome.token' as fc;
+
+/**
+ * Compensation scrollbar (lock body drawer/sheet/dialog).
+ * Sur margin-right — PAS dans right — pour rester hors de floating-chrome-position-motion
+ * (sinon le chrome glisse ~500ms à chaque open/close).
+ */
+@mixin floating-chrome-scrollbar-compensation {
+  margin-right: var(--k3ui-scrollbar-compensation, 0px);
+}
+
+/**
+ * Empilement bas : inset local + footer visible + NavigationBar + app bar bas + safe-area.
+ */
+@mixin floating-chrome-bottom($base) {
+  bottom: calc(
+    #{$base} +
+    var(--k3ui-bottom-inset, 0px) +
+    var(--k3ui-navigation-bar-offset, 0px) +
+    var(--k3ui-appbar-bottom-offset, 0px) +
+    env(safe-area-inset-bottom, 0px)
+  );
+}
+
+/**
+ * Transitions de position (bottom/top + left/right).
+ * Consommé par scroll-to-top, button-fab--fixed, fab-menu-layer slots, k3ui-floating-corner.
+ */
+@mixin floating-chrome-position-motion {
+  transition:
+    left fc.$k3ui-floating-chrome-horizontal-duration fc.$k3ui-floating-chrome-horizontal-easing,
+    right fc.$k3ui-floating-chrome-horizontal-duration fc.$k3ui-floating-chrome-horizontal-easing,
+    bottom fc.$k3ui-floating-chrome-vertical-duration fc.$k3ui-floating-chrome-vertical-easing,
+    top fc.$k3ui-floating-chrome-vertical-duration fc.$k3ui-floating-chrome-vertical-easing;
+}
+
+/**
+ * Apparition / disparition scroll-to-top (même vertical timeline que le déplacement bas).
+ */
+@mixin floating-chrome-visibility-motion {
+  transition:
+    transform fc.$k3ui-floating-chrome-vertical-duration fc.$k3ui-floating-chrome-vertical-easing,
+    opacity fc.$k3ui-floating-chrome-vertical-duration fc.$k3ui-floating-chrome-vertical-easing;
+}
+
+/** Position + visibilité (scroll-to-top host) — une seule déclaration transition (évite l'écrasement CSS). */
+@mixin floating-chrome-motion {
+  transition:
+    left fc.$k3ui-floating-chrome-horizontal-duration fc.$k3ui-floating-chrome-horizontal-easing,
+    right fc.$k3ui-floating-chrome-horizontal-duration fc.$k3ui-floating-chrome-horizontal-easing,
+    bottom fc.$k3ui-floating-chrome-vertical-duration fc.$k3ui-floating-chrome-vertical-easing,
+    top fc.$k3ui-floating-chrome-vertical-duration fc.$k3ui-floating-chrome-vertical-easing,
+    transform fc.$k3ui-floating-chrome-vertical-duration fc.$k3ui-floating-chrome-vertical-easing,
+    opacity fc.$k3ui-floating-chrome-vertical-duration fc.$k3ui-floating-chrome-vertical-easing;
+}
+
+/**
+ * Scroll-to-top : horizontal instantané tant que masqué (évite le slide depuis la droite à l'apparition).
+ * Horizontal animé uniquement une fois visible (ex. ouverture FabMenu).
+ */
+@mixin floating-chrome-scroll-to-top-motion {
+  &:not(.is-visible) {
+    transition:
+      left 0s,
+      right 0s,
+      top 0s,
+      bottom fc.$k3ui-floating-chrome-vertical-duration fc.$k3ui-floating-chrome-vertical-easing,
+      transform fc.$k3ui-floating-chrome-vertical-duration fc.$k3ui-floating-chrome-vertical-easing,
+      opacity fc.$k3ui-floating-chrome-vertical-duration fc.$k3ui-floating-chrome-vertical-easing;
+  }
+
+  &.is-visible {
+    transition:
+      left fc.$k3ui-floating-chrome-horizontal-duration fc.$k3ui-floating-chrome-horizontal-easing,
+      right fc.$k3ui-floating-chrome-horizontal-duration fc.$k3ui-floating-chrome-horizontal-easing,
+      bottom fc.$k3ui-floating-chrome-vertical-duration fc.$k3ui-floating-chrome-vertical-easing,
+      top fc.$k3ui-floating-chrome-vertical-duration fc.$k3ui-floating-chrome-vertical-easing,
+      transform fc.$k3ui-floating-chrome-vertical-duration fc.$k3ui-floating-chrome-vertical-easing,
+      opacity fc.$k3ui-floating-chrome-vertical-duration fc.$k3ui-floating-chrome-vertical-easing;
+  }
+}

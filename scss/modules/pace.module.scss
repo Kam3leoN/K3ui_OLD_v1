@@ -1,0 +1,358 @@
+/**
+ * @fileoverview Module Pace – barre de chargement de page
+ * @description Thèmes générés via mixins pour faciliter la maintenance et l’ajout de thèmes.
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use "../tokens/pace.token" as pace;
+@use "../mixins/pace.mixin" as pace-mixin;
+
+// ---------------------------------------------------------------------------
+// Base (commun à tous les thèmes)
+// ---------------------------------------------------------------------------
+
+.pace {
+  @include pace-mixin.pace-container;
+}
+
+.pace-inactive {
+  display: none;
+}
+
+// ---------------------------------------------------------------------------
+// Thème minimal (défaut)
+// ---------------------------------------------------------------------------
+.pace--minimal .pace-progress {
+  @include pace-mixin.pace-theme-track(
+    $height: pace.$pace-bar-height,
+    $z-index: pace.$pace-z-index,
+    $background: var(--pace-track-color, pace.$pace-track-color)
+  );
+}
+
+.pace--minimal .pace-progress-inner {
+  @include pace-mixin.pace-theme-inner(var(--pace-bar-color, pace.$pace-bar-color));
+}
+
+.pace--minimal .pace-activity {
+  @include pace-mixin.pace-theme-activity-hidden;
+}
+
+// ---------------------------------------------------------------------------
+// Thème flash (barre + spinner)
+// ---------------------------------------------------------------------------
+$pace-flash-shadow: 0 0 10px var(--pace-bar-color, pace.$pace-bar-color),
+  0 0 5px var(--pace-bar-color, pace.$pace-bar-color);
+
+.pace--flash .pace-progress {
+  @include pace-mixin.pace-theme-track(
+    $height: pace.$pace-flash-bar-height,
+    $z-index: pace.$pace-z-index,
+    $background: var(--pace-track-color, pace.$pace-track-color),
+    $box-shadow: $pace-flash-shadow
+  );
+}
+
+.pace--flash .pace-progress-inner {
+  @include pace-mixin.pace-theme-inner(var(--pace-bar-color, pace.$pace-bar-color));
+}
+
+.pace--flash .pace-activity {
+  @include pace-mixin.pace-theme-activity-spinner;
+}
+
+// ---------------------------------------------------------------------------
+// Thème fill (overlay pleine hauteur, derrière le contenu)
+// ---------------------------------------------------------------------------
+.pace--fill .pace-progress {
+  @include pace-mixin.pace-theme-track(
+    $z-index: pace.$pace-fill-z-index,
+    $background: var(--pace-track-color, pace.$pace-fill-bg),
+    $full-height: true
+  );
+}
+
+.pace--fill .pace-progress-inner {
+  @include pace-mixin.pace-theme-inner(var(--pace-bar-color, pace.$pace-bar-color));
+}
+
+.pace--fill .pace-activity {
+  @include pace-mixin.pace-theme-activity-hidden;
+}
+
+// ---------------------------------------------------------------------------
+// Thème counter (card filled centrée à l’écran avec pourcentage)
+// Structure différente : pas de barre qui se remplit, affichage via ::after + attr(data-progress-text)
+// Centrage via inset 0 + margin auto pour éviter tout conflit avec le JS
+// ---------------------------------------------------------------------------
+.pace--counter {
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Backdrop blur plein écran (option backdrop: true, tous thèmes) */
+.pace-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: pace.$pace-z-index - 1;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+.pace--counter .pace-backdrop {
+  z-index: pace.$pace-counter-z-index - 1;
+}
+
+.pace--fill .pace-backdrop {
+  z-index: pace.$pace-fill-z-index - 1;
+}
+
+.pace--counter .pace-progress {
+  position: fixed;
+  z-index: pace.$pace-counter-z-index;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: pace.$pace-counter-card-width;
+  height: pace.$pace-counter-card-height;
+  padding: pace.$pace-counter-card-padding;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: pace.$pace-counter-card-bg;
+  border-radius: pace.$pace-counter-card-radius;
+  box-shadow: pace.$pace-counter-card-elevation;
+  box-sizing: border-box;
+}
+
+.pace--counter .pace-progress-inner {
+  position: relative;
+  transform: none !important;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+  top: auto;
+  left: auto;
+  right: auto;
+}
+
+.pace--counter .pace-progress-inner::after {
+  display: block;
+  content: attr(data-progress-text);
+  font-family: var(--md-sys-font-family-sans-serif, "Helvetica Neue", sans-serif);
+  font-weight: 100;
+  font-size: pace.$pace-counter-font-size;
+  line-height: 1;
+  text-align: center;
+  color: var(--pace-bar-color, pace.$pace-counter-color);
+}
+
+.pace--counter .pace-activity {
+  @include pace-mixin.pace-theme-activity-hidden;
+}
+
+// ---------------------------------------------------------------------------
+// Thème flat (barre qui glisse du haut, style pace.js)
+// L’animation est sur .pace-progress (pas sur .pace) pour que le backdrop (fixed)
+// reste ancré au viewport (un transform sur .pace casserait position: fixed des enfants).
+// ---------------------------------------------------------------------------
+.pace--flat .pace-backdrop {
+  z-index: pace.$pace-flat-z-index - 1;
+}
+
+.pace--flat .pace-progress {
+  display: block;
+  position: fixed;
+  z-index: pace.$pace-flat-z-index;
+  top: 0;
+  right: 100%;
+  width: 100%;
+  height: pace.$pace-flat-bar-height;
+  background: transparent;
+  pointer-events: none;
+  -webkit-transform: translate3d(0, -#{pace.$pace-flat-offset}, 0);
+  -ms-transform: translate3d(0, -#{pace.$pace-flat-offset}, 0);
+  transform: translate3d(0, -#{pace.$pace-flat-offset}, 0);
+  -webkit-transition: transform 0.5s ease-out;
+  -ms-transition: transform 0.5s ease-out;
+  transition: transform 0.5s ease-out;
+}
+
+.pace.pace-active.pace--flat .pace-progress {
+  -webkit-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+.pace--flat .pace-progress-inner {
+  @include pace-mixin.pace-theme-inner(var(--pace-bar-color, pace.$pace-flat-color));
+}
+
+.pace--flat .pace-activity {
+  @include pace-mixin.pace-theme-activity-hidden;
+}
+
+// ---------------------------------------------------------------------------
+// Thème barber (barre avec rayures animées, style coiffeur)
+// ---------------------------------------------------------------------------
+.pace--barber {
+  overflow: hidden;
+  width: 100%;
+  height: pace.$pace-barber-height;
+  background: var(--pace-track-color, pace.$pace-barber-track);
+  z-index: pace.$pace-barber-z-index;
+}
+
+.pace--barber .pace-backdrop {
+  z-index: pace.$pace-barber-z-index - 1;
+}
+
+.pace--barber .pace-progress {
+  position: fixed;
+  top: 0;
+  right: 100%;
+  width: 100%;
+  height: pace.$pace-barber-height;
+  overflow: hidden;
+  background-color: var(--pace-bar-color, pace.$pace-barber-progress);
+  z-index: pace.$pace-barber-z-index;
+  left: auto;
+}
+
+.pace--barber .pace-progress-inner {
+  @include pace-mixin.pace-theme-inner(var(--pace-bar-color, pace.$pace-barber-progress));
+}
+
+.pace--barber .pace-activity {
+  display: block;
+  position: fixed;
+  top: 0;
+  right: -#{pace.$pace-barber-stripe-size};
+  bottom: 0;
+  left: 0;
+  height: pace.$pace-barber-height;
+  z-index: pace.$pace-barber-z-index + 1;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(0.25, rgba(255, 255, 255, 0.2)), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(255, 255, 255, 0.2)), color-stop(0.75, rgba(255, 255, 255, 0.2)), color-stop(0.75, transparent), to(transparent));
+  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
+  background-image: -moz-linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
+  background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
+  -webkit-background-size: pace.$pace-barber-stripe-size pace.$pace-barber-stripe-size;
+  -moz-background-size: pace.$pace-barber-stripe-size pace.$pace-barber-stripe-size;
+  -o-background-size: pace.$pace-barber-stripe-size pace.$pace-barber-stripe-size;
+  background-size: pace.$pace-barber-stripe-size pace.$pace-barber-stripe-size;
+  -webkit-animation: pace-theme-barber-shop-motion 500ms linear infinite;
+  -moz-animation: pace-theme-barber-shop-motion 500ms linear infinite;
+  -ms-animation: pace-theme-barber-shop-motion 500ms linear infinite;
+  -o-animation: pace-theme-barber-shop-motion 500ms linear infinite;
+  animation: pace-theme-barber-shop-motion 500ms linear infinite;
+}
+
+// ---------------------------------------------------------------------------
+// Thème material (loader M3 centré plein écran – utilise LoadingIndicator)
+// ---------------------------------------------------------------------------
+.pace--material {
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.pace--material .pace-backdrop {
+  z-index: pace.$pace-material-z-index - 1;
+}
+
+.pace--material .pace-progress {
+  position: fixed;
+  z-index: pace.$pace-material-z-index;
+  inset: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: pace.$pace-material-bg;
+  pointer-events: none;
+}
+
+.pace--material .pace-progress-inner {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pace--material .pace-material-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pace--material .pace-activity {
+  @include pace-mixin.pace-theme-activity-hidden;
+}
+
+// ---------------------------------------------------------------------------
+// Keyframes (spinner – thème flash)
+// ---------------------------------------------------------------------------
+@-webkit-keyframes pace-spinner {
+  0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@-moz-keyframes pace-spinner {
+  0% { -moz-transform: rotate(0deg); transform: rotate(0deg); }
+  100% { -moz-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@-o-keyframes pace-spinner {
+  0% { -o-transform: rotate(0deg); transform: rotate(0deg); }
+  100% { -o-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@-ms-keyframes pace-spinner {
+  0% { -ms-transform: rotate(0deg); transform: rotate(0deg); }
+  100% { -ms-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@keyframes pace-spinner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// ---------------------------------------------------------------------------
+// Keyframes barber (rayures animées)
+// ---------------------------------------------------------------------------
+@-webkit-keyframes pace-theme-barber-shop-motion {
+  0% { -webkit-transform: none; transform: none; }
+  100% { -webkit-transform: translate(-#{pace.$pace-barber-stripe-size}, 0); transform: translate(-#{pace.$pace-barber-stripe-size}, 0); }
+}
+@-moz-keyframes pace-theme-barber-shop-motion {
+  0% { -moz-transform: none; transform: none; }
+  100% { -moz-transform: translate(-#{pace.$pace-barber-stripe-size}, 0); transform: translate(-#{pace.$pace-barber-stripe-size}, 0); }
+}
+@-o-keyframes pace-theme-barber-shop-motion {
+  0% { -o-transform: none; transform: none; }
+  100% { -o-transform: translate(-#{pace.$pace-barber-stripe-size}, 0); transform: translate(-#{pace.$pace-barber-stripe-size}, 0); }
+}
+@-ms-keyframes pace-theme-barber-shop-motion {
+  0% { -ms-transform: none; transform: none; }
+  100% { -ms-transform: translate(-#{pace.$pace-barber-stripe-size}, 0); transform: translate(-#{pace.$pace-barber-stripe-size}, 0); }
+}
+@keyframes pace-theme-barber-shop-motion {
+  0% { transform: none; }
+  100% { transform: translate(-#{pace.$pace-barber-stripe-size}, 0); }
+}

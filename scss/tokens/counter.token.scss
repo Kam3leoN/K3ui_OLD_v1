@@ -1,0 +1,88 @@
+/**
+ * @fileoverview Tokens de design pour Counter
+ * @description Variables pour le compteur Material Design 3
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'motion.token' as motion;
+@use 'radius.token' as radius;
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+/** Taille des boutons +/- */
+$counter-btn-size: 3rem !default;
+/** Largeur du champ valeur */
+$counter-value-width: 6rem !default;
+/** Hauteur du champ valeur */
+$counter-value-height: 3rem !default;
+/** Espacement entre les éléments */
+$counter-gap: 0.75rem !default;
+
+// ============================================================================
+// COULEURS
+// ============================================================================
+
+/** Fond bouton actif */
+$counter-btn-bg: var(--k3ui-color-primary, #6750a4) !default;
+/** Couleur texte bouton actif */
+$counter-btn-color: var(--k3ui-color-on-primary, #ffffff) !default;
+/** Ombre bouton actif */
+$counter-btn-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !default;
+/** Fond bouton désactivé */
+$counter-btn-disabled-bg: #e7e0ec !default;
+/** Couleur texte bouton désactivé */
+$counter-btn-disabled-color: #49454f !default;
+/** Fond du champ valeur */
+$counter-value-bg: #ece6f0 !default;
+/** Couleur texte du champ valeur */
+$counter-value-color: #1d1b20 !default;
+
+/** Fond état erreur (wrapper + valeur) */
+$counter-error-bg: #ffcdd2 !default;
+/** Couleur texte message d'erreur */
+$counter-error-color: #f44336 !default;
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+$counter-transition-duration: 200ms !default;
+$counter-transition-easing: motion.$md-sys-motion-easing-standard !default;
+
+// ============================================================================
+// RAYON
+// ============================================================================
+
+$counter-btn-radius: 9999px !default;
+$counter-value-radius: 0.75rem !default;
+
+// ============================================================================
+// VARIANT PILL (pill + cercle draggable, boutons filled, valeur tonal)
+// ============================================================================
+
+/** Fond du conteneur pill = primary */
+$counter-pill-bg: var(--md-sys-color-primary, #6750a4) !default;
+$counter-pill-shadow: 0 0 2em rgba(0, 0, 0, 0.2) !default;
+/** Léger écart entre le cercle/pill valeur et les boutons −/+ */
+$counter-pill-value-gap: 0.2rem !default;
+/** Gap interne cercle/pill valeur pour que la valeur ne dépasse jamais du bord */
+$counter-pill-number-inner-gap: 0.35em !default;
+/** Cercle valeur : style tonal (primary-container) */
+$counter-pill-number-bg: var(--md-sys-color-primary-container, #eaddf7) !default;
+$counter-pill-number-color: var(--md-sys-color-on-primary-container, #21005d) !default;
+
+// Tailles pill (xs, sm, md, lg, xl) — un seul diamètre pour les 3 cercles (−, valeur, +)
+// Pill height = cercle. Min-width = 2.5 × cercle ; le container s’élargit si la valeur passe en pill
+$counter-pill-circle-xs: 2rem !default;
+$counter-pill-min-width-xs: 5rem !default; // 2.5 × circle
+$counter-pill-circle-sm: 2.5rem !default;
+$counter-pill-min-width-sm: 6.25rem !default;
+$counter-pill-circle: 3rem !default;
+$counter-pill-min-width: 7.5rem !default;
+$counter-pill-circle-lg: 3.5rem !default;
+$counter-pill-min-width-lg: 8.75rem !default;
+$counter-pill-circle-xl: 4rem !default;
+$counter-pill-min-width-xl: 10rem !default;

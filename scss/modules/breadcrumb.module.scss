@@ -1,0 +1,80 @@
+/**
+ * @fileoverview Module Breadcrumb (fil d'Ariane)
+ * @description Classes CSS pour le composant Breadcrumb MD3 Expressive
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use "../tokens/breadcrumb.token" as bc;
+@use "../mixins/breadcrumb.mixin" as bc-mixin;
+@use "../mixins/state.mixin" as state;
+
+.breadcrumb {
+  position: relative;
+  z-index: bc.$breadcrumb-z-index;
+}
+
+.breadcrumb__list {
+  @include bc-mixin.breadcrumb-list;
+}
+
+.breadcrumb__item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.breadcrumb__item--sep {
+  pointer-events: none;
+}
+
+.breadcrumb__link {
+  @include bc-mixin.breadcrumb-link;
+}
+
+.breadcrumb__link--current {
+  @include bc-mixin.breadcrumb-link-current-plain;
+  cursor: default;
+  pointer-events: none;
+}
+
+.breadcrumb--tonal .breadcrumb__link--current {
+  @include bc-mixin.breadcrumb-link-current-plain;
+}
+
+.breadcrumb--filled .breadcrumb__link--current {
+  @include bc-mixin.breadcrumb-link-current-filled;
+}
+
+.breadcrumb__icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: bc.$breadcrumb-icon-size-medium;
+  height: bc.$breadcrumb-icon-size-medium;
+}
+
+.breadcrumb__separator {
+  @include bc-mixin.breadcrumb-separator;
+}
+
+.breadcrumb__ellipsis {
+  @include bc-mixin.breadcrumb-ellipsis;
+}
+
+.breadcrumb--small {
+  @include bc-mixin.breadcrumb-size-small;
+}
+
+.breadcrumb--medium {
+  @include bc-mixin.breadcrumb-size-medium;
+}
+
+.breadcrumb--large {
+  @include bc-mixin.breadcrumb-size-large;
+}
+
+.breadcrumb__item--ellipsis {
+  display: inline-flex;
+  align-items: center;
+}

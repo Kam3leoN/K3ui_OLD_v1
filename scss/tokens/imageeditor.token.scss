@@ -1,0 +1,53 @@
+/**
+ * @fileoverview Tokens ImageEditor pour K3UI
+ * @description Design tokens pour l'éditeur d'images
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+// ============================================================================
+// VARIABLES IMAGEEDITOR
+// ============================================================================
+
+// Canvas
+$image-editor-canvas-border: 2px solid var(--md-sys-color-outline) !default;
+$image-editor-canvas-radius: var(--md-sys-shape-corner-large) !default;
+$image-editor-canvas-bg: var(--md-sys-color-surface-container-low) !default;
+
+// Toolbar
+$image-editor-toolbar-bg: var(--md-sys-color-surface-container) !default;
+$image-editor-toolbar-padding: var(--md-sys-spacing-4) !default;
+$image-editor-toolbar-gap: var(--md-sys-spacing-2) !default;
+$image-editor-toolbar-radius: var(--md-sys-shape-corner-medium) !default;
+
+// Grille
+$image-editor-grid-color: rgba(255, 255, 255, 0.5) !default;
+$image-editor-grid-width: 1px !default;
+
+// Overlay
+$image-editor-overlay-bg: rgba(0, 0, 0, 0.5) !default;
+$image-editor-overlay-color: var(--md-sys-color-on-surface) !default;
+
+// Info overlays
+$image-editor-info-bg: rgba(0, 0, 0, 0.7) !default;
+$image-editor-info-color: var(--md-sys-color-on-primary) !default;
+$image-editor-info-padding: var(--md-sys-spacing-2) var(--md-sys-spacing-3) !default;
+$image-editor-info-radius: var(--md-sys-shape-corner-small) !default;
+$image-editor-info-font-size: 12px !default;
+
+// Sections
+$image-editor-section-gap: var(--md-sys-spacing-3) !default;
+$image-editor-section-title-size: 14px !default;
+$image-editor-section-title-weight: 500 !default;
+
+// Contrôles
+$image-editor-control-height: 32px !default;
+$image-editor-control-gap: var(--md-sys-spacing-2) !default;
+
+// Position grid (watermark)
+$image-editor-position-grid-size: 36px !default;
+$image-editor-position-grid-gap: 4px !default;
+
+// Séparateurs
+$image-editor-separator-color: var(--md-sys-color-outline-variant) !default;
+$image-editor-separator-width: 1px !default;

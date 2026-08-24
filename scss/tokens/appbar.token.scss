@@ -1,0 +1,89 @@
+/**
+ * @fileoverview Tokens de design pour AppBar
+ * @description Top App Bar M3 Expressive — specs m3.material.io/components/app-bars
+ * @author K3UI Team
+ * @version 1.1.0
+ */
+
+@use 'motion.token' as motion;
+
+// ============================================================================
+// Z-INDEX
+// ============================================================================
+
+$appbar-z-index-default: 110 !default;
+
+// ============================================================================
+// DIMENSIONS (dp → px, 1:1 web)
+// ============================================================================
+
+$appbar-height-small: 64px !default;
+$appbar-height-center: 64px !default;
+$appbar-height-search: 72px !default;
+$appbar-height-medium-collapsed: 64px !default;
+$appbar-height-medium-expanded: 112px !default;
+$appbar-height-large-collapsed: 64px !default;
+$appbar-height-large-expanded: 152px !default;
+$appbar-toolbar-height: 64px !default;
+
+$appbar-padding-inline: 16px !default;
+$appbar-gap: 8px !default;
+$appbar-title-expanded-padding-block-end: 16px !default;
+
+// ============================================================================
+// SEARCH
+// ============================================================================
+
+$appbar-search-field-radius: 9999px !default;
+$appbar-search-field-min-height: 48px !default;
+$appbar-search-field-padding-inline: 16px !default;
+$appbar-search-field-bg: var(--md-sys-color-surface-container-high, rgba(0, 0, 0, 0.06)) !default;
+$appbar-search-field-shadow-focus: 0 1px 2px rgba(0, 0, 0, 0.12) !default;
+$appbar-search-field-focus-ring: 2px solid var(--md-sys-color-primary, #6750a4) !default;
+$appbar-search-avatar-size: 40px !default;
+/* Conservé pour compat — révélation AppBar désormais instantanée (pas de fade) */
+$appbar-icon-load-opacity-duration: 0ms !default;
+
+// ============================================================================
+// COULEURS — lift on scroll = surface-container (M3)
+// ============================================================================
+
+$appbar-color-container: var(--md-sys-color-surface, var(--k3ui-color-surface)) !default;
+$appbar-color-container-scrolled: var(--md-sys-color-surface-container, var(--k3ui-color-surface-container)) !default;
+$appbar-color-on-container: var(--md-sys-color-on-surface, var(--k3ui-color-on-surface)) !default;
+$appbar-color-on-container-secondary: var(--md-sys-color-on-surface-variant, var(--k3ui-color-on-surface-variant)) !default;
+
+// ============================================================================
+// TYPOGRAPHIE M3 — title-large / headline-* / label-*
+// ============================================================================
+
+$appbar-title-large-font-size: 22px !default;
+$appbar-title-large-line-height: 28px !default;
+
+$appbar-title-medium-expanded-font-size: 28px !default;
+$appbar-title-medium-expanded-line-height: 36px !default;
+
+$appbar-title-large-expanded-font-size: 36px !default;
+$appbar-title-large-expanded-line-height: 44px !default;
+
+$appbar-subtitle-expanded-font-size: 14px !default;
+$appbar-subtitle-expanded-line-height: 20px !default;
+$appbar-subtitle-collapsed-font-size: 12px !default;
+$appbar-subtitle-collapsed-line-height: 16px !default;
+
+// ============================================================================
+// MOTION — effects (lift) + spatial emphasized (collapse/hide)
+// ============================================================================
+
+$appbar-lift-duration: var(--md-sys-motion-effects-default-duration, #{motion.spring-duration(effects, default)}) !default;
+$appbar-lift-easing: var(--md-sys-motion-effects-default-easing, #{motion.spring-easing(effects, default)}) !default;
+
+$appbar-collapse-duration: var(--md-sys-motion-spatial-default-duration, #{motion.spring-duration(spatial, default)}) !default;
+$appbar-collapse-easing: var(--md-sys-motion-spatial-default-easing, #{motion.spring-easing(spatial, default)}) !default;
+
+$appbar-hide-duration: var(--md-sys-motion-spatial-fast-duration, #{motion.spring-duration(spatial, fast)}) !default;
+$appbar-hide-easing: var(--md-sys-motion-spatial-fast-easing, #{motion.spring-easing(spatial, fast)}) !default;
+
+$appbar-elevation-rest: var(--md-sys-elevation-level0, none) !default;
+$appbar-elevation-scrolled: var(--md-sys-elevation-level1, 0 1px 2px rgba(0, 0, 0, 0.3)) !default;
+

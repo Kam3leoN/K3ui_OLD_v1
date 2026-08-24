@@ -1,0 +1,437 @@
+/**
+ * @fileoverview Module ButtonIcon Material Design 3 Expressive
+ * @description Bouton d'action (icon-only) — Standard, Filled, Filled selected, Tonal, Outlined
+ * @see https://m3.material.io/components/icon-buttons/overview
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/button.token' as button;
+@use '../tokens/button-icon.token' as bitokens;
+@use '../tokens/motion.token' as motion;
+@use '../mixins/button.mixin' as btn;
+@use '../mixins/button-icon.mixin' as bicon;
+
+$ib-effects-dur: motion.spring-duration(effects, fast);
+$ib-effects-ease: motion.spring-easing(effects, fast);
+$ib-spatial-fast-dur: motion.spring-duration(spatial, fast);
+$ib-spatial-fast-ease: motion.spring-easing(spatial, fast);
+$ib-spatial-default-dur: motion.spring-duration(spatial, default);
+$ib-spatial-default-ease: motion.spring-easing(spatial, default);
+
+// ============================================================================
+// BASE
+// ============================================================================
+
+.btn-icon,
+.button-icon {
+  @include btn.btn-base;
+  @include bicon.btn-icon-size-sm;
+
+  /* Transition shape (default ↔ narrow ↔ wide) + forme (round ↔ square) — spatial + effects M3 */
+  transition:
+    background-color $ib-effects-dur $ib-effects-ease,
+    box-shadow $ib-effects-dur $ib-effects-ease,
+    border-color $ib-effects-dur $ib-effects-ease,
+    color $ib-effects-dur $ib-effects-ease,
+    transform $ib-spatial-fast-dur $ib-spatial-fast-ease,
+    border-radius button.$md-comp-button-shape-morph-duration button.$md-comp-button-shape-morph-easing,
+    width button.$md-comp-button-shape-morph-duration button.$md-comp-button-shape-morph-easing,
+    height button.$md-comp-button-shape-morph-duration button.$md-comp-button-shape-morph-easing,
+    min-width button.$md-comp-button-shape-morph-duration button.$md-comp-button-shape-morph-easing,
+    min-height button.$md-comp-button-shape-morph-duration button.$md-comp-button-shape-morph-easing;
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+}
+
+// ============================================================================
+// VARIANTES
+// ============================================================================
+
+// Standard (transparent, sans fond)
+.btn-icon.btn-icon--standard,
+.button-icon.button-icon--standard,
+.btn-icon:not(.btn-icon--filled):not(.btn-icon--tonal):not(.btn-icon--outlined),
+.button-icon:not(.button-icon--filled):not(.button-icon--tonal):not(.button-icon--outlined) {
+  @include bicon.btn-icon-standard;
+}
+
+// Filled unselected
+.btn-icon.btn-icon--filled:not(.btn-icon--selected),
+.button-icon.button-icon--filled:not(.button-icon--selected) {
+  @include btn.btn-filled;
+  .btn-icon__icon,
+  .button-icon__icon,
+  i,
+  svg {
+    color: inherit;
+  }
+}
+
+// Filled selected
+.btn-icon.btn-icon--filled.btn-icon--selected,
+.button-icon.button-icon--filled.button-icon--selected {
+  @include bicon.btn-icon-filled-selected;
+  .btn-icon__icon,
+  .button-icon__icon,
+  i,
+  svg {
+    color: inherit;
+  }
+}
+
+// Filled tonal
+.btn-icon.btn-icon--tonal,
+.button-icon.button-icon--tonal {
+  @include btn.btn-filled-tonal;
+  .btn-icon__icon,
+  .button-icon__icon,
+  i,
+  svg {
+    color: inherit;
+  }
+}
+
+// Outlined
+.btn-icon.btn-icon--outlined,
+.button-icon.button-icon--outlined {
+  @include btn.btn-outlined;
+  .btn-icon__icon,
+  .button-icon__icon,
+  i,
+  svg {
+    color: inherit;
+  }
+}
+
+// ============================================================================
+// TAILLES (5)
+// ============================================================================
+
+.btn-icon.btn-icon--xs,
+.button-icon.button-icon--xs {
+  @include bicon.btn-icon-size-xs;
+}
+
+.btn-icon.btn-icon--sm,
+.button-icon.button-icon--sm {
+  @include bicon.btn-icon-size-sm;
+}
+
+.btn-icon.btn-icon--md,
+.button-icon.button-icon--md {
+  @include bicon.btn-icon-size-md;
+}
+
+.btn-icon.btn-icon--lg,
+.button-icon.button-icon--lg {
+  @include bicon.btn-icon-size-lg;
+}
+
+.btn-icon.btn-icon--xl,
+.button-icon.button-icon--xl {
+  @include bicon.btn-icon-size-xl;
+}
+
+// ============================================================================
+// FORMES — border-radius square (sans !important pour que l’animation shape-to-square
+// / shape-to-round puisse s’afficher ; la cascade suffit pour battre le défaut 9999px).
+// ============================================================================
+
+.btn-icon.btn-icon--xs.btn-icon--square,
+.button-icon.button-icon--xs.button-icon--square {
+  border-radius: button.$md-comp-button-square-initial-xs-radius;
+}
+.btn-icon.btn-icon--sm.btn-icon--square,
+.button-icon.button-icon--sm.button-icon--square {
+  border-radius: button.$md-comp-button-square-initial-sm-radius;
+}
+.btn-icon.btn-icon--md.btn-icon--square,
+.button-icon.button-icon--md.button-icon--square {
+  border-radius: button.$md-comp-button-square-initial-md-radius;
+}
+.btn-icon.btn-icon--lg.btn-icon--square,
+.button-icon.button-icon--lg.button-icon--square {
+  border-radius: button.$md-comp-button-square-initial-lg-radius;
+}
+.btn-icon.btn-icon--xl.btn-icon--square,
+.button-icon.button-icon--xl.button-icon--square {
+  border-radius: button.$md-comp-button-square-initial-xl-radius;
+}
+
+// ============================================================================
+// PRESS/RELEASE MORPH — clic maintenu (M3 Expressive, comme Button)
+// Square → pill avec squircle ; Round (défaut) → transition border-radius.
+// ============================================================================
+
+$ib-press-easing: $ib-spatial-fast-ease;
+$ib-press-dur: $ib-spatial-fast-dur;
+$ib-release-dur: $ib-spatial-default-dur;
+
+/* Désactiver la transition de base pendant press/release pour que le morph (animation ou transition ciblée) s’affiche */
+.btn-icon.pressing,
+.btn-icon.releasing,
+.button-icon.pressing,
+.button-icon.releasing {
+  transition: none;
+}
+
+/* Press: square → pill (squircle intermédiaire) */
+@keyframes ib-press-square-to-pill-xs {
+  0%   { border-radius: button.$md-comp-button-square-initial-xs-radius; }
+  60%  { border-radius: 18px; }
+  100% { border-radius: 9999px; }
+}
+@keyframes ib-press-square-to-pill-sm {
+  0%   { border-radius: button.$md-comp-button-square-initial-sm-radius; }
+  60%  { border-radius: 24px; }
+  100% { border-radius: 9999px; }
+}
+@keyframes ib-press-square-to-pill-md {
+  0%   { border-radius: button.$md-comp-button-square-initial-md-radius; }
+  60%  { border-radius: 34px; }
+  100% { border-radius: 9999px; }
+}
+@keyframes ib-press-square-to-pill-lg {
+  0%   { border-radius: button.$md-comp-button-square-initial-lg-radius; }
+  60%  { border-radius: 58px; }
+  100% { border-radius: 9999px; }
+}
+@keyframes ib-press-square-to-pill-xl {
+  0%   { border-radius: button.$md-comp-button-square-initial-xl-radius; }
+  60%  { border-radius: 82px; }
+  100% { border-radius: 9999px; }
+}
+
+/* Release: pill → square */
+@keyframes ib-release-pill-to-square-xs {
+  0%   { border-radius: 9999px; }
+  60%  { border-radius: 2px; }
+  100% { border-radius: button.$md-comp-button-square-initial-xs-radius; }
+}
+@keyframes ib-release-pill-to-square-sm {
+  0%   { border-radius: 9999px; }
+  60%  { border-radius: 4px; }
+  100% { border-radius: button.$md-comp-button-square-initial-sm-radius; }
+}
+@keyframes ib-release-pill-to-square-md {
+  0%   { border-radius: 9999px; }
+  60%  { border-radius: 5px; }
+  100% { border-radius: button.$md-comp-button-square-initial-md-radius; }
+}
+@keyframes ib-release-pill-to-square-lg {
+  0%   { border-radius: 9999px; }
+  60%  { border-radius: 8px; }
+  100% { border-radius: button.$md-comp-button-square-initial-lg-radius; }
+}
+@keyframes ib-release-pill-to-square-xl {
+  0%   { border-radius: 9999px; }
+  60%  { border-radius: 10px; }
+  100% { border-radius: button.$md-comp-button-square-initial-xl-radius; }
+}
+
+/* Appliquer l'animation au clic maintenu (square) */
+.btn-icon.btn-icon--square.pressing.btn-icon--xs,
+.button-icon.button-icon--square.pressing.button-icon--xs {
+  animation: ib-press-square-to-pill-xs $ib-press-dur $ib-press-easing forwards;
+}
+.btn-icon.btn-icon--square.pressing.btn-icon--sm,
+.button-icon.button-icon--square.pressing.button-icon--sm {
+  animation: ib-press-square-to-pill-sm $ib-press-dur $ib-press-easing forwards;
+}
+.btn-icon.btn-icon--square.pressing.btn-icon--md,
+.button-icon.button-icon--square.pressing.button-icon--md {
+  animation: ib-press-square-to-pill-md $ib-press-dur $ib-press-easing forwards;
+}
+.btn-icon.btn-icon--square.pressing.btn-icon--lg,
+.button-icon.button-icon--square.pressing.button-icon--lg {
+  animation: ib-press-square-to-pill-lg $ib-press-dur $ib-press-easing forwards;
+}
+.btn-icon.btn-icon--square.pressing.btn-icon--xl,
+.button-icon.button-icon--square.pressing.button-icon--xl {
+  animation: ib-press-square-to-pill-xl $ib-press-dur $ib-press-easing forwards;
+}
+
+.btn-icon.btn-icon--square.releasing.btn-icon--xs,
+.button-icon.button-icon--square.releasing.button-icon--xs {
+  animation: ib-release-pill-to-square-xs $ib-release-dur $ib-press-easing forwards;
+}
+.btn-icon.btn-icon--square.releasing.btn-icon--sm,
+.button-icon.button-icon--square.releasing.button-icon--sm {
+  animation: ib-release-pill-to-square-sm $ib-release-dur $ib-press-easing forwards;
+}
+.btn-icon.btn-icon--square.releasing.btn-icon--md,
+.button-icon.button-icon--square.releasing.button-icon--md {
+  animation: ib-release-pill-to-square-md $ib-release-dur $ib-press-easing forwards;
+}
+.btn-icon.btn-icon--square.releasing.btn-icon--lg,
+.button-icon.button-icon--square.releasing.button-icon--lg {
+  animation: ib-release-pill-to-square-lg $ib-release-dur $ib-press-easing forwards;
+}
+.btn-icon.btn-icon--square.releasing.btn-icon--xl,
+.button-icon.button-icon--square.releasing.button-icon--xl {
+  animation: ib-release-pill-to-square-xl $ib-release-dur $ib-press-easing forwards;
+}
+
+/*
+ * Round (défaut) : pas de morph vers corner-small (8dp) — réservé aux boutons texte.
+ * M3 icon-button : calque d’état circulaire (material-web state-layer-shape: corner-full).
+ * Le morph expressif carré ↔ pilule s’applique uniquement avec .btn-icon--square.
+ */
+.btn-icon.pressing:not(.btn-icon--square),
+.button-icon.pressing:not(.button-icon--square) {
+  border-radius: bitokens.$md-comp-icon-button-round-pressed-radius !important;
+}
+
+// ============================================================================
+// FORMES — animation round ↔ square avec étape intermédiaire (pas d’angles à 0)
+// Utilisé par le playground : classe .btn-icon--shape-to-square / .btn-icon--shape-to-round
+// ============================================================================
+
+$ib-shape-easing: $ib-spatial-fast-ease;
+$ib-shape-dur: $ib-spatial-fast-dur;
+
+/* Round → Square : pill → squircle → square (jamais en dessous du squircle) */
+@keyframes ib-round-to-square-xs {
+  0%   { border-radius: 9999px; }
+  50%  { border-radius: 12px; }
+  100% { border-radius: button.$md-comp-button-square-initial-xs-radius; }
+}
+@keyframes ib-round-to-square-sm {
+  0%   { border-radius: 9999px; }
+  50%  { border-radius: 20px; }
+  100% { border-radius: button.$md-comp-button-square-initial-sm-radius; }
+}
+@keyframes ib-round-to-square-md {
+  0%   { border-radius: 9999px; }
+  50%  { border-radius: 24px; }
+  100% { border-radius: button.$md-comp-button-square-initial-md-radius; }
+}
+@keyframes ib-round-to-square-lg {
+  0%   { border-radius: 9999px; }
+  50%  { border-radius: 28px; }
+  100% { border-radius: button.$md-comp-button-square-initial-lg-radius; }
+}
+@keyframes ib-round-to-square-xl {
+  0%   { border-radius: 9999px; }
+  50%  { border-radius: 32px; }
+  100% { border-radius: button.$md-comp-button-square-initial-xl-radius; }
+}
+
+/* Square → Round : square → squircle → pill */
+@keyframes ib-square-to-round-xs {
+  0%   { border-radius: button.$md-comp-button-square-initial-xs-radius; }
+  50%  { border-radius: 12px; }
+  100% { border-radius: 9999px; }
+}
+@keyframes ib-square-to-round-sm {
+  0%   { border-radius: button.$md-comp-button-square-initial-sm-radius; }
+  50%  { border-radius: 20px; }
+  100% { border-radius: 9999px; }
+}
+@keyframes ib-square-to-round-md {
+  0%   { border-radius: button.$md-comp-button-square-initial-md-radius; }
+  50%  { border-radius: 24px; }
+  100% { border-radius: 9999px; }
+}
+@keyframes ib-square-to-round-lg {
+  0%   { border-radius: button.$md-comp-button-square-initial-lg-radius; }
+  50%  { border-radius: 28px; }
+  100% { border-radius: 9999px; }
+}
+@keyframes ib-square-to-round-xl {
+  0%   { border-radius: button.$md-comp-button-square-initial-xl-radius; }
+  50%  { border-radius: 32px; }
+  100% { border-radius: 9999px; }
+}
+
+/* Appliquer l’animation (override la transition le temps de l’anim) */
+.btn-icon.btn-icon--shape-to-square.btn-icon--xs,
+.button-icon.button-icon--shape-to-square.button-icon--xs {
+  animation: ib-round-to-square-xs $ib-shape-dur $ib-shape-easing forwards;
+}
+.btn-icon.btn-icon--shape-to-square.btn-icon--sm,
+.button-icon.button-icon--shape-to-square.button-icon--sm {
+  animation: ib-round-to-square-sm $ib-shape-dur $ib-shape-easing forwards;
+}
+.btn-icon.btn-icon--shape-to-square.btn-icon--md,
+.button-icon.button-icon--shape-to-square.button-icon--md {
+  animation: ib-round-to-square-md $ib-shape-dur $ib-shape-easing forwards;
+}
+.btn-icon.btn-icon--shape-to-square.btn-icon--lg,
+.button-icon.button-icon--shape-to-square.button-icon--lg {
+  animation: ib-round-to-square-lg $ib-shape-dur $ib-shape-easing forwards;
+}
+.btn-icon.btn-icon--shape-to-square.btn-icon--xl,
+.button-icon.button-icon--shape-to-square.button-icon--xl {
+  animation: ib-round-to-square-xl $ib-shape-dur $ib-shape-easing forwards;
+}
+
+.btn-icon.btn-icon--shape-to-round.btn-icon--xs,
+.button-icon.button-icon--shape-to-round.button-icon--xs {
+  animation: ib-square-to-round-xs $ib-shape-dur $ib-shape-easing forwards;
+}
+.btn-icon.btn-icon--shape-to-round.btn-icon--sm,
+.button-icon.button-icon--shape-to-round.button-icon--sm {
+  animation: ib-square-to-round-sm $ib-shape-dur $ib-shape-easing forwards;
+}
+.btn-icon.btn-icon--shape-to-round.btn-icon--md,
+.button-icon.button-icon--shape-to-round.button-icon--md {
+  animation: ib-square-to-round-md $ib-shape-dur $ib-shape-easing forwards;
+}
+.btn-icon.btn-icon--shape-to-round.btn-icon--lg,
+.button-icon.button-icon--shape-to-round.button-icon--lg {
+  animation: ib-square-to-round-lg $ib-shape-dur $ib-shape-easing forwards;
+}
+.btn-icon.btn-icon--shape-to-round.btn-icon--xl,
+.button-icon.button-icon--shape-to-round.button-icon--xl {
+  animation: ib-square-to-round-xl $ib-shape-dur $ib-shape-easing forwards;
+}
+
+// ============================================================================
+// LOADING
+// ============================================================================
+
+.btn-icon.btn-icon--loading,
+.button-icon.button-icon--loading {
+  position: relative;
+  color: transparent;
+  pointer-events: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: -0.625rem 0 0 -0.625rem;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: button-icon-spinner 0.6s linear infinite;
+  }
+}
+
+@keyframes button-icon-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ============================================================================
+// GROUPE (gap 3dp entre boutons icône et entre icône et autre élément)
+// ============================================================================
+
+/** Conteneur flex avec gap 3dp — utiliser quand plusieurs .btn-icon sont côte à côte ou avec d'autres éléments */
+.btn-icon-group,
+.button-icon-group {
+  display: flex;
+  align-items: center;
+  gap: bitokens.$md-sys-icon-button-gap;
+}

@@ -1,0 +1,50 @@
+/**
+ * Tokens pour le composant Pin
+ * Définit les variables de design pour les inputs PIN
+ */
+
+@use 'motion.token' as motion;
+
+// Dimensions
+$pin-container-gap: 0.25rem !default;
+$pin-digit-width: 3.5rem !default;
+$pin-digit-height: 4rem !default;
+$pin-digit-border-radius: 0.375rem !default;
+
+// Espacement
+$pin-counter-margin: 0.5rem !default;
+$pin-counter-padding: 0.25rem !default;
+
+// Typographie
+$pin-digit-font-size: 2.2rem !default;
+$pin-digit-line-height: 3rem !default;
+$pin-digit-font-weight: 500 !default;
+$pin-digit-text-align: center !default;
+$pin-counter-font-size: 0.875rem !default;
+$pin-counter-font-weight: 400 !default;
+
+// Couleurs
+$pin-digit-background: var(--md-sys-color-surface-container-highest) !default;
+$pin-digit-border-color: var(--md-sys-color-outline) !default;
+$pin-digit-border-color-focused: var(--md-sys-color-primary) !default;
+$pin-digit-text-color: var(--md-sys-color-on-surface) !default;
+$pin-digit-placeholder-color: var(--md-sys-color-on-surface-variant) !default;
+$pin-counter-background: var(--md-sys-color-surface-container) !default;
+$pin-counter-text-color: var(--md-sys-color-on-surface-variant) !default;
+
+// États
+$pin-digit-background-filled: var(--md-sys-color-primary-container) !default;
+$pin-digit-text-color-filled: var(--md-sys-color-on-primary-container) !default;
+$pin-digit-background-disabled: var(--md-sys-color-surface-container-low) !default;
+$pin-digit-text-color-disabled: var(--md-sys-color-on-surface) !default;
+$pin-digit-opacity-disabled: 0.38 !default;
+
+// Bordures
+$pin-digit-border-width: 1px !default;
+$pin-digit-border-width-focused: 2px !default;
+
+// Transitions
+$pin-transition-duration: motion.spring-duration(effects, fast) !default;
+$pin-transition-easing: motion.spring-easing(effects, fast) !default;
+$pin-label-transition-duration: motion.spring-duration(spatial, fast) !default;
+$pin-label-transition-easing: motion.spring-easing(spatial, fast) !default;

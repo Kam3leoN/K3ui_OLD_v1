@@ -1,0 +1,209 @@
+/**
+ * @file radius.token.scss
+ * @description Tokens de radius pour le design system K3UI Material Design 3 Expressive
+ * @see https://m3.material.io/foundations/design-tokens/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use 'sass:map';
+
+// ============================================================================
+// RADIUS DE BASE MATERIAL DESIGN 3
+// ============================================================================
+
+/**
+ * Radius extra-small (4px)
+ * Utilisé pour les petits éléments comme les badges, tags
+ */
+$md-sys-shape-corner-extra-small: 4px !default;
+
+/**
+ * Radius small (8px)
+ * Utilisé pour les boutons, inputs, petits composants
+ */
+$md-sys-shape-corner-small: 8px !default;
+
+/**
+ * Radius medium (12px)
+ * Utilisé pour les cartes, modales, composants standards
+ */
+$md-sys-shape-corner-medium: 12px !default;
+
+/**
+ * Radius large (16px)
+ * Utilisé pour les grandes cartes, panneaux
+ */
+$md-sys-shape-corner-large: 16px !default;
+
+/**
+ * Radius extra-large (28px)
+ * Utilisé pour les composants très grands, hero sections
+ */
+$md-sys-shape-corner-extra-large: 28px !default;
+
+/**
+ * Radius full (999px)
+ * Utilisé pour créer des formes circulaires
+ */
+$md-sys-shape-corner-full: 999px !default;
+
+// ============================================================================
+// RADIUS INCREASED — M3 EXPRESSIVE (échelle augmentée)
+// ============================================================================
+
+$md-sys-shape-corner-extra-small-increased: 8px !default;
+$md-sys-shape-corner-small-increased: 12px !default;
+$md-sys-shape-corner-medium-increased: 16px !default;
+$md-sys-shape-corner-large-increased: 24px !default;
+$md-sys-shape-corner-extra-large-increased: 36px !default;
+
+// ============================================================================
+// RADIUS POUR LES DIFFÉRENTS TYPES DE COMPOSANTS
+// ============================================================================
+
+/**
+ * Radius pour les boutons
+ */
+$md-sys-shape-corner-button: $md-sys-shape-corner-small !default;
+
+/**
+ * Radius pour les inputs
+ */
+$md-sys-shape-corner-input: $md-sys-shape-corner-small !default;
+
+/**
+ * Radius pour les cartes
+ */
+$md-sys-shape-corner-card: $md-sys-shape-corner-medium !default;
+
+/**
+ * Radius pour les modales
+ */
+$md-sys-shape-corner-modal: $md-sys-shape-corner-large !default;
+
+/**
+ * Radius pour les tooltips
+ */
+$md-sys-shape-corner-tooltip: $md-sys-shape-corner-small !default;
+
+/**
+ * Radius pour les menus
+ */
+$md-sys-shape-corner-menu: $md-sys-shape-corner-medium !default;
+
+/**
+ * Radius pour les avatars
+ */
+$md-sys-shape-corner-avatar: $md-sys-shape-corner-full !default;
+
+/**
+ * Radius pour les badges
+ */
+$md-sys-shape-corner-badge: $md-sys-shape-corner-extra-small !default;
+
+// ============================================================================
+// RADIUS POUR LES DIFFÉRENTS COINS
+// ============================================================================
+
+/**
+ * Radius pour le coin supérieur gauche
+ */
+$md-sys-shape-corner-top-left: $md-sys-shape-corner-medium !default;
+
+/**
+ * Radius pour le coin supérieur droit
+ */
+$md-sys-shape-corner-top-right: $md-sys-shape-corner-medium !default;
+
+/**
+ * Radius pour le coin inférieur gauche
+ */
+$md-sys-shape-corner-bottom-left: $md-sys-shape-corner-medium !default;
+
+/**
+ * Radius pour le coin inférieur droit
+ */
+$md-sys-shape-corner-bottom-right: $md-sys-shape-corner-medium !default;
+
+// ============================================================================
+// MAPS ET COLLECTIONS
+// ============================================================================
+
+/**
+ * Map des radius de base
+ */
+$md-sys-shape-corners: (
+  extra-small: $md-sys-shape-corner-extra-small,
+  small: $md-sys-shape-corner-small,
+  medium: $md-sys-shape-corner-medium,
+  large: $md-sys-shape-corner-large,
+  extra-large: $md-sys-shape-corner-extra-large,
+  full: $md-sys-shape-corner-full
+) !default;
+
+/**
+ * Map des radius increased (M3 Expressive)
+ */
+$md-sys-shape-corners-increased: (
+  extra-small: $md-sys-shape-corner-extra-small-increased,
+  small: $md-sys-shape-corner-small-increased,
+  medium: $md-sys-shape-corner-medium-increased,
+  large: $md-sys-shape-corner-large-increased,
+  extra-large: $md-sys-shape-corner-extra-large-increased
+) !default;
+
+/**
+ * Map des radius par type de composant
+ */
+$md-sys-shape-component-corners: (
+  button: $md-sys-shape-corner-button,
+  input: $md-sys-shape-corner-input,
+  card: $md-sys-shape-corner-card,
+  modal: $md-sys-shape-corner-modal,
+  tooltip: $md-sys-shape-corner-tooltip,
+  menu: $md-sys-shape-corner-menu,
+  avatar: $md-sys-shape-corner-avatar,
+  badge: $md-sys-shape-corner-badge
+) !default;
+
+/**
+ * Map des radius par coin
+ */
+$md-sys-shape-corner-positions: (
+  top-left: $md-sys-shape-corner-top-left,
+  top-right: $md-sys-shape-corner-top-right,
+  bottom-left: $md-sys-shape-corner-bottom-left,
+  bottom-right: $md-sys-shape-corner-bottom-right
+) !default;
+
+// ============================================================================
+// FONCTIONS UTILITAIRES
+// ============================================================================
+
+/**
+ * Fonction pour récupérer un radius de base
+ * @param {string} $size - Taille du radius (extra-small, small, medium, large, extra-large, full)
+ * @return {string} Valeur du radius
+ */
+@function radius($size) {
+  @return map.get($md-sys-shape-corners, $size);
+}
+
+/**
+ * Fonction pour récupérer un radius par type de composant
+ * @param {string} $component - Type de composant (button, input, card, modal, tooltip, menu, avatar, badge)
+ * @return {string} Valeur du radius
+ */
+@function radius-component($component) {
+  @return map.get($md-sys-shape-component-corners, $component);
+}
+
+/**
+ * Fonction pour récupérer un radius par position de coin
+ * @param {string} $position - Position du coin (top-left, top-right, bottom-left, bottom-right)
+ * @return {string} Valeur du radius
+ */
+@function radius-corner($position) {
+  @return map.get($md-sys-shape-corner-positions, $position);
+} 

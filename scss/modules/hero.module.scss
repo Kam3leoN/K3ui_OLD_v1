@@ -1,0 +1,145 @@
+/**
+ * Module SCSS pour le composant Hero
+ * Styles complets pour les sections d'en-tête des pages
+ * Typo alignée sur Google I/O 2026 : Google Sans Display / Google Sans Text
+ */
+
+
+@use '../mixins/hero.mixin' as hero;
+@use '../mixins/typography.mixin' as typography;
+@use '../mixins/spacing.mixin' as spacing;
+
+/**
+ * Composant Hero
+ * Section d'en-tête pour les pages avec titre et sous-titre - Style cadre bleu
+ */
+k3ui-hero {
+  @include hero.hero-base;
+  @include hero.hero-responsive;
+
+  .hero__content--center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero__brand {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 1rem;
+    color: inherit;
+    line-height: 0;
+  }
+
+  .hero__brand i[name] {
+    width: 5rem;
+    height: 5rem;
+    min-width: 5rem;
+    min-height: 5rem;
+  }
+
+  .hero__title-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media screen and (max-width: 600px) {
+    .hero__brand i[name] {
+      width: 3.75rem;
+      height: 3.75rem;
+      min-width: 3.75rem;
+      min-height: 3.75rem;
+    }
+  }
+
+  /**
+   * Titre principal (hero title) – Google Sans Display (comme io.google/2026)
+   * Desktop: 96px, weight 500, line-height 1
+   */
+  h1 {
+    font-family: "Google Sans Display", "Google Sans", Arial, sans-serif;
+    font-size: 96px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1;
+    margin: 0 0 8px;
+    color: inherit;
+  }
+
+  /* Responsive titre : tablette */
+  @media screen and (min-width: 601px) and (max-width: 1294px) {
+    h1 {
+      font-size: 57px;
+      line-height: 64px;
+    }
+  }
+
+  /* Responsive titre : mobile */
+  @media screen and (max-width: 600px) {
+    h1 {
+      font-size: 45px;
+      line-height: 52px;
+    }
+  }
+
+  /**
+   * Description / sous-titre (hero description) – Google Sans Text
+   * font-size: 22px, weight: 400, line-height: 30px
+   */
+  h2 {
+    font-family: "Google Sans Text", "Google Sans", Arial, sans-serif;
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 30px;
+    margin: 0;
+    color: inherit;
+  }
+
+  @media screen and (max-width: 600px) {
+    h2 {
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+
+  h3 {
+    @include typography.typography('display-small');
+    @include spacing.spacing('margin', 'md');
+    margin-top: 0;
+    color: inherit;
+  }
+
+  h4 {
+    @include typography.typography('title-large');
+    @include spacing.spacing('margin', 'sm');
+    margin-top: 0;
+    color: inherit;
+    opacity: 0.87;
+  }
+
+  h5 {
+    @include typography.typography('title-medium');
+    @include spacing.spacing('margin', 'sm');
+    margin-top: 0;
+    color: inherit;
+    opacity: 0.87;
+  }
+
+  h6 {
+    @include typography.typography('title-small');
+    @include spacing.spacing('margin', 'sm');
+    margin-top: 0;
+    color: inherit;
+    opacity: 0.87;
+  }
+}

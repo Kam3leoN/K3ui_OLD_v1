@@ -1,0 +1,125 @@
+/**
+ * @fileoverview Module ButtonShape Material Design 3 Expressive
+ * @description Pastille filled/tonal + slots shape overhang + morph press
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../mixins/button-shape.mixin' as bs;
+@use '../tokens/button-shape.token' as bst;
+
+// ============================================================================
+// BASE
+// ============================================================================
+
+.btn-shape,
+.button-shape {
+  @include bs.btn-shape-base;
+  @include bs.btn-shape-size-md;
+  @include bs.btn-shape-filled;
+
+  .btn-shape__label,
+  .button-shape__label {
+    position: relative;
+    z-index: 1;
+    white-space: nowrap;
+  }
+
+  .btn-shape__slot,
+  .button-shape__slot {
+    @include bs.btn-shape-slot;
+  }
+
+  .btn-shape__slot--leading,
+  .button-shape__slot--leading {
+    @include bs.btn-shape-slot-leading;
+  }
+
+  .btn-shape__slot--trailing,
+  .button-shape__slot--trailing {
+    @include bs.btn-shape-slot-trailing;
+  }
+}
+
+// ============================================================================
+// MORPH PRESS (comme Button rounded)
+// ============================================================================
+
+.btn-shape.pressing:not(.btn-shape--no-morph),
+.button-shape.pressing:not(.button-shape--no-morph) {
+  @include bs.btn-shape-morph-pressing;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-shape.pressing:not(.btn-shape--no-morph),
+  .button-shape.pressing:not(.button-shape--no-morph) {
+    /* Conserve le rayon de taille (pas de morph 999 forcé) */
+    border-radius: var(--btn-shape-radius) !important;
+  }
+}
+
+// ============================================================================
+// VARIANTES
+// ============================================================================
+
+.btn-shape.btn-shape--filled,
+.button-shape.button-shape--filled {
+  @include bs.btn-shape-filled;
+}
+
+.btn-shape.btn-shape--tonal,
+.button-shape.button-shape--tonal {
+  @include bs.btn-shape-tonal;
+}
+
+// ============================================================================
+// TAILLES
+// ============================================================================
+
+.btn-shape.btn-shape--xs,
+.button-shape.button-shape--xs {
+  @include bs.btn-shape-size-xs;
+}
+
+.btn-shape.btn-shape--sm,
+.button-shape.button-shape--sm {
+  @include bs.btn-shape-size-sm;
+}
+
+.btn-shape.btn-shape--md,
+.button-shape.button-shape--md {
+  @include bs.btn-shape-size-md;
+}
+
+.btn-shape.btn-shape--lg,
+.button-shape.button-shape--lg {
+  @include bs.btn-shape-size-lg;
+}
+
+.btn-shape.btn-shape--xl,
+.button-shape.button-shape--xl {
+  @include bs.btn-shape-size-xl;
+}
+
+// ============================================================================
+// SLOTS PRESENT — après les tailles pour gagner la cascade padding/margin
+// ============================================================================
+
+.btn-shape.btn-shape--has-leading,
+.button-shape.button-shape--has-leading {
+  @include bs.btn-shape-has-leading;
+}
+
+.btn-shape.btn-shape--has-trailing,
+.button-shape.button-shape--has-trailing {
+  @include bs.btn-shape-has-trailing;
+}
+
+// Les deux slots : conserver le padding de base côté opposé via inset uniquement
+.btn-shape.btn-shape--has-leading.btn-shape--has-trailing,
+.button-shape.button-shape--has-leading.button-shape--has-trailing {
+  padding-left: var(--btn-shape-inset);
+  padding-right: var(--btn-shape-inset);
+  margin-left: var(--btn-shape-overhang);
+  margin-right: var(--btn-shape-overhang);
+}

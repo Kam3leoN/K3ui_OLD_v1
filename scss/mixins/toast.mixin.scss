@@ -1,0 +1,214 @@
+/**
+ * @fileoverview Mixins Toast — solid-toast
+ * @see https://www.solid-toast.com/
+ */
+
+@use '../tokens/toast.token' as tokens;
+@use '../tokens/motion.token' as motion;
+
+@mixin toast-toaster() {
+  position: fixed;
+  z-index: tokens.toast-layout('z');
+  display: flex;
+  flex-direction: column;
+  gap: var(--k3ui-toast-gutter, #{tokens.toast-layout('gutter')});
+  padding: 0;
+  margin: 0;
+  pointer-events: none;
+  width: tokens.toast-layout('width');
+  max-width: min(#{tokens.toast-layout('width')}, calc(100vw - 32px));
+}
+
+@mixin toast-toaster-position($pos) {
+  $offset: tokens.toast-layout('offset');
+  $top: tokens.toast-layout('offset-top');
+
+  @if $pos == 'top-left' {
+    left: $offset;
+    top: $top;
+    flex-direction: column;
+  } @else if $pos == 'top-center' {
+    left: 50%;
+    top: $top;
+    transform: translateX(-50%);
+    flex-direction: column;
+  } @else if $pos == 'top-right' {
+    right: $offset;
+    top: $top;
+    flex-direction: column;
+  } @else if $pos == 'bottom-left' {
+    left: $offset;
+    bottom: $offset;
+    flex-direction: column-reverse;
+  } @else if $pos == 'bottom-center' {
+    left: 50%;
+    bottom: $offset;
+    transform: translateX(-50%);
+    flex-direction: column-reverse;
+  } @else if $pos == 'bottom-right' {
+    right: $offset;
+    bottom: $offset;
+    flex-direction: column-reverse;
+  }
+}
+
+@mixin toast-card() {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: tokens.$md-sys-toast-timer-gap;
+  width: 100%;
+  min-height: tokens.toast-layout('min-height');
+  padding: tokens.toast-layout('padding');
+  border-radius: tokens.toast-layout('radius');
+  background: tokens.$md-sys-toast-bg;
+  color: tokens.$md-sys-toast-fg;
+  box-shadow: tokens.$md-sys-toast-shadow;
+  line-height: tokens.$md-sys-toast-line-height;
+  pointer-events: auto;
+  position: relative;
+  will-change: transform, opacity;
+}
+
+@mixin toast-main() {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: tokens.toast-layout('gap');
+  width: 100%;
+  min-width: 0;
+}
+
+@mixin toast-copy() {
+  min-width: 0;
+  flex: 1;
+  text-align: left;
+}
+
+@mixin toast-title() {
+  font-size: tokens.$md-sys-toast-title-size;
+  font-weight: tokens.$md-sys-toast-title-weight;
+  color: inherit;
+  margin: 0;
+  line-height: tokens.$md-sys-toast-line-height;
+}
+
+@mixin toast-description() {
+  font-size: tokens.$md-sys-toast-desc-size;
+  font-weight: tokens.$md-sys-toast-desc-weight;
+  color: inherit;
+  margin: 0;
+  line-height: tokens.$md-sys-toast-line-height;
+}
+
+@mixin toast-icon-wrap() {
+  flex: 0 0 auto;
+  min-width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(0.6);
+  opacity: 0.4;
+  animation: toast-icon-enter tokens.$md-sys-toast-icon-enter 0.12s
+    motion.spring-easing(spatial, fast) forwards;
+}
+
+@mixin toast-motion() {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@mixin toast-visible() {
+  opacity: 1;
+  pointer-events: auto;
+  animation: toast-enter-top tokens.$md-sys-toast-enter-duration tokens.$md-sys-toast-enter-easing forwards;
+}
+
+@mixin toast-leaving() {
+  opacity: 0;
+  pointer-events: none;
+  animation: toast-leave-top tokens.$md-sys-toast-exit-duration tokens.$md-sys-toast-exit-easing forwards;
+}
+
+@mixin toast-timer() {
+  flex: 0 0 auto;
+  width: 100%;
+  padding: 0 2px 2px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+@mixin toast-timer-track() {
+  display: block;
+  width: 100%;
+  height: tokens.$md-sys-toast-timer-height;
+  border-radius: 999px;
+  overflow: hidden;
+  background: tokens.$md-sys-toast-timer-track-bg;
+}
+
+@mixin toast-timer-bar() {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+  background: tokens.$md-sys-toast-timer-fill;
+  animation: toast-timer-shrink var(--k3ui-toast-duration, 3000ms) linear forwards;
+}
+
+@mixin toast-timer-overlay() {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+@mixin toast-timer-overlay-fill() {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  background: tokens.$md-sys-toast-timer-overlay-bg;
+  animation: toast-timer-shrink var(--k3ui-toast-duration, 3000ms) linear forwards;
+}
+
+@mixin toast-close-button() {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  opacity: 0.5;
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  line-height: 0;
+
+  &:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}
+
+@mixin toast-action-button() {
+  color: inherit;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  border: none;
+  background: transparent;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.06);
+  }
+}

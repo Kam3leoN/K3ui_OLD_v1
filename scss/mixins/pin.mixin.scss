@@ -1,0 +1,102 @@
+/**
+ * Mixins pour le composant Pin
+ * Fournit les styles réutilisables pour les inputs PIN
+ */
+
+@use '../tokens/pin.token' as tokens;
+@use './motion.mixin' as motionmix;
+
+/**
+ * Mixin pour le conteneur des inputs PIN
+ */
+@mixin pin-container {
+  display: flex;
+  gap: tokens.$pin-container-gap;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  font-size: tokens.$pin-digit-font-size;
+  font-weight: tokens.$pin-digit-font-weight;
+}
+
+/**
+ * Mixin pour un input de chiffre PIN
+ */
+@mixin pin-digit {
+  width: tokens.$pin-digit-width;
+  height: tokens.$pin-digit-height;
+  border: tokens.$pin-digit-border-width solid tokens.$pin-digit-border-color;
+  border-radius: tokens.$pin-digit-border-radius;
+  background-color: tokens.$pin-digit-background;
+  color: tokens.$pin-digit-text-color;
+  font-size: tokens.$pin-digit-font-size;
+  line-height: tokens.$pin-digit-line-height;
+  font-weight: tokens.$pin-digit-font-weight;
+  text-align: tokens.$pin-digit-text-align;
+  outline: none;
+  @include motionmix.transition-form(
+    tokens.$pin-transition-duration,
+    tokens.$pin-transition-easing
+  );
+  cursor: pointer;
+
+  &::placeholder {
+    color: tokens.$pin-digit-placeholder-color;
+  }
+
+  &:focus {
+    border-color: tokens.$pin-digit-border-color-focused;
+    border-width: tokens.$pin-digit-border-width-focused;
+    outline: none;
+  }
+
+  &:not(:placeholder-shown) {
+    background-color: tokens.$pin-digit-background-filled;
+    color: tokens.$pin-digit-text-color-filled;
+  }
+
+  &:disabled {
+    background-color: tokens.$pin-digit-background-disabled;
+    color: tokens.$pin-digit-text-color-disabled;
+    opacity: tokens.$pin-digit-opacity-disabled;
+    cursor: not-allowed;
+  }
+}
+
+/**
+ * Mixin pour le compteur PIN
+ */
+@mixin pin-counter {
+  background-color: tokens.$pin-counter-background;
+  color: tokens.$pin-counter-text-color;
+  font-size: tokens.$pin-counter-font-size;
+  font-weight: tokens.$pin-counter-font-weight;
+  padding: tokens.$pin-counter-padding;
+  border-radius: tokens.$pin-digit-border-radius;
+  text-align: center;
+  margin: tokens.$pin-counter-margin auto;
+  min-width: 3rem;
+
+  &--top {
+    margin-bottom: tokens.$pin-counter-margin;
+  }
+
+  &--bottom {
+    margin-top: tokens.$pin-counter-margin;
+  }
+}
+
+/**
+ * Mixin pour l'état désactivé du composant
+ */
+@mixin pin-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+
+  .pin__digit {
+    @include pin-digit;
+    background-color: tokens.$pin-digit-background-disabled;
+    color: tokens.$pin-digit-text-color-disabled;
+    cursor: not-allowed;
+  }
+}

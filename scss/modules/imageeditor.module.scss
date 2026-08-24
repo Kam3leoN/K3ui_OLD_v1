@@ -1,0 +1,290 @@
+/**
+ * @fileoverview Module ImageEditor pour K3UI
+ * @description Styles pour l'éditeur d'images avancé
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/imageeditor.token' as *;
+@use '../mixins/imageeditor.mixin' as *;
+@use '../tokens/motion.token' as motion;
+
+// ============================================================================
+// IMAGEEDITOR
+// ============================================================================
+
+.image-editor {
+    display: flex;
+    flex-direction: column;
+    gap: var(--md-sys-spacing-4);
+    width: 100%;
+    max-width: 100%;
+
+    // Conteneur du canvas
+    &__canvas-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: $image-editor-canvas-bg;
+        border-radius: $image-editor-canvas-radius;
+        overflow: hidden;
+    }
+
+    // Canvas
+    &__canvas {
+        @include editor-canvas;
+    }
+
+    // Overlays informatifs
+    &__info {
+        @include editor-info-overlay;
+        top: var(--md-sys-spacing-2);
+        right: var(--md-sys-spacing-2);
+        display: flex;
+        gap: var(--md-sys-spacing-3);
+
+        span {
+            display: inline-block;
+        }
+    }
+
+    // Toolbar générique
+    &__toolbar {
+        @include editor-toolbar;
+
+        // Toolbar supérieure (horizontale)
+        &--top {
+            flex-direction: row;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        // Toolbar latérale (verticale)
+        &--side {
+            flex-direction: column;
+            align-items: stretch;
+            max-width: 300px;
+        }
+    }
+
+    // Section d'outils
+    &__section {
+        @include editor-section;
+        padding: var(--md-sys-spacing-3);
+        background: var(--md-sys-color-surface-container-low);
+        border-radius: var(--md-sys-shape-corner-medium);
+    }
+
+    // Groupe de contrôles
+    &__controls {
+        @include editor-controls;
+    }
+
+    // Séparateur
+    &__separator {
+        @include editor-separator;
+    }
+
+    // Actions finales
+    &__actions {
+        @include editor-toolbar;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    // Info fichier
+    .file-info {
+        display: flex;
+        flex-direction: column;
+        gap: var(--md-sys-spacing-1);
+        font-size: 12px;
+        color: var(--md-sys-color-on-surface-variant);
+
+        span {
+            display: block;
+        }
+    }
+
+    // Sliders
+    input[type="range"] {
+        flex: 1;
+        min-width: 100px;
+        cursor: pointer;
+
+        &.zoom-slider,
+        &.rotation-slider,
+        &.opacity-slider {
+            accent-color: var(--md-sys-color-primary);
+        }
+    }
+
+    // Inputs numériques
+    input[type="number"] {
+        width: 80px;
+    }
+
+    // Color picker
+    input[type="color"] {
+        width: 40px;
+        height: 32px;
+        border: 1px solid var(--md-sys-color-outline);
+        border-radius: var(--md-sys-shape-corner-small);
+        cursor: pointer;
+    }
+
+    // Valeurs affichées
+    .zoom-value,
+    .quality-value,
+    .rotation-value {
+        min-width: 50px;
+        text-align: right;
+        font-weight: 500;
+        color: var(--md-sys-color-on-surface);
+    }
+
+    // Grille de position (watermark)
+    .position-grid {
+        @include editor-position-grid;
+    }
+
+    // Tabs
+    .toolbar__tabs {
+        display: flex;
+        gap: var(--md-sys-spacing-1);
+        margin-bottom: var(--md-sys-spacing-2);
+
+        .tab-btn {
+            flex: 1;
+            padding: var(--md-sys-spacing-2) var(--md-sys-spacing-3);
+            border: 1px solid var(--md-sys-color-outline);
+            background: var(--md-sys-color-surface);
+            border-radius: var(--md-sys-shape-corner-small);
+            cursor: pointer;
+            transition:
+                opacity motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+                transform motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+                box-shadow motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+
+            &:hover {
+                background: var(--md-sys-color-surface-container-high);
+            }
+
+            &.active {
+                background: var(--md-sys-color-primary-container);
+                color: var(--md-sys-color-on-primary-container);
+                border-color: var(--md-sys-color-primary);
+            }
+        }
+    }
+
+    .tab-content {
+        display: none;
+
+        &.active {
+            display: flex;
+            flex-direction: column;
+            gap: var(--md-sys-spacing-2);
+        }
+    }
+
+    // Ratios d'aspect
+    .aspect-ratios {
+        display: flex;
+        gap: var(--md-sys-spacing-1);
+        flex-wrap: wrap;
+
+        .ratio-btn {
+            padding: var(--md-sys-spacing-2) var(--md-sys-spacing-3);
+            border: 1px solid var(--md-sys-color-outline);
+            background: var(--md-sys-color-surface);
+            border-radius: var(--md-sys-shape-corner-small);
+            cursor: pointer;
+            font-size: 12px;
+            transition:
+                opacity motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+                transform motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+                box-shadow motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+
+            &:hover {
+                background: var(--md-sys-color-surface-container-high);
+            }
+
+            &.active {
+                background: var(--md-sys-color-primary-container);
+                color: var(--md-sys-color-on-primary-container);
+                border-color: var(--md-sys-color-primary);
+            }
+        }
+    }
+
+    // Checkbox personnalisée
+    label.checkbox {
+        display: flex;
+        align-items: center;
+        gap: var(--md-sys-spacing-2);
+        cursor: pointer;
+        user-select: none;
+
+        input[type="checkbox"] {
+            cursor: pointer;
+        }
+    }
+
+    // Upload watermark
+    .watermark-upload {
+        padding: var(--md-sys-spacing-2);
+        border: 1px dashed var(--md-sys-color-outline);
+        border-radius: var(--md-sys-shape-corner-small);
+        cursor: pointer;
+        font-size: 12px;
+
+        &:hover {
+            border-color: var(--md-sys-color-primary);
+            background: var(--md-sys-color-surface-container-highest);
+        }
+    }
+
+    // Qualité
+    .toolbar__quality {
+        display: flex;
+        align-items: center;
+        gap: var(--md-sys-spacing-2);
+
+        label {
+            font-size: 12px;
+            color: var(--md-sys-color-on-surface-variant);
+            white-space: nowrap;
+        }
+
+        input[type="range"] {
+            min-width: 120px;
+        }
+    }
+}
+
+// ============================================================================
+// RESPONSIVE
+// ============================================================================
+
+@media (max-width: 768px) {
+    .image-editor {
+        &__toolbar--top {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        &__toolbar--side {
+            max-width: 100%;
+        }
+
+        &__actions {
+            flex-direction: column;
+            align-items: stretch;
+
+            .file-info {
+                order: -1;
+            }
+        }
+    }
+}

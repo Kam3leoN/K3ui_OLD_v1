@@ -1,0 +1,19 @@
+/// @file elevation.tokens.scss
+/// @brief Tokens elevation Material 3
+
+$md-sys-elevation-level0: none;
+$md-sys-elevation-level1: 0px 1px 2px 0px rgba(0,0,0,0.30);
+$md-sys-elevation-level2: 0px 2px 6px 2px rgba(0,0,0,0.15);
+$md-sys-elevation-level3: 0px 6px 24px 6px rgba(0,0,0,0.15);
+$md-sys-elevation-level4: 0px 8px 32px 8px rgba(0,0,0,0.15);
+$md-sys-elevation-level5: 0px 12px 48px 12px rgba(0,0,0,0.15);
+
+// Export des variables CSS pour l'élévation
+:root {
+  --md-sys-elevation-level0: #{$md-sys-elevation-level0};
+  --md-sys-elevation-level1: #{$md-sys-elevation-level1};
+  --md-sys-elevation-level2: #{$md-sys-elevation-level2};
+  --md-sys-elevation-level3: #{$md-sys-elevation-level3};
+  --md-sys-elevation-level4: #{$md-sys-elevation-level4};
+  --md-sys-elevation-level5: #{$md-sys-elevation-level5};
+} 

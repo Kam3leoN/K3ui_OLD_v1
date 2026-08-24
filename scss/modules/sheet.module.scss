@@ -1,0 +1,229 @@
+/**
+ * @file scss/modules/sheet.module.scss
+ * @description Module SCSS Material Design 3 Expressive pour le composant Sheet K3UI.
+ * Sheet gère uniquement les ouvertures verticales (top / bottom).
+ * Pour left / right, utiliser le composant Drawer.
+ * @see https://m3.material.io/components/bottom-sheets/overview
+ */
+
+@use '../tokens/sheet.token' as tokens;
+@use '../tokens/theme.token' as theme;
+@use '../mixins/sheet.mixin' as sheet;
+@use '../mixins/state.mixin' as state;
+
+// Inset haut M3 Expressive (56 compact / 72 medium+)
+:root {
+  --md-sys-sheet-inset-top: #{tokens.$md-sys-sheet-inset-top};
+}
+
+@media (min-width: #{tokens.$md-sys-sheet-breakpoint-compact}) {
+  :root {
+    --md-sys-sheet-inset-top: #{tokens.$md-sys-sheet-inset-top-medium};
+  }
+}
+
+// ============================================================================
+// COMPOSANT SHEET PRINCIPAL (bottom / top sheets M3)
+// ============================================================================
+
+.sheet {
+  &.sheet--bottom {
+    @include sheet.sheet-vertical('bottom');
+  }
+
+  &.sheet--top {
+    @include sheet.sheet-vertical('top');
+  }
+
+  &.sheet--bottom,
+  &.sheet--top {
+    .sheet-wrapper,
+    .sheet-container {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
+      height: auto;
+    }
+
+    .sheet-content {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding: 8px 24px 24px;
+    }
+  }
+
+  @include sheet.sheet-responsive;
+}
+
+.sheet-drag-handle {
+  @include sheet.sheet-drag-handle;
+}
+
+// ============================================================================
+// STRUCTURE INTERNE DU SHEET
+// ============================================================================
+
+.sheet-wrapper {
+  @include sheet.sheet-wrapper;
+}
+
+.sheet-container {
+  @include sheet.sheet-container;
+}
+
+.sheet-content {
+  @include sheet.sheet-content();
+}
+
+.sheet-header {
+  @include sheet.sheet-header();
+}
+
+.sheet-footer {
+  @include sheet.sheet-footer();
+}
+
+/**
+ * Bouton de fermeture — Icon button standard M3
+ */
+.sheet-close {
+  @include sheet.sheet-close();
+
+  @include state.state-focus-visible(
+    tokens.$md-sys-sheet-state-hover,
+    tokens.$md-sys-sheet-on-surface,
+    tokens.$md-sys-sheet-on-state-selected
+  );
+
+  @include state.state-active(
+    tokens.$md-sys-sheet-state-selected,
+    tokens.$md-sys-sheet-on-state-selected
+  );
+}
+
+// ============================================================================
+// ACCESSIBILITÉ ET INTERACTION
+// ============================================================================
+
+.sheet-overlay {
+  @include sheet.sheet-overlay();
+
+  &.is-visible {
+    opacity: 1;
+    display: block;
+  }
+}
+
+// ============================================================================
+// ANIMATIONS ET TRANSITIONS
+// ============================================================================
+
+.sheet {
+  &.sheet--bottom.sheet--animate-in {
+    animation: sheet-slide-in-bottom tokens.$md-sys-sheet-transition-duration tokens.$md-sys-sheet-transition-easing forwards;
+  }
+
+  &.sheet--bottom.sheet--animate-out {
+    animation: sheet-slide-out-bottom tokens.$md-sys-sheet-transition-duration tokens.$md-sys-sheet-transition-easing forwards;
+  }
+
+  &.sheet--top.sheet--animate-in {
+    animation: sheet-slide-in-top tokens.$md-sys-sheet-transition-duration tokens.$md-sys-sheet-transition-easing forwards;
+  }
+
+  &.sheet--top.sheet--animate-out {
+    animation: sheet-slide-out-top tokens.$md-sys-sheet-transition-duration tokens.$md-sys-sheet-transition-easing forwards;
+  }
+}
+
+@keyframes sheet-slide-in-bottom {
+  from {
+    transform: tokens.$md-sys-sheet-transform-bottom;
+  }
+  to {
+    transform: tokens.$md-sys-sheet-transform-open;
+  }
+}
+
+@keyframes sheet-slide-out-bottom {
+  from {
+    transform: tokens.$md-sys-sheet-transform-open;
+  }
+  to {
+    transform: tokens.$md-sys-sheet-transform-bottom;
+  }
+}
+
+@keyframes sheet-slide-in-top {
+  from {
+    transform: tokens.$md-sys-sheet-transform-top;
+  }
+  to {
+    transform: tokens.$md-sys-sheet-transform-open;
+  }
+}
+
+@keyframes sheet-slide-out-top {
+  from {
+    transform: tokens.$md-sys-sheet-transform-open;
+  }
+  to {
+    transform: tokens.$md-sys-sheet-transform-top;
+  }
+}
+
+// ============================================================================
+// RESPONSIVE ET ADAPTATIONS
+// ============================================================================
+
+@media (hover: none) and (pointer: coarse) {
+  .sheet {
+    .sheet-close {
+      min-width: 48px;
+      min-height: 48px;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet {
+    transition: none;
+    animation: none;
+  }
+
+  .sheet-overlay {
+    transition: none;
+  }
+}
+
+// ============================================================================
+// MODIFICATEURS DE POSITION (bottom / top)
+// ============================================================================
+
+.sheet.sheet--bottom {
+  &.is-open {
+    transform: tokens.$md-sys-sheet-transform-open;
+  }
+}
+
+.sheet.sheet--top {
+  &.is-open {
+    transform: tokens.$md-sys-sheet-transform-open;
+  }
+}
+
+.sheet--elevated {
+  box-shadow: tokens.$md-sys-sheet-elevation-hover;
+}
+
+.sheet--outlined {
+  border: 1px solid tokens.$md-sys-sheet-outline;
+
+  @media (prefers-color-scheme: dark) {
+    border-color: tokens.$md-sys-sheet-outline-dark;
+  }
+}

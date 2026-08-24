@@ -1,0 +1,359 @@
+/**
+ * @file drawer.mixin.scss
+ * @description Mixins Material Design 3 Expressive pour le composant Drawer
+ * @see https://m3.material.io/components/navigation-drawer/overview
+ */
+
+@use '../tokens/drawer.token' as tokens;
+@use '../tokens/theme.token' as theme;
+@use '../mixins/state.mixin' as state;
+@use '../mixins/elevation.mixin' as elevation;
+@use '../mixins/motion.mixin' as motionmix;
+
+// ============================================================================
+// MIXINS DE BASE
+// ============================================================================
+
+/**
+ * Mixin de base pour le drawer
+ * @param {string} $variant - Variante du drawer (standard, modal, mini)
+ */
+@mixin drawer-base($variant: 'standard') {
+  position: fixed;
+  height: tokens.$md-sys-drawer-height;
+  top: tokens.$md-sys-drawer-top;
+  left: tokens.$md-sys-drawer-left;
+  right: tokens.$md-sys-drawer-right;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  /* Encoche Field outlined = fond du drawer */
+  --k3ui-field-outlined-notch-bg: var(--md-sys-color-surface);
+  box-shadow: tokens.$md-sys-drawer-elevation;
+  z-index: tokens.$md-sys-drawer-z-index;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: transform tokens.$md-sys-drawer-transition-duration tokens.$md-sys-drawer-transition-easing;
+
+  // Largeur selon la variante
+  @if $variant == 'standard' {
+    width: tokens.$md-sys-drawer-width;
+  } @else if $variant == 'compact' {
+    width: tokens.$md-sys-drawer-width-compact;
+  } @else if $variant == 'modal' {
+    width: tokens.$md-sys-drawer-width-modal;
+  }
+
+  // Border radius par défaut (gauche)
+  border-radius: tokens.$md-sys-drawer-border-radius-left;
+
+  // État fermé par défaut (gauche)
+  transform: tokens.$md-sys-drawer-transform-left;
+}
+
+/**
+ * Mixin pour le drawer aligné à droite
+ */
+@mixin drawer--right {
+  left: auto;
+  right: 0;
+  transform: tokens.$md-sys-drawer-transform-right;
+  // Border radius pour drawer droit : radius en haut et en bas à gauche
+  border-radius: tokens.$md-sys-drawer-border-radius-right;
+}
+
+/**
+ * Mixin pour l'état ouvert du drawer
+ */
+@mixin drawer-open {
+  transform: tokens.$md-sys-drawer-transform-open;
+}
+
+/**
+ * Mixin pour l'état de glissement (sans transition)
+ */
+@mixin drawer-dragging {
+  transition: none !important;
+}
+
+// ============================================================================
+// MIXINS DE COMPOSANTS INTERNES
+// ============================================================================
+
+/**
+ * Mixin pour le wrapper du drawer
+ */
+@mixin drawer-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/**
+ * Mixin pour le contenu du drawer
+ * @param {string} $padding - Padding du contenu
+ */
+@mixin drawer-content($padding: tokens.$md-sys-drawer-padding) {
+  padding: $padding;
+  flex: 1;
+}
+
+/**
+ * Mixin pour l'en-tête du drawer
+ * @param {string} $padding - Padding de l'en-tête
+ */
+@mixin drawer-header($padding: tokens.$md-sys-drawer-header-padding) {
+  padding: $padding;
+  border-bottom: tokens.$md-sys-drawer-header-border var(--md-sys-color-outline-variant);
+  margin-bottom: tokens.$md-sys-drawer-padding;
+
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    color: var(--md-sys-color-on-surface);
+    font-weight: tokens.$md-sys-drawer-font-weight-medium;
+    font-size: tokens.$md-sys-drawer-font-size-title;
+    line-height: tokens.$md-sys-drawer-line-height;
+  }
+}
+
+/**
+ * Mixin pour le corps du drawer
+ * @param {string} $padding - Padding du corps
+ */
+@mixin drawer-body($padding: tokens.$md-sys-drawer-body-padding) {
+  flex: 1;
+  padding: 0 $padding;
+}
+
+/**
+ * Mixin pour le pied du drawer
+ * @param {string} $padding - Padding du pied
+ */
+@mixin drawer-footer($padding: tokens.$md-sys-drawer-padding) {
+  padding: $padding;
+  border-top: tokens.$md-sys-drawer-footer-border var(--md-sys-color-outline-variant);
+  margin-top: auto;
+}
+
+/**
+ * Mixin pour le bouton de fermeture
+ */
+@mixin drawer-close {
+  position: absolute;
+  top: tokens.$md-sys-drawer-padding;
+  right: tokens.$md-sys-drawer-padding;
+  background: none;
+  border: none;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  @include motionmix.transition-surface(
+    tokens.$md-sys-drawer-transition-duration-fast,
+    tokens.$md-sys-drawer-transition-easing
+  );
+
+  @include state.state-hover(
+    tokens.$md-sys-drawer-state-hover,
+    var(--md-sys-color-on-surface)
+  );
+
+  @include state.state-focus(
+    tokens.$md-sys-drawer-state-hover,
+    var(--md-sys-color-on-surface)
+  );
+}
+
+// ============================================================================
+// MIXINS DE NAVIGATION
+// ============================================================================
+
+/**
+ * Mixin pour la navigation du drawer
+ */
+@mixin drawer-navigation {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  
+  li {
+    list-style: none;
+    margin: 0;
+    
+    a {
+      margin: tokens.$md-sys-drawer-nav-item-margin;
+      padding: tokens.$md-sys-drawer-nav-item-padding;
+      display: flex;
+      height: tokens.$md-sys-drawer-nav-item-height;
+      font-size: tokens.$md-sys-drawer-font-size-medium;
+      font-weight: tokens.$md-sys-drawer-font-weight-medium;
+      align-items: center;
+      overflow: hidden;
+      border-radius: tokens.$md-sys-drawer-nav-item-border-radius;
+      color: var(--md-sys-color-on-surface);
+      text-decoration: none;
+      @include motionmix.transition-surface(
+        tokens.$md-sys-drawer-transition-duration-fast,
+        tokens.$md-sys-drawer-transition-easing
+      );
+
+      @include state.state-hover(
+        var(--md-sys-color-surface-container-highest),
+        null
+      );
+
+      &.active {
+        background-color: var(--md-sys-color-secondary-container);
+        color: var(--md-sys-color-on-secondary-container);
+      }
+
+      // Icônes Material Design
+      .material-icons,
+      .material-symbols-outlined,
+      .material-symbols-rounded,
+      .material-symbols-sharp,
+      i {
+        display: inline-flex;
+        vertical-align: middle;
+        margin-right: 12px;
+        font-size: 20px;
+      }
+
+      // Texte du lien avec espacement
+      .drawer-nav-text {
+        margin-left: 0;
+      }
+    }
+  }
+}
+
+/**
+ * Mixin pour les séparateurs de navigation
+ */
+@mixin drawer-divider {
+  margin: 8px 0;
+  height: 1px;
+  background-color: var(--md-sys-color-outline-variant);
+}
+
+/**
+ * Mixin pour les sous-titres de navigation
+ */
+@mixin drawer-subheader {
+  cursor: initial;
+  pointer-events: none;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: tokens.$md-sys-drawer-font-size-small;
+  font-weight: tokens.$md-sys-drawer-font-weight-medium;
+  line-height: tokens.$md-sys-drawer-nav-item-height;
+  padding: 0 tokens.$md-sys-drawer-body-padding;
+  margin: 12px 0 8px 0;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+// ============================================================================
+// MIXINS DE VUE UTILISATEUR
+// ============================================================================
+
+/**
+ * Mixin pour la vue utilisateur (profil)
+ * @param {string} $padding - Padding de la vue utilisateur
+ * @param {string} $avatar-size - Taille de l'avatar
+ */
+@mixin drawer-user-view($padding: tokens.$md-sys-drawer-user-padding, $avatar-size: tokens.$md-sys-drawer-user-avatar-size) {
+  position: relative;
+  padding: $padding;
+  margin-bottom: 8px;
+
+  .drawer-circle {
+    height: $avatar-size;
+    width: $avatar-size;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .drawer-name {
+    margin-top: 16px;
+    font-weight: tokens.$md-sys-drawer-font-weight-medium;
+    color: var(--md-sys-color-on-surface);
+    font-size: tokens.$md-sys-drawer-font-size-medium;
+  }
+
+  .drawer-email {
+    padding-bottom: 16px;
+    font-weight: tokens.$md-sys-drawer-font-weight-regular;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: tokens.$md-sys-drawer-font-size-small;
+  }
+}
+
+// ============================================================================
+// MIXINS D'ACCESSIBILITÉ
+// ============================================================================
+
+/**
+ * Mixin pour la zone de glissement tactile
+ */
+@mixin drawer-drag-target {
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: tokens.$md-sys-drawer-drag-target-width;
+  z-index: tokens.$md-sys-drawer-z-index;
+  
+  &.drawer--right {
+    right: 0;
+    left: auto;
+  }
+}
+
+/**
+ * Mixin pour l'overlay de fond
+ */
+@mixin drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  height: 120vh;
+  background-color: rgba(0, 0, 0, tokens.$md-sys-drawer-overlay-opacity);
+  z-index: tokens.$md-sys-drawer-z-index-overlay;
+  display: none;
+  transition: opacity tokens.$md-sys-drawer-transition-duration-fast tokens.$md-sys-drawer-transition-easing;
+}
+
+// ============================================================================
+// MIXINS RESPONSIVES
+// ============================================================================
+
+/**
+ * Mixin pour la responsivité du drawer
+ */
+@mixin drawer-responsive {
+  @media (max-width: tokens.$md-sys-drawer-breakpoint-tablet) {
+    width: tokens.$md-sys-drawer-width-tablet;
+    
+    .drawer-content {
+      padding: tokens.$md-sys-drawer-padding-compact;
+    }
+    
+    .drawer-user-view {
+      padding: tokens.$md-sys-drawer-user-padding-compact;
+    }
+    
+    .drawer-header {
+      padding: tokens.$md-sys-drawer-header-padding-compact;
+    }
+    
+    .drawer-footer {
+      padding: tokens.$md-sys-drawer-footer-padding-compact;
+    }
+  }
+  
+  @media (max-width: tokens.$md-sys-drawer-breakpoint-mobile) {
+    width: tokens.$md-sys-drawer-width-mobile;
+  }
+}

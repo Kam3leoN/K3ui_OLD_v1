@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K3UI - Development Server</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 3rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1976d2;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+        .links {
+            list-style: none;
+        }
+        .links li {
+            margin-bottom: 1rem;
+        }
+        .links a {
+            display: block;
+            padding: 1rem;
+            background: #f5f5f5;
+            border-left: 4px solid #1976d2;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.2s;
+        }
+        .links a:hover {
+            background: #e3f2fd;
+            border-left-color: #1565c0;
+            transform: translateX(4px);
+        }
+        .links a strong {
+            display: block;
+            color: #1976d2;
+            margin-bottom: 0.25rem;
+        }
+        .links a span {
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 K3UI</h1>
+        <p class="subtitle">Serveur de développement Vite</p>
+        
+        <ul class="links">
+            <li>
+                <a href="http://localhost/k3ui-docs/" target="_blank">
+                    <strong>📚 Documentation K3UI</strong>
+                    <span>http://localhost/k3ui-docs/</span>
+                </a>
+            </li>
+            <li>
+                <a href="/k3ui-docs/index.php" target="_blank">
+                    <strong>📖 Documentation (via proxy Vite)</strong>
+                    <span>/k3ui-docs/index.php</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:5173/src/index.ts" target="_blank">
+                    <strong>💻 Point d'entrée TypeScript</strong>
+                    <span>/src/index.ts</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Chargement du module TypeScript via Vite -->
+    <script type="module" src="/src/index.ts"></script>
+</body>
+</html>

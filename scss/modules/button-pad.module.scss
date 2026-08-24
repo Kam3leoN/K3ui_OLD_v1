@@ -1,0 +1,73 @@
+/**
+ * @fileoverview Module ButtonPad Material Design 3 Expressive
+ * @description Pad 4 directions — cardinal (45°) / diagonal (0°) · filled / tonal / outlined
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../mixins/button-pad.mixin' as bp;
+
+// ============================================================================
+// BASE
+// ============================================================================
+
+.btn-pad,
+.button-pad {
+  @include bp.btn-pad-base;
+
+  // Mode cardinal — grille rotée 45°
+  &[data-rot='45'],
+  &[data-mode='cardinal'],
+  &.btn-pad--cardinal,
+  &.button-pad--cardinal {
+    @include bp.btn-pad-cardinal;
+    @include bp.btn-pad-icons-cardinal;
+  }
+
+  // Mode diagonal — nudge hover (rotation icône via style inline SVG)
+  &:not([data-rot='45']):not([data-mode='cardinal']):not(.btn-pad--cardinal):not(.button-pad--cardinal),
+  &[data-mode='diagonal'],
+  &.btn-pad--diagonal,
+  &.button-pad--diagonal {
+    @include bp.btn-pad-hover-diagonal;
+  }
+}
+
+.btn-pad__btn,
+.button-pad__btn {
+  @include bp.btn-pad-cell;
+  @include bp.btn-pad-cell-radii;
+}
+
+// ============================================================================
+// VARIANTES
+// ============================================================================
+
+.btn-pad[data-variant='tonal'],
+.btn-pad.btn-pad--tonal,
+.button-pad[data-variant='tonal'],
+.button-pad.button-pad--tonal {
+  @include bp.btn-pad-tonal;
+}
+
+.btn-pad[data-variant='outlined'],
+.btn-pad.btn-pad--outlined,
+.button-pad[data-variant='outlined'],
+.button-pad.button-pad--outlined {
+  @include bp.btn-pad-outlined;
+}
+
+// ============================================================================
+// REDUCED MOTION
+// ============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-pad__btn,
+  .button-pad__btn,
+  .btn-pad__btn::before,
+  .button-pad__btn::before,
+  .btn-pad__btn svg,
+  .button-pad__btn svg {
+    transition-duration: 0ms !important;
+  }
+}

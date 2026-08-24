@@ -1,0 +1,249 @@
+/**
+ * @file spacing.token.scss
+ * @description Tokens d'espacement pour le design system K3UI Material Design 3 Expressive
+ * @see https://m3.material.io/foundations/design-tokens/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use 'sass:map';
+
+// ============================================================================
+// ESPACEMENTS DE BASE MATERIAL DESIGN 3
+// ============================================================================
+
+/**
+ * Espacement extra-small (4px)
+ * Utilisé pour les micro-ajustements et les espacements très fins
+ */
+$md-sys-spacing-xs: 4px !default;
+
+/**
+ * Espacement small (8px)
+ * Utilisé pour les espacements entre les éléments proches
+ */
+$md-sys-spacing-sm: 8px !default;
+
+/**
+ * Espacement medium (16px)
+ * Utilisé pour les espacements standard entre les éléments
+ */
+$md-sys-spacing-md: 16px !default;
+
+/**
+ * Espacement large (24px)
+ * Utilisé pour les espacements entre les sections
+ */
+$md-sys-spacing-lg: 24px !default;
+
+/**
+ * Espacement extra-large (32px)
+ * Utilisé pour les espacements entre les grandes sections
+ */
+$md-sys-spacing-xl: 32px !default;
+
+// ============================================================================
+// ESPACEMENTS SPÉCIALISÉS
+// ============================================================================
+
+/**
+ * Espacement pour les composants
+ */
+$md-sys-spacing-component-xs: 2px !default;
+$md-sys-spacing-component-sm: 4px !default;
+$md-sys-spacing-component-md: 8px !default;
+$md-sys-spacing-component-lg: 12px !default;
+$md-sys-spacing-component-xl: 16px !default;
+
+/**
+ * Espacement pour les layouts
+ */
+$md-sys-spacing-layout-xs: 8px !default;
+$md-sys-spacing-layout-sm: 16px !default;
+$md-sys-spacing-layout-md: 24px !default;
+$md-sys-spacing-layout-lg: 32px !default;
+$md-sys-spacing-layout-xl: 48px !default;
+
+/**
+ * Espacement pour les grilles
+ */
+$md-sys-spacing-grid-xs: 4px !default;
+$md-sys-spacing-grid-sm: 8px !default;
+$md-sys-spacing-grid-md: 16px !default;
+$md-sys-spacing-grid-lg: 24px !default;
+$md-sys-spacing-grid-xl: 32px !default;
+
+// ============================================================================
+// ESPACEMENTS RESPONSIFS
+// ============================================================================
+
+/**
+ * Espacements pour les petits écrans
+ */
+$md-sys-spacing-mobile-xs: 4px !default;
+$md-sys-spacing-mobile-sm: 8px !default;
+$md-sys-spacing-mobile-md: 12px !default;
+$md-sys-spacing-mobile-lg: 16px !default;
+$md-sys-spacing-mobile-xl: 24px !default;
+
+/**
+ * Espacements pour les tablettes
+ */
+$md-sys-spacing-tablet-xs: 6px !default;
+$md-sys-spacing-tablet-sm: 12px !default;
+$md-sys-spacing-tablet-md: 18px !default;
+$md-sys-spacing-tablet-lg: 24px !default;
+$md-sys-spacing-tablet-xl: 36px !default;
+
+/**
+ * Espacements pour les écrans larges
+ */
+$md-sys-spacing-desktop-xs: 8px !default;
+$md-sys-spacing-desktop-sm: 16px !default;
+$md-sys-spacing-desktop-md: 24px !default;
+$md-sys-spacing-desktop-lg: 32px !default;
+$md-sys-spacing-desktop-xl: 48px !default;
+
+// ============================================================================
+// MAPS ET COLLECTIONS
+// ============================================================================
+
+/**
+ * Map des espacements de base
+ */
+$md-sys-spacing-base: (
+  xs: $md-sys-spacing-xs,
+  sm: $md-sys-spacing-sm,
+  md: $md-sys-spacing-md,
+  lg: $md-sys-spacing-lg,
+  xl: $md-sys-spacing-xl
+) !default;
+
+/**
+ * Map des espacements pour les composants
+ */
+$md-sys-spacing-components: (
+  xs: $md-sys-spacing-component-xs,
+  sm: $md-sys-spacing-component-sm,
+  md: $md-sys-spacing-component-md,
+  lg: $md-sys-spacing-component-lg,
+  xl: $md-sys-spacing-component-xl
+) !default;
+
+/**
+ * Map des espacements pour les layouts
+ */
+$md-sys-spacing-layouts: (
+  xs: $md-sys-spacing-layout-xs,
+  sm: $md-sys-spacing-layout-sm,
+  md: $md-sys-spacing-layout-md,
+  lg: $md-sys-spacing-layout-lg,
+  xl: $md-sys-spacing-layout-xl
+) !default;
+
+/**
+ * Map des espacements pour les grilles
+ */
+$md-sys-spacing-grids: (
+  xs: $md-sys-spacing-grid-xs,
+  sm: $md-sys-spacing-grid-sm,
+  md: $md-sys-spacing-grid-md,
+  lg: $md-sys-spacing-grid-lg,
+  xl: $md-sys-spacing-grid-xl
+) !default;
+
+/**
+ * Map des espacements responsifs
+ */
+$md-sys-spacing-responsive: (
+  mobile: (
+    xs: $md-sys-spacing-mobile-xs,
+    sm: $md-sys-spacing-mobile-sm,
+    md: $md-sys-spacing-mobile-md,
+    lg: $md-sys-spacing-mobile-lg,
+    xl: $md-sys-spacing-mobile-xl
+  ),
+  tablet: (
+    xs: $md-sys-spacing-tablet-xs,
+    sm: $md-sys-spacing-tablet-sm,
+    md: $md-sys-spacing-tablet-md,
+    lg: $md-sys-spacing-tablet-lg,
+    xl: $md-sys-spacing-tablet-xl
+  ),
+  desktop: (
+    xs: $md-sys-spacing-desktop-xs,
+    sm: $md-sys-spacing-desktop-sm,
+    md: $md-sys-spacing-desktop-md,
+    lg: $md-sys-spacing-desktop-lg,
+    xl: $md-sys-spacing-desktop-xl
+  )
+) !default;
+
+// ============================================================================
+// FONCTIONS UTILITAIRES
+// ============================================================================
+
+/**
+ * Fonction pour récupérer un espacement de base
+ * @param {string} $size - Taille de l'espacement (xs, sm, md, lg, xl)
+ * @return {string} Valeur de l'espacement
+ */
+@function spacing-base($size) {
+  @return map.get($md-sys-spacing-base, $size);
+}
+
+/**
+ * Fonction pour récupérer un espacement de composant
+ * @param {string} $size - Taille de l'espacement (xs, sm, md, lg, xl)
+ * @return {string} Valeur de l'espacement
+ */
+@function spacing-component($size) {
+  @return map.get($md-sys-spacing-components, $size);
+}
+
+/**
+ * Fonction pour récupérer un espacement de layout
+ * @param {string} $size - Taille de l'espacement (xs, sm, md, lg, xl)
+ * @return {string} Valeur de l'espacement
+ */
+@function spacing-layout($size) {
+  @return map.get($md-sys-spacing-layouts, $size);
+}
+
+/**
+ * Fonction pour récupérer un espacement de grille
+ * @param {string} $size - Taille de l'espacement (xs, sm, md, lg, xl)
+ * @return {string} Valeur de l'espacement
+ */
+@function spacing-grid($size) {
+  @return map.get($md-sys-spacing-grids, $size);
+}
+
+/**
+ * Fonction pour récupérer un espacement responsive
+ * @param {string} $breakpoint - Breakpoint (mobile, tablet, desktop)
+ * @param {string} $size - Taille de l'espacement (xs, sm, md, lg, xl)
+ * @return {string} Valeur de l'espacement
+ */
+@function spacing-responsive($breakpoint, $size) {
+  @return map.get(map.get($md-sys-spacing-responsive, $breakpoint), $size);
+}
+
+/**
+ * Fonction pour récupérer un espacement avec fallback CSS custom property
+ * @param {string} $size - Taille de l'espacement (xs, sm, md, lg, xl)
+ * @param {string} $type - Type d'espacement (base, component, layout, grid)
+ * @return {string} Valeur de l'espacement avec fallback
+ */
+@function spacing-with-fallback($size, $type: 'base') {
+  @if $type == 'base' {
+    @return var(--md-sys-spacing-#{$size}, #{spacing-base($size)});
+  } @else if $type == 'component' {
+    @return var(--md-sys-spacing-component-#{$size}, #{spacing-component($size)});
+  } @else if $type == 'layout' {
+    @return var(--md-sys-spacing-layout-#{$size}, #{spacing-layout($size)});
+  } @else if $type == 'grid' {
+    @return var(--md-sys-spacing-grid-#{$size}, #{spacing-grid($size)});
+  }
+  @return spacing-base($size);
+} 

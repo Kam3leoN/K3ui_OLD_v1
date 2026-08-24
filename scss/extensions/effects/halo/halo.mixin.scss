@@ -1,0 +1,46 @@
+/**
+ * @fileoverview Mixins pour Halo
+ * @description Mixins réutilisables pour l'effet de lumière animée
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use "./halo.token" as halo;
+
+/**
+ * Styles de base du conteneur Halo
+ */
+@mixin halo-container() {
+  --halo-color: #{halo.$halo-color-default};
+  --halo-padding: #{halo.$halo-padding-default};
+  --halo-radius: #{halo.$halo-radius-default};
+  --halo-duration: #{halo.$halo-duration-default};
+  --halo-timing: #{halo.$halo-timing-default};
+  --halo-blur: #{halo.$halo-blur-default};
+  --halo-blur-far: #{halo.$halo-blur-far-default};
+  --halo-opacity: #{halo.$halo-opacity-default};
+  --halo-opacity-far: #{halo.$halo-opacity-far-default};
+  --halo-fade: #{halo.$halo-fade-default};
+
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+  padding: var(--halo-padding);
+  border-radius: calc(var(--halo-padding) + var(--halo-radius));
+}
+
+/**
+ * Calque animé du halo (conic-gradient sur le calque lui-même)
+ */
+@mixin halo-layer-base() {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transform: translateZ(0);
+  animation: halo-spin var(--halo-duration) var(--halo-timing) infinite;
+  background-image: conic-gradient(
+    from var(--halo-angle),
+    transparent 225deg,
+    var(--halo-color)
+  );
+}

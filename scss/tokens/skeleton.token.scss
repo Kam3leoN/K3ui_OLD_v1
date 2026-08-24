@@ -1,0 +1,55 @@
+/**
+ * @fileoverview Tokens de design pour Skeleton
+ * @description Material Design 3 Expressive – placeholder de chargement
+ * @see https://m3.material.io (progress indicators, placeholders)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'motion.token' as motion;
+@use 'radius.token' as radius;
+
+// ============================================================================
+// COULEURS – M3 (surface, on-surface-variant)
+// ============================================================================
+
+/** Fond du skeleton – surface container high */
+$skeleton-color-bg: var(--md-sys-color-surface-container-high, rgba(0, 0, 0, 0.08)) !default;
+
+/** Couleur du “shimmer” (pulse / wave) – on-surface-variant avec opacité */
+$skeleton-color-shimmer: var(--md-sys-color-on-surface-variant, rgba(0, 0, 0, 0.25)) !default;
+
+/** Opacité du shimmer au repos (pulse) */
+$skeleton-opacity-rest: 0.35 !default;
+
+/** Opacité du shimmer au pic (pulse) */
+$skeleton-opacity-peak: 0.7 !default;
+
+// ============================================================================
+// DIMENSIONS ET FORMES
+// ============================================================================
+
+/** Hauteur par défaut pour variant text (ligne de texte) */
+$skeleton-text-height: 1rem !default;
+
+/** Border-radius pour variant rounded – M3 shape small */
+$skeleton-radius-rounded: radius.$md-sys-shape-corner-small !default;
+
+/** Border-radius pour variant circular (cercle) */
+$skeleton-radius-circular: 50% !default;
+
+/** Border-radius pour variant rectangular (plat) */
+$skeleton-radius-rectangular: 0 !default;
+
+// ============================================================================
+// ANIMATIONS – M3 Expressive
+// ============================================================================
+
+/** Durée du cycle pulse / wave (ms) – M3 short duration */
+$skeleton-animation-duration: 1500ms !default;
+
+/** Easing M3 linear standard */
+$skeleton-animation-easing: motion.spring-easing(effects, fast) !default;
+
+/** Durée wave (décalage du gradient) – même cycle */
+$skeleton-wave-duration: $skeleton-animation-duration !default;

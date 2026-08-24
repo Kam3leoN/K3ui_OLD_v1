@@ -1,0 +1,1271 @@
+/**
+ * Select Module
+ * Styles pour le composant Select selon le pattern K3UI
+ */
+
+@use '../tokens/select.token' as select;
+@use '../tokens/menu.token' as menu;
+@use '../tokens/spacing.token' as spacing;
+@use '../tokens/radius.token' as radius;
+@use '../tokens/list.token' as list;
+@use '../tokens/elevation.token' as elevation;
+@use '../mixins/field.mixin' as field;
+@use '../mixins/list.mixin' as list-mixin;
+@use '../mixins/zindex.mixin' as zindex;
+@use '../tokens/button-split.token' as bs;
+@use '../tokens/motion.token' as motion;
+
+$_select-surface-transition:
+  opacity motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+  background-color motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+  border-color motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+  color motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+  box-shadow motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+  transform motion.$md-sys-motion-expressive-spatial-default-duration motion.$md-sys-motion-expressive-spatial-default-easing,
+  max-height motion.$md-sys-motion-expressive-spatial-default-duration motion.$md-sys-motion-expressive-spatial-default-easing;
+
+// ============================================================================
+// SELECT MODULE
+// ============================================================================
+
+// Version bouton - pas de largeur 100%
+.select-button-version {
+  display: inline-block;
+  width: auto;
+  
+  .btn-icon,
+  .button-icon {
+    margin: 0;
+  }
+}
+
+// Alignement à droite pour le menu
+// Le menu sera aligné à droite via les options du composant Menu
+// (géré par le composant Menu, pas besoin de styles CSS)
+
+// Classe pour cacher les selects dans la version bouton
+.select-hidden {
+  display: none !important;
+}
+
+// Masquer le texte des selects dans la version bouton (ne garder que les icônes)
+.select-button-version,
+.btn--oval-select {
+  .select-wrapper {
+    select {
+      color: transparent !important;
+      text-indent: -9999px !important;
+      
+      // Garder les icônes visibles
+      &::before,
+      &::after {
+        color: var(--md-sys-color-on-surface) !important;
+      }
+    }
+  }
+}
+
+// Masquer spécifiquement le texte des selects cachés utilisés avec les boutons
+.select-hidden {
+  color: transparent !important;
+  text-indent: -9999px !important;
+}
+
+// Masquer les labels des selects de thème
+label[for*="theme-select"] {
+  display: none !important;
+}
+
+select.browser-default {
+  opacity: 1;
+  color: var(--md-sys-color-on-background);
+}
+
+// Keep selects useable without javascript
+
+input.select-menu {
+  width: 100%;
+  height: 3rem;
+  // IMPORTANT: Material Design 3 - Le texte doit être à gauche et le caret à droite
+  // Padding: 16px gauche (comme les input fields), 48px droite (pour laisser de la place au caret)
+  padding: 16px 48px 16px 16px; // top: 16px, right: 48px, bottom: 16px, left: 16px
+  background-color: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: select.$select-border-radius; // 12px - Material Design 3 Expressive
+  font-family: var(--md-sys-typescale-body-large-font-family-name);
+  font-size: var(--md-sys-typescale-body-large-font-size);
+  font-weight: var(--md-sys-typescale-body-large-font-weight);
+  line-height: 1.2;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  user-select: none;
+  text-align: left; // Texte aligné à gauche
+  transition: $_select-surface-transition;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  
+  &:hover:not(:disabled) {
+    border-color: var(--md-sys-color-outline);
+    box-shadow: none; // Retiré pour éviter le doublon avec le wrapper
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: var(--md-sys-color-primary);
+    box-shadow: none; // Retiré pour éviter le doublon avec le wrapper
+  }
+  
+  &:active {
+    box-shadow: none; // Retiré pour éviter le doublon avec le wrapper
+  }
+  
+  &:disabled {
+    color: var(--md-sys-color-on-surface-variant);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+// Conteneur des valeurs sélectionnées (mode multiple), affiché sous l'input une fois le menu replié
+.select-multiple-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  margin-top: 8px;
+  min-height: 0;
+}
+
+.select-multiple-value-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-size: var(--md-sys-typescale-body-small-font-size, 0.875rem);
+  font-family: var(--md-sys-typescale-body-small-font-family-name, inherit);
+  color: var(--md-sys-color-on-surface-variant);
+  background-color: var(--md-sys-color-surface-container-high, rgba(0, 0, 0, 0.08));
+  border-radius: 8px;
+  line-height: 1.25;
+}
+
+// Styles pour les selects NATIFS (uniquement ceux qui ne sont pas cachés)
+// Les selects dans .hide-select sont complètement cachés (voir règles .hide-select ci-dessous)
+.select-wrapper select {
+  background-color: var(--md-sys-color-surface);
+  width: 100%;
+  padding: select.$select-padding; // Utilise le token (16px 24px)
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: select.$select-border-radius; // 12px - Material Design 3 Expressive
+  height: 3rem;
+  font-family: var(--md-sys-typescale-body-large-font-family-name);
+  font-size: var(--md-sys-typescale-body-large-font-size);
+  font-weight: var(--md-sys-typescale-body-large-font-weight);
+  line-height: 1.5;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  
+  // Padding ajusté quand il y a une icône
+  .select-wrapper:has(.select-icon) & {
+    padding-left: 48px;
+  }
+}
+
+
+.select-wrapper {
+  position: relative;
+  // S'assurer que le menu peut dépasser du wrapper
+  overflow: visible;
+  
+  // S'assurer que le menu est correctement positionné
+  .select-menu {
+    // Le menu sera déplacé dans le bon conteneur par le composant Menu
+    // mais on s'assure qu'il peut dépasser du wrapper
+    z-index: 1000;
+  }
+
+  .caret {
+    position: absolute;
+    right: 16px; // Position originale
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px; // Taille originale
+    height: 20px;
+    z-index: 1;
+    fill: var(--md-sys-color-on-surface-variant);
+    pointer-events: none;
+    transition: $_select-surface-transition;
+  }
+  
+  &:hover .caret {
+    fill: var(--md-sys-color-on-surface);
+  }
+  
+  &:focus-within .caret {
+    fill: var(--md-sys-color-primary);
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  // Icône dans le select
+  .select-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    color: var(--md-sys-color-on-surface-variant);
+    pointer-events: none;
+    transition: $_select-surface-transition;
+  }
+  
+  &:hover .select-icon {
+    color: var(--md-sys-color-on-surface);
+  }
+  
+  &:focus-within .select-icon {
+    color: var(--md-sys-color-primary);
+  }
+}
+
+// Hide select with overflow hidden instead of using display none
+// (this prevents form validation errors with hidden form elements)
+// Utiliser une spécificité très élevée pour surcharger tous les autres styles
+// Cibler .hide-select partout, pas seulement dans .select-wrapper
+.hide-select {
+  display: none !important; // Cacher complètement le wrapper et son contenu
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  clip: rect(0, 0, 0, 0) !important;
+  clip-path: inset(50%) !important;
+}
+
+// S'assurer que le select caché n'a pas de bordure et est vraiment invisible
+// Utiliser une spécificité très élevée pour surcharger tous les autres styles
+// Cibler les selects dans .hide-select partout
+.hide-select select {
+  // Supprimer le style natif du navigateur
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: 0 !important;
+  max-height: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  clip: rect(0, 0, 0, 0) !important;
+  clip-path: inset(50%) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  outline: none !important;
+}
+
+select:disabled {
+  color: var(--md-sys-color-on-surface);
+}
+
+// Styles pour les labels des selects uniquement
+.input-field .select-wrapper ~ label {
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--md-sys-typescale-body-large-font-family-name);
+  font-size: var(--md-sys-typescale-body-large-font-size);
+  font-weight: var(--md-sys-typescale-body-large-font-weight);
+  line-height: 1.2;
+  transition: $_select-surface-transition;
+  pointer-events: none;
+  
+  // Quand le select est focusé, le label change de couleur
+  .select-wrapper:focus-within + & {
+    color: var(--md-sys-color-primary);
+  }
+}
+
+// ============================================================================
+// SELECT VARIANTS (FILLED & OUTLINED)
+// ============================================================================
+
+// Variant FILLED pour les selects
+k3ui-select[variant="filled"],
+select[variant="filled"],
+.input-field.filled,
+.select-wrapper.filled {
+  // Appliquer les styles filled sur le wrapper (comme .input-field dans Field)
+  @include field.field-container;
+  @include field.field-filled;
+  
+  // Si c'est un parent qui contient .select-wrapper, cibler le wrapper enfant
+  .select-wrapper {
+    @include field.field-container;
+    @include field.field-filled;
+    
+    input.select-menu {
+      // Le input doit être transparent et sans bordure pour le variant filled
+      background-color: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      height: 100%;
+      // IMPORTANT: Material Design 3 - Le texte doit être à gauche et le caret à droite
+      // Padding: 0px vertical (le container gère), 48px droite (pour le caret), 0px gauche (le container gère déjà le padding)
+      padding: 0 48px 0 0; // top: 0, right: 48px, bottom: 0, left: 0 (container padding déjà appliqué)
+      text-align: left; // Texte aligné à gauche
+      // Garder les styles de texte et cursor
+      font-family: var(--md-sys-typescale-body-large-font-family-name);
+      font-size: var(--md-sys-typescale-body-large-font-size);
+      font-weight: var(--md-sys-typescale-body-large-font-weight);
+      line-height: 1.2;
+      color: var(--md-sys-color-on-surface);
+      cursor: pointer;
+      user-select: none;
+    }
+  }
+  
+  // Styles directs pour .select-wrapper.filled (quand le wrapper est l'élément ciblé)
+  &.select-wrapper {
+    input.select-menu {
+      background-color: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      height: 100%;
+      padding: 0 48px 0 0;
+      text-align: left;
+      font-family: var(--md-sys-typescale-body-large-font-family-name);
+      font-size: var(--md-sys-typescale-body-large-font-size);
+      font-weight: var(--md-sys-typescale-body-large-font-weight);
+      line-height: 1.2;
+      color: var(--md-sys-color-on-surface);
+      cursor: pointer;
+      user-select: none;
+    }
+  }
+  
+  & > label,
+  .select-wrapper > label {
+    @include field.field-label;
+  }
+  
+  // Gestion de l'état has-value pour filled
+  &[has-value] > label,
+  &[has-value] .select-wrapper > label,
+  .select-wrapper[has-value] > label {
+    @include field.field-label-filled-active;
+  }
+  
+  // Gestion de l'état focused pour filled
+  &[focused] > label,
+  &.active > label,
+  &.focused > label,
+  &[focused] .select-wrapper > label,
+  &.active .select-wrapper > label,
+  &.focused .select-wrapper > label,
+  .select-wrapper[focused] > label,
+  .select-wrapper.active > label,
+  .select-wrapper.focused > label {
+    @include field.field-label-filled-active;
+    @include field.field-label-focused;
+  }
+  
+  // Gestion de l'état has-value + focused pour filled
+  &[has-value][focused] > label,
+  &[has-value].active > label,
+  &[has-value].focused > label,
+  &[has-value][focused] .select-wrapper > label,
+  &[has-value].active .select-wrapper > label,
+  &[has-value].focused .select-wrapper > label,
+  .select-wrapper[has-value][focused] > label,
+  .select-wrapper[has-value].active > label,
+  .select-wrapper[has-value].focused > label {
+    @include field.field-label-filled-active;
+    @include field.field-label-focused;
+  }
+}
+
+k3ui-select[variant="filled"]:hover,
+select[variant="filled"]:hover,
+.input-field.filled:hover,
+.select-wrapper.filled:hover {
+  @include field.field-filled-hover;
+  
+  .select-wrapper {
+    @include field.field-filled-hover;
+  }
+}
+
+k3ui-select[variant="filled"]:focus-within,
+select[variant="filled"]:focus-within,
+.input-field.filled:focus-within,
+.input-field.filled[focused],
+.select-wrapper.filled:focus-within,
+.select-wrapper.filled[focused] {
+  @include field.field-filled-focused;
+  
+  .select-wrapper {
+    @include field.field-filled-focused;
+  }
+}
+
+k3ui-select[variant="filled"][disabled],
+select[variant="filled"][disabled],
+.input-field.filled.disabled,
+.select-wrapper.filled.disabled {
+  @include field.field-filled-disabled;
+  
+  .select-wrapper {
+    @include field.field-filled-disabled;
+  }
+}
+
+// Variant OUTLINED pour les selects
+k3ui-select[variant="outlined"],
+select[variant="outlined"],
+.input-field.outlined,
+.select-wrapper.outlined {
+  // Le wrapper doit utiliser les styles du field-container
+  @include field.field-container;
+  
+  // Si c'est un parent qui contient .select-wrapper, cibler le wrapper enfant
+  .select-wrapper {
+    @include field.field-container;
+    @include field.field-outlined;
+    
+    input.select-menu {
+      height: 100%;
+      background-color: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      padding: 0 48px 0 0;
+      text-align: left;
+      font-family: var(--md-sys-typescale-body-large-font-family-name);
+      font-size: var(--md-sys-typescale-body-large-font-size);
+      font-weight: var(--md-sys-typescale-body-large-font-weight);
+      line-height: 1.2;
+      color: var(--md-sys-color-on-surface);
+      cursor: pointer;
+      user-select: none;
+    }
+  }
+  
+  // Styles directs pour .select-wrapper.outlined (quand le wrapper est l'élément ciblé)
+  &.select-wrapper {
+    @include field.field-outlined;
+    
+    input.select-menu {
+      height: 100%;
+      background-color: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      padding: 0 48px 0 0;
+      text-align: left;
+      font-family: var(--md-sys-typescale-body-large-font-family-name);
+      font-size: var(--md-sys-typescale-body-large-font-size);
+      font-weight: var(--md-sys-typescale-body-large-font-weight);
+      line-height: 1.2;
+      color: var(--md-sys-color-on-surface);
+      cursor: pointer;
+      user-select: none;
+    }
+  }
+  
+  & > label,
+  .select-wrapper > label {
+    @include field.field-label-outlined;
+  }
+  
+  // Gestion des états focus pour outlined
+  &[focused] > label,
+  &.active > label,
+  &.focused > label,
+  &[focused] .select-wrapper > label,
+  &.active .select-wrapper > label,
+  &.focused .select-wrapper > label,
+  .select-wrapper[focused] > label,
+  .select-wrapper.active > label,
+  .select-wrapper.focused > label {
+    @include field.field-label-outlined-active;
+    @include field.field-label-focused;
+  }
+  
+  // Gestion de l'état has-value pour outlined
+  &[has-value] > label,
+  &[has-value] .select-wrapper > label,
+  .select-wrapper[has-value] > label {
+    @include field.field-label-outlined-active;
+  }
+  
+  // Gestion de l'état has-value + focused pour outlined
+  &[has-value][focused] > label,
+  &[has-value].active > label,
+  &[has-value].focused > label,
+  &[has-value][focused] .select-wrapper > label,
+  &[has-value].active .select-wrapper > label,
+  &[has-value].focused .select-wrapper > label,
+  .select-wrapper[has-value][focused] > label,
+  .select-wrapper[has-value].active > label,
+  .select-wrapper[has-value].focused > label {
+    @include field.field-label-outlined-active;
+    @include field.field-label-focused;
+  }
+}
+
+k3ui-select[variant="outlined"]:hover,
+select[variant="outlined"]:hover,
+.input-field.outlined:hover,
+.select-wrapper.outlined:hover {
+  @include field.field-outlined-hover;
+  
+  input.select-menu {
+    box-shadow: none;
+  }
+  
+  .select-wrapper {
+    @include field.field-outlined-hover;
+    
+    input.select-menu {
+      box-shadow: none;
+    }
+  }
+}
+
+k3ui-select[variant="outlined"]:focus-within,
+select[variant="outlined"]:focus-within,
+.input-field.outlined:focus-within,
+.select-wrapper.outlined:focus-within,
+.select-wrapper.outlined[focused] {
+  @include field.field-outlined-focused;
+  
+  input.select-menu {
+    box-shadow: none;
+  }
+  
+  .select-wrapper {
+    @include field.field-outlined-focused;
+    
+    input.select-menu {
+      box-shadow: none;
+    }
+  }
+}
+
+k3ui-select[variant="outlined"][disabled],
+select[variant="outlined"][disabled],
+.input-field.outlined.disabled,
+.select-wrapper.outlined.disabled {
+  @include field.field-outlined-disabled;
+  
+  input.select-menu {
+    @include field.field-outlined-disabled;
+  }
+  
+  .select-wrapper {
+    @include field.field-outlined-disabled;
+    
+    input.select-menu {
+      @include field.field-outlined-disabled;
+    }
+  }
+}
+
+// S'assurer que le label ne se superpose pas avec l'input (UNIQUEMENT pour les selects)
+// Cette règle s'applique uniquement aux labels qui sont APRÈS le wrapper (ancienne structure)
+// Les labels DANS le wrapper sont gérés par les règles ci-dessus
+.input-field:not(.select-wrapper) .select-wrapper ~ label {
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  margin-top: 0.5rem;
+}
+
+.select-wrapper.disabled {
+  + label {
+    color: var(--md-sys-color-on-surface-variant);
+    opacity: 0.6;
+  }
+  .caret {
+    fill: var(--md-sys-color-on-surface);
+  }
+}
+
+.select-wrapper input.select-menu:disabled {
+  color: var(--md-sys-color-on-surface);
+  cursor: default;
+  user-select: none;
+}
+
+.select-wrapper i {
+  color: var(--md-sys-color-on-surface);
+}
+
+// Positionnement des leading icons dans le select (comme dans Field)
+.select-wrapper .leading-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  
+  i {
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  img {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+// Ajuster le padding de l'input quand il y a un leading icon
+// Le container a déjà padding-left: 12px avec icon, donc on ajoute 36px pour l'input (total 48px depuis le bord)
+.select-wrapper.has-leading-icon input.select-menu {
+  padding-left: 36px; // 12px (container) + 36px (input) = 48px total depuis le bord
+}
+
+// Ajuster le label quand il y a un leading icon
+.select-wrapper.has-leading-icon .label {
+  left: 48px;
+}
+
+.select-menu li.disabled,
+.select-menu li.disabled > span,
+.select-menu li.optgroup {
+  color: var(--md-sys-color-on-surface);
+  //background-color: transparent;
+}
+
+// Span parent pour positionnement des trailing icons
+.select-menu li > span {
+  position: relative;
+}
+
+// ============================================================================
+// MENU CONTAINER (Material Design 3)
+// ============================================================================
+
+/**
+ * Container du menu
+ * DOIT être identique à .menu-content sauf pour les spécificités du select
+ */
+ul.select-menu {
+  padding: menu.$menu-gap; // 2px - identique à menu-content
+  margin: 0;
+  list-style: none;
+  background-color: var(--md-sys-color-surface-container);
+  border-radius: menu.$menu-border-radius; // 12px - identique à menu-content
+  box-shadow: elevation.$md-sys-elevation-level2;
+  min-width: menu.$menu-min-width; // Utiliser le token menu
+  max-width: menu.$menu-max-width; // 20rem (320px) - identique à menu-content
+  max-height: menu.$menu-max-height; // 20rem (320px) - identique à menu-content
+  overflow-y: auto;
+  overflow-x: hidden; // Empêcher le slider horizontal
+}
+
+// ============================================================================
+// LIST ITEMS (Material Design 3)
+// ============================================================================
+
+/**
+ * Items de liste dans le menu
+ * DOIT être identique à .menu-content li sauf pour le checkmark selected
+ */
+.select-menu li {
+  position: relative;
+  list-style-type: none;
+  background-color: transparent; // Transparent car le container a le background
+  width: 100%;
+  min-height: 48px; // min-height au lieu de height fixe - identique à menu-content
+  margin: 0; // Pas de margin entre les items
+  padding: 0; // Pas de padding sur l'item lui-même - identique à menu-content
+  transition: $_select-surface-transition; // Identique à menu-content
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  line-height: 1.5rem;
+  text-align: left;
+  clear: both; // Identique à menu-content
+  font-family: var(--md-sys-typescale-body-large-font-family-name); // Identique à menu-content
+
+  // Si l'item utilise la structure List
+  &.list-item {
+    // Les styles de base sont déjà dans list.module.scss
+    // On ajoute juste les ajustements spécifiques aux selects
+    @include list-mixin.list-item-hover();
+    background-color: transparent; // Pas de background par défaut
+    
+    // Le mixin list-item-selected() est déjà appliqué dans list.module.scss pour .list-item--selected
+    // Pas besoin de le réappliquer ici
+    
+    // S'assurer que le contenu List s'affiche correctement
+    .list-item__content {
+      width: 100%;
+      min-height: 48px; // min-height au lieu de height fixe
+      padding: menu.$menu-padding; // Utiliser le token menu (16px)
+    }
+    
+    // Ajuster la hauteur selon la présence de supporting text
+    // Item seul = 48px (min-height par défaut)
+    // Item + 1 ligne supporting text = 64px (48 + 16)
+    // Item + 2 lignes supporting text = 80px (48 + 32)
+    &:has(.list-item__secondary-text) {
+      min-height: 64px; // 48px + 16px pour 1 ligne minimum
+      
+      .list-item__content {
+        min-height: 64px;
+        align-items: flex-start; // Aligner en haut pour permettre plusieurs lignes
+        padding-top: 12px; // Ajuster le padding vertical
+        padding-bottom: 12px;
+      }
+      
+      // Si 2 lignes de supporting text, augmenter à 80px
+      // Le secondary-text utilise déjà -webkit-line-clamp: 2 dans le mixin
+      .list-item__secondary-text {
+        line-clamp: 2; // Standard property (déjà dans le mixin)
+      }
+    }
+  }
+  
+  // Subheader/Label (32px de hauteur, padding-left: 20px)
+  &.subheader,
+  &.list-item--subheader,
+  &[role="group"],
+  &.optgroup {
+    min-height: 32px;
+    height: 32px;
+    padding-left: 20px; // 20px au lieu de 12px pour les subheaders
+    padding-right: 8px;
+    padding-top: 0;
+    padding-bottom: 0;
+    cursor: default;
+    pointer-events: none;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: var(--md-sys-typescale-body-small-font-size);
+    font-weight: var(--md-sys-typescale-body-small-font-weight);
+    line-height: var(--md-sys-typescale-body-small-line-height);
+    background-color: transparent; // Pas de background
+    
+    // Pas de hover ni selected pour les subheaders
+    &:hover::before,
+    &.selected::before {
+      display: none;
+    }
+  }
+
+  // --- États Hover & Focus ---
+  // Utiliser les mêmes styles que menu-content
+  &:hover:not(:disabled):not(.list-item--disabled):not(.disabled) {
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      left: 2px; // Identique à menu-content
+      right: 2px; // Identique à menu-content
+      top: 0;
+      bottom: 0;
+      background-color: menu.$menu-option-background-hover;
+      border-radius: 4px; // Identique à menu-content
+      z-index: -1;
+      pointer-events: none;
+      transition: background-color 0.2s;
+    }
+  }
+
+  // --- État Sélectionné ---
+  // Pour les items List, le mixin est déjà appliqué dans la section &.list-item ci-dessus
+  // Pour les items non-List (legacy), géré dans la section &:not(.list-item) ci-dessous
+
+  // --- Structure Interne (Content) ---
+  .list-item__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    padding: menu.$menu-padding; // Utiliser le token menu (16px)
+    min-height: 48px; // min-height au lieu de height fixe
+    width: 100%;
+  }
+
+  .list-item__leading {
+    margin-right: spacing.$md-sys-spacing-md; // 16dp entre leading et texte - Material Design 3
+    display: flex;
+    align-items: center;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+
+  .list-item__text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .list-item__primary-text {
+    font-size: var(--md-sys-typescale-body-large-font-size);
+    line-height: var(--md-sys-typescale-body-large-line-height);
+  }
+  
+  // Pour les selects multiples avec checkbox
+  > label {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    cursor: pointer;
+    
+    > input[type="checkbox"] {
+      margin-right: spacing.$md-sys-spacing-md;
+    }
+    
+    > .list-item__content {
+      flex: 1;
+    }
+  }
+  
+  // Utiliser les icônes List
+  // Les icônes Material seront gérées par IconManager
+  // (pas besoin de styles CSS spécifiques)
+  
+  // Trailing icon List (checkmark)
+  // S'applique aussi dans k3ui-menu pour les selects
+  .list-item__trailing-icon {
+    &.select-trailing-icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: none !important;
+      
+      &.is-visible {
+        display: flex !important;
+      }
+    }
+  }
+  
+  // Trailing text List (raccourcis clavier)
+  .list-item__trailing-text {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  // Trailing icon (icône de droite) - Material Design 3
+  .select-trailing-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--md-sys-color-on-secondary-container);
+    display: none !important;
+    align-items: center;
+    justify-content: center;
+    transition: $_select-surface-transition;
+    pointer-events: none;
+
+    i {
+      color: var(--md-sys-color-on-secondary-container) !important;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    &.is-visible {
+      display: flex !important;
+    }
+  }
+  
+  // Afficher l'icône trailing seulement sur les items sélectionnés avec is-visible
+  // (règle supprimée car on utilise .is-visible pour contrôler l'affichage)
+
+  // Contenu interne (compatibilité legacy)
+  // Identique à menu-content
+  & > a, & > span {
+    position: relative;
+    z-index: 1;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--md-sys-color-on-surface);
+    line-height: 20px;
+    padding: menu.$menu-padding; // Utiliser le token menu (16px)
+    transition: $_select-surface-transition;
+    text-decoration: none;
+    display: block; // Identique à menu-content pour span
+  }
+  
+  // Pour les liens avec icônes, utiliser flex (identique à menu-content)
+  & > a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  // Pour les span, garder block (identique à menu-content)
+  & > span {
+    display: block;
+  }
+  
+  & > span > label {
+    top: 1px;
+    left: 0;
+    height: 18px;
+  }
+  
+  // Leading icon (icône de gauche) - Material Design 3
+  // Utiliser les tokens menu pour être identique à menu-content
+  & > a > i {
+    height: menu.$menu-icon-size; // Utiliser le token menu (20px)
+    width: menu.$menu-icon-size; // Utiliser le token menu (20px)
+    flex-shrink: 0;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  
+  // Pour compatibilité avec ancien système
+  & > i, & > span > i {
+    height: menu.$menu-icon-size;
+    width: menu.$menu-icon-size;
+    line-height: menu.$menu-icon-size;
+    margin: 0 spacing.$md-sys-spacing-md 0 0;
+    color: var(--md-sys-color-on-surface-variant);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  // Leading icon container - Material Design 3 (compatibilité avec ancien système)
+  .select-leading-icon {
+    display: flex !important;
+    align-items: center;
+    
+    i {
+      height: menu.$menu-icon-size; // Utiliser le token menu
+      width: menu.$menu-icon-size; // Utiliser le token menu
+      line-height: menu.$menu-icon-size;
+      margin: 0 spacing.$md-sys-spacing-md 0 0;
+      color: var(--md-sys-color-on-surface-variant);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  
+  // Trailing text pour les raccourcis clavier (menu uniquement)
+  .select-trailing-text {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 2px 6px;
+    background-color: var(--md-sys-color-surface-container-highest);
+    border-radius: select.$select-border-radius-small; // 8px - Material Design 3 Expressive
+    border: 1px solid var(--md-sys-color-outline-variant);
+    user-select: none;
+    pointer-events: none;
+    transition: $_select-surface-transition;
+  }
+  
+  // Ajuster le padding à droite quand il y a du trailing text
+  & > a:has(.select-trailing-text),
+  & > span:has(.select-trailing-text) {
+    padding-right: 80px; // Espace pour le trailing text
+  }
+  
+  // Ajuster le padding à droite quand il y a une trailing icon
+  & > a:has(.select-trailing-icon),
+  & > span:has(.select-trailing-icon) {
+    padding-right: 44px; // Espace pour l'icône trailing (symétrique du leading)
+  }
+  
+  // Supprimer tous les effets de lien
+  & > a:hover, & > a:focus, & > a:active {
+    text-decoration: none;
+  }
+  
+  // Hover et selected sont maintenant gérés par les mixins List
+  // On garde uniquement les styles spécifiques pour les éléments non-List
+  
+  // Styles spécifiques pour les items non-List (compatibilité legacy)
+  // Identique à menu-content
+  &:not(.list-item):not(.subheader):not(.list-item--subheader):not([role="group"]):not(.optgroup) {
+    background-color: transparent; // Pas de background par défaut
+    
+    &:not(.disabled):hover,
+    &.active {
+      position: relative;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        left: 2px;
+        right: 2px;
+        top: 0;
+        bottom: 0;
+        background-color: menu.$menu-option-background-hover; // Utiliser le token menu
+        border-radius: 4px;
+        z-index: -1;
+      }
+      
+    }
+    
+    // UNIQUEMENT si selected - pas de background par défaut
+    &.selected {
+      position: relative;
+      color: var(--md-sys-color-on-secondary-container);
+      
+      &::before {
+        content: '';
+        position: absolute;
+        left: 2px;
+        right: 2px;
+        top: 0;
+        bottom: 0;
+        background-color: var(--md-sys-color-secondary-container);
+        border-radius: 12px;
+        z-index: -1;
+      }
+      
+      
+      & > a, & > span {
+        color: var(--md-sys-color-on-secondary-container);
+      }
+      
+      & > a > i {
+        color: var(--md-sys-color-on-secondary-container);
+      }
+    }
+  }
+  
+  // Disabled state avec List
+  &.list-item--disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  img {
+    height: 38px; // 48px - 10
+    width: 38px;  // 48px - 10
+    margin: 5px 15px;
+    float: right;
+  }
+}
+
+// Optgroup styles
+.select-menu li.optgroup {
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+  &.selected > span {
+    color: var(--md-sys-color-on-background);
+  }
+  & > span {
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & ~ li.optgroup-option {
+    padding-left: 1rem;
+  }
+}
+
+// ============================================================================
+// NAVBAR SELECT ALIGNMENT
+// ============================================================================
+
+// Correction de l'alignement pour les selects dans la navbar
+.navbar-select-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  @include zindex.zindex-stacking('select', 'relative');
+  overflow: visible !important; // Permettre au menu de dépasser l'appbar
+
+  // Gap 2dp entre leading et trailing du split (aligné sur $button-split-gap)
+  .split-btn,
+  .split-button,
+  .button-split,
+  k3ui-button-split {
+    gap: bs.$button-split-gap !important;
+  }
+  
+  // S'assurer que le menu passe au-dessus de l'AppBar (z-index 500)
+  // Le select a z-index 1200, donc il doit être au-dessus
+  .select-menu {
+    @include zindex.zindex-stacking('select', 'absolute');
+    // Forcer un z-index élevé pour être sûr qu'il passe au-dessus de l'AppBar
+    z-index: 1500 !important; // Au-dessus de l'AppBar (500) et du select normal (1200)
+  }
+  
+  // S'assurer que le wrapper du menu passe au-dessus
+  .select-wrapper {
+    position: relative;
+    @include zindex.zindex-stacking('select', 'relative');
+    
+    .select-menu {
+      @include zindex.zindex-stacking('select', 'absolute');
+      // Forcer un z-index élevé pour être sûr qu'il passe au-dessus de l'AppBar
+      z-index: 1500 !important; // Au-dessus de l'AppBar (500) et du select normal (1200)
+    }
+  }
+}
+
+// Styles pour les menus dans la navbar
+.navbar-menu-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: visible !important; // Permettre au menu de dépasser l'appbar
+}
+
+.navbar-select-wrapper {
+  display: flex;
+  align-items: center;
+  margin: 0 !important;
+  padding: 0 !important;
+  
+  .appbar__action-icon {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// Règles spécifiques pour les trailing icons des selects
+// Les trailing icons générés par Menu.ts doivent respecter les mêmes règles
+// IMPORTANT: Menu.ts déplace le .menu-container dans le body lors de l'ouverture
+// donc les règles doivent cibler .menu-container directement (pas k3ui-menu)
+
+// Règles globales pour .select-trailing-icon (appliquées même quand le menu est dans le body)
+.select-trailing-icon {
+  // Par défaut, les trailing icons des selects sont cachés
+  display: none !important;
+  align-items: center;
+  justify-content: center;
+  color: var(--md-sys-color-on-surface-variant);
+  pointer-events: none;
+  
+  i {
+    color: var(--md-sys-color-on-surface-variant) !important;
+    font-size: 1rem;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  // Afficher uniquement si la classe is-visible est présente
+  &.is-visible {
+    display: flex !important;
+  }
+}
+
+// Règles spécifiques dans k3ui-menu (avant déplacement dans body)
+k3ui-menu {
+  .list-item__trailing-icon.select-trailing-icon:not(.is-visible) {
+    display: none !important;
+  }
+  
+  .list-item__trailing-icon.select-trailing-icon {
+    display: none !important;
+    align-items: center;
+    justify-content: center;
+    
+    &.is-visible {
+      display: flex !important;
+    }
+  }
+}
+
+// Règles spécifiques dans .menu-container (après déplacement dans body par Menu.ts)
+// Ces règles s'appliquent aux trailing icons générés par Menu.ts pour les selects
+.menu-container {
+  // Pour les selects : cacher tous les trailing icons par défaut
+  // Ils seront rendus visibles via la classe is-visible ajoutée par Select.ts
+  .list-item__trailing-icon {
+    display: none !important;
+    align-items: center;
+    justify-content: center;
+    
+    // Afficher si la classe is-visible est présente
+    &.is-visible {
+      display: flex !important;
+    }
+    
+    // Également afficher si le parent wrapper a data-selected="true"
+    // Cela permet à Menu.ts de gérer l'état via l'attribut
+    .menu-item-wrapper[data-selected="true"] & {
+      display: flex !important;
+    }
+  }
+  
+  .select-trailing-icon:not(.is-visible) {
+    display: none !important;
+  }
+  
+  .select-trailing-icon.is-visible {
+    display: flex !important;
+  }
+}
+
+// Règle alternative : afficher le trailing icon si le wrapper parent a data-selected="true"
+// Cette règle fonctionne même si la classe is-visible n'est pas présente
+.menu-item-wrapper[data-selected="true"] .list-item__trailing-icon {
+  display: flex !important;
+}
+
+// Cacher le trailing icon si le wrapper parent n'a pas data-selected ou data-selected="false"
+.menu-item-wrapper:not([data-selected="true"]) .list-item__trailing-icon {
+  display: none !important;
+}
+
+// Mode multiple : toujours afficher la zone trailing quand elle contient une k3ui-checkbox
+// (chaque option doit montrer une checkbox vide ou cochée, pas seulement l’option sélectionnée)
+.menu-container .list-item__trailing-icon:has(k3ui-checkbox),
+.menu-item-wrapper .list-item__trailing-icon:has(k3ui-checkbox) {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}

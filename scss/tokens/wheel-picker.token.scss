@@ -1,0 +1,60 @@
+/**
+ * Tokens pour le composant WheelPicker
+ * @description Variables de design pour le sélecteur de caractères rotatif
+ */
+
+@use 'motion.token' as motion;
+
+// Dimensions — colonnes
+$wheel-picker-column-gap: 1.25rem !default;
+$wheel-picker-btn-width: 4.5rem !default;
+$wheel-picker-btn-height: 3rem !default;
+$wheel-picker-btn-radius: 1rem !default;
+$wheel-picker-display-width: 5.5rem !default;
+$wheel-picker-display-height: 6.5rem !default;
+$wheel-picker-display-radius: 1.75rem !default;
+$wheel-picker-letter-font-size: 3.25rem !default;
+$wheel-picker-letter-font-weight: 700 !default;
+
+// Prévisualisation
+$wheel-picker-preview-gap: 0.375rem !default;
+$wheel-picker-preview-padding-y: 0.625rem !default;
+$wheel-picker-preview-padding-x: 1.75rem !default;
+$wheel-picker-preview-radius: 100px !default;
+$wheel-picker-preview-font-size: 1.375rem !default;
+$wheel-picker-preview-letter-spacing: 0.25rem !default;
+
+// Bouton de soumission
+$wheel-picker-submit-min-width: 12.5rem !default;
+$wheel-picker-submit-height: 3.5rem !default;
+$wheel-picker-submit-radius: 100px !default;
+$wheel-picker-submit-font-size: 1rem !default;
+$wheel-picker-submit-font-weight: 600 !default;
+
+// Couleurs (Material Design 3 — variables système)
+$wheel-picker-surface: var(--md-sys-color-surface) !default;
+$wheel-picker-on-surface: var(--md-sys-color-on-surface) !default;
+$wheel-picker-on-surface-variant: var(--md-sys-color-on-surface-variant) !default;
+$wheel-picker-primary: var(--md-sys-color-primary) !default;
+$wheel-picker-on-primary: var(--md-sys-color-on-primary) !default;
+$wheel-picker-primary-container: var(--md-sys-color-primary-container) !default;
+$wheel-picker-on-primary-container: var(--md-sys-color-on-primary-container) !default;
+$wheel-picker-tertiary: var(--md-sys-color-tertiary) !default;
+$wheel-picker-outline-variant: var(--md-sys-color-outline-variant) !default;
+$wheel-picker-surface-container-high: var(--md-sys-color-surface-container-high) !default;
+$wheel-picker-surface-container-highest: var(--md-sys-color-surface-container-highest) !default;
+$wheel-picker-shadow: var(--md-sys-color-shadow, #000) !default;
+
+// Transitions et animations
+$wheel-picker-transition-fast: motion.spring-duration(effects, fast) !default;
+$wheel-picker-transition-standard: motion.spring-duration(effects, standard) !default;
+$wheel-picker-easing-standard: motion.spring-easing(effects, standard) !default;
+$wheel-picker-easing-emphasized: cubic-bezier(0.2, 0, 0, 1) !default;
+$wheel-picker-easing-cycle-in: cubic-bezier(0, 0, 0, 1) !default;
+$wheel-picker-easing-cycle-out: cubic-bezier(0.4, 0, 1, 1) !default;
+$wheel-picker-animation-cycle: 260ms !default;
+$wheel-picker-animation-slide: 260ms !default;
+$wheel-picker-animation-entrance: 560ms !default;
+$wheel-picker-animation-ripple: 520ms !default;
+$wheel-picker-entrance-stagger: 90ms !default;
+$wheel-picker-entrance-delay-base: 120ms !default;

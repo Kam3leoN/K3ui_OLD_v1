@@ -1,0 +1,106 @@
+/**
+ * @fileoverview Tokens de design pour le composant Comparison
+ * @description Variables pour la comparaison d'images avant/après
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'sass:math';
+@use 'motion.token' as motion;
+@use 'radius.token' as radius;
+@use 'elevation.token' as elevation;
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+/** Largeur maximale du conteneur */
+$comparison-max-width: 800px;
+/** Ratio d'aspect par défaut */
+$comparison-aspect-ratio: math.div(16, 9);
+/** Rayon des coins */
+$comparison-border-radius: radius.$md-sys-shape-corner-large;
+/** Rayon mobile */
+$comparison-border-radius-sm: radius.$md-sys-shape-corner-medium;
+
+// ============================================================================
+// CURSEUR
+// ============================================================================
+
+/** Largeur de la ligne de séparation */
+$comparison-slider-line-width: 2px;
+/** Taille du bouton curseur */
+$comparison-knob-size: 44px;
+/** Taille du bouton curseur (mobile) */
+$comparison-knob-size-sm: 36px;
+/** Taille de l'icône dans le curseur */
+$comparison-knob-icon-size: 20px;
+/** Taille de l'icône dans le curseur (mobile) */
+$comparison-knob-icon-size-sm: 16px;
+
+// ============================================================================
+// LABELS
+// ============================================================================
+
+/** Taille de police des labels */
+$comparison-label-font-size: 0.875rem;
+/** Taille de police des labels (mobile) */
+$comparison-label-font-size-sm: 0.75rem;
+/** Padding des labels */
+$comparison-label-padding-y: 8px;
+$comparison-label-padding-x: 16px;
+/** Padding des labels (mobile) */
+$comparison-label-padding-y-sm: 6px;
+$comparison-label-padding-x-sm: 12px;
+/** Offset des labels depuis le bord */
+$comparison-label-offset: 20px;
+
+// ============================================================================
+// COULEURS
+// ============================================================================
+
+/** Fond du conteneur */
+$comparison-bg: var(--md-sys-color-surface, #fff);
+/** Fond des labels */
+$comparison-label-bg: rgba(0, 0, 0, 0.6);
+/** Texte des labels */
+$comparison-label-color: #fff;
+/** Fond du curseur */
+$comparison-knob-bg: var(--md-sys-color-surface-container-highest, #fff);
+/** Couleur de l'icône du curseur */
+$comparison-knob-icon-color: var(--md-sys-color-on-surface, #1a1a1a);
+
+// ============================================================================
+// ÉLÉVATION & OMBRES
+// ============================================================================
+
+$comparison-shadow:
+  0 20px 60px -20px rgba(0, 0, 0, 0.15),
+  0 0 0 1px rgba(0, 0, 0, 0.05);
+
+$comparison-knob-shadow:
+  0 4px 20px rgba(0, 0, 0, 0.15),
+  0 0 0 1px rgba(0, 0, 0, 0.05);
+
+$comparison-knob-shadow-active:
+  0 2px 10px rgba(0, 0, 0, 0.1),
+  0 0 0 1px rgba(0, 0, 0, 0.05);
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+$comparison-transition-duration: motion.$md-sys-motion-expressive-effects-fast-duration;
+$comparison-transition-easing: motion.$md-sys-motion-expressive-effects-fast-easing;
+$comparison-label-transition-duration: 300ms;
+$comparison-position-transition-duration: 100ms;
+
+// ============================================================================
+// Z-INDEX
+// ============================================================================
+
+$comparison-z-image-after: 0;
+$comparison-z-image-before: 1;
+$comparison-z-label: 2;
+$comparison-z-slider-line: 3;
+$comparison-z-slider-knob: 4;

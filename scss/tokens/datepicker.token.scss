@@ -1,0 +1,190 @@
+/**
+ * Datepicker Tokens - Tokens pour le composant datepicker
+ * Basé sur Material Design 3 Expressive
+ */
+
+@use 'sass:map';
+@use './spacing.token' as spacing;
+@use './radius.token' as radius;
+@use './motion.token' as motion;
+@use './elevation.token' as elevation;
+@use './zindex.token' as zindex;
+
+// ========================================
+// DIMENSIONS
+// ========================================
+
+/** Largeur du datepicker modal (360px selon MD3 Expressive) */
+$datepicker-width: 360px !default;
+
+/** Largeur minimale */
+$datepicker-min-width: 280px !default;
+
+/** Largeur maximale */
+$datepicker-max-width: 360px !default;
+
+/** Hauteur du header (120px selon MD3 Expressive) */
+$datepicker-header-height: 120px !default;
+
+/** Hauteur du header mobile */
+$datepicker-header-height-mobile: 100px !default;
+
+/** Taille d'un jour dans le calendrier (42px pour rentrer dans la modal 360px avec paddings) */
+$datepicker-day-size: 42px !default;
+
+/** Taille d'un jour mobile */
+$datepicker-day-size-mobile: 36px !default;
+
+/** Hauteur de l'input */
+$datepicker-input-height: 56px !default;
+
+/** Hauteur d'un élément année */
+$datepicker-year-item-height: 48px !default;
+
+/** Hauteur de la grille d'années */
+$datepicker-year-grid-height: 320px !default;
+
+/** Hauteur des boutons */
+$datepicker-button-height: 40px !default;
+
+/** Largeur minimale des boutons */
+$datepicker-button-min-width: 64px !default;
+
+// ========================================
+// BORDER & RADIUS
+// ========================================
+
+/** Border radius du container */
+$datepicker-container-radius: radius.$md-sys-shape-corner-extra-large !default;
+
+/** Border radius du header */
+$datepicker-header-radius: 28px 28px 0 0 !default;
+
+/** Border radius de l'input */
+$datepicker-input-radius: radius.$md-sys-shape-corner-medium !default;
+
+/** Border radius d'un jour */
+$datepicker-day-radius: radius.$md-sys-shape-corner-full !default;
+
+/** Border radius d'un élément année */
+$datepicker-year-item-radius: radius.$md-sys-shape-corner-large !default;
+
+/** Border radius des boutons */
+$datepicker-button-radius: radius.$md-sys-shape-corner-full !default;
+
+/** Épaisseur de la bordure de l'input */
+$datepicker-input-border-width: 2px !default;
+
+/** Épaisseur du focus ring */
+$datepicker-focus-ring-width: 2px !default;
+
+/** Offset du focus ring */
+$datepicker-focus-ring-offset: 2px !default;
+
+// ========================================
+// ELEVATION
+// ========================================
+
+/** Élévation du modal */
+$datepicker-modal-elevation: elevation.$md-sys-elevation-level3 !default;
+
+/** Élévation de l'input */
+$datepicker-input-elevation: elevation.$md-sys-elevation-level0 !default;
+
+/** Élévation d'un jour sélectionné */
+$datepicker-day-selected-elevation: elevation.$md-sys-elevation-level2 !default;
+
+// ========================================
+// MOTION
+// ========================================
+
+/** Durée de transition standard */
+$datepicker-transition-duration: motion.$md-sys-motion-duration-emphasized !default;
+
+/** Easing de transition */
+$datepicker-transition-easing: motion.$md-sys-motion-easing-emphasized !default;
+
+/** Durée d'entrée du modal */
+$datepicker-modal-entrance-duration: motion.$md-sys-motion-duration-standard !default;
+
+/** Durée de sortie du modal */
+$datepicker-modal-exit-duration: motion.$md-sys-motion-duration-exiting !default;
+
+// ========================================
+// SPACING
+// ========================================
+
+/** Padding horizontal du header (24px selon MD3 Expressive) */
+$datepicker-header-padding-horizontal: spacing.$md-sys-spacing-lg !default;
+
+/** Padding vertical du header (16px top selon MD3 Expressive) */
+$datepicker-header-padding-top: spacing.$md-sys-spacing-md !default;
+
+/** Padding du header (legacy, utiliser les valeurs spécifiques ci-dessus) */
+$datepicker-header-padding: spacing.$md-sys-spacing-xl !default;
+
+/** Padding horizontal du calendrier (24px left, 12px right selon MD3 Expressive) */
+$datepicker-calendar-padding-horizontal-left: spacing.$md-sys-spacing-lg !default;
+$datepicker-calendar-padding-horizontal-right: spacing.$md-sys-spacing-component-lg !default;
+
+/** Padding vertical du calendrier (32px bottom selon MD3 Expressive) */
+$datepicker-calendar-padding-bottom: spacing.$md-sys-spacing-xl !default;
+
+/** Padding du calendrier (legacy, utiliser les valeurs spécifiques ci-dessus) */
+$datepicker-calendar-padding: spacing.$md-sys-spacing-xl !default;
+
+/** Gap entre les jours */
+$datepicker-calendar-grid-gap: spacing.$md-sys-spacing-xs !default;
+
+/** Gap entre les années */
+$datepicker-year-grid-gap: spacing.$md-sys-spacing-sm !default;
+
+/** Padding des actions */
+$datepicker-actions-padding: spacing.$md-sys-spacing-sm spacing.$md-sys-spacing-xl spacing.$md-sys-spacing-xl !default;
+
+/** Gap entre les boutons d'action */
+$datepicker-actions-gap: spacing.$md-sys-spacing-sm !default;
+
+// ========================================
+// GRID
+// ========================================
+
+/** Nombre de colonnes du calendrier */
+$datepicker-calendar-grid-columns: 7 !default;
+
+/** Nombre de colonnes de la grille d'années */
+$datepicker-year-grid-columns: 3 !default;
+
+// ========================================
+// Z-INDEX
+// ========================================
+
+/** Z-index du backdrop */
+$datepicker-z-index-backdrop: map.get(zindex.$md-sys-zindex-layers, 'dialog') !default;
+
+/** Z-index du modal */
+$datepicker-z-index-modal: map.get(zindex.$md-sys-zindex-layers, 'dialog') + 1 !default;
+
+// ========================================
+// BACKDROP
+// ========================================
+
+/** Couleur du backdrop */
+$datepicker-backdrop-color: rgba(0, 0, 0, 0.5) !default;
+
+/** Blur du backdrop */
+$datepicker-backdrop-blur: 4px !default;
+
+// ========================================
+// SCROLLBAR
+// ========================================
+
+/** Largeur de la scrollbar */
+$datepicker-scrollbar-width: 8px !default;
+
+/** Couleur de la track de la scrollbar */
+$datepicker-scrollbar-track-color: rgba(0, 0, 0, 0.1) !default;
+
+/** Couleur du thumb de la scrollbar */
+$datepicker-scrollbar-thumb-color: rgba(0, 0, 0, 0.3) !default;
+

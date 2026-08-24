@@ -1,0 +1,755 @@
+/**
+ * @fileoverview Mixins pour NavigationRail (Material Design 3 Expressive - Rail vertical)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/navigation-rail.token' as rail;
+@use '../tokens/motion.token' as motion;
+@use '../mixins/state.mixin' as state;
+@use '../mixins/navigation-item.mixin' as navitem-mx;
+
+@mixin navigation-rail-container {
+  position: fixed;
+  top: 0;
+  inset-inline-start: 0;
+  inset-inline-end: auto;
+  bottom: 0;
+  /* Largeur pilotée par JS (--k3-navigation-rail-width) pour découpler layout expand / anim width */
+  width: var(--k3-navigation-rail-width, #{rail.$navigation-rail-width-collapsed});
+  min-height: 100vh;
+  background-color: rail.$navigation-rail-surface;
+  /* Bordure opt-in via `.navigation-rail--border` (défaut : false) */
+  border-inline-end: none;
+  border-inline-start: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* M3 Expressive TopSpace (44dp) ; sans chrome, items démarrent sous cette marge */
+  padding: rail.$navigation-rail-content-margin-top 0 8px 0;
+  /* Gap chrome↔items (surchargeable ; docs utilise souvent 24px) */
+  --navigation-rail-chrome-items-gap: 12px;
+  /* Gap items↔footer — aligné panes (8px / --docs-pane-gap), pas de divider trait */
+  --navigation-rail-footer-separator-gap: #{rail.$navigation-rail-footer-separator-gap};
+  gap: var(--navigation-rail-chrome-items-gap);
+  z-index: rail.$navigation-rail-z-index;
+  transition: width rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing;
+  --k3-navigation-rail-width: #{rail.$navigation-rail-width-collapsed};
+  /* Empêche FAB / pills de déborder sur le contenu (décrochage visuel à droite) */
+  overflow-x: hidden;
+  overflow-y: visible;
+
+  &.navigation-rail--border,
+  &--border {
+    border-inline-end: 1px solid rail.$navigation-rail-border;
+  }
+
+  &:has(.navigation-rail__chrome) {
+    align-items: flex-start;
+    padding-top: rail.$navigation-rail-content-margin-top;
+    /* HeaderSpaceMinimum (40dp) entre chrome/FAB et items */
+    --navigation-rail-chrome-items-gap: #{rail.$navigation-rail-header-items-margin};
+  }
+
+  /*
+   * Footer présent — surface continue par défaut (évite décrochage de bg / FOUC).
+   * Mode îlots (gap + radius) : opt-in `.navigation-rail--segmented`.
+   */
+  &:has(> .navigation-rail__footer) {
+    gap: 0;
+    background-color: rail.$navigation-rail-surface;
+    padding-block-start: 0;
+    padding-block-end: 0;
+
+    > .navigation-rail__chrome {
+      margin-block-end: var(--navigation-rail-chrome-items-gap);
+    }
+
+    > .navigation-rail__main,
+    > .navigation-rail__footer {
+      background-color: transparent;
+      border-inline-end: none;
+      border-radius: 0;
+    }
+  }
+
+  /*
+   * Mode segmenté (îlots panes / menu-group) — fond parent visible entre les groupes.
+   */
+  &.navigation-rail--segmented:has(> .navigation-rail__footer),
+  &--segmented:has(> .navigation-rail__footer) {
+    gap: var(--navigation-rail-footer-separator-gap, #{rail.$navigation-rail-footer-separator-gap});
+    background-color: transparent;
+    border-inline-end-color: transparent;
+
+    > .navigation-rail__main,
+    > .navigation-rail__footer {
+      background-color: rail.$navigation-rail-surface;
+      border-radius:
+        var(--navigation-rail-group-radius-outer, #{rail.$navigation-rail-group-radius-outer})
+        var(--navigation-rail-group-radius-outer, #{rail.$navigation-rail-group-radius-outer})
+        var(--navigation-rail-group-radius-inner, #{rail.$navigation-rail-group-radius-inner})
+        var(--navigation-rail-group-radius-inner, #{rail.$navigation-rail-group-radius-inner});
+    }
+
+    > .navigation-rail__footer {
+      border-radius:
+        var(--navigation-rail-group-radius-inner, #{rail.$navigation-rail-group-radius-inner})
+        var(--navigation-rail-group-radius-inner, #{rail.$navigation-rail-group-radius-inner})
+        var(--navigation-rail-group-radius-outer, #{rail.$navigation-rail-group-radius-outer})
+        var(--navigation-rail-group-radius-outer, #{rail.$navigation-rail-group-radius-outer});
+    }
+  }
+
+  /* Divider trait : surface déjà continue ; gap 0 (redondant mais explicite) */
+  &:has(> .navigation-rail__footer > .navigation-rail__divider) {
+    gap: 0;
+  }
+
+  &.navigation-rail--border:has(> .navigation-rail__footer),
+  &--border:has(> .navigation-rail__footer) {
+    border-inline-end: 1px solid rail.$navigation-rail-border;
+    border-inline-end-color: rail.$navigation-rail-border;
+  }
+
+  /* Layout étendu — largeur via CSS var ; orientation bascule avec --expanded (immédiat) */
+  &--expanded,
+  &.navigation-rail--expanded {
+    align-items: stretch;
+    /* Gouttières via FAB / items (inset symétrique) — pas de padding rail qui double le trailing */
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+
+    &:has(.navigation-rail__chrome) {
+      align-items: flex-start;
+    }
+  }
+
+  /** Restore / init sans FOUC ni « réouverture » animée */
+  &--no-motion,
+  &.navigation-rail--no-motion {
+    transition: none !important;
+
+    *,
+    *::before,
+    *::after {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+
+  /*
+   * Expand/collapse M3 Expressive : largeur + layout items morphent ensemble
+   * (spatial-default). Pas de snap — l’indicateur garde le même transform
+   * translate(-50%,-50%) scaleX et anime width/height/radius avec le rail.
+   */
+  &--animating,
+  &.navigation-rail--animating {
+    will-change: width;
+
+    .navigation-rail__pill {
+      /* Pas d’entrée sélection pendant le morph orientation */
+      animation: none !important;
+      transition-duration: rail.$navigation-rail-expand-duration !important;
+      transition-timing-function: rail.$navigation-rail-expand-easing !important;
+    }
+
+    .navigation-rail__item,
+    .navigation-rail__item-content,
+    .navigation-rail__icon {
+      transition-duration: rail.$navigation-rail-expand-duration;
+      transition-timing-function: rail.$navigation-rail-expand-easing;
+    }
+
+    .navigation-rail__label {
+      transition-property: opacity, color, max-width, font-size, letter-spacing, line-height, text-align;
+      transition-timing-function: rail.$navigation-rail-effects-easing;
+    }
+
+    .navigation-rail__toggle,
+    .navigation-rail__fab {
+      transition-timing-function: rail.$navigation-rail-expand-easing;
+    }
+
+    /* Clip léger du spring overshoot de la capsule expanded */
+    .navigation-rail__item-content {
+      overflow: hidden;
+    }
+  }
+
+  &--expanding.navigation-rail--animating,
+  &.navigation-rail--expanding.navigation-rail--animating {
+    .navigation-rail__icon,
+    .navigation-rail__icon-classic,
+    .navigation-rail__icon-outlined,
+    .navigation-rail__icon-filled {
+      transition-delay: rail.$navigation-rail-expand-icon-delay;
+    }
+
+    .navigation-rail__label {
+      transition-delay: rail.$navigation-rail-expand-label-delay;
+    }
+
+    .navigation-rail__fab-label {
+      transition-delay: rail.$navigation-rail-expand-label-delay;
+    }
+  }
+
+  &--collapsing.navigation-rail--animating,
+  &.navigation-rail--collapsing.navigation-rail--animating {
+    transition-duration: rail.$navigation-rail-expand-fast-duration;
+    transition-timing-function: rail.$navigation-rail-expand-fast-easing;
+
+    .navigation-rail__pill {
+      transition-duration: rail.$navigation-rail-expand-fast-duration !important;
+      transition-timing-function: rail.$navigation-rail-expand-fast-easing !important;
+    }
+
+    .navigation-rail__item,
+    .navigation-rail__item-content,
+    .navigation-rail__icon {
+      transition-duration: rail.$navigation-rail-expand-fast-duration;
+      transition-timing-function: rail.$navigation-rail-expand-fast-easing;
+    }
+
+    .navigation-rail__label {
+      transition-duration: rail.$navigation-rail-effects-fast-duration;
+      transition-timing-function: rail.$navigation-rail-effects-fast-easing;
+      transition-delay: rail.$navigation-rail-collapse-label-delay;
+    }
+  }
+}
+
+@mixin navigation-rail-chrome {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  flex-shrink: 0;
+  gap: rail.$navigation-rail-chrome-gap;
+}
+
+@mixin navigation-rail-toggle {
+  position: absolute;
+  inset-inline-start: calc((#{rail.$navigation-rail-width-collapsed} - #{rail.$navigation-rail-toggle-size}) / 2);
+  inset-inline-end: auto;
+  top: rail.$navigation-rail-content-margin-top;
+  width: rail.$navigation-rail-toggle-size;
+  height: rail.$navigation-rail-toggle-size;
+  border-radius: 20px;
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 0;
+  color: rail.$navigation-rail-label-inactive;
+  flex-shrink: 0;
+  z-index: 1;
+  transition:
+    margin-inline-start rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing,
+    background-color rail.$navigation-rail-hover-duration motion.$md-sys-motion-easing-standard;
+
+  .navigation-rail__chrome & {
+    position: static;
+    inset-inline-start: auto;
+    top: auto;
+    margin-inline-start: calc((#{rail.$navigation-rail-width-collapsed} - #{rail.$navigation-rail-toggle-size}) / 2);
+    margin-block-end: 0;
+  }
+
+  .navigation-rail--expanded .navigation-rail__chrome &,
+  .navigation-rail.navigation-rail--expanded .navigation-rail__chrome & {
+    margin-inline-start: rail.$navigation-rail-chrome-expanded-leading;
+  }
+
+  &:hover {
+    background-color: rail.$navigation-rail-toggle-hover;
+  }
+
+  &:focus,
+  &:focus-visible {
+    outline: none !important;
+    outline-offset: 0;
+    box-shadow: none !important;
+  }
+}
+
+@mixin navigation-rail-fab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: rail.$navigation-rail-fab-size;
+  height: rail.$navigation-rail-fab-size;
+  margin-inline-start: calc((#{rail.$navigation-rail-width-collapsed} - #{rail.$navigation-rail-fab-size}) / 2);
+  /* Espace sous le FAB = HeaderSpaceMinimum via gap du container (:has chrome) */
+  margin-block-end: 0;
+  padding: 0;
+  border: none;
+  border-radius: rail.$navigation-rail-fab-radius;
+  background: var(--md-sys-color-primary, #6750a4);
+  color: var(--md-sys-color-on-primary, #fff);
+  outline: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    margin-inline-start rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing,
+    width rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing,
+    gap rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing,
+    border-radius rail.$navigation-rail-color-duration rail.$navigation-rail-pill-easing,
+    background-color rail.$navigation-rail-color-duration rail.$navigation-rail-pill-easing;
+
+  .navigation-rail--expanded &,
+  .navigation-rail.navigation-rail--expanded & {
+    /* Même largeur / gouttières que la pilule (inset L = inset R) */
+    width: calc(100% - #{2 * rail.$navigation-rail-item-expanded-pill-inset-inline});
+    margin-inline-start: rail.$navigation-rail-item-expanded-pill-inset-inline;
+    margin-inline-end: rail.$navigation-rail-item-expanded-pill-inset-inline;
+    justify-content: flex-start;
+    padding-inline-start: rail.$navigation-rail-item-expanded-content-leading;
+    padding-inline-end: rail.$navigation-rail-pill-expanded-inner-gap;
+    gap: rail.$navigation-rail-icon-label-gap-expanded;
+  }
+}
+
+@mixin navigation-rail-items-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: rail.$navigation-rail-item-gap-compact;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  align-items: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+
+  .navigation-rail--expanded & {
+    align-items: stretch;
+    gap: 3px;
+    margin-inline-start: 0;
+  }
+}
+
+@mixin navigation-rail-items-shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  align-self: stretch;
+}
+
+/**
+ * Groupe haut (chrome + items) — îlot surface comme `.menu-group--first`.
+ */
+@mixin navigation-rail-main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  align-self: stretch;
+  align-items: inherit;
+  box-sizing: border-box;
+  overflow: hidden;
+  background-color: transparent;
+  border-inline-end: none;
+  /* Radius îlots : uniquement en `.navigation-rail--segmented` (mixin container) */
+  border-radius: 0;
+  gap: 0;
+  padding-block-start: rail.$navigation-rail-content-margin-top;
+  padding-block-end: 8px;
+
+  .navigation-rail--border &,
+  .navigation-rail.navigation-rail--border & {
+    border-inline-end: 1px solid rail.$navigation-rail-border;
+  }
+
+  > .navigation-rail__chrome {
+    margin-block-end: var(--navigation-rail-chrome-items-gap);
+  }
+
+  .navigation-rail--expanded &,
+  .navigation-rail.navigation-rail--expanded & {
+    align-items: stretch;
+  }
+}
+
+@mixin navigation-rail-footer {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: rail.$navigation-rail-footer-gap;
+  width: 100%;
+  margin-block-start: auto;
+  padding-block-end: rail.$navigation-rail-footer-padding-block-end;
+  box-sizing: border-box;
+
+  .navigation-rail--expanded &,
+  .navigation-rail.navigation-rail--expanded & {
+    align-items: stretch;
+  }
+
+  /* Footer sous __main : surface portée par le rail (continu) sauf mode --segmented */
+  .navigation-rail:has(> .navigation-rail__main) & {
+    margin-block-start: 0;
+    padding-block-start: 8px;
+    overflow: hidden;
+    background-color: transparent;
+    border-inline-end: none;
+    border-radius: 0;
+  }
+
+  .navigation-rail--border:has(> .navigation-rail__main) &,
+  .navigation-rail.navigation-rail--border:has(> .navigation-rail__main) & {
+    border-inline-end: 1px solid rail.$navigation-rail-border;
+  }
+
+  /* Mode ligne opt-in : le divider porte ses propres marges */
+  &:has(> .navigation-rail__divider) {
+    padding-block-start: 0;
+  }
+
+  &:empty {
+    display: none;
+  }
+}
+
+@mixin navigation-rail-divider {
+  display: block;
+  width: calc(100% - 24px);
+  height: 1px;
+  margin-block: rail.$navigation-rail-divider-margin-block;
+  margin-inline: auto;
+  border: none;
+  background-color: rail.$navigation-rail-divider-color;
+  flex-shrink: 0;
+
+  .navigation-rail--expanded &,
+  .navigation-rail.navigation-rail--expanded & {
+    width: calc(100% - #{2 * rail.$navigation-rail-item-expanded-pill-inset-inline});
+  }
+}
+
+/**
+ * Host flex : rail + scrollbar dans le gutter (hors surface du rail),
+ * même modèle que docs-layout-scrollbar / panel content.
+ */
+@mixin navigation-rail-stack {
+  --k3-navigation-rail-scrollbar-gutter: #{rail.$navigation-rail-scrollbar-gutter};
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  /* Empiète sur le gap voisin pour y loger la scrollbar */
+  padding-inline-end: var(--k3-navigation-rail-scrollbar-gutter);
+  margin-inline-end: calc(-1 * var(--k3-navigation-rail-scrollbar-gutter));
+
+  > .navigation-rail {
+    flex: 0 0 auto;
+    align-self: stretch;
+    min-height: 0;
+    height: auto;
+  }
+
+  /** Shell fixed : reprend la géométrie du rail M3 (position:fixed). */
+  &--fixed {
+    position: fixed;
+    top: 0;
+    inset-inline-start: 0;
+    bottom: 0;
+    /* Au-dessus du header docs (z 1100) pour éviter un décrochage si pad container désync */
+    z-index: 1200;
+    height: 100vh;
+    height: 100dvh;
+    margin-inline-end: 0;
+
+    > .navigation-rail {
+      position: relative !important;
+      inset: auto !important;
+      top: auto !important;
+      bottom: auto !important;
+      inset-inline-start: auto !important;
+      height: 100%;
+      min-height: 0;
+    }
+  }
+}
+
+@mixin navigation-rail-scrollbar {
+  position: absolute;
+  top: 28px;
+  bottom: 28px;
+  inset-inline-end: 0;
+  z-index: 2;
+  width: var(--k3-navigation-rail-scrollbar-gutter, #{rail.$navigation-rail-scrollbar-gutter});
+  box-sizing: border-box;
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    opacity rail.$navigation-rail-scrollbar-fade-duration ease,
+    width 0.12s ease;
+
+  &.is-needed {
+    pointer-events: auto;
+  }
+
+  .navigation-rail-stack:hover > &.is-needed,
+  &.is-needed.is-scrolling,
+  &.is-needed.is-dragging,
+  &.is-needed.is-hovering {
+    opacity: 1;
+  }
+
+  &.is-hovering,
+  &.is-dragging {
+    width: calc(
+      var(--k3-navigation-rail-scrollbar-gutter, #{rail.$navigation-rail-scrollbar-gutter})
+      * var(--k3ui-scrollbar-enlarge-factor, 2)
+    );
+  }
+
+  @media (pointer: coarse) {
+    &.is-needed {
+      opacity: 1;
+    }
+  }
+}
+
+@mixin navigation-rail-scrollbar-thumb {
+  position: absolute;
+  inset-inline-start: 50%;
+  width: var(--k3ui-scrollbar-thumb-width, #{rail.$navigation-rail-scrollbar-thumb-width});
+  min-height: rail.$navigation-rail-scrollbar-thumb-min-height;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: rail.$navigation-rail-scrollbar-thumb-color;
+  cursor: grab;
+  touch-action: none;
+  transition:
+    width 0.12s ease,
+    background-color 0.12s ease;
+
+  @media (pointer: coarse) {
+    width: calc(var(--k3ui-scrollbar-thumb-width, 6px));
+  }
+}
+
+@mixin navigation-rail-scrollbar-thumb-active {
+  width: calc(
+    var(--k3ui-scrollbar-thumb-width, #{rail.$navigation-rail-scrollbar-thumb-width})
+    * var(--k3ui-scrollbar-enlarge-factor, 2)
+  );
+}
+
+@mixin navigation-rail-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rail.$navigation-rail-icon-label-gap;
+  cursor: pointer;
+  padding: 4px 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+  transition:
+    color rail.$navigation-rail-color-duration rail.$navigation-rail-pill-easing,
+    padding rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing,
+    min-height rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing,
+    gap rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing;
+
+  .navigation-rail--expanded & {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+    padding-inline-start: rail.$navigation-rail-item-expanded-pill-inset-inline;
+    padding-inline-end: rail.$navigation-rail-item-expanded-trailing-space;
+    justify-content: center;
+    min-height: rail.$navigation-rail-pill-expanded-height;
+  }
+
+  @include state.state-focus-visible($outline-color: rail.$navigation-rail-focus-outline);
+}
+
+/** Conteneur icon + label (+ pill en premier enfant pour expanded horizontal) */
+@mixin navigation-rail-item-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rail.$navigation-rail-icon-label-gap;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  transition:
+    gap rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing,
+    padding rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing,
+    min-height rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing;
+
+  .navigation-rail--expanded &,
+  .navigation-rail.navigation-rail--expanded & {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: rail.$navigation-rail-icon-label-gap-expanded;
+    width: 100%;
+    flex: 1 1 auto;
+    min-height: rail.$navigation-rail-pill-expanded-height;
+    padding-inline-start: rail.$navigation-rail-item-expanded-content-leading;
+    padding-inline-end: rail.$navigation-rail-pill-expanded-inner-gap;
+    box-sizing: border-box;
+    /* Contient le spring overshoot scaleX de la pill (M3 expressive) */
+    overflow: hidden;
+    border-radius: rail.$navigation-rail-pill-expanded-radius;
+  }
+}
+
+@mixin navigation-rail-icon-wrapper {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: rail.$navigation-rail-pill-width;
+  height: rail.$navigation-rail-pill-height;
+  flex-shrink: 0;
+  transition:
+    width rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing,
+    height rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing,
+    min-width rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing,
+    min-height rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing;
+
+  .navigation-rail--expanded .navigation-rail__item-content &,
+  .navigation-rail.navigation-rail--expanded .navigation-rail__item-content & {
+    width: rail.$navigation-rail-icon-size;
+    min-width: rail.$navigation-rail-icon-size;
+    height: rail.$navigation-rail-icon-size;
+    min-height: rail.$navigation-rail-icon-size;
+  }
+}
+
+@mixin navigation-rail-pill {
+  @include navitem-mx.nav-item-indicator(
+    (
+      width-vertical: rail.$navigation-rail-pill-width,
+      height-vertical: rail.$navigation-rail-pill-height,
+      radius-vertical: rail.$navigation-rail-pill-radius,
+      height-horizontal: rail.$navigation-rail-pill-expanded-height,
+      radius-horizontal: rail.$navigation-rail-pill-expanded-radius,
+      bg: rail.$navigation-rail-pill-bg,
+      hover-bg: rail.$navigation-rail-hover-bg,
+      hover-duration: rail.$navigation-rail-hover-duration,
+      prefix: 'navigation-rail',
+      expanded-parent: '.navigation-rail--expanded',
+    )
+  );
+}
+
+@mixin navigation-rail-pill--active {
+  @include navitem-mx.nav-item-indicator--active;
+  background-color: rail.$navigation-rail-pill-bg;
+}
+
+@mixin navigation-rail-pill--anim-enter {
+  @include navitem-mx.nav-item-indicator--anim-enter('navigation-rail');
+}
+
+@mixin navigation-rail-pill--anim-enter-horizontal {
+  @include navitem-mx.nav-item-indicator--anim-enter-horizontal('navigation-rail');
+}
+
+@include navitem-mx.nav-item-indicator-keyframes('navigation-rail');
+
+@mixin navigation-rail-label {
+  position: relative;
+  z-index: 2;
+  font-size: rail.$navigation-rail-label-font-size;
+  font-weight: rail.$navigation-rail-label-font-weight;
+  letter-spacing: rail.$navigation-rail-label-letter-spacing;
+  color: rail.$navigation-rail-label-inactive;
+  user-select: none;
+  text-align: center;
+  width: 100%;
+  max-width: rail.$navigation-rail-width-collapsed;
+  box-sizing: border-box;
+  padding-inline: 2px;
+  line-height: 16px;
+  letter-spacing: 0.1px;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: rail.$navigation-rail-label-line-clamp-collapsed;
+  line-clamp: rail.$navigation-rail-label-line-clamp-collapsed;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  transition:
+    color rail.$navigation-rail-effects-duration rail.$navigation-rail-effects-easing,
+    font-weight rail.$navigation-rail-effects-duration rail.$navigation-rail-effects-easing,
+    font-size rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing,
+    letter-spacing rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing,
+    line-height rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing,
+    text-align rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing,
+    max-width rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing,
+    opacity rail.$navigation-rail-effects-duration rail.$navigation-rail-effects-easing;
+
+  .navigation-rail--expanded &,
+  .navigation-rail.navigation-rail--expanded & {
+    font-size: rail.$navigation-rail-label-font-size-expanded;
+    letter-spacing: rail.$navigation-rail-label-letter-spacing-expanded;
+    line-height: rail.$navigation-rail-label-line-height-expanded;
+    text-align: start;
+    max-width: none;
+    flex: 0 1 auto;
+    min-width: 0;
+    display: block;
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+    -webkit-box-orient: unset;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &--expanded {
+    display: none;
+  }
+
+  .navigation-rail--expanded &--collapsed,
+  .navigation-rail.navigation-rail--expanded &--collapsed {
+    display: none;
+  }
+
+  .navigation-rail--expanded &--expanded,
+  .navigation-rail.navigation-rail--expanded &--expanded {
+    display: block;
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+    white-space: nowrap;
+  }
+}
+

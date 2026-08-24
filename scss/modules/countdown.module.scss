@@ -1,0 +1,158 @@
+/**
+ * @fileoverview Module Countdown
+ * @description Classes CSS pour le compte à rebours
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/countdown.token' as t;
+@use '../mixins/countdown.mixin' as m;
+
+// Wrapper démo / doc : aligne le countdown à gauche
+.countdown-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.countdown,
+k3ui-countdown {
+  @include m.countdown-component;
+
+  &__display {
+    @include m.countdown-display;
+  }
+
+  &.countdown--ended,
+  &[data-ended='true'] {
+    color: t.$countdown-text-color-ended;
+  }
+
+  // Style personnalisé cercles
+  &.countdown--custom-style {
+    padding: 1rem 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    .countdown__display--segments {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .countdown__segment {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.25rem;
+      height: 2.25rem;
+      padding: 0 0.5rem;
+      border-radius: 50%;
+      background: var(--md-sys-color-primary, #6750a4);
+      color: var(--md-sys-color-on-primary, #fff);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .countdown__separator {
+      color: var(--md-sys-color-on-surface-variant, #49454f);
+      font-weight: 600;
+      font-size: 1.125rem;
+    }
+  }
+
+  // Style avec libellés
+  &.countdown--labels-style {
+    padding: 1rem 1rem;
+
+    .countdown__display--segments {
+      display: inline-flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .countdown__segment-cell {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .countdown__segment {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.5rem;
+      min-height: 2.25rem;
+      padding: 0.35rem 0.5rem;
+      border-radius: var(--md-sys-shape-corner-small, 8px);
+      background: var(--md-sys-color-primary-container, #eaddf7);
+      color: var(--md-sys-color-on-primary-container, #21005d);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      font-size: 1.125rem;
+    }
+
+    .countdown__segment-label {
+      font-size: 0.75rem;
+      color: var(--md-sys-color-on-surface-variant, #49454f);
+      text-transform: lowercase;
+    }
+
+    .countdown__separator {
+      color: var(--md-sys-color-outline, #79747e);
+      font-weight: 600;
+      font-size: 1.25rem;
+      margin-top: calc(1.125rem - 1.25rem / 2);
+      line-height: 1;
+    }
+  }
+
+  // Style cartes
+  &.countdown--cards-style {
+    .countdown__display--segments {
+      display: inline-flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      justify-content: flex-start;
+    }
+
+    .countdown__segment-cell {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      width: 72px;
+      height: 72px;
+      border-radius: var(--md-sys-shape-corner-medium, 12px);
+      background: var(--md-sys-color-surface-container-high, #f3edf7);
+      border: 1px solid var(--md-sys-color-outline-variant, #e7e0ec);
+      box-sizing: border-box;
+      justify-content: center;
+    }
+
+    .countdown__segment {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      font-size: 1.5rem;
+      color: var(--md-sys-color-on-surface, #1d1b20);
+      line-height: 1;
+    }
+
+    .countdown__segment-label {
+      font-size: 0.6875rem;
+      color: var(--md-sys-color-on-surface-variant, #49454f);
+      text-transform: lowercase;
+    }
+
+    .countdown__separator {
+      display: none;
+    }
+  }
+}

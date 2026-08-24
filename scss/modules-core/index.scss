@@ -1,0 +1,80 @@
+/**
+
+ * Modules core — styles essentiels home / layout docs (Lighthouse).
+
+ * Sous-ensemble volontairement réduit : boutons de base, layout, thème, appbar, cartes, hero.
+
+ */
+
+
+
+@forward '../modules/reset.module';
+
+@forward '../modules/alignment.module';
+
+@forward '../modules/animation.module';
+
+@forward '../modules/appbar.module';
+
+@forward '../modules/border.module';
+
+@forward '../modules/button.module';
+
+@forward '../modules/button-icon.module';
+
+@forward '../modules/button-arrow.module';
+
+@forward '../modules/button-shape.module';
+
+@forward '../modules/button-fab.module';
+
+@forward '../modules/card.module';
+
+@forward '../modules/color.module';
+
+@forward '../modules/divider.module';
+@forward '../modules/stack.module';
+
+@forward '../modules/elevation.module';
+
+@forward '../modules/fontface.module';
+
+@forward '../modules/focusring.module';
+
+@forward '../modules/hero.module';
+
+@forward '../modules/icon.module';
+
+@forward '../modules/layout.module';
+
+@forward '../modules/menu.module';
+
+@forward '../modules/select.module';
+
+@forward './navbar-docs.module';
+
+@forward '../modules/motion.module';
+
+@forward '../modules/opacity.module';
+
+@forward '../modules/outline.module';
+
+@forward '../modules/radius.module';
+
+@forward '../modules/ripple.module';
+
+@forward '../modules/scroll-to-top.module';
+
+@forward '../modules/spacing.module';
+
+@forward '../modules/state.module';
+
+@forward '../modules/theme.module';
+
+@forward '../modules/tooltip.module';
+
+@forward '../modules/typography.module';
+
+@forward '../modules/zindex.module';
+
+

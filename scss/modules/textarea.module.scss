@@ -1,0 +1,350 @@
+/**
+ * Textarea Module - Styles pour le composant textarea Material Design 3
+ * Basé sur les spécifications Material Design 3 Expressive
+ */
+
+@use '../mixins/textarea.mixin' as textarea;
+@use '../tokens/textarea.token' as tokens;
+
+// ========================================
+// COMPONENT HOST
+// ========================================
+
+k3ui-textarea {
+  display: inline-block;
+  width: 100%;
+  
+  // Supprimer l'outline natif du navigateur
+  &:focus {
+    outline: none !important;
+  }
+  
+  &:focus-visible {
+    outline: none !important;
+  }
+
+  &[disabled] {
+    pointer-events: none;
+  }
+
+  &[type="hidden"] {
+    display: none;
+  }
+}
+
+// ========================================
+// TEXTAREA CONTAINER
+// ========================================
+
+k3ui-textarea .input-field {
+  @include textarea.textarea-container;
+  @include textarea.textarea-element;
+  @include textarea.textarea-scrollbar;
+}
+
+// Supprimer tous les styles natifs du textarea
+k3ui-textarea .textarea {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -ms-box-shadow: none !important;
+  -o-box-shadow: none !important;
+}
+
+// ========================================
+// COUNTER ET HELPER TEXT POSITIONNÉS EN BAS
+// ========================================
+
+// Conteneur pour aligner helper et counter sur la même ligne
+k3ui-textarea .textarea-bottom {
+  display: flex;
+  align-items: baseline;
+  margin-top: 4px;
+  padding: 0 tokens.$md-sys-textarea-padding-horizontal;
+}
+
+// Helper text positionné en bas à gauche
+k3ui-textarea .helper-text {
+  font-family: 'JetBrains Mono', 'JetBrainsMono', monospace;
+  font-size: 12px;
+  line-height: 1.33;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  flex: 1; // Prend tout l'espace disponible à gauche
+}
+
+// Counter positionné en bas à droite
+k3ui-textarea .field-display-counter {
+  font-family: 'JetBrains Mono', 'JetBrainsMono', monospace;
+  font-size: 12px;
+  line-height: 1.33;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: right;
+  pointer-events: none;
+  margin: 0;
+  padding: 0;
+  margin-left: auto; // Pousse le counter vers la droite
+  
+  &.limit-reached {
+    color: rgb(var(--md-sys-color-error-rgb));
+    font-weight: 500;
+  }
+}
+
+
+// Padding spécifique pour le variant filled
+k3ui-textarea[variant="filled"] .textarea {
+  padding: 0; // Pas de padding pour que le texte commence vraiment en haut à gauche et ne bouge pas
+}
+
+// Padding spécifique pour le variant outlined
+k3ui-textarea[variant="outlined"] .textarea {
+  padding: 0; // Pas de padding pour que le texte commence vraiment en haut à gauche et ne bouge pas
+}
+
+// ========================================
+// VARIANT FILLED
+// ========================================
+
+k3ui-textarea[variant="filled"] .input-field {
+  @include textarea.textarea-filled;
+
+  &.invalid,
+  &.invalid-style {
+    @include textarea.textarea-filled-invalid;
+  }
+}
+
+k3ui-textarea[variant="filled"]:hover .input-field {
+  @include textarea.textarea-filled-hover;
+
+  &.invalid,
+  &.invalid-style {
+    @include textarea.textarea-filled-invalid-hover;
+  }
+}
+
+k3ui-textarea[variant="filled"][focused] .input-field,
+k3ui-textarea[variant="filled"][focused-style] .input-field {
+  @include textarea.textarea-filled-focused;
+
+  &.invalid,
+  &.invalid-style {
+    @include textarea.textarea-filled-invalid-focused;
+  }
+}
+
+k3ui-textarea[variant="filled"][disabled] .input-field {
+  @include textarea.textarea-filled-disabled;
+}
+
+// ========================================
+// VARIANT OUTLINED
+// ========================================
+
+k3ui-textarea[variant="outlined"] .input-field {
+  @include textarea.textarea-outlined;
+
+  &.invalid,
+  &.invalid-style {
+    @include textarea.textarea-outlined-invalid;
+  }
+}
+
+k3ui-textarea[variant="outlined"]:hover .input-field {
+  @include textarea.textarea-outlined-hover;
+
+  &.invalid,
+  &.invalid-style {
+    @include textarea.textarea-outlined-invalid-hover;
+  }
+}
+
+k3ui-textarea[variant="outlined"][focused] .input-field,
+k3ui-textarea[variant="outlined"][focused-style] .input-field {
+  @include textarea.textarea-outlined-focused;
+
+  &.invalid,
+  &.invalid-style {
+    @include textarea.textarea-outlined-invalid-focused;
+  }
+}
+
+k3ui-textarea[variant="outlined"][disabled] .input-field {
+  @include textarea.textarea-outlined-disabled;
+}
+
+// Autosize
+k3ui-textarea[autosize] .input-field {
+  @include textarea.textarea-autosize;
+}
+
+// ========================================
+// LABEL
+// ========================================
+
+k3ui-textarea .label {
+  @include textarea.textarea-label;
+
+  .invalid &,
+  .invalid-style & {
+    @include textarea.textarea-label-invalid;
+  }
+}
+
+k3ui-textarea[variant="outlined"] .label {
+  @include textarea.textarea-label-outlined;
+}
+
+k3ui-textarea[variant="outlined"]:hover .label {
+  @include textarea.textarea-label-outlined-hover;
+}
+
+k3ui-textarea[variant="filled"]:hover .invalid .label,
+k3ui-textarea[variant="outlined"]:hover .invalid .label,
+k3ui-textarea[variant="filled"]:hover .invalid-style .label,
+k3ui-textarea[variant="outlined"]:hover .invalid-style .label {
+  @include textarea.textarea-label-invalid-hover;
+}
+
+k3ui-textarea[variant="filled"][focused] .label,
+k3ui-textarea[variant="filled"][focused-style] .label,
+k3ui-textarea[variant="outlined"][focused] .label,
+k3ui-textarea[variant="outlined"][focused-style] .label {
+  @include textarea.textarea-label-focused;
+}
+
+// Label actif (filled)
+k3ui-textarea[variant="filled"][focused] .label,
+k3ui-textarea[variant="filled"][focused-style] .label,
+k3ui-textarea[variant="filled"][has-value] .label,
+k3ui-textarea[variant="filled"][type="date"] .label,
+k3ui-textarea[variant="filled"][type="datetime-local"] .label,
+k3ui-textarea[variant="filled"][type="month"] .label,
+k3ui-textarea[variant="filled"][type="time"] .label,
+k3ui-textarea[variant="filled"][type="week"] .label {
+  @include textarea.textarea-label-filled-active;
+}
+
+// Label actif (filled) avec icône
+k3ui-textarea[variant="filled"][focused] .has-leading-icon .label,
+k3ui-textarea[variant="filled"][focused-style] .has-leading-icon .label,
+k3ui-textarea[variant="filled"][has-value] .has-leading-icon .label,
+k3ui-textarea[variant="filled"][type="date"] .has-leading-icon .label,
+k3ui-textarea[variant="filled"][type="datetime-local"] .has-leading-icon .label,
+k3ui-textarea[variant="filled"][type="month"] .has-leading-icon .label,
+k3ui-textarea[variant="filled"][type="time"] .has-leading-icon .label,
+k3ui-textarea[variant="filled"][type="week"] .has-leading-icon .label {
+  @include textarea.textarea-label-filled-active-with-icon;
+}
+
+// Label actif (outlined)
+k3ui-textarea[variant="outlined"][focused] .label,
+k3ui-textarea[variant="outlined"][focused-style] .label,
+k3ui-textarea[variant="outlined"][has-value] .label,
+k3ui-textarea[variant="outlined"][type="date"] .label,
+k3ui-textarea[variant="outlined"][type="datetime-local"] .label,
+k3ui-textarea[variant="outlined"][type="month"] .label,
+k3ui-textarea[variant="outlined"][type="time"] .label,
+k3ui-textarea[variant="outlined"][type="week"] .label {
+  @include textarea.textarea-label-outlined-active;
+}
+
+// ========================================
+// HELPER TEXT
+// ========================================
+
+k3ui-textarea .helper-text {
+  @include textarea.textarea-helper-text;
+}
+
+// ========================================
+// COUNTER
+// ========================================
+
+k3ui-textarea .field-display-counter {
+  // Styles définis directement ci-dessus
+}
+
+
+// ========================================
+// RESPONSIVE
+// ========================================
+
+@media (max-width: 768px) {
+  k3ui-textarea {
+    .textarea {
+      font-size: 16px; // Éviter le zoom sur mobile
+    }
+
+    .label {
+      font-size: 14px;
+    }
+
+    .helper-text,
+    .field-display-counter {
+      font-size: 11px;
+    }
+  }
+}
+
+// ========================================
+// FOCUS MANAGEMENT
+// ========================================
+
+k3ui-textarea {
+  // Supprimer tous les outlines natifs
+  &:focus,
+  &:focus-visible,
+  &:focus-within {
+    outline: none !important;
+  }
+  
+  // Focus sur le textarea natif
+  .textarea:focus,
+  .textarea:focus-visible {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    -ms-box-shadow: none !important;
+    -o-box-shadow: none !important;
+  }
+  
+  // Focus visible personnalisé (optionnel, pour l'accessibilité)
+  &.has-focus {
+    .input-field {
+      // Les styles de focus sont gérés par les variants
+    }
+  }
+}
+
+// ========================================
+// ACCESSIBILITY
+// ========================================
+
+k3ui-textarea {
+  // High contrast mode
+  @media (prefers-contrast: high) {
+    .textarea {
+      border-width: 2px;
+    }
+
+    .bottom-line {
+      height: 2px;
+    }
+  }
+
+  // Reduced motion
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+}

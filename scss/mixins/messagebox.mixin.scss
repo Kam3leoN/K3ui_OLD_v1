@@ -1,0 +1,76 @@
+/**
+ * @fileoverview Mixins pour MessageBox (boîte de dialogue ALTTP)
+ * @description Déclaration de la police pixel-art et styles de base de la boîte.
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/messagebox.token' as tokens;
+
+/**
+ * Déclare la police pixel-art ALTTP.
+ */
+@mixin messagebox-fontface {
+    @font-face {
+        font-family: 'Alttp';
+        src: url(tokens.$messagebox-font-path) format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: block;
+    }
+}
+
+/**
+ * Variables CSS de la boîte (surchargées à l'exécution par le composant :
+ * `--messagebox-scale` et `--messagebox-lines`).
+ */
+@mixin messagebox-vars {
+    --messagebox-scale: #{tokens.$messagebox-scale};
+    --messagebox-lines: 3;
+    --messagebox-line-height: #{tokens.$messagebox-line-height};
+    --messagebox-font-size: calc(16px * var(--messagebox-scale) * 0.5);
+    --messagebox-text: #{tokens.$messagebox-text-color};
+
+    --messagebox-frame-w: #{tokens.$messagebox-frame-w};
+    --messagebox-frame-h: #{tokens.$messagebox-frame-h};
+    --messagebox-frame-slice: #{tokens.$messagebox-frame-slice};
+
+    --messagebox-next-w: #{tokens.$messagebox-next-w};
+    --messagebox-next-h: #{tokens.$messagebox-next-h};
+    --messagebox-next-frames: #{tokens.$messagebox-next-frames};
+
+    --messagebox-last-w: #{tokens.$messagebox-last-w};
+    --messagebox-last-h: #{tokens.$messagebox-last-h};
+    --messagebox-last-frames: #{tokens.$messagebox-last-frames};
+}
+
+/**
+ * Styles du cadre principal de la boîte.
+ */
+@mixin messagebox-root {
+    @include messagebox-vars;
+
+    box-sizing: border-box;
+    position: relative;
+    width: calc(var(--messagebox-frame-w) * var(--messagebox-scale));
+    border: calc(var(--messagebox-frame-slice) * 1px * var(--messagebox-scale)) solid transparent;
+    border-image: url(tokens.$messagebox-frame-img) #{tokens.$messagebox-frame-slice} fill stretch;
+
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+
+    font-family: tokens.$messagebox-font-family;
+    color: var(--messagebox-text);
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    box-shadow: none;
+
+    // Pas d'anneau de focus K3UI (:focus-visible global) — fidèle au rendu ALTTP.
+    &:focus,
+    &:focus-visible {
+        outline: none !important;
+        box-shadow: none !important;
+        filter: brightness(1.06);
+    }
+}

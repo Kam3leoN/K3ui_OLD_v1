@@ -1,0 +1,91 @@
+/**
+ * @fileoverview Tokens de design pour Snow
+ * @description Variables de design pour le composant
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+// ============================================================================
+// Z-INDEX
+// ============================================================================
+
+/** Z-index par défaut */
+$snow-z-index-default: 100;
+
+// ============================================================================
+// COULEURS
+// ============================================================================
+
+/** Couleur de fond par défaut */
+$snow-background-color: #000;
+
+/** Couleur du gradient radial */
+$snow-gradient-start: #112;
+$snow-gradient-end: #000;
+
+// ============================================================================
+// PARTICULES
+// ============================================================================
+
+/** Nombre de particules par défaut */
+$snow-particle-count: 999;
+
+/** Vitesse par défaut */
+$snow-speed: 3;
+
+/** Vent par défaut */
+$snow-wind: 500;
+
+/** Variance du vent */
+$snow-wind-variance: 1.5;
+
+// ============================================================================
+// TAILLES
+// ============================================================================
+
+/** Taille minimale des particules */
+$snow-particle-size-min: 5;
+
+/** Taille maximale des particules */
+$snow-particle-size-max: 10;
+
+/** Taille minimale foreground */
+$snow-particle-size-foreground-min: 150;
+
+/** Taille maximale foreground */
+$snow-particle-size-foreground-max: 200;
+
+/** Taille minimale middleground */
+$snow-particle-size-middleground-min: 19;
+
+/** Taille maximale middleground */
+$snow-particle-size-middleground-max: 33;
+
+// ============================================================================
+// OPACITÉ
+// ============================================================================
+
+/** Opacité minimale */
+$snow-opacity-min: 0.25;
+
+/** Opacité maximale */
+$snow-opacity-max: 0.75;
+
+// ============================================================================
+// ROTATION
+// ============================================================================
+
+/** Rotation minimale */
+$snow-rotation-min: 3;
+
+/** Rotation maximale */
+$snow-rotation-max: 5;
+
+
+
+
+
+
+
+
+

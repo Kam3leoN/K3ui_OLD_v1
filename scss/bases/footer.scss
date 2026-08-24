@@ -1,0 +1,270 @@
+/**
+ * Footer de page — même surface et couleurs de texte que k3ui-hero (primary / on-primary).
+ * (grille 4 colonnes, vague SVG, barre légale logo + liens).
+ */
+
+@use '../tokens/hero.token' as hero;
+@use '../mixins/state.mixin' as state;
+
+.page-footer {
+  margin-top: 5rem;
+  margin-bottom: 4rem;
+  background: hero.$k3ui-hero-background;
+}
+
+.page-footer__content {
+  padding: 64px max(24px, 4vw);
+  color: hero.$k3ui-hero-text-color;
+}
+
+.page-footer__container {
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+// Grille principale : ~570px + 3×190px, gap 20px (mesures m3.material.io)
+.page-footer__about {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) repeat(3, minmax(0, 190px));
+  column-gap: 20px;
+  row-gap: 2rem;
+  justify-content: space-between;
+}
+
+@media (max-width: 959px) {
+  .page-footer__about {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .page-footer__brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 599px) {
+  .page-footer__about {
+    grid-template-columns: 1fr;
+  }
+}
+
+.page-footer__brand {
+  min-width: 0;
+}
+
+.page-footer__description {
+  margin: 24px 64px 16px 0;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: hero.$k3ui-hero-text-color;
+}
+
+@media (max-width: 959px) {
+  .page-footer__description {
+    margin-right: 0;
+  }
+}
+
+// Colonnes : liste flex colonne, gap 20px (comme m3.social-links)
+.page-footer__nav-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.page-footer__col-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: hero.$k3ui-hero-text-color;
+}
+
+.page-footer__nav-col a {
+  display: inline-flex;
+  padding: 1px;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: hero.$k3ui-hero-text-color;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    text-decoration: underline;
+    opacity: 0.92;
+  }
+
+  &:focus-visible {
+    @include state.state-focus;
+  }
+}
+
+.page-footer__legal {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 64px;
+}
+
+.page-footer__legal-mark {
+  flex-shrink: 0;
+  margin-right: 32px;
+
+  a {
+    display: inline-flex;
+    line-height: 0;
+    color: hero.$k3ui-hero-text-color;
+    opacity: 0.87;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &:focus-visible {
+      @include state.state-focus;
+    }
+  }
+
+  svg path {
+    fill: currentColor;
+  }
+}
+
+.page-footer__legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  a {
+    display: inline-flex;
+    padding: 1px;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: hero.$k3ui-hero-text-color;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+      opacity: 0.92;
+    }
+
+    &:focus-visible {
+      @include state.state-focus;
+    }
+  }
+}
+
+body.k3ui-footer {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+body.k3ui-footer > header {
+  flex-shrink: 0;
+}
+
+.k3ui-footer__viewport {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100dvh - 4rem);
+  min-height: calc(100vh - 4rem);
+}
+
+.k3ui-footer__viewport > main {
+  flex: 0 1 auto;
+}
+
+.k3ui-footer__viewport > .page-footer {
+  flex-shrink: 0;
+  margin-top: auto;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+// Bandeau copyright — container séparé, juste au-dessus de la navigation-bar
+.footer-copyright {
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  min-height: 50px;
+  padding: 15px max(24px, 4vw);
+  overflow: hidden;
+  color: hero.$k3ui-hero-text-color;
+  background: hero.$k3ui-hero-background;
+  background-color: color-mix(in srgb, #000 12%, hero.$k3ui-hero-background);
+  /* Réserve la hauteur de la navigation-bar fixed si présente */
+  margin-bottom: var(--k3ui-navigation-bar-offset, 0px);
+  padding-bottom: calc(15px + env(safe-area-inset-bottom, 0px));
+}
+
+.k3ui-footer__viewport > .footer-copyright {
+  margin-top: 0;
+}
+
+body:not(.k3ui-footer) .footer-copyright {
+  margin-bottom: max(0px, var(--k3ui-navigation-bar-offset, 0px));
+}
+
+.footer-copyright__container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+.footer-copyright__text {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  opacity: 0.92;
+}
+
+.footer-copyright a,
+.footer-copyright__link {
+  color: hero.$k3ui-hero-text-color;
+  text-decoration: none;
+  opacity: 0.92;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    text-decoration: underline;
+    opacity: 1;
+  }
+
+  &:focus-visible {
+    @include state.state-focus;
+  }
+
+  &.right,
+  &.footer-copyright__link {
+    margin-inline-start: auto;
+  }
+}
+
+// Rétrocompat : .footer-copyright imbriqué dans .page-footer
+.page-footer .footer-copyright {
+  position: relative;
+  z-index: 2;
+  margin-bottom: var(--k3ui-navigation-bar-offset, 0px);
+}

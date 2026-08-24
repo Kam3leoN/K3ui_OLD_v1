@@ -1,0 +1,471 @@
+/**
+ * @fileoverview Mixins Card Material You 3 Expressive
+ * @author Kam3leon
+ * @version 2.0.0
+ */
+
+@use '../tokens' as tokens;
+@use './motion.mixin' as motionmix;
+@use './state.mixin' as statemix;
+@use './button.mixin' as btn;
+@use './button-icon.mixin' as bicon;
+
+// =============================================================================
+// MIXINS CARD - MATERIAL YOU 3 EXPRESSIVE
+// =============================================================================
+
+/**
+ * Mixin de base pour toutes les cartes
+ * @param {string} $variant - Variante de la carte (elevated, filled, outlined)
+ */
+@mixin card-base($variant: 'elevated') {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: tokens.$md-sys-card-min-height;
+  border-radius: tokens.$md-sys-card-shape-corner;
+  transition:
+    box-shadow tokens.$md-sys-card-elevation-transition-duration tokens.$md-sys-card-elevation-transition-timing,
+    border-radius tokens.$md-comp-card-shape-morph-duration tokens.$md-comp-card-shape-morph-easing,
+    background-color tokens.$md-sys-card-transition-duration tokens.$md-sys-card-transition-timing;
+  z-index: tokens.$md-sys-card-z-index;
+  overflow: hidden;
+
+  &.card--disabled {
+    opacity: tokens.$md-sys-card-disabled-opacity;
+    pointer-events: none;
+  }
+}
+
+/**
+ * Mixin pour la carte elevated
+ */
+@mixin card-elevated {
+  background-color: tokens.$md-sys-card-surface-elevated;
+  color: tokens.$md-sys-card-on-surface-elevated;
+  box-shadow: tokens.$md-sys-card-elevation-elevated-default;
+}
+
+/**
+ * Mixin pour la carte filled
+ */
+@mixin card-filled {
+  background-color: tokens.$md-sys-card-surface-filled;
+  color: tokens.$md-sys-card-on-surface-filled;
+  box-shadow: none;
+}
+
+/**
+ * Mixin pour la carte outlined
+ */
+@mixin card-outlined {
+  background-color: tokens.$md-sys-card-surface-outlined;
+  color: tokens.$md-sys-card-on-surface-outlined;
+  border: 1px solid tokens.$md-sys-card-outline;
+  box-shadow: none;
+}
+
+/**
+ * États d'élévation — variante elevated
+ */
+@mixin card-elevated-states {
+  &.card--hovered {
+    box-shadow: tokens.$md-sys-card-elevation-elevated-hovered;
+  }
+
+  &.card--focused,
+  &.card--pressed {
+    box-shadow: tokens.$md-sys-card-elevation-elevated-pressed;
+  }
+
+  &.card--dragged {
+    box-shadow: tokens.$md-sys-card-elevation-elevated-dragged;
+  }
+}
+
+/**
+ * États d'élévation — outlined / filled (dragged)
+ */
+@mixin card-flat-states {
+  &.card--dragged {
+    box-shadow: tokens.$md-sys-card-elevation-flat-dragged;
+  }
+}
+
+/**
+ * Carte interactive M3 (state layer + focus)
+ */
+@mixin card-interactive {
+  cursor: pointer;
+  outline: none;
+
+  .card__state-layer {
+    @include statemix.k3-state-layer('on-surface', inherit);
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
+  }
+
+  > *:not(.card__state-layer) {
+    position: relative;
+    z-index: 1;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--md-sys-color-primary);
+    outline-offset: 2px;
+  }
+
+  &.card--selected {
+    outline: 2px solid var(--md-sys-color-secondary);
+  }
+}
+
+/**
+ * Shape morph au press (M3 Expressive)
+ */
+@mixin card-shape-morph-press {
+  &.card--shape-large-increased.pressing,
+  &.card--shape-large-increased.card--pressed {
+    border-radius: tokens.$md-comp-card-shape-pressed-radius;
+  }
+}
+
+/**
+ * Mixin pour l'en-tête de la carte
+ */
+@mixin card-header {
+  padding: tokens.$md-sys-card-padding;
+  padding-bottom: tokens.$md-sys-card-content-gap;
+
+  .card__title {
+    font-family: tokens.$md-sys-card-title-font;
+    font-size: tokens.$md-sys-card-title-size;
+    font-weight: tokens.$md-sys-card-title-weight;
+    line-height: tokens.$md-sys-card-title-line-height;
+    letter-spacing: tokens.$md-sys-card-title-letter-spacing;
+    margin: 0 0 tokens.$md-sys-card-content-gap 0;
+    color: inherit;
+  }
+
+  .card__subtitle {
+    font-family: tokens.$md-sys-card-subtitle-font;
+    font-size: tokens.$md-sys-card-subtitle-size;
+    font-weight: tokens.$md-sys-card-subtitle-weight;
+    line-height: tokens.$md-sys-card-subtitle-line-height;
+    margin: 0;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+}
+
+/**
+ * Mixin pour le contenu de la carte
+ */
+@mixin card-content {
+  padding: 0 tokens.$md-sys-card-padding tokens.$md-sys-card-padding;
+  flex: 1;
+
+  .card__text {
+    font-family: tokens.$md-sys-card-content-font;
+    font-size: tokens.$md-sys-card-content-size;
+    font-weight: tokens.$md-sys-card-content-weight;
+    line-height: tokens.$md-sys-card-content-line-height;
+    margin: 0;
+    color: tokens.$md-sys-card-content-color;
+  }
+}
+
+/**
+ * Mixin pour les actions de la carte (M3 : flex-end, 8dp margin)
+ */
+@mixin card-actions {
+  padding: tokens.$md-sys-card-actions-margin;
+  display: flex;
+  gap: tokens.$md-sys-card-actions-gap;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .card__action {
+    margin: 0;
+  }
+
+  // M3 Card actions : text buttons sm (couleur primary via state-layer)
+  .btn:not(.btn-icon):not(.button-icon) {
+    @include btn.btn-size-sm;
+  }
+
+  // M3 Card actions : action principale (primary) vs secondaire (on-surface-variant)
+  .card__action--primary.btn--text,
+  .card__action--primary.button--text {
+    color: var(--md-sys-color-primary, #6750a4);
+
+    &::before {
+      background-color: var(--md-sys-color-primary, #6750a4);
+    }
+  }
+
+  .card__action--secondary.btn--text,
+  .card__action--secondary.button--text {
+    color: var(--md-sys-color-on-surface-variant, #49454f);
+
+    &::before {
+      background-color: var(--md-sys-color-on-surface-variant, #49454f);
+    }
+  }
+
+  // Fallback : 1er bouton direct = primary, suivants = secondary
+  > .btn.btn--text:first-child:not(:only-child),
+  > .button.button--text:first-child:not(:only-child) {
+    color: var(--md-sys-color-primary, #6750a4);
+
+    &::before {
+      background-color: var(--md-sys-color-primary, #6750a4);
+    }
+  }
+
+  > .btn.btn--text:not(:first-child),
+  > .button.button--text:not(:first-child) {
+    color: var(--md-sys-color-on-surface-variant, #49454f);
+
+    &::before {
+      background-color: var(--md-sys-color-on-surface-variant, #49454f);
+    }
+  }
+}
+
+/**
+ * Boutons d'action avatar — même taille sm que card__actions
+ */
+@mixin card-avatar-actions {
+  display: flex;
+  align-items: center;
+  gap: tokens.$md-sys-card-actions-gap;
+  margin-left: auto;
+
+  .btn:not(.btn-icon):not(.button-icon) {
+    @include btn.btn-size-sm;
+  }
+
+  .btn-icon,
+  .button-icon {
+    @include bicon.btn-icon-size-sm;
+  }
+
+  .card__action--primary.btn--text,
+  .card__action--primary.button--text {
+    color: var(--md-sys-color-primary, #6750a4);
+
+    &::before {
+      background-color: var(--md-sys-color-primary, #6750a4);
+    }
+  }
+
+  .card__action--secondary.btn--text,
+  .card__action--secondary.button--text {
+    color: var(--md-sys-color-on-surface-variant, #49454f);
+
+    &::before {
+      background-color: var(--md-sys-color-on-surface-variant, #49454f);
+    }
+  }
+}
+
+/**
+ * Padding legacy (24px) — rétrocompatibilité
+ */
+@mixin card-padding-legacy {
+  .card__header {
+    padding: tokens.$md-sys-card-padding-legacy;
+    padding-bottom: tokens.$md-sys-card-content-gap;
+  }
+
+  .card__content {
+    padding: 0 tokens.$md-sys-card-padding-legacy tokens.$md-sys-card-padding-legacy;
+  }
+
+  .card__actions {
+    padding: tokens.$md-sys-card-actions-margin tokens.$md-sys-card-padding-legacy tokens.$md-sys-card-padding-legacy;
+  }
+}
+
+@mixin card-actions-left {
+  justify-content: flex-start;
+}
+
+@mixin card-actions-right {
+  justify-content: flex-end;
+}
+
+@mixin card-actions-distributed {
+  justify-content: space-between;
+}
+
+@mixin card-avatar {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--md-sys-color-surface, #fff);
+  box-shadow: var(--md-sys-elevation-level1);
+  z-index: tokens.$md-sys-card-z-index + 1;
+  overflow: hidden;
+  margin: tokens.$md-sys-card-padding;
+  margin-bottom: tokens.$md-sys-card-content-gap;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+/**
+ * Média en tête — coins supérieurs arrondis, inférieurs plats (ShapeableImageView)
+ * Sauf retrait (inset) : les 4 coins arrondis (M3 media inset)
+ */
+@mixin card-media-top {
+  // Pleine largeur en tête de carte
+  > .card__media:first-of-type,
+  .card__image:not(.card__image--inset):first-child .card__media {
+    width: 100%;
+    height: tokens.$md-sys-card-media-height;
+    object-fit: cover;
+    display: block;
+    border-radius: tokens.$md-sys-card-shape-corner tokens.$md-sys-card-shape-corner 0 0;
+  }
+
+  // Média en retrait : 4 coins arrondis
+  .card__image.card__image--inset .card__media {
+    width: 100%;
+    height: tokens.$md-sys-card-media-height;
+    object-fit: cover;
+    display: block;
+    border-radius: tokens.$md-sys-card-shape-corner;
+  }
+}
+
+/**
+ * Mixin pour les cartes avec image
+ */
+@mixin card-with-image {
+  @include card-media-top;
+
+  .card__media {
+    width: 100%;
+    height: tokens.$md-sys-card-media-height;
+    object-fit: cover;
+    display: block;
+  }
+
+  .card__header {
+    padding-top: tokens.$md-sys-card-padding;
+  }
+}
+
+@mixin card-actions-horizontal {
+  .card__actions {
+    justify-content: space-between;
+  }
+}
+
+@mixin card-actions-vertical {
+  .card__actions {
+    flex-direction: column;
+    align-items: stretch;
+
+    .card__action {
+      width: 100%;
+    }
+  }
+}
+
+@mixin card-elevation($elevation: 1) {
+  @if $elevation == 1 {
+    box-shadow: var(--md-sys-elevation-level1);
+  } @else if $elevation == 2 {
+    box-shadow: var(--md-sys-elevation-level2);
+  } @else if $elevation == 3 {
+    box-shadow: var(--md-sys-elevation-level3);
+  } @else if $elevation == 4 {
+    box-shadow: var(--md-sys-elevation-level4);
+  } @else if $elevation == 5 {
+    box-shadow: var(--md-sys-elevation-level5);
+  }
+}
+
+@mixin card-radius($radius: 'medium') {
+  @if $radius == 'small' {
+    border-radius: tokens.$md-sys-shape-corner-small;
+  } @else if $radius == 'medium' {
+    border-radius: tokens.$md-sys-card-shape-corner;
+  } @else if $radius == 'large' {
+    border-radius: tokens.$md-sys-card-shape-corner-large;
+  } @else if $radius == 'extra-large' {
+    border-radius: tokens.$md-sys-shape-corner-extra-large;
+  } @else if $radius == 'full' {
+    border-radius: tokens.$md-sys-shape-corner-full;
+  }
+}
+
+/**
+ * Formes M3 Expressive
+ */
+@mixin card-shape($shape: 'medium') {
+  @if $shape == 'medium' {
+    border-radius: tokens.$md-sys-card-shape-corner;
+  } @else if $shape == 'large-increased' {
+    border-radius: tokens.$md-sys-card-shape-corner-large-increased;
+  } @else if $shape == 'extra-large-increased' {
+    border-radius: tokens.$md-sys-shape-corner-extra-large-increased;
+  }
+}
+
+@mixin card-padding($size: 'medium') {
+  @if $size == 'small' {
+    .card__header,
+    .card__content,
+    .card__actions {
+      padding: tokens.$md-sys-card-padding-small;
+    }
+  } @else if $size == 'medium' {
+    .card__header {
+      padding: tokens.$md-sys-card-padding;
+      padding-bottom: tokens.$md-sys-card-content-gap;
+    }
+
+    .card__content {
+      padding: 0 tokens.$md-sys-card-padding tokens.$md-sys-card-padding;
+    }
+
+    .card__actions {
+      padding: tokens.$md-sys-card-actions-margin;
+    }
+  } @else if $size == 'large' {
+    .card__header,
+    .card__content,
+    .card__actions {
+      padding: tokens.$md-sys-card-padding-large;
+    }
+  }
+}
+
+/**
+ * Icône checked (carte sélectionnable M3 Android)
+ */
+@mixin card-checked-icon {
+  .card__checked-icon {
+    position: absolute;
+    top: tokens.$md-sys-card-checked-icon-margin;
+    right: tokens.$md-sys-card-checked-icon-margin;
+    width: tokens.$md-sys-card-checked-icon-size;
+    height: tokens.$md-sys-card-checked-icon-size;
+    color: var(--md-sys-color-secondary);
+    z-index: 2;
+    pointer-events: none;
+  }
+}

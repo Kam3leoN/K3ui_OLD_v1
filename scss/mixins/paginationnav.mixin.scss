@@ -1,0 +1,147 @@
+/**
+ * @fileoverview Mixins pour PaginationNav
+ * @description Surfaces tonales M3 Expressive (sans encoche) + morph press
+ * @author K3UI Team
+ * @version 2.0.0
+ */
+
+@use "../tokens/paginationnav.token" as paginationnav;
+@use "../mixins/state.mixin" as state;
+
+/**
+ * Conteneur principal
+ */
+@mixin paginationnav-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: paginationnav.$paginationnav-container-gap;
+  width: 100%;
+  margin: 1.5rem 0;
+}
+
+/**
+ * Hôte externe (lien)
+ */
+@mixin paginationnav-item-host {
+  position: relative;
+  display: block;
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  overflow: visible;
+  z-index: paginationnav.$paginationnav-z-index;
+
+  &:hover:not(:disabled),
+  &.pagination-nav--hovered:not(:disabled) {
+    z-index: paginationnav.$paginationnav-z-index-hover;
+  }
+
+  &:focus-visible:not(:disabled) {
+    outline: 2px solid var(--md-sys-color-primary, var(--k3ui-primary));
+    outline-offset: 2px;
+    border-radius: paginationnav.$paginationnav-border-radius;
+  }
+
+  &:disabled {
+    @include state.state-disabled();
+  }
+}
+
+/**
+ * Surface tonale — state layer + morph press expressif
+ */
+@mixin paginationnav-surface {
+  @include state.k3-state-layer('on-secondary-container', inherit);
+
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: paginationnav.$paginationnav-gap;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: paginationnav.$paginationnav-min-height;
+  padding: paginationnav.$paginationnav-padding;
+  background-color: paginationnav.$paginationnav-background;
+  color: paginationnav.$paginationnav-text-color;
+  border-radius: paginationnav.$paginationnav-border-radius;
+  overflow: hidden;
+  transition:
+    border-radius paginationnav.$paginationnav-shape-morph-duration paginationnav.$paginationnav-shape-morph-easing,
+    background-color paginationnav.$paginationnav-animation-duration paginationnav.$paginationnav-animation-easing;
+
+  .pagination-nav--hovered:not(:disabled) &,
+  .pagination-nav__previous:hover:not(:disabled) &,
+  .pagination-nav__next:hover:not(:disabled) & {
+    background-color: paginationnav.$paginationnav-background-hover;
+  }
+
+  &.pagination-nav--pressed,
+  &.pressing,
+  .pagination-nav--pressed:not(:disabled) &,
+  .pagination-nav__previous:active:not(:disabled) &,
+  .pagination-nav__next:active:not(:disabled) & {
+    border-radius: paginationnav.$paginationnav-pressed-border-radius;
+  }
+}
+
+/**
+ * Bloc texte (label + titre)
+ */
+@mixin paginationnav-text {
+  display: flex;
+  flex-direction: column;
+  gap: paginationnav.$paginationnav-text-gap;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+/**
+ * Label directionnel (label-medium)
+ */
+@mixin paginationnav-label {
+  margin: 0;
+  font-size: paginationnav.$paginationnav-label-font-size;
+  font-weight: paginationnav.$paginationnav-label-font-weight;
+  line-height: paginationnav.$paginationnav-label-line-height;
+  letter-spacing: paginationnav.$paginationnav-label-letter-spacing;
+  color: paginationnav.$paginationnav-label-color;
+  opacity: 0.8;
+}
+
+/**
+ * Titre de page (title-large)
+ */
+@mixin paginationnav-title {
+  margin: 0;
+  font-size: paginationnav.$paginationnav-title-font-size;
+  font-weight: paginationnav.$paginationnav-title-font-weight;
+  line-height: paginationnav.$paginationnav-title-line-height;
+  color: paginationnav.$paginationnav-text-color;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/**
+ * Icône directionnelle
+ */
+@mixin paginationnav-icon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: paginationnav.$paginationnav-icon-size;
+  height: paginationnav.$paginationnav-icon-size;
+  color: paginationnav.$paginationnav-icon-color;
+
+  .icon,
+  i {
+    font-size: paginationnav.$paginationnav-icon-size;
+    width: paginationnav.$paginationnav-icon-size;
+    height: paginationnav.$paginationnav-icon-size;
+    line-height: 1;
+  }
+}

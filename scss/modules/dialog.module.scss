@@ -1,0 +1,967 @@
+/**
+ * @file dialog.module.scss
+ * @description Module principal pour le composant Dialog K3UI - Material Design 3 You Expressive
+ * @see https://m3.material.io/components/dialogs/overview
+ * @author Kam3leon
+ * @version 2.0.0
+ */
+
+@use '../tokens/dialog.token' as dialog;
+@use '../tokens/motion.token' as motion;
+@use '../mixins/dialog.mixin' as dialog-mixin;
+@use '../mixins/motion.mixin' as motion-mixin;
+@use '../mixins/state.mixin' as state-mixin;
+
+// ============================================================================
+// DIALOG PRINCIPAL
+// ============================================================================
+
+/**
+ * Masquer les dialogs <k3ui-dialog> avant initialisation (évite le flash au chargement).
+ * La classe .dialog est ajoutée par le custom element / AutoInit ; sans cette règle,
+ * le contenu serait visible brièvement avant que display:none du .dialog s'applique.
+ * Pas de !important : à l'ouverture, le JS applique display:block en inline qui override.
+ */
+k3ui-dialog {
+  display: none;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dialog {
+  --dialog-footer-height: 56px;
+  --dialog-footer-divider-height: 1px;
+  --dialog-border-radius: #{dialog.$dialog-border-radius};
+  --dialog-padding: #{dialog.$dialog-content-padding};
+  --dialog-viewport-inset: #{dialog.$dialog-viewport-inset};
+  --dialog-viewport-inset-block: #{dialog.$dialog-viewport-inset-block};
+  --dialog-container-min-width: #{dialog.$dialog-min-width};
+  --dialog-container-max-width: #{dialog.$dialog-max-width};
+  --dialog-available-width: calc(100vw - var(--dialog-viewport-inset));
+  --dialog-scrollbar-gutter: #{dialog.$dialog-scrollbar-gutter};
+  --dialog-spatial: 1;
+  --dialog-effects: 1;
+
+  // --------------------------------------------------------------------------
+  // Animation M3 — option composant `animation: expressive | spatial`
+  // Remappe les 6 alias actifs (--md-sys-motion-{spatial|effects}-*) vers
+  // Expressives (défaut) ou Standard (spatial utilitaire, sans overshoot).
+  // --------------------------------------------------------------------------
+  &[data-animation='expressive'] {
+    --md-sys-motion-spatial-fast-duration: var(--md-sys-motion-expressive-spatial-fast-duration);
+    --md-sys-motion-spatial-fast-easing: var(--md-sys-motion-expressive-spatial-fast-easing);
+    --md-sys-motion-spatial-default-duration: var(--md-sys-motion-expressive-spatial-default-duration);
+    --md-sys-motion-spatial-default-easing: var(--md-sys-motion-expressive-spatial-default-easing);
+    --md-sys-motion-spatial-slow-duration: var(--md-sys-motion-expressive-spatial-slow-duration);
+    --md-sys-motion-spatial-slow-easing: var(--md-sys-motion-expressive-spatial-slow-easing);
+    --md-sys-motion-effects-fast-duration: var(--md-sys-motion-expressive-effects-fast-duration);
+    --md-sys-motion-effects-fast-easing: var(--md-sys-motion-expressive-effects-fast-easing);
+    --md-sys-motion-effects-default-duration: var(--md-sys-motion-expressive-effects-default-duration);
+    --md-sys-motion-effects-default-easing: var(--md-sys-motion-expressive-effects-default-easing);
+    --md-sys-motion-effects-slow-duration: var(--md-sys-motion-expressive-effects-slow-duration);
+    --md-sys-motion-effects-slow-easing: var(--md-sys-motion-expressive-effects-slow-easing);
+  }
+
+  &[data-animation='spatial'] {
+    --md-sys-motion-spatial-fast-duration: var(--md-sys-motion-standard-spatial-fast-duration);
+    --md-sys-motion-spatial-fast-easing: var(--md-sys-motion-standard-spatial-fast-easing);
+    --md-sys-motion-spatial-default-duration: var(--md-sys-motion-standard-spatial-default-duration);
+    --md-sys-motion-spatial-default-easing: var(--md-sys-motion-standard-spatial-default-easing);
+    --md-sys-motion-spatial-slow-duration: var(--md-sys-motion-standard-spatial-slow-duration);
+    --md-sys-motion-spatial-slow-easing: var(--md-sys-motion-standard-spatial-slow-easing);
+    --md-sys-motion-effects-fast-duration: var(--md-sys-motion-standard-effects-fast-duration);
+    --md-sys-motion-effects-fast-easing: var(--md-sys-motion-standard-effects-fast-easing);
+    --md-sys-motion-effects-default-duration: var(--md-sys-motion-standard-effects-default-duration);
+    --md-sys-motion-effects-default-easing: var(--md-sys-motion-standard-effects-default-easing);
+    --md-sys-motion-effects-slow-duration: var(--md-sys-motion-standard-effects-slow-duration);
+    --md-sys-motion-effects-slow-easing: var(--md-sys-motion-standard-effects-slow-easing);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  @include dialog-mixin.dialog-elevation;
+
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* Centrage seul sur le host — le scale M3 Fade vit sur .dialog-container (évite la dérive translate+scale) */
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+  padding: 0;
+  /* M3 : 280–560dp, sans palier par classe de fenêtre ; min enveloppé pour ≤328px de viewport */
+  min-width: min(var(--dialog-container-min-width), var(--dialog-available-width));
+  max-width: min(var(--dialog-container-max-width), var(--dialog-available-width));
+  max-height: min(#{dialog.$dialog-max-height}, calc(100dvh - var(--dialog-viewport-inset)));
+  width: fit-content;
+  margin: auto;
+  overflow: visible;
+  border-radius: 0;
+  box-shadow: none;
+  opacity: 1;
+
+  /* Grille : largeur adaptée au nombre de colonnes s12 (jusqu'à 12 icônes) */
+  &:has(.dialog-choices--grid) {
+    width: min(
+      max(
+        var(--dialog-container-max-width),
+        calc(var(--dialog-choice-columns, 4) * 3rem + (var(--dialog-choice-columns, 4) - 1) * 12px + 32px)
+      ),
+      var(--dialog-available-width)
+    );
+    min-width: min(
+      calc(var(--dialog-choice-columns, 4) * 3rem + (var(--dialog-choice-columns, 4) - 1) * 12px + 32px),
+      var(--dialog-available-width)
+    );
+  }
+
+  &:not(.dialog--fullscreen):not(.bottom-sheet) .dialog-container {
+    transform: scale(calc(0.8 + 0.2 * var(--dialog-spatial, 1)));
+    opacity: var(--dialog-effects, 0);
+    transform-origin: center center;
+    will-change: transform, opacity;
+  }
+
+  /* Spatial : slide-up au lieu du scale expressif */
+  &[data-animation='spatial']:not(.dialog--fullscreen):not(.bottom-sheet) .dialog-container {
+    transform: translate3d(0, calc((1 - var(--dialog-spatial, 1)) * 32px), 0);
+  }
+
+  /* Container Transform M3 : ne pas fixer transform/opacity ici —
+     Chromium ignore alors le FLIP WAAPI. --dialog-spatial: 1 coupe le scale CSS. */
+  &.dialog--container-transform:not(.dialog--fullscreen):not(.bottom-sheet) .dialog-container {
+    --dialog-spatial: 1;
+    transition: none;
+  }
+
+  /* Shake quand dismissible=false et tentative de fermeture */
+  &[data-blocked] .dialog-container {
+    animation: dialog-shake var(--md-sys-motion-duration-medium1, 250ms) var(--md-sys-motion-easing-standard, ease);
+  }
+
+  &--centered .dialog-header {
+    text-align: center;
+
+    .dialog-header__hero-icon {
+      margin-inline: auto;
+    }
+  }
+
+  &--emphasized-headline .dialog-header h1,
+  &--emphasized-headline .dialog-header h2,
+  &--emphasized-headline .dialog-header h3,
+  &--emphasized-headline .dialog-header h4,
+  &--emphasized-headline .dialog-header h5,
+  &--emphasized-headline .dialog-header h6,
+  &--emphasized-headline .dialog-header .dialog-title {
+    font-weight: var(--md-sys-typescale-headline-small-emphasized-weight, 700);
+    font-variation-settings: var(--md-sys-typescale-headline-small-emphasized-variation, 'wght' 700);
+  }
+
+  h1, h2, h3, h4 {
+    margin-top: 0;
+  }
+
+  .dialog-content {
+    overflow-y: hidden;
+  }
+
+  .dialog-close {
+    cursor: pointer;
+  }
+
+  // Plein écran (MD3 full-screen dialog) — viewport complet à toutes tailles
+  &--fullscreen {
+    @include dialog-mixin.dialog-fullscreen;
+    /* Slide-up spatial au lieu du scale centré */
+    transform: translate3d(0, calc((1 - var(--dialog-spatial, 1)) * 32px), 0);
+    top: 0;
+    left: 0;
+    opacity: var(--dialog-effects, 1);
+    overflow: hidden;
+
+    .dialog-container {
+      transform: none;
+      opacity: 1;
+    }
+
+    .dialog-header--fullscreen {
+      @include dialog-mixin.dialog-fullscreen-header;
+    }
+
+    .dialog-header.dialog-header--fullscreen {
+      display: block;
+    }
+
+    .dialog-footer--fullscreen-hidden {
+      display: none;
+    }
+
+    .dialog-content {
+      padding: dialog.$dialog-fullscreen-content-padding;
+    }
+
+    .dialog-container {
+      border-radius: 0;
+      height: 100%;
+      max-height: none;
+    }
+  }
+
+  // Alert dialog (M3 : max-width 400dp, role alertdialog)
+  &--alert {
+    max-width: min(#{dialog.$dialog-alert-max-width}, var(--dialog-available-width));
+  }
+
+  // Contenu scrollable (MD3 scroll area + dividers optionnels)
+  &--scrollable {
+    .dialog-scroller {
+      overflow-y: auto;
+    }
+  }
+}
+
+// ============================================================================
+// OVERLAY
+// ============================================================================
+
+.dialog-overlay {
+  position: fixed;
+  z-index: dialog.$dialog-overlay-z-index;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  /* tokens K3UI : --md-sys-color-scrim-rgb = "R, G, B" (virgules) */
+  --dialog-scrim-opacity: 0.32;
+  --dialog-blur-value: 0px;
+  --dialog-effects: 0;
+  opacity: var(--dialog-effects, 0);
+  background: rgba(var(--md-sys-color-scrim-rgb, 0, 0, 0), var(--dialog-scrim-opacity));
+
+  &.dialog-overlay--blur {
+    backdrop-filter: blur(var(--dialog-blur-value, 0px));
+    -webkit-backdrop-filter: blur(var(--dialog-blur-value, 0px));
+  }
+}
+
+// ============================================================================
+// CONTAINER
+// ============================================================================
+
+.dialog-container {
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  --k3ui-field-outlined-notch-bg: var(--md-sys-color-surface-container-high);
+  border-radius: var(--dialog-border-radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /** Même plafond que .dialog — sinon le header est clipé hors viewport (centrage translate) */
+  max-height: min(#{dialog.$dialog-max-height}, calc(100dvh - var(--dialog-viewport-inset)));
+  min-height: 140px;
+  box-shadow: dialog.$dialog-elevation-shadow;
+  overflow: hidden;
+}
+
+.dialog-scroller {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  @include dialog-mixin.dialog-scroller-hide-native-scrollbar;
+
+  &:focus-visible {
+    outline: 3px solid var(--md-sys-color-secondary);
+    outline-offset: -3px;
+    border-radius: var(--md-sys-shape-corner-small, 8px);
+  }
+}
+
+/** Rail custom — overlay interne du host (évite bande hors surface sur scrim) */
+.dialog > .dialog__scrollbar {
+  @include dialog-mixin.dialog-scrollbar;
+
+  .dialog__scrollbar-thumb {
+    @include dialog-mixin.dialog-scrollbar-thumb;
+  }
+
+  &.is-hovering .dialog__scrollbar-thumb,
+  &.is-dragging .dialog__scrollbar-thumb,
+  .dialog__scrollbar-thumb:hover {
+    @include dialog-mixin.dialog-scrollbar-thumb-active;
+  }
+
+  &.is-dragging .dialog__scrollbar-thumb {
+    cursor: grabbing;
+  }
+}
+
+/** Plein écran / bottom-sheet : rail au bord interne (pas d'extérieur disponible) */
+.dialog--fullscreen > .dialog__scrollbar,
+.dialog.bottom-sheet > .dialog__scrollbar {
+  inset-inline-end: 0;
+}
+
+.dialog-divider {
+  flex: none;
+  block-size: 1px;
+  background: var(--md-sys-color-outline-variant);
+  opacity: 0;
+  transition: opacity var(--md-sys-motion-duration-short3, 150ms) var(--md-sys-motion-easing-standard, ease);
+
+  &[data-visible] {
+    opacity: 1;
+  }
+}
+
+// Respect des préférences d'accessibilité de mouvement réduit
+@include dialog-mixin.dialog-reduced-motion;
+
+// ============================================================================
+// HEADER
+// ============================================================================
+
+.dialog-header {
+  background-color: transparent;
+  padding: dialog.$dialog-header-padding;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-shrink: 0;
+  
+  h1, h2, h3, h4, h5, h6 {
+    @include dialog-mixin.dialog-title-typography;
+    margin: 0;
+    color: var(--md-sys-color-on-surface);
+    flex: 1;
+  }
+
+  // Header avec icône leading (alignement vertical titre + icône) — optionnel
+  &--with-icon {
+    align-items: center;
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    /** M3 Icon tint : Secondary */
+    color: var(--md-sys-color-secondary);
+  }
+
+  // Hero icon : icône centrée au-dessus du titre, titre centré (MD3 optional)
+  &--hero {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    .dialog-title,
+    h1, h2, h3, h4, h5, h6 {
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+  &__hero-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: dialog.$dialog-headline-to-body-gap;
+    color: var(--md-sys-color-secondary);
+    line-height: 1;
+    width: dialog.$dialog-icon-size;
+    height: dialog.$dialog-icon-size;
+    font-size: dialog.$dialog-icon-size;
+
+    i[name],
+    .k3ui-icon {
+      width: dialog.$dialog-icon-size;
+      height: dialog.$dialog-icon-size;
+      font-size: dialog.$dialog-icon-size;
+      color: inherit;
+    }
+  }
+}
+
+// ============================================================================
+// CONTENT
+// ============================================================================
+
+.dialog-content {
+  padding: dialog.$dialog-body-padding;
+  flex: 0 0 auto;
+  overflow-y: visible;
+  overflow-x: hidden;
+  @include dialog-mixin.dialog-content-typography;
+  color: var(--md-sys-color-on-surface-variant);
+
+  /* Listes M3 : pleine largeur du scroller — le padding vit sur .dialog-choice-row (cf. md-dialog) */
+  &:has(.dialog-choices:not(.dialog-choices--grid)) {
+    padding-inline: 0;
+    overflow-x: visible;
+  }
+
+  &:has(.dialog-choices--grid) {
+    overflow-x: visible;
+  }
+
+  // Sans header : padding haut 24dp (CWS)
+  .dialog:not(:has(.dialog-header)) & {
+    padding-top: dialog.$dialog-inline-padding;
+  }
+
+  // Sans footer : padding bas 24dp
+  .dialog:not(:has(.dialog-footer)) & {
+    padding-bottom: dialog.$dialog-inline-padding;
+  }
+  
+  p {
+    margin: 0 0 16px;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @include dialog-mixin.dialog-title-typography;
+    color: var(--md-sys-color-on-surface);
+    margin: 0 0 12px;
+  }
+}
+
+// ============================================================================
+// FOOTER
+// ============================================================================
+
+.dialog-footer {
+  background-color: transparent;
+  // Chrome Web Store : actions 0 24dp 20dp, gap 8dp
+  padding: dialog.$dialog-footer-padding;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: dialog.$dialog-footer-gap;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+
+  // Actions layout
+  &:has(.dialog-action-left):has(.dialog-action-right) {
+    justify-content: space-between;
+  }
+
+  .dialog-action-left,
+  .dialog-action-right {
+    display: flex;
+    align-items: center;
+    gap: dialog.$dialog-footer-gap;
+    flex-wrap: wrap;
+  }
+
+  .dialog-action-right {
+    margin-left: auto;
+  }
+
+  &--stacked {
+    flex-direction: column;
+    align-items: flex-end;
+
+    .dialog-action-left,
+    .dialog-action-right {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+      margin-inline: 0;
+    }
+
+    .dialog-action-right {
+      order: -1;
+    }
+  }
+
+  // Actions : pattern K3UI standard (btn--text btn--sm btn--rounded btn--padding-16)
+  .btn,
+  .button,
+  .btn-flat {
+    margin: 0;
+    flex-shrink: 0;
+  }
+}
+
+// ============================================================================
+// BOUTONS
+// ============================================================================
+
+.dialog-footer--fullscreen-secondary {
+  padding-top: 8px;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+// ============================================================================
+// VARIANTES DE DIALOG
+// ============================================================================
+
+// Dialog avec footer fixe
+.dialog.dialog-fixed-footer {
+  padding: 0;
+  height: 70%;
+
+  .dialog-content {
+    position: absolute;
+    height: calc(100% - var(--dialog-footer-height));
+    max-height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .dialog-footer {
+    border-top: var(--dialog-footer-divider-height) solid var(--md-sys-color-outline-variant);
+    position: absolute;
+    bottom: var(--dialog-footer-divider-height);
+  }
+}
+
+// Dialog Bottom Sheet Style
+.dialog.bottom-sheet {
+  top: auto;
+  bottom: -100%;
+  margin: 0;
+  width: 100%;
+  max-height: 45%;
+  border-radius: 0;
+  will-change: bottom, opacity;
+}
+
+// ============================================================================
+// ÉTATS SPÉCIAUX
+// ============================================================================
+
+// État de scroll lock
+.noscroll {
+  .appbar--top,
+  .appbar--bottom {
+    position: fixed !important;
+    z-index: 1000 !important;
+  }
+}
+
+// État dialog ouvert
+.dialog-open {
+  .appbar {
+    // L'AppBar ne change pas d'état quand un dialog est ouvert
+    // Cette règle est gérée dans AppBar.ts
+  }
+}
+
+// ============================================================================
+// RESPONSIVE DESIGN
+// ============================================================================
+
+@media #{dialog.$dialog-mobile-breakpoint} {
+  .dialog {
+    margin: 16px;
+
+    &.dialog--fullscreen {
+      margin: 0;
+    }
+  }
+
+  .dialog-header {
+    padding: 16px 20px 12px;
+  }
+
+  .dialog-content {
+    padding-left: 20px;
+    padding-right: 20px;
+
+    .dialog:not(:has(.dialog-header)) & {
+      padding-top: 20px;
+    }
+
+    .dialog:not(:has(.dialog-footer)) & {
+      padding-bottom: 20px;
+    }
+  }
+
+  .dialog-footer {
+    padding: dialog.$dialog-footer-padding-mobile;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+
+    .dialog-action-left,
+    .dialog-action-right {
+      width: auto;
+      justify-content: flex-end;
+    }
+
+    .dialog-action-right {
+      margin-left: auto;
+    }
+  }
+}
+
+// ============================================================================
+// PRINT STYLES
+// ============================================================================
+
+@media print {
+  .dialog-overlay {
+    display: none !important;
+  }
+  
+  .dialog {
+    position: static !important;
+    transform: none !important;
+    box-shadow: none !important;
+    max-width: none !important;
+    max-height: none !important;
+    
+    .dialog-container {
+      border: 1px solid #000;
+      box-shadow: none;
+    }
+    
+    .dialog-close {
+      display: none;
+    }
+  }
+}
+
+// ============================================================================
+// SUPPORT POUR LES ÉCRANS HAUTE DENSITÉ
+// ============================================================================
+
+// CWS : pas d'ombre additionnelle sur le dialog
+
+// ============================================================================
+// SUPPORT POUR LES GESTES TACTILES
+// ============================================================================
+
+@media (hover: none) and (pointer: coarse) {
+  .dialog-footer .btn {
+    min-height: 44px;
+  }
+
+  .dialog-close {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+// ============================================================================
+// LISTES DE CHOIX M3 (list / single / multiple / grid)
+// ============================================================================
+
+.dialog-choices {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  &--grid {
+    display: grid;
+    grid-template-columns: repeat(var(--dialog-choice-columns, 4), minmax(0, 1fr));
+    gap: 12px;
+    inline-size: 100%;
+    margin-inline: 0;
+    padding-block: 8px;
+  }
+
+  &--grid-dense {
+    gap: 8px;
+
+    .dialog-choice-cell {
+      min-block-size: 72px;
+      padding: 8px 4px;
+      gap: 4px;
+
+      .dialog-choice-label {
+        font-size: 0.6875rem;
+        line-height: 1.2;
+      }
+
+      .dialog-choice-support {
+        font-size: 0.625rem;
+      }
+    }
+  }
+
+  &--grid-compact {
+    gap: 6px;
+
+    .dialog-choice-cell {
+      min-block-size: 56px;
+      padding: 6px 2px;
+
+      .dialog-choice-cell__icon .k3ui-icon {
+        --k3ui-icon-size: 1.125rem;
+      }
+    }
+  }
+}
+
+.dialog-choice-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-block-size: 88px;
+  padding: 12px 8px;
+  border: none;
+  border-radius: var(--md-sys-shape-corner-large, 16px);
+  background: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-on-surface);
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--md-sys-motion-duration-short4, 200ms) var(--md-sys-motion-easing-standard, ease),
+    border-radius var(--md-sys-motion-duration-short4, 200ms) var(--md-sys-motion-easing-standard, ease);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: currentColor;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--md-sys-motion-duration-short3, 150ms) var(--md-sys-motion-easing-standard, ease);
+  }
+
+  &:hover:not([aria-disabled='true'])::after {
+    opacity: var(--md-sys-state-hover-state-layer-opacity, 0.08);
+  }
+
+  &:focus-visible::after {
+    opacity: var(--md-sys-state-focus-state-layer-opacity, 0.1);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--md-sys-color-secondary);
+    outline-offset: 2px;
+  }
+
+  &:active:not([aria-disabled='true']) {
+    border-radius: var(--md-sys-shape-corner-full, 999px);
+  }
+
+  &[aria-selected='true'] {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+    box-shadow: inset 0 0 0 2px var(--md-sys-color-primary);
+  }
+
+  &[aria-disabled='true'] {
+    cursor: not-allowed;
+    color: var(--md-sys-color-on-surface-variant);
+    opacity: dialog.$dialog-disabled-opacity;
+  }
+
+  .dialog-choice-label,
+  .dialog-choice-support,
+  .dialog-choice-cell__icon {
+    position: relative;
+    z-index: 1;
+  }
+
+  .dialog-choice-label {
+    font-size: var(--md-sys-typescale-label-medium-size, 0.75rem);
+    font-weight: var(--md-sys-typescale-label-medium-weight, 500);
+    letter-spacing: var(--md-sys-typescale-label-medium-tracking, 0.042em);
+    overflow-wrap: anywhere;
+  }
+
+  .dialog-choice-support {
+    font-size: var(--md-sys-typescale-label-small-size, 0.6875rem);
+    color: var(--md-sys-color-on-surface-variant);
+  }
+
+  .dialog-choice-cell__icon {
+    display: grid;
+    place-items: center;
+    inline-size: 24px;
+    block-size: 24px;
+    line-height: 0;
+  }
+}
+
+.dialog-choice-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-sizing: border-box;
+  min-block-size: 48px;
+  padding: 12px #{dialog.$dialog-inline-padding};
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  font: inherit;
+  font-size: var(--md-sys-typescale-body-large-size, 1rem);
+  line-height: var(--md-sys-typescale-body-large-line-height, 1.5rem);
+  text-align: start;
+  cursor: pointer;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: currentColor;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--md-sys-motion-duration-short3, 150ms) var(--md-sys-motion-easing-standard, ease);
+  }
+
+  &:hover:not([aria-disabled='true'])::after {
+    opacity: var(--md-sys-state-hover-state-layer-opacity, 0.08);
+  }
+
+  &:focus-visible::after {
+    opacity: var(--md-sys-state-focus-state-layer-opacity, 0.1);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--md-sys-color-secondary);
+    outline-offset: -3px;
+  }
+
+  .dialog-choice-control,
+  .dialog-choice-label,
+  .dialog-choice-support {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Ripple désactivé si la classe est ajoutée manuellement — state layer M3 uniquement */
+  &.ripple {
+    overflow: hidden;
+
+    .ripple-surface {
+      display: none;
+    }
+  }
+
+  &[aria-disabled='true'] {
+    cursor: not-allowed;
+    color: var(--md-sys-color-on-surface-variant);
+    opacity: dialog.$dialog-disabled-opacity;
+  }
+}
+
+.dialog-choice-control {
+  flex: none;
+  inline-size: 20px;
+  block-size: 20px;
+  border: 2px solid var(--md-sys-color-on-surface-variant);
+  color: var(--md-sys-color-primary);
+  display: grid;
+  place-items: center;
+
+  &[data-kind='radio'] {
+    border-radius: var(--md-sys-shape-corner-full, 999px);
+  }
+
+  &[data-kind='checkbox'] {
+    border-radius: 2px;
+  }
+
+  &::before {
+    content: '';
+    inline-size: 10px;
+    block-size: 10px;
+    border-radius: inherit;
+    background: currentColor;
+    transform: scale(0);
+    transition: transform var(--md-sys-motion-duration-short3, 150ms) ease;
+  }
+}
+
+.dialog-choice-row[aria-checked='true'] .dialog-choice-control {
+  border-color: var(--md-sys-color-primary);
+
+  &[data-kind='checkbox'] {
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+  }
+
+  &::before {
+    transform: scale(1);
+  }
+}
+
+.dialog-choice-row[aria-checked='true'] .dialog-choice-control[data-kind='checkbox']::before {
+  inline-size: 12px;
+  block-size: 12px;
+  background: var(--md-sys-color-on-primary);
+  clip-path: polygon(14% 47%, 0 60%, 39% 100%, 100% 22%, 85% 10%, 39% 73%);
+  border-radius: 0;
+}
+
+// ============================================================================
+// INSETS VIEWPORT M3 + PRÉFÉRENCES
+// ============================================================================
+
+@media (max-height: 640px) {
+  .dialog:not(.dialog--fullscreen) {
+    max-height: min(#{dialog.$dialog-max-height}, calc(100dvh - #{dialog.$dialog-viewport-inset-block-compact}));
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .dialog-overlay {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(var(--md-sys-color-scrim-rgb, 0, 0, 0), max(var(--dialog-scrim-opacity), 0.6));
+  }
+}
+
+@media (forced-colors: active) {
+  .dialog-container {
+    border: 1px solid CanvasText;
+  }
+
+  .dialog-footer .btn {
+    border: 1px solid CanvasText;
+  }
+}
+
+@keyframes dialog-shake {
+  0%,
+  100% {
+    translate: 0;
+  }
+  25% {
+    translate: -6px 0;
+  }
+  50% {
+    translate: 6px 0;
+  }
+  75% {
+    translate: -3px 0;
+  }
+}

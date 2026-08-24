@@ -1,0 +1,107 @@
+/**
+ * @fileoverview Module PaginationAlpha
+ * @description Index alphabétique A–Z MD3 Expressive
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use "../tokens/pagination-alpha.token" as pa;
+@use "../mixins/pagination-alpha.mixin" as pa-mixin;
+
+.pagination-alpha {
+  @include pa-mixin.pagination-alpha-root;
+
+  &--vertical {
+    .pagination-alpha__nav {
+      @include pa-mixin.pagination-alpha-nav--vertical;
+    }
+  }
+
+  .pagination-alpha__letter-btn--active {
+    background-color: pa.$pagination-alpha-color-primary;
+    color: pa.$pagination-alpha-color-on-primary;
+
+    &:hover:not(:disabled) {
+      background-color: pa.$pagination-alpha-color-primary;
+      color: pa.$pagination-alpha-color-on-primary;
+      box-shadow: pa.$pagination-alpha-elevation-2;
+      filter: none;
+    }
+  }
+
+  &--sm {
+    .pagination-alpha__letter-btn {
+      width: pa.$pagination-alpha-tile-width-sm;
+      min-height: pa.$pagination-alpha-tile-height-sm;
+    }
+    .pagination-alpha__letter {
+      font-size: pa.$pagination-alpha-font-letter-sm;
+    }
+    .pagination-alpha__count {
+      font-size: pa.$pagination-alpha-font-count-sm;
+    }
+    &.pagination-alpha--show-count .pagination-alpha__letter-btn {
+      min-height: pa.$pagination-alpha-tile-height-with-count-sm;
+    }
+  }
+
+  &--md {
+    .pagination-alpha__letter-btn {
+      width: pa.$pagination-alpha-tile-width-md;
+      min-height: pa.$pagination-alpha-tile-height-md;
+    }
+    .pagination-alpha__letter {
+      font-size: pa.$pagination-alpha-font-letter-md;
+    }
+    .pagination-alpha__count {
+      font-size: pa.$pagination-alpha-font-count-md;
+    }
+    &.pagination-alpha--show-count .pagination-alpha__letter-btn {
+      min-height: pa.$pagination-alpha-tile-height-with-count-md;
+    }
+  }
+
+  &--lg {
+    .pagination-alpha__letter-btn {
+      width: pa.$pagination-alpha-tile-width-lg;
+      min-height: pa.$pagination-alpha-tile-height-lg;
+    }
+    .pagination-alpha__letter {
+      font-size: pa.$pagination-alpha-font-letter-lg;
+    }
+    .pagination-alpha__count {
+      font-size: pa.$pagination-alpha-font-count-lg;
+    }
+    &.pagination-alpha--show-count .pagination-alpha__letter-btn {
+      min-height: pa.$pagination-alpha-tile-height-with-count-lg;
+    }
+  }
+}
+
+.pagination-alpha__nav {
+  @include pa-mixin.pagination-alpha-nav;
+}
+
+.pagination-alpha__letter-btn {
+  @include pa-mixin.pagination-alpha-letter-btn;
+
+  &--active {
+    @include pa-mixin.pagination-alpha-letter-btn--active;
+  }
+}
+
+.pagination-alpha__letter {
+  @include pa-mixin.pagination-alpha-letter;
+}
+
+.pagination-alpha__count {
+  @include pa-mixin.pagination-alpha-count;
+}
+
+.pagination-alpha__letter-btn--active .pagination-alpha__count {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.pagination-alpha__letter-btn:disabled .pagination-alpha__count {
+  color: pa.$pagination-alpha-color-outline-variant;
+}

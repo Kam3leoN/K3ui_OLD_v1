@@ -1,0 +1,208 @@
+/// @file zindex.module.scss
+/// @brief Classes utilitaires pour les z-index Material 3
+@use '../mixins/zindex.mixin' as zindex;
+
+// =============================================================================
+// CLASSES Z-INDEX DE BASE
+// =============================================================================
+
+.z-base {
+  @include zindex.zindex('base');
+}
+
+.z-menu {
+  @include zindex.zindex('menu');
+}
+
+.z-appbar {
+  @include zindex.zindex('appbar');
+}
+
+.z-drawer {
+  @include zindex.zindex('drawer');
+}
+
+.z-dialog {
+  @include zindex.zindex('dialog');
+}
+
+.z-toast {
+  @include zindex.zindex('toast');
+}
+
+.z-tooltip {
+  @include zindex.zindex('tooltip');
+}
+
+.z-max {
+  @include zindex.zindex('max');
+}
+
+// =============================================================================
+// CLASSES UTILITAIRES AVANCÉES
+// =============================================================================
+
+/**
+ * Classes z-index par priorité
+ */
+.z-low {
+  @include zindex.zindex-priority('low');
+}
+
+.z-medium {
+  @include zindex.zindex-priority('medium');
+}
+
+.z-high {
+  @include zindex.zindex-priority('high');
+}
+
+.z-higher {
+  @include zindex.zindex-priority('higher');
+}
+
+.z-highest {
+  @include zindex.zindex-priority('highest');
+}
+
+.z-critical {
+  @include zindex.zindex-priority('critical');
+}
+
+.z-urgent {
+  @include zindex.zindex-priority('urgent');
+}
+
+.z-maximum {
+  @include zindex.zindex-priority('maximum');
+}
+
+/**
+ * Classes z-index par composant
+ */
+.z-surface {
+  @include zindex.zindex-component('surface');
+}
+
+.z-navigation {
+  @include zindex.zindex-component('navigation');
+}
+
+.z-sidebar {
+  @include zindex.zindex-component('sidebar');
+}
+
+.z-modal {
+  @include zindex.zindex-component('modal');
+}
+
+.z-notification {
+  @include zindex.zindex-component('notification');
+}
+
+.z-overlay {
+  @include zindex.zindex-component('overlay');
+}
+
+.z-system {
+  @include zindex.zindex-component('system');
+}
+
+/**
+ * Classes z-index avec contexte
+ */
+.z-modal-context {
+  @include zindex.zindex-context('modal');
+}
+
+.z-menu-context {
+  @include zindex.zindex-context('menu');
+}
+
+.z-tooltip-context {
+  @include zindex.zindex-context('tooltip');
+}
+
+.z-notification-context {
+  @include zindex.zindex-context('notification');
+}
+
+.z-navigation-context {
+  @include zindex.zindex-context('navigation');
+}
+
+.z-sidebar-context {
+  @include zindex.zindex-context('sidebar');
+}
+
+/**
+ * Classes z-index avec isolation
+ */
+.z-isolated {
+  @include zindex.zindex-isolated('base');
+}
+
+.z-menu-isolated {
+  @include zindex.zindex-isolated('menu');
+}
+
+.z-modal-isolated {
+  @include zindex.zindex-isolated('dialog');
+}
+
+.z-tooltip-isolated {
+  @include zindex.zindex-isolated('tooltip');
+}
+
+/**
+ * Classes z-index avec stacking context
+ */
+.z-stacking {
+  @include zindex.zindex-stacking('base', 'relative');
+}
+
+.z-stacking-absolute {
+  @include zindex.zindex-stacking('base', 'absolute');
+}
+
+.z-stacking-fixed {
+  @include zindex.zindex-stacking('base', 'fixed');
+}
+
+.z-stacking-sticky {
+  @include zindex.zindex-stacking('base', 'sticky');
+}
+
+/**
+ * Classes z-index avec transform
+ */
+.z-transformed {
+  @include zindex.zindex-transformed('base');
+}
+
+.z-menu-transformed {
+  @include zindex.zindex-transformed('menu');
+}
+
+.z-modal-transformed {
+  @include zindex.zindex-transformed('dialog');
+}
+
+.z-tooltip-transformed {
+  @include zindex.zindex-transformed('tooltip');
+}
+
+/**
+ * Classes z-index responsive
+ */
+.z-responsive {
+  @include zindex.zindex-responsive('base', 'menu', 'appbar');
+}
+
+.z-modal-responsive {
+  @include zindex.zindex-responsive('dialog', 'dialog', 'dialog');
+}
+
+.z-tooltip-responsive {
+  @include zindex.zindex-responsive('tooltip', 'tooltip', 'tooltip');
+} 

@@ -1,0 +1,70 @@
+/**
+ * @fileoverview Tokens Pricing — grille tarifaire SaaS (couleurs K3UI / M3)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'radius.token' as radius;
+@use 'spacing.token' as spacing;
+@use 'motion.token' as motion;
+
+$pricing-color-bg: var(--k3ui-pricing-bg, transparent) !default;
+$pricing-color-on-surface: var(--md-sys-color-on-surface) !default;
+$pricing-color-on-surface-muted: var(--md-sys-color-on-surface-variant) !default;
+$pricing-color-divider: var(--md-sys-color-outline-variant) !default;
+
+// Cartes standard : tonal (secondary-container, comme btn--tonal)
+$pricing-color-plan-tonal-bg: var(--md-sys-color-secondary-container) !default;
+$pricing-color-plan-tonal-fg: var(--md-sys-color-on-secondary-container) !default;
+
+// Plan sélectionné / featured : filled (primary, comme btn--filled)
+$pricing-color-plan-filled-bg: var(--md-sys-color-primary) !default;
+$pricing-color-plan-filled-fg: var(--md-sys-color-on-primary) !default;
+$pricing-color-plan-filled-muted: color-mix(in srgb, var(--md-sys-color-on-primary) 72%, transparent) !default;
+$pricing-color-plan-filled-divider: color-mix(in srgb, var(--md-sys-color-on-primary) 24%, transparent) !default;
+$pricing-color-plan-filled-badge: color-mix(in srgb, var(--md-sys-color-on-primary) 18%, transparent) !default;
+
+$pricing-color-warning: var(--md-sys-color-error) !default;
+$pricing-color-table-cell: var(--md-sys-color-surface-container-high) !default;
+$pricing-color-table-info: var(--md-sys-color-on-surface-variant) !default;
+
+// =============================================================================
+// TYPOGRAPHIE
+// =============================================================================
+
+$pricing-font-family: var(--md-sys-typescale-title-large-font-family-name, 'Google Sans', Arial, sans-serif) !default;
+$pricing-title-size: var(--md-sys-typescale-headline-medium-font-size, 2rem) !default;
+$pricing-title-weight: 600 !default;
+$pricing-plan-name-size: 1.125rem !default;
+$pricing-plan-name-weight: 500 !default;
+$pricing-price-size: clamp(2.25rem, 4vw, 3rem) !default;
+$pricing-price-weight: 700 !default;
+$pricing-period-size: 0.875rem !default;
+$pricing-tagline-size: 0.9375rem !default;
+$pricing-feature-size: 0.875rem !default;
+$pricing-table-feature-size: 0.875rem !default;
+
+// =============================================================================
+// ESPACEMENTS & FORMES
+// =============================================================================
+
+$pricing-section-gap: var(--md-sys-spacing-xl, 2.5rem) !default;
+$pricing-plans-gap: var(--md-sys-spacing-md, 1rem) !default;
+$pricing-plan-padding: var(--md-sys-spacing-lg, 1.5rem) !default;
+$pricing-plan-padding-lg: var(--md-sys-spacing-xl, 2rem) !default;
+$pricing-plan-radius: var(--md-sys-shape-corner-extra-large, 20px) !default;
+$pricing-table-cell-radius: var(--md-sys-shape-corner-medium, 12px) !default;
+$pricing-badge-radius: 999px !default;
+$pricing-feature-gap: spacing.$md-sys-spacing-sm !default; // 8dp — confortable entre lignes
+$pricing-plan-section-gap: spacing.$md-sys-spacing-md !default; // 16dp — header / liste / CTA
+$pricing-plan-header-min-height: 7.25rem !default;
+$pricing-table-gap: spacing.$md-sys-spacing-xs !default; // 4dp entre cellules
+$pricing-table-cell-min-height: 2.5rem !default;
+$pricing-table-col-min: 7.5rem !default;
+
+// =============================================================================
+// ANIMATIONS
+// =============================================================================
+
+$pricing-transition-duration: motion.$md-sys-motion-duration-standard !default;
+$pricing-transition-easing: motion.$md-sys-motion-easing-standard !default;

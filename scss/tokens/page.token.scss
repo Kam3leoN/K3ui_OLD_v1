@@ -1,0 +1,70 @@
+/**
+ * @fileoverview Tokens de design pour Page
+ * @description Variables pour l'empilement plein écran de sections
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+// ============================================================================
+// Z-INDEX
+// ============================================================================
+
+/** Z-index du conteneur plein écran */
+$page-z-index-fullscreen: 50;
+
+/** Z-index de la barre de navigation */
+$page-nav-z-index: 100;
+
+// ============================================================================
+// NAVIGATION
+// ============================================================================
+
+/** Taille du point de navigation (inactif) */
+$page-nav-bullet-size: 8px;
+
+/** Facteur d'agrandissement au survol / focus */
+$page-nav-bullet-hover-scale: 2;
+
+/** Dimensions du indicateur actif (pill expressive, contenu dans la zone) */
+$page-nav-bullet-active-width: 8px;
+$page-nav-bullet-active-height: 16px;
+$page-nav-bullet-active-radius: 9999px;
+
+/** Bordure du point inactif */
+$page-nav-bullet-border: none;
+
+/** Couleurs — tokens système M3 */
+$page-nav-bullet-inactive-bg: var(--md-sys-color-outline-variant, #cac4d0);
+$page-nav-bullet-active-bg: var(--md-sys-color-primary, #6750a4);
+
+/** Zone tactile par indicateur (compacte, rapprochée) */
+$page-nav-item-size: 20px;
+
+/** Espacement vertical entre indicateurs */
+$page-nav-item-gap: 0;
+
+/** Marge des points (legacy, conservé pour compat) */
+$page-nav-bullet-margin: 0;
+
+/** Offset latéral de la navigation */
+$page-nav-offset: 12px;
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+/** Durée de transition par défaut */
+$page-transition-duration: 700ms;
+
+/** Courbe d'animation (pagePiling easeInQuart) */
+$page-transition-easing: cubic-bezier(0.55, 0.085, 0, 0.99);
+
+// ============================================================================
+// TYPOGRAPHIE
+// ============================================================================
+
+/** Taille des infobulles de navigation */
+$page-tooltip-font-size: 14px;
+
+/** Largeur max des infobulles */
+$page-tooltip-max-width: 220px;

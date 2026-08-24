@@ -1,0 +1,9 @@
+/**
+ * @file index-core.scss
+ * @description Sous-ensemble CSS pour pages légères (home k3ui-docs, LCP).
+ */
+
+@forward './bases';
+@forward './tokens';
+@forward './mixins';
+@forward './modules-core';

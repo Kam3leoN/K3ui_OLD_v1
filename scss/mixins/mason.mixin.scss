@@ -1,0 +1,42 @@
+/**
+ * @fileoverview Mixins pour le composant Mason (K3UI)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/mason.token' as mason;
+
+/**
+ * Conteneur racine Mason : position relative pour les items en absolute
+ */
+@mixin mason-root() {
+  position: relative;
+  width: 100%;
+  min-height: mason.$mason-root-min-height;
+}
+
+/**
+ * Mode animation coordonné avec IsoFilter : transition hauteur + overflow
+ */
+@mixin mason-isofilter-animate-container() {
+  --k3ui-mason-flip-duration: #{mason.$mason-flip-duration-default};
+  overflow: hidden;
+  transition: height var(--k3ui-mason-flip-duration) mason.$mason-transition-easing;
+}
+
+/**
+ * Items pendant l’animation FLIP (transform + opacity)
+ */
+@mixin mason-isofilter-animate-item() {
+  transition:
+    transform var(--k3ui-mason-flip-duration) mason.$mason-transition-easing,
+    opacity var(--k3ui-mason-flip-duration) mason.$mason-transition-easing;
+}
+
+/**
+ * Item Mason : base position absolute (le TS applique translate ou top/left)
+ */
+@mixin mason-item-base() {
+  position: absolute;
+  transform: translate3d(0, 0, 0);
+}

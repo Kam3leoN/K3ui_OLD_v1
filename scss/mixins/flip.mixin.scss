@@ -1,0 +1,85 @@
+/// @file flip.mixin.scss
+/// @brief Mixins pour l'effet Flip 3D
+
+@use '../tokens/flip.token' as flip;
+
+@mixin flip-root {
+  display: inline-grid;
+  width: 100%;
+  transform-style: preserve-3d;
+  perspective-origin: center center;
+  perspective: var(--flip-perspective, #{flip.$flip-perspective});
+  --flip-duration: #{flip.$flip-duration};
+  --flip-run: var(--flip-duration);
+  --flip-ease: #{flip.$flip-ease-standard};
+}
+
+@mixin flip-inner {
+  display: grid;
+  grid-template: 1fr / 1fr;
+  width: 100%;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  transition: transform var(--flip-run) var(--flip-ease);
+}
+
+@mixin flip-inner-progress {
+  --flip-progress: 0;
+  transition: --flip-progress var(--flip-run) var(--flip-ease);
+}
+
+@mixin flip-face {
+  grid-area: 1 / 1;
+  width: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transform: translateZ(0.1px);
+}
+
+@mixin flip-axis-y-back {
+  transform: rotateY(180deg) translateZ(0.1px);
+}
+
+@mixin flip-axis-x-back {
+  transform: rotateX(180deg) translateZ(0.1px);
+}
+
+@mixin flip-axis-y-active-inner {
+  transform: rotateY(180deg);
+}
+
+@mixin flip-axis-x-active-inner {
+  transform: rotateX(180deg);
+}
+
+@mixin flip-axis-y-active-inner-progress {
+  --flip-progress: 1;
+  transform: rotateY(calc(var(--flip-progress) * 180deg));
+}
+
+@mixin flip-axis-x-active-inner-progress {
+  --flip-progress: 1;
+  transform: rotateX(calc(var(--flip-progress) * 180deg));
+}
+
+@mixin flip-hover-active {
+  &[data-flip-flipped='true'],
+  &[data-flipped='true'],
+  &[data-flip-trigger='hover']:hover,
+  &[data-trigger='hover']:hover,
+  &:not([data-flip-trigger='click']):not([data-trigger='click']):hover,
+  &[data-flip-trigger='hover']:focus-visible,
+  &[data-trigger='hover']:focus-visible,
+  &:not([data-flip-trigger='click']):not([data-trigger='click']):focus-visible {
+    @content;
+  }
+}
+
+@mixin flip-reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    .flip__inner {
+      transition: none;
+    }
+  }
+}

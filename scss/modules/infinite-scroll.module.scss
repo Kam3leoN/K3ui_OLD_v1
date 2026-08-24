@@ -1,0 +1,38 @@
+/**
+ * @fileoverview Module InfiniteScroll
+ * @description Styles du composant InfiniteScroll K3UI.
+ */
+
+@use "../tokens/infinite-scroll.token" as is;
+@use "../mixins/infinite-scroll.mixin" as is-mixin;
+
+.infinite-scroll {
+  @include is-mixin.infinite-scroll-root;
+}
+
+.infinite-scroll__items {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.infinite-scroll__controls {
+  @include is-mixin.infinite-scroll-controls;
+}
+
+.infinite-scroll__trigger {
+  @include is-mixin.infinite-scroll-trigger;
+}
+
+.infinite-scroll__status {
+  color: is.$infinite-scroll-color-on-surface;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.infinite-scroll--loading .infinite-scroll__status {
+  color: is.$infinite-scroll-color-on-surface-variant;
+}
+
+.infinite-scroll .is-hidden {
+  display: none !important;
+}

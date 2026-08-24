@@ -1,0 +1,125 @@
+/// @file todo.module.scss
+/// @brief Module todo Material 3
+
+@use '../mixins/todo.mixin' as todo;
+@use '../tokens/todo.token' as tokens;
+
+/**
+ * Classe de base pour le composant Todo
+ */
+.todo {
+  @include todo.todo-base;
+
+  /**
+   * Zone d'ajout de tâche
+   */
+  &__add {
+    @include todo.todo-add;
+  }
+
+  /**
+   * Input d'ajout
+   */
+  &__input {
+    @include todo.todo-input;
+  }
+
+  /**
+   * Bouton d'ajout
+   */
+  &__add-button {
+    // Styles gérés par .btn.btn--icon.btn--filled
+  }
+
+  /**
+   * Liste des tâches
+   */
+  &__list {
+    @include todo.todo-list;
+  }
+
+  /**
+   * Item de tâche
+   */
+  &__item {
+    @include todo.todo-item;
+
+    /**
+     * Checkbox de l'item
+     */
+    &-checkbox {
+      flex-shrink: 0;
+    }
+
+    /**
+     * Texte de l'item
+     */
+    &-text {
+      @include todo.todo-item-text;
+    }
+
+    /**
+     * Input d'édition
+     */
+    &-edit-input {
+      @include todo.todo-item-edit-input;
+    }
+
+    /**
+     * Actions de l'item
+     */
+    &-actions {
+      @include todo.todo-item-actions;
+    }
+
+    /**
+     * Bouton d'édition
+     */
+    &-edit {
+      // Styles gérés par .btn.btn--icon.btn--text
+    }
+
+    /**
+     * Bouton de suppression
+     */
+    &-delete {
+      // Styles gérés par .btn.btn--icon.btn--text
+    }
+  }
+
+  /**
+   * Filtres
+   */
+  &__filters {
+    @include todo.todo-filters;
+  }
+
+  /**
+   * Bouton de filtre
+   */
+  &__filter-button {
+    // Styles gérés par le composant Chip
+  }
+
+  /**
+   * Footer
+   */
+  &__footer {
+    @include todo.todo-footer;
+  }
+
+  /**
+   * Compteur
+   */
+  &__counter {
+    @include todo.todo-counter;
+  }
+
+  /**
+   * Bouton de suppression des terminées
+   */
+  &__clear-button {
+    // Styles gérés par .btn.btn--text
+  }
+}
+

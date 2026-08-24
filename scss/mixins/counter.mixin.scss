@@ -1,0 +1,80 @@
+/**
+ * @fileoverview Mixins pour Counter
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/counter.token' as t;
+
+/**
+ * Wrapper du composant
+ */
+@mixin counter-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: t.$counter-gap;
+    user-select: none;
+}
+
+/**
+ * Bouton +/- (décrement / increment)
+ */
+@mixin counter-btn {
+    width: t.$counter-btn-size;
+    height: t.$counter-btn-size;
+    border: none;
+    border-radius: t.$counter-btn-radius;
+    font-weight: 500;
+    font-size: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: background-color t.$counter-transition-duration t.$counter-transition-easing,
+        color t.$counter-transition-duration t.$counter-transition-easing,
+        box-shadow t.$counter-transition-duration t.$counter-transition-easing,
+        transform t.$counter-transition-duration t.$counter-transition-easing;
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+
+    &:not(:disabled):active {
+        transform: scale(0.95);
+    }
+}
+
+/**
+ * Bouton dans l'état actif (non désactivé)
+ */
+@mixin counter-btn--active {
+    background-color: t.$counter-btn-bg;
+    color: t.$counter-btn-color;
+    box-shadow: t.$counter-btn-shadow;
+}
+
+/**
+ * Bouton dans l'état désactivé
+ */
+@mixin counter-btn--disabled {
+    background-color: t.$counter-btn-disabled-bg;
+    color: t.$counter-btn-disabled-color;
+    box-shadow: none;
+}
+
+/**
+ * Champ valeur (lecture seule)
+ */
+@mixin counter-value {
+    width: t.$counter-value-width;
+    height: t.$counter-value-height;
+    text-align: center;
+    font-size: 1.125rem;
+    font-weight: 600;
+    border: none;
+    border-radius: t.$counter-value-radius;
+    background-color: t.$counter-value-bg;
+    color: t.$counter-value-color;
+}

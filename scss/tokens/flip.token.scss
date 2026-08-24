@@ -1,0 +1,8 @@
+/// @file flip.token.scss
+/// @brief Tokens pour l'effet Flip 3D
+
+$flip-perspective: 1200px !default;
+$flip-duration: 600ms !default;
+$flip-ease-standard: cubic-bezier(0.2, 0.75, 0.25, 1) !default;
+$flip-ease-expressive: cubic-bezier(0.34, 1.56, 0.64, 1) !default;
+$flip-expressive-duration-factor: 1.35 !default;

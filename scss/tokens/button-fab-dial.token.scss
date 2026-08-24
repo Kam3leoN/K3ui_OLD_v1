@@ -1,0 +1,37 @@
+/**
+ * @fileoverview Tokens ButtonFabDial — FAB Speed Dial en éventail
+ */
+
+@use 'motion.token' as motion;
+@use 'button-fab.token' as fab;
+
+$button-fab-dial-trigger-size: 64px !default;
+$button-fab-dial-action-size: 46px !default;
+$button-fab-dial-inset: 24px !default;
+$button-fab-dial-min-gap: 14px !default;
+
+$button-fab-dial-action-bg: var(--md-sys-color-surface-container-high) !default;
+$button-fab-dial-action-color: var(--md-sys-color-on-surface) !default;
+$button-fab-dial-scrim-bg: color-mix(in srgb, var(--md-sys-color-surface) 62%, transparent) !default;
+
+$button-fab-dial-action-shadow:
+  0 1px 3px rgb(0 0 0 / 0.16),
+  0 8px 24px rgb(0 0 0 / 0.12) !default;
+
+$button-fab-dial-label-bg: var(--md-sys-color-inverse-surface) !default;
+$button-fab-dial-label-color: var(--md-sys-color-inverse-on-surface) !default;
+
+$button-fab-dial-stagger-enter-ms: 32 !default;
+$button-fab-dial-stagger-exit-ms: 22 !default;
+$button-fab-dial-spatial-duration: motion.spring-duration(spatial, fast) !default;
+$button-fab-dial-spatial-easing: motion.spring-easing(spatial, fast) !default;
+$button-fab-dial-spatial-duration-ms: 366 !default;
+$button-fab-dial-exit-duration: 200ms !default;
+$button-fab-dial-exit-easing: cubic-bezier(0.3, 0, 0.8, 0.15) !default;
+$button-fab-dial-effects-duration: motion.spring-duration(effects, fast) !default;
+$button-fab-dial-effects-easing: motion.spring-easing(effects, fast) !default;
+$button-fab-dial-effects-duration-ms: 150 !default;
+$button-fab-dial-press-radius: 34% !default;
+
+$button-fab-dial-z-index: 1050 !default;
+$button-fab-dial-scrim-z: -1 !default;

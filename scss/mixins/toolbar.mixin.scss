@@ -1,0 +1,45 @@
+/**
+ * @file toolbar.mixin.scss
+ * @description Mixins Toolbar M3 Expressive
+ */
+
+@use '../tokens/toolbar.token' as tb;
+
+@mixin toolbar-container {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: tb.$toolbar-min-height;
+  padding: tb.$toolbar-padding-y tb.$toolbar-padding-x;
+  transition:
+    background-color tb.$toolbar-transition-duration tb.$toolbar-transition-easing,
+    color tb.$toolbar-transition-duration tb.$toolbar-transition-easing,
+    box-shadow tb.$toolbar-transition-duration tb.$toolbar-transition-easing;
+}
+
+@mixin toolbar-items-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: tb.$toolbar-gap;
+  min-height: inherit;
+}
+
+@mixin toolbar-items-column {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: tb.$toolbar-gap;
+  min-height: inherit;
+}
+
+@mixin toolbar-variant-colors($bg, $on) {
+  background-color: $bg;
+  color: $on;
+}
+
+@mixin toolbar-item-active-surface {
+  background-color: tb.$toolbar-item-active-bg;
+  color: tb.$toolbar-item-active-on;
+  /* Garde la forme ButtonIcon (pill default / narrow / wide) */
+}

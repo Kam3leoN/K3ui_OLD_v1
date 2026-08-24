@@ -1,0 +1,130 @@
+/**
+ * @fileoverview Module NavigationMenu (Material Design 3 Expressive / M3E nav-menu)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/navigation-menu.token' as tokens;
+@use '../mixins/navigation-menu.mixin' as menu;
+
+.navigation-menu,
+k3ui-navigation-menu {
+  @include menu.navigation-menu-container;
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__group-label {
+    @include menu.navigation-menu-group-label;
+  }
+
+  &__item {
+    display: block;
+    flex: none;
+
+    &--has-children .navigation-menu__item-toggle {
+      display: flex;
+    }
+
+    &:not(.navigation-menu__item--has-children) .navigation-menu__item-toggle {
+      display: none;
+    }
+
+    &--open .navigation-menu__item-toggle {
+      transform: rotate(180deg);
+    }
+
+    &--open > .navigation-menu__item-children {
+      @include menu.navigation-menu-item-children-open;
+    }
+
+    &:not(.navigation-menu__item--open) > .navigation-menu__item-children {
+      @include menu.navigation-menu-item-children-closing;
+    }
+  }
+
+  &__item-row {
+    @include menu.navigation-menu-item-row;
+  }
+
+  &__item--selected:not(.navigation-menu__item--has-children) > .navigation-menu__item-row {
+    @include menu.navigation-menu-item-selected;
+  }
+
+  /* Pilule parent : branche sélectionnée (pas à chaque expand) — sans scaleX */
+  &__item--selected.navigation-menu__item--has-children > .navigation-menu__item-row {
+    @include menu.navigation-menu-item-open;
+  }
+
+  &__item--disabled > .navigation-menu__item-row {
+    @include menu.navigation-menu-item-disabled;
+  }
+
+  &__item-icon {
+    @include menu.navigation-menu-item-icon;
+  }
+
+  &__item-label {
+    @include menu.navigation-menu-item-label;
+  }
+
+  &__item-badge {
+    @include menu.navigation-menu-item-badge;
+  }
+
+  &__item-toggle {
+    @include menu.navigation-menu-item-toggle;
+  }
+
+  &__item-children {
+    @include menu.navigation-menu-item-children;
+  }
+
+  &__item-clip {
+    @include menu.navigation-menu-item-clip;
+
+    > .navigation-menu__item:first-of-type {
+      margin-block-start: tokens.$navigation-menu-item-vertical-inset;
+    }
+
+    > .navigation-menu__item:last-of-type {
+      margin-block-end: tokens.$navigation-menu-item-vertical-inset;
+    }
+
+    &--visible {
+      @include menu.navigation-menu-item-clip-visible;
+    }
+  }
+
+  .divider {
+    margin-block: tokens.$navigation-menu-divider-margin;
+    flex: none;
+  }
+}
+
+@include menu.navigation-menu-indicator-keyframes;
+
+@media (prefers-reduced-motion: reduce) {
+  .navigation-menu,
+  k3ui-navigation-menu {
+    &__item-row,
+    &__item-toggle,
+    &__item-children,
+    &__item-clip {
+      transition: none !important;
+      transition-delay: 0ms !important;
+    }
+
+    &__item-row::before {
+      animation: none !important;
+      transform: scaleX(1);
+    }
+
+    &__item-clip {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}

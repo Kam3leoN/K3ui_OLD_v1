@@ -1,0 +1,277 @@
+/**
+ * @fileoverview Mixins Chart Material You 3
+ * @description Mixins pour le composant Chart K3UI
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens' as tokens;
+@use './motion.mixin' as motionmix;
+
+// =============================================================================
+// MIXINS CHART - MATERIAL YOU 3
+// =============================================================================
+
+/**
+ * Mixin de base pour le conteneur de graphique
+ * @param {string} $variant - Variante du conteneur (default, fullwidth, fixed)
+ */
+@mixin chart-container-base($variant: 'default') {
+  position: relative;
+  background: tokens.$md-sys-chart-bg;
+  border-radius: tokens.$md-sys-chart-border-radius;
+  box-shadow: tokens.$md-sys-chart-shadow;
+  padding: tokens.$md-sys-chart-padding;
+  transition: box-shadow tokens.$md-sys-chart-transition-duration tokens.$md-sys-chart-transition-timing;
+
+  @if $variant == 'fullwidth' {
+    width: 100%;
+  } @else if $variant == 'fixed' {
+    width: tokens.$md-sys-chart-fixed-width;
+    height: tokens.$md-sys-chart-fixed-height;
+  }
+
+  // Thème sombre
+  &--dark {
+    background: tokens.$md-sys-chart-bg-dark;
+    color: tokens.$md-sys-chart-title-color-dark;
+
+    .chart-title {
+      color: tokens.$md-sys-chart-title-color-dark;
+    }
+
+    .chart-description {
+      color: tokens.$md-sys-chart-description-color-dark;
+    }
+
+    .chart-controls__button {
+      background: var(--md-sys-color-surface-container-highest-dark, #334155);
+      color: var(--md-sys-color-on-surface-variant-dark, #e2e8f0);
+
+      &:hover {
+        background: var(--md-sys-color-surface-container-dark, #475569);
+      }
+
+      &--active {
+        background: tokens.$md-sys-chart-control-button-bg-active;
+        color: tokens.$md-sys-chart-control-button-color-active;
+      }
+    }
+  }
+}
+
+/**
+ * Mixin pour le canvas de graphique
+ */
+@mixin chart-canvas {
+  display: block;
+  cursor: pointer;
+  max-width: 100%;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+/**
+ * Mixin pour le wrapper du canvas
+ */
+@mixin chart-wrapper {
+  position: relative;
+  width: 100%;
+
+  canvas {
+    width: 100% !important;
+    // La hauteur est gérée par le style inline ou par le composant
+    // On ne force pas height: 100% pour éviter les problèmes dans les grilles
+  }
+}
+
+/**
+ * Mixin pour les contrôles de graphique
+ */
+@mixin chart-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: tokens.$md-sys-chart-gap;
+  margin-bottom: tokens.$md-sys-chart-gap-large;
+}
+
+/**
+ * Mixin pour les boutons de contrôle
+ * @param {string} $size - Taille du bouton (default, small)
+ */
+@mixin chart-control-button($size: 'default') {
+  $button-padding: tokens.$md-sys-chart-control-button-padding;
+  $button-font-size: tokens.$md-sys-chart-control-button-font-size;
+
+  @if $size == 'small' {
+    $button-padding: tokens.$md-sys-chart-control-button-padding-small;
+    $button-font-size: tokens.$md-sys-chart-control-button-font-size-small;
+  }
+
+  padding: $button-padding;
+  border: none;
+  border-radius: tokens.$md-sys-chart-control-button-border-radius;
+  font-weight: tokens.$md-sys-chart-control-button-font-weight;
+  font-size: $button-font-size;
+  cursor: pointer;
+  @include motionmix.transition-surface(
+    tokens.$md-sys-chart-transition-duration,
+    tokens.$md-sys-chart-transition-timing
+  );
+  background: tokens.$md-sys-chart-control-button-bg;
+  color: tokens.$md-sys-chart-control-button-color;
+
+  &:hover {
+    background: tokens.$md-sys-chart-control-button-bg-hover;
+    transform: translateY(-1px);
+  }
+
+  &--active {
+    background: tokens.$md-sys-chart-control-button-bg-active;
+    color: tokens.$md-sys-chart-control-button-color-active;
+    box-shadow: tokens.$md-sys-chart-control-button-shadow-active;
+
+    &:hover {
+      background: var(--md-sys-color-primary-container, #2563eb);
+    }
+  }
+
+  &:disabled {
+    opacity: tokens.$md-sys-chart-disabled-opacity;
+    cursor: tokens.$md-sys-chart-disabled-cursor;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+/**
+ * Mixin pour la légende
+ */
+@mixin chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: tokens.$md-sys-chart-legend-item-gap;
+  margin-top: tokens.$md-sys-spacing-lg;
+}
+
+/**
+ * Mixin pour un item de légende
+ */
+@mixin chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: tokens.$md-sys-spacing-sm;
+  font-size: tokens.$md-sys-chart-legend-font-size;
+  color: tokens.$md-sys-chart-legend-color;
+}
+
+/**
+ * Mixin pour la couleur de légende
+ */
+@mixin chart-legend-color {
+  width: tokens.$md-sys-chart-legend-color-size;
+  height: tokens.$md-sys-chart-legend-color-size;
+  border-radius: tokens.$md-sys-chart-legend-color-border-radius;
+  flex-shrink: 0;
+}
+
+/**
+ * Mixin pour le titre du graphique
+ */
+@mixin chart-title {
+  font-size: tokens.$md-sys-chart-title-font-size;
+  font-weight: tokens.$md-sys-chart-title-font-weight;
+  line-height: tokens.$md-sys-chart-title-line-height;
+  color: tokens.$md-sys-chart-title-color;
+  margin-bottom: tokens.$md-sys-spacing-md;
+
+  &--centered {
+    text-align: center;
+  }
+}
+
+/**
+ * Mixin pour la description
+ */
+@mixin chart-description {
+  font-size: tokens.$md-sys-chart-description-font-size;
+  font-weight: tokens.$md-sys-chart-description-font-weight;
+  line-height: tokens.$md-sys-chart-description-line-height;
+  color: tokens.$md-sys-chart-description-color;
+  margin-bottom: tokens.$md-sys-spacing-lg;
+}
+
+/**
+ * Mixin pour l'état de chargement
+ */
+@mixin chart-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/**
+ * Mixin pour le spinner de chargement
+ */
+@mixin chart-loading-spinner {
+  width: tokens.$md-sys-chart-loading-spinner-size;
+  height: tokens.$md-sys-chart-loading-spinner-size;
+  border: tokens.$md-sys-chart-loading-spinner-border-width solid tokens.$md-sys-chart-loading-spinner-border-color;
+  border-top-color: tokens.$md-sys-chart-loading-spinner-border-color-active;
+  border-radius: 50%;
+  animation: chart-spin 1s linear infinite;
+}
+
+/**
+ * Mixin pour le tooltip
+ */
+@mixin chart-tooltip {
+  position: absolute;
+  background: tokens.$md-sys-chart-tooltip-bg;
+  color: tokens.$md-sys-chart-tooltip-color;
+  padding: tokens.$md-sys-chart-tooltip-padding;
+  border-radius: tokens.$md-sys-chart-tooltip-border-radius;
+  font-size: tokens.$md-sys-chart-tooltip-font-size;
+  pointer-events: none;
+  z-index: tokens.$md-sys-chart-tooltip-z-index;
+  opacity: 0;
+  transition: opacity tokens.$md-sys-chart-transition-duration tokens.$md-sys-chart-transition-timing;
+
+  &--visible {
+    opacity: 1;
+  }
+}
+
+/**
+ * Mixin pour la grille de graphiques
+ */
+@mixin chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(tokens.$md-sys-chart-grid-min-width, 1fr));
+  gap: tokens.$md-sys-chart-grid-gap;
+}
+
+/**
+ * Mixin pour la carte de graphique
+ */
+@mixin chart-card {
+  background: tokens.$md-sys-chart-bg;
+  border-radius: tokens.$md-sys-chart-border-radius;
+  box-shadow: tokens.$md-sys-chart-shadow;
+  padding: tokens.$md-sys-chart-padding;
+}
+
+/**
+ * Mixin responsive pour mobile
+ */
+@mixin chart-responsive-mobile {
+  @media (max-width: tokens.$md-sys-chart-mobile-breakpoint) {
+    @content;
+  }
+}
+

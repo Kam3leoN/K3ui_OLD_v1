@@ -1,0 +1,18 @@
+/// @file holo.token.scss
+/// @brief Tokens pour l'effet Holo (foil irisé — pokemon-cards-151)
+
+$holo-strength: 1 !default;
+$holo-aspect: 0.718 !default;
+$holo-radius: unquote('4.55% / 3.5%') !default;
+
+$holo-sunpillar-1: hsl(2, 100%, 73%) !default;
+$holo-sunpillar-2: hsl(53, 100%, 69%) !default;
+$holo-sunpillar-3: hsl(93, 100%, 69%) !default;
+$holo-sunpillar-4: hsl(176, 100%, 76%) !default;
+$holo-sunpillar-5: hsl(228, 100%, 74%) !default;
+$holo-sunpillar-6: hsl(283, 100%, 73%) !default;
+
+$holo-assets-path: '../../assets/images/holo' !default;
+
+/// Texture foil gradient (carte masquée — pokemon-cards-151)
+$holo-foil-texture: '#{$holo-assets-path}/birthday-holo.webp' !default;

@@ -1,0 +1,594 @@
+@use '../mixins/typography.mixin' as typography;
+@use '../tokens/fontface.token' as fontface;
+
+// =============================================================================
+// STYLES POUR LES BALISES HTML NATIVES
+// =============================================================================
+
+/**
+ * Styles pour les balises de titre HTML natives
+ * Utilise le système typographique Material Design 3
+ */
+h1 {
+  font-family: fontface.$font-family-main;
+  font-size: 3.5rem; /* 57px - Display Large */
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  margin: 3rem 0 1.5rem 0;
+}
+
+h2 {
+  font-family: fontface.$font-family-main;
+  font-size: 2.8rem; /* 45px - Display Medium */
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0;
+  margin: 2.5rem 0 1.25rem 0;
+}
+
+h3 {
+  font-family: fontface.$font-family-main;
+  font-size: 2.25rem; /* 36px - Display Small */
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0;
+  margin: 2rem 0 1rem 0;
+}
+
+h4 {
+  font-family: fontface.$font-family-main;
+  font-size: 2rem; /* 32px - Headline Large */
+  font-weight: 400;
+  line-height: 1.33;
+  letter-spacing: 0;
+  margin: 1.75rem 0 0.875rem 0;
+}
+
+h5 {
+  font-family: fontface.$font-family-main;
+  font-size: 1.75rem; /* 28px - Headline Medium */
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  margin: 1.5rem 0 0.75rem 0;
+}
+
+h6 {
+  font-family: fontface.$font-family-main;
+  font-size: 1.5rem; /* 24px - Headline Small */
+  font-weight: 400;
+  line-height: 1.44;
+  letter-spacing: 0.01em;
+  margin: 1.25rem 0 0.625rem 0;
+}
+
+p {
+  font-family: fontface.$font-family-main;
+  font-size: 1rem; /* 16px - Body Large */
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  margin: 0 0 1rem 0;
+}
+
+/**
+ * Styles pour les liens dans les titres
+ */
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  font-weight: inherit;
+  color: inherit;
+  text-decoration: none;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+/**
+ * Styles pour les éléments de texte sémantiques
+ */
+strong, b {
+  font-weight: 500;
+}
+
+/**
+ * Classes utilitaires pour les poids de police
+ */
+.light {
+  font-weight: 300;
+}
+
+.thin {
+  font-weight: 200;
+}
+
+/**
+ * Texte responsive (flow-text)
+ * S'adapte automatiquement à la taille d'écran
+ */
+.flow-text {
+  font-size: 1.2rem;
+  
+  // Breakpoints progressifs pour le texte responsive
+  @media only screen and (min-width: 360px) {
+    font-size: 1.2rem;
+  }
+  
+  @media only screen and (min-width: 400px) {
+    font-size: 1.224rem;
+  }
+  
+  @media only screen and (min-width: 440px) {
+    font-size: 1.248rem;
+  }
+  
+  @media only screen and (min-width: 480px) {
+    font-size: 1.272rem;
+  }
+  
+  @media only screen and (min-width: 520px) {
+    font-size: 1.296rem;
+  }
+  
+  @media only screen and (min-width: 560px) {
+    font-size: 1.32rem;
+  }
+  
+  @media only screen and (min-width: 600px) {
+    font-size: 1.344rem;
+  }
+  
+  @media only screen and (min-width: 640px) {
+    font-size: 1.368rem;
+  }
+  
+  @media only screen and (min-width: 680px) {
+    font-size: 1.392rem;
+  }
+  
+  @media only screen and (min-width: 720px) {
+    font-size: 1.416rem;
+  }
+  
+  @media only screen and (min-width: 760px) {
+    font-size: 1.44rem;
+  }
+  
+  @media only screen and (min-width: 800px) {
+    font-size: 1.464rem;
+  }
+  
+  @media only screen and (min-width: 840px) {
+    font-size: 1.488rem;
+  }
+  
+  @media only screen and (min-width: 880px) {
+    font-size: 1.512rem;
+  }
+  
+  @media only screen and (min-width: 920px) {
+    font-size: 1.536rem;
+  }
+  
+  @media only screen and (min-width: 960px) {
+    font-size: 1.56rem;
+  }
+  
+  @media only screen and (min-width: 1000px) {
+    font-size: 1.584rem;
+  }
+  
+  @media only screen and (min-width: 1040px) {
+    font-size: 1.608rem;
+  }
+  
+  @media only screen and (min-width: 1080px) {
+    font-size: 1.632rem;
+  }
+  
+  @media only screen and (min-width: 1120px) {
+    font-size: 1.656rem;
+  }
+  
+  @media only screen and (min-width: 1160px) {
+    font-size: 1.68rem;
+  }
+  
+  @media only screen and (min-width: 1200px) {
+    font-size: 1.704rem;
+  }
+  
+  @media only screen and (min-width: 1240px) {
+    font-size: 1.728rem;
+  }
+  
+  @media only screen and (min-width: 1280px) {
+    font-size: 1.752rem;
+  }
+  
+  @media only screen and (min-width: 1320px) {
+    font-size: 1.776rem;
+  }
+  
+  @media only screen and (min-width: 1360px) {
+    font-size: 1.8rem;
+  }
+  
+  @media only screen and (min-width: 1400px) {
+    font-size: 1.824rem;
+  }
+  
+  @media only screen and (min-width: 1440px) {
+    font-size: 1.848rem;
+  }
+  
+  @media only screen and (min-width: 1480px) {
+    font-size: 1.872rem;
+  }
+  
+  @media only screen and (min-width: 1520px) {
+    font-size: 1.896rem;
+  }
+  
+  @media only screen and (min-width: 1560px) {
+    font-size: 1.92rem;
+  }
+  
+  @media only screen and (min-width: 1600px) {
+    font-size: 1.944rem;
+  }
+  
+  @media only screen and (min-width: 1640px) {
+    font-size: 1.968rem;
+  }
+  
+  @media only screen and (min-width: 1680px) {
+    font-size: 1.992rem;
+  }
+  
+  @media only screen and (min-width: 1720px) {
+    font-size: 2.016rem;
+  }
+  
+  @media only screen and (min-width: 1760px) {
+    font-size: 2.04rem;
+  }
+  
+  @media only screen and (min-width: 1800px) {
+    font-size: 2.064rem;
+  }
+  
+  @media only screen and (min-width: 1840px) {
+    font-size: 2.088rem;
+  }
+  
+  @media only screen and (min-width: 1880px) {
+    font-size: 2.112rem;
+  }
+  
+  @media only screen and (min-width: 1920px) {
+    font-size: 2.136rem;
+  }
+}
+
+// =============================================================================
+// CLASSES TYPOGRAPHIQUES DE BASE
+// =============================================================================
+
+.display-large {
+  @include typography.typography('display-large');
+}
+
+.display-medium {
+  @include typography.typography('display-medium');
+}
+
+.display-small {
+  @include typography.typography('display-small');
+}
+
+.headline-large {
+  @include typography.typography('headline-large');
+}
+
+.headline-medium {
+  @include typography.typography('headline-medium');
+}
+
+.headline-small {
+  @include typography.typography('headline-small');
+}
+
+.title-large {
+  @include typography.typography('title-large');
+}
+
+.title-medium {
+  @include typography.typography('title-medium');
+}
+
+.title-small {
+  @include typography.typography('title-small');
+}
+
+.body-large {
+  @include typography.typography('body-large');
+}
+
+.body-medium {
+  @include typography.typography('body-medium');
+}
+
+.body-small {
+  @include typography.typography('body-small');
+}
+
+.label-large {
+  @include typography.typography('label-large');
+}
+
+.label-medium {
+  @include typography.typography('label-medium');
+}
+
+.label-small {
+  @include typography.typography('label-small');
+}
+
+// =============================================================================
+// CLASSES UTILITAIRES AVANCÉES
+// =============================================================================
+
+/**
+ * Classes typographiques avec couleurs
+ */
+.text-primary {
+  @include typography.typography-colored('body-medium', var(--md-sys-color-primary));
+}
+
+.text-secondary {
+  @include typography.typography-colored('body-medium', var(--md-sys-color-secondary));
+}
+
+.text-tertiary {
+  @include typography.typography-colored('body-medium', var(--md-sys-color-tertiary));
+}
+
+.text-error {
+  @include typography.typography-colored('body-medium', var(--md-sys-color-error));
+}
+
+.text-success {
+  @include typography.typography-colored('body-medium', var(--md-sys-color-primary));
+}
+
+.text-warning {
+  @include typography.typography-colored('body-medium', var(--md-sys-color-tertiary));
+}
+
+/**
+ * Classes typographiques avec alignement
+ */
+.text-left {
+  @include typography.typography-aligned('body-medium', 'left');
+}
+
+.text-center {
+  @include typography.typography-aligned('body-medium', 'center');
+}
+
+.text-right {
+  @include typography.typography-aligned('body-medium', 'right');
+}
+
+.text-justify {
+  @include typography.typography-aligned('body-medium', 'justify');
+}
+
+/**
+ * Classes typographiques avec transformation
+ */
+.text-uppercase {
+  @include typography.typography-transformed('body-medium', 'uppercase');
+}
+
+.text-lowercase {
+  @include typography.typography-transformed('body-medium', 'lowercase');
+}
+
+.text-capitalize {
+  @include typography.typography-transformed('body-medium', 'capitalize');
+}
+
+/**
+ * Classes typographiques avec décoration
+ */
+.text-underline {
+  @include typography.typography-decorated('body-medium', 'underline');
+}
+
+.text-overline {
+  @include typography.typography-decorated('body-medium', 'overline');
+}
+
+.text-line-through {
+  @include typography.typography-decorated('body-medium', 'line-through');
+}
+
+/**
+ * Classes typographiques avec ombres
+ */
+.text-shadow-sm {
+  @include typography.typography-shadowed('body-medium', '0 1px 2px rgba(0, 0, 0, 0.1)');
+}
+
+.text-shadow-md {
+  @include typography.typography-shadowed('body-medium', '0 2px 4px rgba(0, 0, 0, 0.1)');
+}
+
+.text-shadow-lg {
+  @include typography.typography-shadowed('body-medium', '0 4px 8px rgba(0, 0, 0, 0.1)');
+}
+
+/**
+ * Classes typographiques responsive
+ */
+.text-responsive {
+  @include typography.typography-responsive('body-small', 'body-medium', 'body-large');
+}
+
+.headline-responsive {
+  @include typography.typography-responsive('headline-small', 'headline-medium', 'headline-large');
+}
+
+.title-responsive {
+  @include typography.typography-responsive('title-small', 'title-medium', 'title-large');
+}
+
+/**
+ * Classes typographiques avec espacement personnalisé
+ */
+.text-tight {
+  @include typography.typography-spaced('body-medium', 1.2, 0);
+}
+
+.text-loose {
+  @include typography.typography-spaced('body-medium', 1.8, 0.5px);
+}
+
+/**
+ * Classes typographiques avec poids personnalisé
+ */
+.text-light {
+  @include typography.typography-custom-weight('body-medium', 300);
+}
+
+.text-normal {
+  @include typography.typography-custom-weight('body-medium', 400);
+}
+
+.text-medium {
+  @include typography.typography-custom-weight('body-medium', 500);
+}
+
+.text-semibold {
+  @include typography.typography-custom-weight('body-medium', 600);
+}
+
+.text-bold {
+  @include typography.typography-custom-weight('body-medium', 700);
+}
+
+.text-extrabold {
+  @include typography.typography-custom-weight('body-medium', 800);
+}
+
+/**
+ * Classes typographiques avec tailles personnalisées
+ */
+.text-xs {
+  @include typography.typography-custom-size('body-medium', 10px);
+}
+
+.text-sm {
+  @include typography.typography-custom-size('body-medium', 12px);
+}
+
+.text-base {
+  @include typography.typography-custom-size('body-medium', 14px);
+}
+
+.text-lg {
+  @include typography.typography-custom-size('body-medium', 16px);
+}
+
+.text-xl {
+  @include typography.typography-custom-size('body-medium', 18px);
+}
+
+.text-2xl {
+  @include typography.typography-custom-size('body-medium', 20px);
+}
+
+.text-3xl {
+  @include typography.typography-custom-size('body-medium', 24px);
+}
+
+.text-4xl {
+  @include typography.typography-custom-size('body-medium', 28px);
+}
+
+.text-5xl {
+  @include typography.typography-custom-size('body-medium', 32px);
+}
+
+
+/**
+ * Espacements spécifiques pour les éléments de typographie dans les cards
+ */
+.card__content {
+  // Espacement entre les éléments de typographie dans les cards
+  > div {
+    margin-bottom: 1rem;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  // Espacement spécifique pour les styles de display
+  .display-large,
+  .display-medium,
+  .display-small {
+    margin-bottom: 1.5rem;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  // Espacement spécifique pour les styles de headline
+  .headline-large,
+  .headline-medium,
+  .headline-small {
+    margin-bottom: 1.25rem;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  // Espacement spécifique pour les styles de title
+  .title-large,
+  .title-medium,
+  .title-small {
+    margin-bottom: 1rem;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  // Espacement spécifique pour les styles de body
+  .body-large,
+  .body-medium,
+  .body-small {
+    margin-bottom: 0.75rem;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  // Espacement spécifique pour les styles de label
+  .label-large,
+  .label-medium,
+  .label-small {
+    margin-bottom: 0.5rem;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+} 

@@ -1,0 +1,26 @@
+/**
+ * @fileoverview Mixins pour LoadingIndicator
+ * @author K3UI Team
+ */
+
+@use '../tokens/loading-indicator.token' as li;
+
+/**
+ * Conteneur principal du loader (variante default — sans fond)
+ */
+@mixin loading-indicator-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: li.$loading-indicator-color;
+  background: transparent;
+}
+
+/**
+ * Variante contained — fond Primary container, shape On primary container
+ */
+@mixin loading-indicator-container {
+  background-color: li.$loading-indicator-container-bg;
+  color: li.$loading-indicator-container-shape-color;
+  border-radius: li.$loading-indicator-container-radius;
+}

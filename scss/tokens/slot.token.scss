@@ -1,0 +1,15 @@
+/**
+ * @fileoverview Tokens Slot (alias → ShuffleNumber)
+ * @deprecated Utiliser shuffle-number.token
+ */
+
+@forward 'shuffle-number.token';
+
+/** @deprecated */
+$slot-char-line-height: 0.85;
+/** @deprecated */
+$slot-easing-default: cubic-bezier(0.34, 1.56, 0.64, 1);
+/** @deprecated */
+$slot-duration-default: 300ms;
+/** @deprecated */
+$slot-stagger-default: 45ms;

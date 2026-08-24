@@ -1,0 +1,153 @@
+/**
+ * @fileoverview Mixins pour le composant Snackbar - Material You 3
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use '../tokens/snackbar.token' as snackbar;
+@use './motion.mixin' as motionmix;
+
+// =============================================================================
+// MIXINS SNAKBAR - MATERIAL YOU 3
+// =============================================================================
+
+// Base snackbar container - même logique que Toast
+@mixin snackbar-container() {
+  position: fixed;
+  bottom: snackbar.snackbar-position('bottom-offset');
+  left: snackbar.snackbar-position('side-offset');
+  right: snackbar.snackbar-position('side-offset');
+  max-width: snackbar.snackbar-position('max-width');
+  margin: 0 auto;
+  // Utiliser la même logique que Toast pour le fond par défaut
+  background-color: var(--md-sys-color-inverse-surface);
+  color: var(--md-sys-color-inverse-on-surface);
+  border-radius: snackbar.$md-sys-snackbar-border-radius;
+  box-shadow: snackbar.$md-sys-snackbar-shadow;
+  z-index: snackbar.$md-sys-snackbar-z-index;
+  @include motionmix.transition-overlay(
+    snackbar.$md-sys-snackbar-transition-duration,
+    snackbar.$md-sys-snackbar-transition-easing
+  );
+}
+
+// Text content styling
+@mixin snackbar-text() {
+  font-size: snackbar.snackbar-font-size('base');
+  line-height: snackbar.$md-sys-snackbar-line-height;
+  font-weight: snackbar.snackbar-font-weight('base');
+  display: block;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+// Action button styling - Material Design 3 contrast requirements
+@mixin snackbar-action() {
+  // Couleur inversée selon le thème (bleu en dark, sombre en light)
+  color: var(--md-sys-color-inverse-primary);
+  font-size: snackbar.snackbar-font-size('action');
+  font-weight: snackbar.snackbar-font-weight('action');
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color snackbar.$md-sys-snackbar-transition-duration snackbar.$md-sys-snackbar-transition-easing;
+
+  &:hover {
+    // Couleur inversée au hover
+    color: var(--md-sys-color-inverse-primary);
+    background-color: rgba(var(--md-sys-color-inverse-primary-rgb), 0.08);
+  }
+
+  &:focus {
+    outline: none; // Supprimer le cadre bleu de focus
+  }
+}
+
+// Close button styling - couleur inversée sans cadre
+@mixin snackbar-close() {
+  // Utiliser la couleur inverse pour la croix
+  color: var(--md-sys-color-inverse-on-surface);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color snackbar.$md-sys-snackbar-transition-duration snackbar.$md-sys-snackbar-transition-easing;
+
+  &:hover {
+    // Légèrement plus clair au hover
+    color: var(--md-sys-color-inverse-on-surface);
+    background-color: rgba(var(--md-sys-color-inverse-on-surface-rgb), 0.08);
+  }
+
+  &:focus {
+    outline: none; // Supprimer le cadre de focus
+  }
+}
+
+// Content container for text and short actions
+@mixin snackbar-content-container($height) {
+  height: $height !important;
+  min-height: $height !important;
+  max-height: $height !important;
+  padding: 0 snackbar.snackbar-spacing('padding-horizontal');
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+// Long action container (isolated 44px section)
+@mixin snackbar-long-action-container() {
+  height: snackbar.snackbar-height('action-long');
+  padding: 0 snackbar.snackbar-spacing('padding-horizontal');
+  border-top: 1px solid snackbar.snackbar-color('border');
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+// Actions group container
+@mixin snackbar-actions-group() {
+  display: flex;
+  align-items: center;
+  gap: snackbar.snackbar-spacing('actions-gap');
+  flex-shrink: 0;
+}
+
+// Text container
+@mixin snackbar-text-container() {
+  flex: 1;
+  padding-right: snackbar.snackbar-spacing('text-action-gap');
+  min-width: 0; // Allow text to shrink
+}
+
+// Animation states
+@mixin snackbar-show() {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+@mixin snackbar-hide() {
+  opacity: 0;
+  transform: translateY(100%);
+  pointer-events: none;
+}
+
+// Responsive behavior
+@mixin snackbar-responsive() {
+  @media (max-width: 480px) {
+    &:not(.snackbar--position-center) {
+      left: 8px;
+      right: 8px;
+    }
+
+    bottom: 8px;
+  }
+} 

@@ -1,0 +1,59 @@
+/**
+ * @fileoverview Mixins — SlideshowCaptions
+ */
+
+@use '../tokens/slideshow-captions.token' as *;
+
+/// Conteneur racine (positionnement des lignes en absolute)
+@mixin slideshow-captions-root(
+  $z-index: $slideshow-captions-z-index,
+  $overflow: hidden
+) {
+  position: relative;
+  z-index: $z-index;
+  display: inline-block;
+  width: 100%;
+  max-width: 100%;
+  overflow: $overflow;
+  box-sizing: border-box;
+}
+
+/// Effet 3D sur le texte des captions (extrusion + ombre portée)
+@mixin slideshow-captions-text-3d(
+  $text-shadow: $slideshow-captions-text-3d-shadow,
+  $text-stroke: $slideshow-captions-text-stroke
+) {
+  text-shadow: $text-shadow;
+  -webkit-text-stroke: $text-stroke;
+}
+
+/// Une ligne de texte (non réduite : le JS pose top/left en absolute)
+@mixin slideshow-captions-line(
+  $padding-x: $slideshow-captions-line-padding-x,
+  $padding-y: $slideshow-captions-line-padding-y,
+  $radius: $slideshow-captions-line-radius,
+  $bg: $slideshow-captions-line-bg,
+  $color: $slideshow-captions-line-color,
+  $font-size: $slideshow-captions-line-font-size,
+  $font-weight: $slideshow-captions-line-font-weight,
+  $letter-spacing: $slideshow-captions-line-letter-spacing,
+  $line-height: $slideshow-captions-line-line-height,
+  $shadow: $slideshow-captions-line-shadow
+) {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: none;
+  white-space: nowrap;
+  box-sizing: border-box;
+  padding: $padding-y $padding-x;
+  margin: 0;
+  border-radius: $radius;
+  background-color: $bg;
+  color: $color;
+  font-size: $font-size;
+  font-weight: $font-weight;
+  letter-spacing: $letter-spacing;
+  line-height: $line-height;
+  box-shadow: $shadow;
+}

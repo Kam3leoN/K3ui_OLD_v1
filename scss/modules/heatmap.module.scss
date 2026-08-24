@@ -1,0 +1,129 @@
+/**
+ * @fileoverview Module Heatmap
+ * @description Grille d'activité type contribution (année, 7×53, intensité par jour)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/heatmap.token' as ht;
+@use '../mixins/heatmap.mixin' as hm;
+
+.heatmap {
+  @include hm.heatmap-component;
+}
+
+.heatmap__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.heatmap__months {
+  display: grid;
+  grid-template-columns: repeat(53, var(--heatmap-cell-size, ht.$heatmap-cell-size));
+  gap: var(--heatmap-cell-gap, ht.$heatmap-cell-gap);
+  padding-left: 0;
+  min-height: 1.2em;
+  align-items: end;
+
+  @media (max-width: 640px) {
+    display: none;
+  }
+}
+
+.heatmap__month {
+  grid-row: 1;
+  font-size: ht.$heatmap-label-font-size;
+  font-weight: 600;
+  color: ht.$heatmap-label-color;
+}
+
+/** Une grille : col 1 = spacer + 7 jours, col 2 = mois + grille 7×53 (mêmes lignes = alignement garanti) */
+.heatmap__grid-wrap {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto repeat(7, var(--heatmap-cell-size, ht.$heatmap-cell-size));
+  column-gap: 0.5rem;
+  row-gap: var(--heatmap-cell-gap, ht.$heatmap-cell-gap);
+  align-items: start;
+}
+
+/** Ligne 1 col 1 : même hauteur que la ligne des mois */
+.heatmap__weekdays-spacer {
+  min-height: calc(1.2em + 0.25rem);
+
+  @media (max-width: 640px) {
+    min-height: 0;
+  }
+}
+
+/** Lignes 2–8 col 1 : remplir la cellule grille puis centrer le texte verticalement */
+.heatmap__weekday {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  align-self: stretch;
+  min-height: 0;
+  height: 100%;
+  line-height: 1;
+  font-size: ht.$heatmap-label-font-size;
+  font-weight: 600;
+  color: ht.$heatmap-label-color;
+}
+
+/** Ligne 1 col 2 : mois */
+.heatmap__months {
+  display: grid;
+  grid-template-columns: repeat(53, var(--heatmap-cell-size, ht.$heatmap-cell-size));
+  gap: var(--heatmap-cell-gap, ht.$heatmap-cell-gap);
+  min-height: 1.2em;
+  align-items: end;
+
+  @media (max-width: 640px) {
+    display: none;
+  }
+}
+
+.heatmap__month {
+  grid-row: 1;
+  font-size: ht.$heatmap-label-font-size;
+  font-weight: 600;
+  color: ht.$heatmap-label-color;
+}
+
+.heatmap__grid {
+  display: grid;
+  grid-template-columns: repeat(53, var(--heatmap-cell-size, ht.$heatmap-cell-size));
+  grid-template-rows: repeat(7, var(--heatmap-cell-size, ht.$heatmap-cell-size));
+  gap: var(--heatmap-cell-gap, ht.$heatmap-cell-gap);
+}
+
+.heatmap__cell {
+  @include hm.heatmap-cell;
+  background-color: ht.$heatmap-color-level-0;
+
+  &--empty {
+    background-color: transparent;
+    cursor: default;
+  }
+
+  &--level-0 {
+    background-color: ht.$heatmap-color-level-0;
+  }
+
+  &--level-1 {
+    background-color: ht.$heatmap-color-level-1;
+  }
+
+  &--level-2 {
+    background-color: ht.$heatmap-color-level-2;
+  }
+
+  &--level-3 {
+    background-color: ht.$heatmap-color-level-3;
+  }
+
+  &--level-4 {
+    background-color: ht.$heatmap-color-level-4;
+  }
+}

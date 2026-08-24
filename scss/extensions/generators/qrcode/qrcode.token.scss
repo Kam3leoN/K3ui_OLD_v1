@@ -1,0 +1,8 @@
+/**
+ * @fileoverview Tokens QR Code
+ */
+
+$qrcode-preview-bg: var(--k3ui-color-surface-container-lowest, #ffffff);
+$qrcode-preview-padding: 1rem;
+$qrcode-preview-radius: var(--k3ui-radius-md, 12px);
+$qrcode-canvas-min-size: 180px;

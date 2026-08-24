@@ -1,0 +1,41 @@
+/// @file button-smart.token.scss
+/// @brief Tokens ButtonSmart — tuile réglages rapides Material You (Android)
+
+@use './motion.token' as motion;
+
+// Surfaces OFF (charcoal QS — volontairement indépendant du thème clair)
+$btn-smart-off-bg: #37343a;
+$btn-smart-off-icon-bg: #48454c;
+$btn-smart-off-fg: #e7e2ea;
+
+// Surfaces ON — tonal primary (suit le thème)
+$btn-smart-on-bg: var(--md-sys-color-primary-container, #bcc8f2);
+$btn-smart-on-icon-bg: var(--md-sys-color-primary, #33436e);
+$btn-smart-on-icon-fg: var(--md-sys-color-on-primary, #dbe3ff);
+$btn-smart-on-fg: var(--md-sys-color-on-primary-container, #1b2540);
+
+// Géométrie AOSP (qs_tile_height 80dp)
+$btn-smart-height: 80px;
+$btn-smart-inset: 7px;
+$btn-smart-glyph-size: 30px;
+$btn-smart-radius-on: 22px;
+$btn-smart-fade: 14px;
+$btn-smart-padding-inline-end: 16px;
+
+// Motion — M3 Expressive spatial (morph pill)
+$btn-smart-ease: motion.spring-easing(spatial, fast);
+$btn-smart-duration: motion.spring-duration(spatial, fast);
+
+// Focus
+$btn-smart-focus-outline: var(--md-sys-color-primary, #a8c7fa);
+$btn-smart-focus-outline-width: 3px;
+$btn-smart-focus-outline-offset: 3px;
+
+// Typo
+$btn-smart-label-size: 15px;
+$btn-smart-label-weight: 500;
+$btn-smart-subtitle-size: 13px;
+$btn-smart-subtitle-weight: 400;
+
+// Disabled
+$btn-smart-disabled-opacity: 0.38;

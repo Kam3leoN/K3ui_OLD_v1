@@ -1,0 +1,23 @@
+/**
+ * Fieldset Tokens
+ */
+
+@use './spacing.token' as spacing;
+@use './radius.token' as radius;
+
+$fieldset-gap: 1rem !default;
+$fieldset-pad-inline: 1.25rem !default;
+$fieldset-pad-block: 1.25rem !default;
+$fieldset-outline-width: 2px !default;
+$fieldset-notch-space: 4px !default;
+$fieldset-shape: radius.$md-sys-shape-corner-large !default;
+
+$fieldset-gap-comfortable: 0.75rem !default;
+$fieldset-pad-inline-comfortable: 1rem !default;
+$fieldset-pad-block-comfortable: 1rem !default;
+$fieldset-shape-comfortable: radius.$md-sys-shape-corner-medium !default;
+
+$fieldset-gap-compact: 0.5rem !default;
+$fieldset-pad-inline-compact: 0.75rem !default;
+$fieldset-pad-block-compact: 0.75rem !default;
+$fieldset-shape-compact: radius.$md-sys-shape-corner-small !default;

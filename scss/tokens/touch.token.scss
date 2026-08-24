@@ -1,0 +1,14 @@
+/**
+ * @fileoverview Tokens interaction tactile (Material Design 3)
+ * @description Cible tactile minimale 48×48 dp et comportements pointer/touch
+ * @see https://m3.material.io/foundations/accessible-design/accessibility-basics
+ */
+
+/** Cible tactile minimale recommandée (48 dp) */
+$md-sys-touch-target-min: 48px !default;
+
+/** Délai de double-tap supprimé via touch-action: manipulation (documenté à titre indicatif) */
+$md-sys-touch-action-interactive: manipulation !default;
+
+/** Zones de drag (slider, signature, color picker, etc.) */
+$md-sys-touch-action-drag: none !default;

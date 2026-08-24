@@ -1,0 +1,119 @@
+/**
+ * @fileoverview Module Comparison
+ * @description Classes CSS pour la comparaison d'images avant/après
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/comparison.token' as comparison;
+@use '../mixins/comparison.mixin' as comparison-mixin;
+@use '../mixins/state.mixin' as state;
+
+.comparison,
+k3ui-comparison {
+  @include comparison-mixin.comparison-container;
+
+  .comparison__image,
+  &__image {
+    @include comparison-mixin.comparison-image-wrapper;
+  }
+
+  .comparison__image--before,
+  &__image--before {
+    @include comparison-mixin.comparison-image-before;
+  }
+
+  .comparison__image--after,
+  &__image--after {
+    @include comparison-mixin.comparison-image-after;
+  }
+
+  .comparison__label,
+  &__label {
+    @include comparison-mixin.comparison-label;
+  }
+
+  .comparison__label--before,
+  &__label--before {
+    left: comparison.$comparison-label-offset;
+  }
+
+  .comparison__label--after,
+  &__label--after {
+    right: comparison.$comparison-label-offset;
+  }
+
+  .comparison__slider-line,
+  &__slider-line {
+    @include comparison-mixin.comparison-slider-line;
+  }
+
+  .comparison__slider-knob,
+  &__slider-knob {
+    @include comparison-mixin.comparison-slider-knob;
+  }
+
+  &:hover {
+    .comparison__label,
+    .comparison__label--before,
+    .comparison__label--after,
+    &__label,
+    &__label--before,
+    &__label--after {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .comparison__slider-knob::before,
+    &__slider-knob::before {
+      opacity: 1;
+    }
+  }
+
+  &.comparison--dragging,
+  &--dragging {
+    .comparison__image--before,
+    .comparison__slider-line,
+    .comparison__slider-knob,
+    &__image--before,
+    &__slider-line,
+    &__slider-knob {
+      transition: none;
+    }
+  }
+
+  .comparison__image--before,
+  .comparison__slider-line,
+  .comparison__slider-knob,
+  &__image--before,
+  &__slider-line,
+  &__slider-knob {
+    transition: left comparison.$comparison-position-transition-duration ease-out;
+  }
+
+  &.comparison--disabled,
+  &--disabled {
+    @include state.state-disabled;
+  }
+
+  @media (max-width: 640px) {
+    border-radius: comparison.$comparison-border-radius-sm;
+
+    .comparison__slider-knob,
+    &__slider-knob {
+      width: comparison.$comparison-knob-size-sm;
+      height: comparison.$comparison-knob-size-sm;
+
+      svg {
+        width: comparison.$comparison-knob-icon-size-sm;
+        height: comparison.$comparison-knob-icon-size-sm;
+      }
+    }
+
+    .comparison__label,
+    &__label {
+      font-size: comparison.$comparison-label-font-size-sm;
+      padding: comparison.$comparison-label-padding-y-sm comparison.$comparison-label-padding-x-sm;
+    }
+  }
+}

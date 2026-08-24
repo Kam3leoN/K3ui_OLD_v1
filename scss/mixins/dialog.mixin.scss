@@ -1,0 +1,436 @@
+/**
+ * @file dialog.mixin.scss
+ * @description Mixins pour le composant Dialog K3UI - Basé sur la base fonctionnelle MaterializeCSS
+ * @see https://m3.material.io/components/dialogs/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use '../tokens/dialog.token' as dialog;
+@use '../tokens/spacing.token' as spacing;
+@use '../tokens/radius.token' as radius;
+@use '../tokens/motion.token' as motion;
+@use '../tokens/elevation.token' as elevation;
+@use '../tokens/typography.token' as typography;
+@use 'elevation.mixin' as elevation-mixin;
+@use 'motion.mixin' as motion-mixin;
+@use 'spacing.mixin' as spacing-mixin;
+@use 'radius.mixin' as radius-mixin;
+@use 'typography.mixin' as typography-mixin;
+
+// ============================================================================
+// MIXINS PRINCIPAUX
+// ============================================================================
+
+/**
+ * Mixin pour l'élévation du dialog
+ */
+@mixin dialog-elevation {
+  box-shadow: dialog.$dialog-elevation-shadow;
+}
+
+/**
+ * Mixin pour la typographie du titre
+ */
+@mixin dialog-title-typography {
+  @include typography-mixin.typography('headline-small');
+}
+
+/**
+ * Mixin pour la typographie du contenu
+ */
+@mixin dialog-content-typography {
+  @include typography-mixin.typography('body-medium');
+}
+
+// ============================================================================
+// MIXINS POUR LES ANIMATIONS
+// ============================================================================
+
+/**
+ * Mixin pour les animations d'ouverture du dialog
+ * @param {String} $type - Type de dialog (modal, bottom-sheet)
+ */
+@mixin dialog-open-animation($type: 'modal') {
+  @if $type == 'modal' {
+    top: dialog.$dialog-ending-top;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  } @else if $type == 'bottom-sheet' {
+    bottom: 0;
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/**
+ * Mixin pour les animations de fermeture du dialog
+ * @param {String} $type - Type de dialog (modal, bottom-sheet)
+ */
+@mixin dialog-close-animation($type: 'modal') {
+  @if $type == 'modal' {
+    top: dialog.$dialog-starting-top;
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0;
+  } @else if $type == 'bottom-sheet' {
+    bottom: -100%;
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+// ============================================================================
+// MIXINS POUR LES ÉTATS
+// ============================================================================
+
+/**
+ * Mixin pour l'état ouvert du dialog
+ */
+@mixin dialog-open {
+  opacity: 1;
+  pointer-events: auto;
+  
+  &.dialog--open {
+    @include dialog-open-animation;
+  }
+}
+
+/**
+ * Mixin pour l'état fermé du dialog
+ */
+@mixin dialog-closed {
+  opacity: 0;
+  pointer-events: none;
+  
+  &.dialog--closing {
+    @include dialog-close-animation;
+  }
+}
+
+/**
+ * Mixin pour l'état de chargement du dialog
+ */
+@mixin dialog-loading {
+  .dialog-content {
+    position: relative;
+    min-height: 100px;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 24px;
+      height: 24px;
+      margin: -12px 0 0 -12px;
+      border: 2px solid var(--md-sys-color-outline);
+      border-top-color: var(--md-sys-color-primary);
+      @include radius-mixin.radius-full;
+      animation: spin 1s linear infinite;
+    }
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(var(--md-sys-color-surface-rgb), 0.8);
+      backdrop-filter: blur(2px);
+    }
+  }
+}
+
+// ============================================================================
+// MIXINS RESPONSIFS
+// ============================================================================
+
+/**
+ * Mixin pour les styles mobiles du dialog
+ */
+@mixin dialog-mobile {
+  @media #{dialog.$dialog-mobile-breakpoint} {
+    max-width: calc(100vw - 32px);
+    margin: 16px;
+    
+    // Sur mobile, centrer automatiquement
+    &[data-position="top-left"],
+    &[data-position="top-right"],
+    &[data-position="center-left"],
+    &[data-position="center-right"],
+    &[data-position="bottom-left"],
+    &[data-position="bottom-right"] {
+      left: 50% !important;
+      right: auto !important;
+      transform: translateX(-50%) scale(0.95) !important;
+      
+      &.dialog--open {
+        transform: translateX(-50%) scale(1) !important;
+      }
+    }
+  }
+  
+  .dialog-header {
+    padding: 16px 20px 0;
+    
+    .dialog-close {
+      width: 36px;
+      height: 36px;
+      font-size: 20px;
+    }
+  }
+  
+  .dialog-content {
+    padding: 12px 20px;
+  }
+  
+  .dialog-footer {
+    padding: dialog.$dialog-footer-padding-mobile;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+
+    .dialog-action-left,
+    .dialog-action-right {
+      width: auto;
+      justify-content: flex-end;
+    }
+
+    .dialog-action-right {
+      margin-left: auto;
+    }
+
+    .btn {
+      width: auto;
+    }
+  }
+}
+
+// ============================================================================
+// MIXINS POUR L'ACCESSIBILITÉ
+// ============================================================================
+
+/**
+ * Mixin pour le focus trap du dialog
+ */
+@mixin dialog-focus-trap {
+  &[aria-modal="true"] {
+    &:focus-within {
+      .dialog-container {
+        outline: 2px solid var(--md-sys-color-primary);
+        outline-offset: 2px;
+      }
+    }
+  }
+}
+
+/**
+ * Mixin pour les préférences de mouvement réduit
+ */
+@mixin dialog-reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    .dialog,
+    .dialog-overlay,
+    .dialog-container,
+    .dialog-footer .btn {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+}
+
+// ============================================================================
+// MIXINS UTILITAIRES
+// ============================================================================
+
+/**
+ * Mixin pour créer un dialog fullscreen (M3 full-screen dialog)
+ * @see https://m3.material.io/components/dialogs/guidelines
+ */
+@mixin dialog-fullscreen {
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+
+  .dialog-container {
+    @include radius-mixin.radius-none;
+    height: 100%;
+    max-height: none;
+    border-radius: 0;
+  }
+}
+
+/**
+ * Header toolbar fullscreen : close (gauche) + titre (centre) + action (droite)
+ */
+@mixin dialog-fullscreen-header {
+  padding: 0;
+  gap: 0;
+  align-items: stretch;
+
+  .dialog-header__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: dialog.$dialog-header-gap;
+    width: 100%;
+    min-height: dialog.$dialog-fullscreen-toolbar-height;
+    padding: 0 dialog.$dialog-fullscreen-header-side-padding;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  }
+
+  .dialog-header__leading,
+  .dialog-header__actions {
+    display: flex;
+    align-items: center;
+    gap: dialog.$dialog-footer-gap;
+    flex-shrink: 0;
+  }
+
+  .dialog-header__actions {
+    margin-left: auto;
+  }
+
+  .dialog-title,
+  h1, h2, h3, h4, h5, h6 {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+    @include typography-mixin.typography('title-large');
+    line-height: 1.25;
+    text-align: start;
+    // M3 : titre sur 2 lignes max en fullscreen
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/**
+ * Mixin pour créer un dialog compact
+ */
+@mixin dialog-compact {
+  .dialog-header {
+    padding: 16px 20px 0;
+  }
+  
+  .dialog-content {
+    padding: 12px 20px;
+  }
+  
+  .dialog-footer {
+    padding: 0 20px 16px;
+  }
+}
+
+/**
+ * Masque la scrollbar native du scroller (rail custom hors surface).
+ */
+@mixin dialog-scroller-hide-native-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+}
+
+/**
+ * Rail custom collé à l'extérieur de `.dialog-container`
+ * (même modèle navigation-rail / docs-layout-scrollbar).
+ */
+@mixin dialog-scrollbar {
+  position: absolute;
+  inset-inline-end: calc(-1 * var(--dialog-scrollbar-gutter, #{dialog.$dialog-scrollbar-gutter}));
+  z-index: 2;
+  width: var(--dialog-scrollbar-gutter, #{dialog.$dialog-scrollbar-gutter});
+  box-sizing: border-box;
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    opacity dialog.$dialog-scrollbar-fade-duration ease,
+    width 0.12s ease;
+
+  &.k3ui-scrollbar--internal {
+    inset-inline-end: 0;
+  }
+
+  &.is-needed {
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  &.is-hovering,
+  &.is-dragging {
+    width: calc(
+      var(--dialog-scrollbar-gutter, #{dialog.$dialog-scrollbar-gutter})
+      * var(--k3ui-scrollbar-enlarge-factor, 2)
+    );
+  }
+
+  @media (pointer: coarse) {
+    &.is-needed {
+      opacity: 1;
+    }
+  }
+}
+
+/**
+ * Thumb draggable du rail dialog.
+ * L’agrandissement hover/drag est géré par le parent `.dialog__scrollbar`
+ * (évite les sélecteurs cassés si le mixin est imbriqué sous `.dialog > …`).
+ */
+@mixin dialog-scrollbar-thumb {
+  position: absolute;
+  inset-inline-start: 50%;
+  width: var(--k3ui-scrollbar-thumb-width, #{dialog.$dialog-scrollbar-thumb-width});
+  min-height: dialog.$dialog-scrollbar-thumb-min-height;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: dialog.$dialog-scrollbar-thumb-color;
+  cursor: grab;
+  touch-action: none;
+  transition:
+    width 0.12s ease,
+    background-color 0.12s ease;
+
+  @media (pointer: coarse) {
+    width: calc(var(--k3ui-scrollbar-thumb-width, 6px));
+  }
+}
+
+/**
+ * États hover / drag du thumb (à imbriquer sous `.dialog__scrollbar`).
+ */
+@mixin dialog-scrollbar-thumb-active {
+  width: calc(
+    var(--k3ui-scrollbar-thumb-width, #{dialog.$dialog-scrollbar-thumb-width})
+    * var(--k3ui-scrollbar-enlarge-factor, 2)
+  );
+}
+
+// ============================================================================
+// ANIMATIONS KEYFRAMES
+// ============================================================================
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

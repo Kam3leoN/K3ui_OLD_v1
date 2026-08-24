@@ -1,0 +1,331 @@
+/**
+ * @fileoverview Mixins pour ButtonIcon Material Design 3 Expressive
+ * @description Bouton d'action (icon-only) — Standard, Filled, Filled selected, Tonal, Outlined
+ * @see https://m3.material.io/components/icon-buttons/overview
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/button.token' as button;
+@use '../tokens/button-icon.token' as bitokens;
+@use '../tokens/state.token' as state;
+@use '../tokens/theme.token' as theme;
+@use '../tokens/opacity.token' as opacity;
+@use '../tokens/elevation.token' as elevation;
+@use 'button.mixin' as btn;
+@use 'touch.mixin' as touch;
+@use 'state.mixin' as statemix;
+
+// ============================================================================
+// VARIANTE STANDARD (transparent, sans fond)
+// ============================================================================
+
+@mixin btn-icon-standard {
+  @include statemix.k3-state-layer('on-surface-variant', inherit);
+
+  background-color: transparent !important;
+  color: var(--md-sys-color-on-surface, #1c1b1f) !important;
+  box-shadow: none !important;
+  border: none !important;
+
+  &:focus-visible:not(:disabled) {
+    outline: 2px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.2));
+    outline-offset: 2px;
+  }
+
+  &:disabled,
+  &[disabled] {
+    background-color: transparent !important;
+    color: rgba(var(--md-sys-color-on-surface-rgb), 0.38) !important;
+    cursor: not-allowed;
+    pointer-events: none;
+
+    &::before {
+      opacity: 0;
+    }
+  }
+}
+
+// ============================================================================
+// VARIANTE FILLED SELECTED (primary container)
+// ============================================================================
+
+@mixin btn-icon-filled-selected {
+  background-color: var(--md-sys-color-primary-container, theme.$md-sys-color-primary-container-light) !important;
+  color: var(--md-sys-color-on-primary-container, theme.$md-sys-color-on-primary-container-light) !important;
+  box-shadow: none;
+  border: none;
+
+  @include btn.btn-state-layer;
+
+  &::before {
+    background-color: var(--md-sys-color-on-primary-container, theme.$md-sys-color-on-primary-container-light);
+  }
+
+  &:focus-visible:not(:disabled) {
+    box-shadow: 0 0 0 3px rgba(var(--md-sys-color-primary-container-rgb), 0.3);
+    &::before { opacity: state.state-opacity('focus'); }
+  }
+
+  &:active:not(:disabled)::before {
+    opacity: state.state-opacity('pressed');
+  }
+
+  &:disabled,
+  &[disabled] {
+    background-color: rgba(var(--md-sys-color-on-surface-rgb), opacity.opacity-surface('standard')) !important;
+    color: rgba(var(--md-sys-color-on-surface-rgb), opacity.opacity-state('disabled')) !important;
+    cursor: state.state-cursor('disabled');
+    &::before { opacity: 0; }
+  }
+}
+
+// ============================================================================
+// TAILLES ICON BUTTON (xs, sm, md, lg, xl) avec largeurs narrow / wide
+// ============================================================================
+
+@mixin btn-icon-size-xs {
+  width: bitokens.$md-comp-icon-button-xs-size;
+  height: bitokens.$md-comp-icon-button-xs-size;
+  min-width: bitokens.$md-comp-icon-button-xs-size;
+  min-height: bitokens.$md-comp-icon-button-xs-size;
+  padding: 0;
+  border-radius: 9999px; /* même valeur que narrow/wide → transition uniquement width/height, pas de glitch */
+  // Si l’icône a un attribut size, les dimensions viennent des règles i[name][size] (icon.module) — ne pas écraser avec le slot bouton.
+  .btn-icon__icon:not(:has(i[name][size])),
+  .button-icon__icon:not(:has(i[name][size])) {
+    width: bitokens.$md-comp-icon-button-xs-icon-size !important;
+    height: bitokens.$md-comp-icon-button-xs-icon-size !important;
+    font-size: bitokens.$md-comp-icon-button-xs-icon-size !important;
+  }
+  i[name]:not([size]),
+  i[name]:not([size]) svg {
+    width: bitokens.$md-comp-icon-button-xs-icon-size !important;
+    height: bitokens.$md-comp-icon-button-xs-icon-size !important;
+    font-size: bitokens.$md-comp-icon-button-xs-icon-size !important;
+  }
+  &.btn-icon--narrow,
+  &.button-icon--narrow {
+    width: bitokens.$md-comp-icon-button-xs-narrow-width !important;
+    height: bitokens.$md-comp-icon-button-xs-narrow-height !important;
+    min-width: bitokens.$md-comp-icon-button-xs-narrow-width !important;
+    min-height: bitokens.$md-comp-icon-button-xs-narrow-height !important;
+    border-radius: 9999px !important;
+  }
+  &.btn-icon--wide,
+  &.button-icon--wide {
+    width: bitokens.$md-comp-icon-button-xs-wide-width !important;
+    height: bitokens.$md-comp-icon-button-xs-wide-height !important;
+    min-width: bitokens.$md-comp-icon-button-xs-wide-width !important;
+    min-height: bitokens.$md-comp-icon-button-xs-wide-height !important;
+    border-radius: 9999px !important;
+  }
+  &.btn-icon--square,
+  &.button-icon--square {
+    border-radius: button.$md-comp-button-square-initial-xs-radius;
+  }
+
+  &:not(.btn-icon--narrow):not(.btn-icon--wide):not(.button-icon--narrow):not(.button-icon--wide) {
+    @include touch.touch-target-center-padding(bitokens.$md-comp-icon-button-xs-size);
+  }
+
+  &.btn-icon--narrow,
+  &.button-icon--narrow {
+    @include touch.touch-target-center-padding(
+      bitokens.$md-comp-icon-button-xs-narrow-width,
+      bitokens.$md-comp-icon-button-xs-narrow-height
+    );
+  }
+
+  &.btn-icon--wide,
+  &.button-icon--wide {
+    @include touch.touch-target-center-padding(
+      bitokens.$md-comp-icon-button-xs-wide-width,
+      bitokens.$md-comp-icon-button-xs-wide-height
+    );
+  }
+}
+
+@mixin btn-icon-size-sm {
+  width: bitokens.$md-comp-icon-button-sm-size;
+  height: bitokens.$md-comp-icon-button-sm-size;
+  min-width: bitokens.$md-comp-icon-button-sm-size;
+  min-height: bitokens.$md-comp-icon-button-sm-size;
+  padding: 0;
+  border-radius: 9999px; /* même valeur que narrow/wide → transition uniquement width/height, pas de glitch */
+  .btn-icon__icon:not(:has(i[name][size])),
+  .button-icon__icon:not(:has(i[name][size])) {
+    width: bitokens.$md-comp-icon-button-sm-icon-size !important;
+    height: bitokens.$md-comp-icon-button-sm-icon-size !important;
+    font-size: bitokens.$md-comp-icon-button-sm-icon-size !important;
+  }
+  i[name]:not([size]),
+  i[name]:not([size]) svg {
+    width: bitokens.$md-comp-icon-button-sm-icon-size !important;
+    height: bitokens.$md-comp-icon-button-sm-icon-size !important;
+    font-size: bitokens.$md-comp-icon-button-sm-icon-size !important;
+  }
+  &.btn-icon--narrow,
+  &.button-icon--narrow {
+    width: bitokens.$md-comp-icon-button-sm-narrow-width !important;
+    height: bitokens.$md-comp-icon-button-sm-narrow-height !important;
+    min-width: bitokens.$md-comp-icon-button-sm-narrow-width !important;
+    min-height: bitokens.$md-comp-icon-button-sm-narrow-height !important;
+    border-radius: 9999px !important;
+  }
+  &.btn-icon--wide,
+  &.button-icon--wide {
+    width: bitokens.$md-comp-icon-button-sm-wide-width !important;
+    height: bitokens.$md-comp-icon-button-sm-wide-height !important;
+    min-width: bitokens.$md-comp-icon-button-sm-wide-width !important;
+    min-height: bitokens.$md-comp-icon-button-sm-wide-height !important;
+    border-radius: 9999px !important;
+  }
+  &.btn-icon--square,
+  &.button-icon--square {
+    border-radius: button.$md-comp-button-square-initial-sm-radius;
+  }
+
+  &:not(.btn-icon--narrow):not(.btn-icon--wide):not(.button-icon--narrow):not(.button-icon--wide) {
+    @include touch.touch-target-center-padding(bitokens.$md-comp-icon-button-sm-size);
+  }
+
+  &.btn-icon--narrow,
+  &.button-icon--narrow {
+    @include touch.touch-target-center-padding(
+      bitokens.$md-comp-icon-button-sm-narrow-width,
+      bitokens.$md-comp-icon-button-sm-narrow-height
+    );
+  }
+
+  &.btn-icon--wide,
+  &.button-icon--wide {
+    @include touch.touch-target-center-padding(
+      bitokens.$md-comp-icon-button-sm-wide-width,
+      bitokens.$md-comp-icon-button-sm-wide-height
+    );
+  }
+}
+
+@mixin btn-icon-size-md {
+  width: bitokens.$md-comp-icon-button-md-size;
+  height: bitokens.$md-comp-icon-button-md-size;
+  min-width: bitokens.$md-comp-icon-button-md-size;
+  min-height: bitokens.$md-comp-icon-button-md-size;
+  padding: 0;
+  border-radius: 9999px; /* même valeur que narrow/wide → transition uniquement width/height, pas de glitch */
+  .btn-icon__icon:not(:has(i[name][size])),
+  .button-icon__icon:not(:has(i[name][size])) {
+    width: bitokens.$md-comp-icon-button-md-icon-size !important;
+    height: bitokens.$md-comp-icon-button-md-icon-size !important;
+    font-size: bitokens.$md-comp-icon-button-md-icon-size !important;
+  }
+  i[name]:not([size]),
+  i[name]:not([size]) svg {
+    width: bitokens.$md-comp-icon-button-md-icon-size !important;
+    height: bitokens.$md-comp-icon-button-md-icon-size !important;
+    font-size: bitokens.$md-comp-icon-button-md-icon-size !important;
+  }
+  &.btn-icon--narrow,
+  &.button-icon--narrow {
+    width: bitokens.$md-comp-icon-button-md-narrow-width !important;
+    height: bitokens.$md-comp-icon-button-md-narrow-height !important;
+    min-width: bitokens.$md-comp-icon-button-md-narrow-width !important;
+    min-height: bitokens.$md-comp-icon-button-md-narrow-height !important;
+    border-radius: 9999px !important;
+  }
+  &.btn-icon--wide,
+  &.button-icon--wide {
+    width: bitokens.$md-comp-icon-button-md-wide-width !important;
+    height: bitokens.$md-comp-icon-button-md-wide-height !important;
+    min-width: bitokens.$md-comp-icon-button-md-wide-width !important;
+    min-height: bitokens.$md-comp-icon-button-md-wide-height !important;
+    border-radius: 9999px !important;
+  }
+  &.btn-icon--square,
+  &.button-icon--square {
+    border-radius: button.$md-comp-button-square-initial-md-radius;
+  }
+}
+
+@mixin btn-icon-size-lg {
+  width: bitokens.$md-comp-icon-button-lg-size;
+  height: bitokens.$md-comp-icon-button-lg-size;
+  min-width: bitokens.$md-comp-icon-button-lg-size;
+  min-height: bitokens.$md-comp-icon-button-lg-size;
+  padding: 0;
+  border-radius: 9999px; /* même valeur que narrow/wide → transition uniquement width/height, pas de glitch */
+  .btn-icon__icon:not(:has(i[name][size])),
+  .button-icon__icon:not(:has(i[name][size])) {
+    width: bitokens.$md-comp-icon-button-lg-icon-size !important;
+    height: bitokens.$md-comp-icon-button-lg-icon-size !important;
+    font-size: bitokens.$md-comp-icon-button-lg-icon-size !important;
+  }
+  i[name]:not([size]),
+  i[name]:not([size]) svg {
+    width: bitokens.$md-comp-icon-button-lg-icon-size !important;
+    height: bitokens.$md-comp-icon-button-lg-icon-size !important;
+    font-size: bitokens.$md-comp-icon-button-lg-icon-size !important;
+  }
+  &.btn-icon--narrow,
+  &.button-icon--narrow {
+    width: bitokens.$md-comp-icon-button-lg-narrow-width !important;
+    height: bitokens.$md-comp-icon-button-lg-narrow-height !important;
+    min-width: bitokens.$md-comp-icon-button-lg-narrow-width !important;
+    min-height: bitokens.$md-comp-icon-button-lg-narrow-height !important;
+    border-radius: 9999px !important;
+  }
+  &.btn-icon--wide,
+  &.button-icon--wide {
+    width: bitokens.$md-comp-icon-button-lg-wide-width !important;
+    height: bitokens.$md-comp-icon-button-lg-wide-height !important;
+    min-width: bitokens.$md-comp-icon-button-lg-wide-width !important;
+    min-height: bitokens.$md-comp-icon-button-lg-wide-height !important;
+    border-radius: 9999px !important;
+  }
+  &.btn-icon--square,
+  &.button-icon--square {
+    border-radius: button.$md-comp-button-square-initial-lg-radius;
+  }
+}
+
+@mixin btn-icon-size-xl {
+  width: bitokens.$md-comp-icon-button-xl-size;
+  height: bitokens.$md-comp-icon-button-xl-size;
+  min-width: bitokens.$md-comp-icon-button-xl-size;
+  min-height: bitokens.$md-comp-icon-button-xl-size;
+  padding: 0;
+  border-radius: 9999px; /* même valeur que narrow/wide → transition uniquement width/height, pas de glitch */
+  .btn-icon__icon:not(:has(i[name][size])),
+  .button-icon__icon:not(:has(i[name][size])) {
+    width: bitokens.$md-comp-icon-button-xl-icon-size !important;
+    height: bitokens.$md-comp-icon-button-xl-icon-size !important;
+    font-size: bitokens.$md-comp-icon-button-xl-icon-size !important;
+  }
+  i[name]:not([size]),
+  i[name]:not([size]) svg {
+    width: bitokens.$md-comp-icon-button-xl-icon-size !important;
+    height: bitokens.$md-comp-icon-button-xl-icon-size !important;
+    font-size: bitokens.$md-comp-icon-button-xl-icon-size !important;
+  }
+  &.btn-icon--narrow,
+  &.button-icon--narrow {
+    width: bitokens.$md-comp-icon-button-xl-narrow-width !important;
+    height: bitokens.$md-comp-icon-button-xl-narrow-height !important;
+    min-width: bitokens.$md-comp-icon-button-xl-narrow-width !important;
+    min-height: bitokens.$md-comp-icon-button-xl-narrow-height !important;
+    border-radius: 9999px !important;
+  }
+  &.btn-icon--wide,
+  &.button-icon--wide {
+    width: bitokens.$md-comp-icon-button-xl-wide-width !important;
+    height: bitokens.$md-comp-icon-button-xl-wide-height !important;
+    min-width: bitokens.$md-comp-icon-button-xl-wide-width !important;
+    min-height: bitokens.$md-comp-icon-button-xl-wide-height !important;
+    border-radius: 9999px !important;
+  }
+  &.btn-icon--square,
+  &.button-icon--square {
+    border-radius: button.$md-comp-button-square-initial-xl-radius;
+  }
+}

@@ -1,0 +1,287 @@
+/**
+ * @fileoverview Module Halo
+ * @description Effet de lumière animée autour de n'importe quel élément
+ * @author K3UI Team
+ * @version 1.0.0
+ *
+ * Usage :
+ *   <div class="halo" data-variant="rainbow" data-size="lg" style="--halo-radius:12px">
+ *     <span class="halo__layers" aria-hidden="true">
+ *       <span class="halo__layer"></span>
+ *       <span class="halo__layer halo__layer--near"></span>
+ *       <span class="halo__layer halo__layer--far"></span>
+ *     </span>
+ *     <div class="card">…</div>
+ *   </div>
+ *
+ *   <!-- ou sur n'importe quel composant K3UI -->
+ *   <button class="btn" data-halo data-halo-variant="rainbow">Action</button>
+ *
+ * Attributs : data-variant = default | dual | rainbow | glow | pulse
+ *             data-size    = xs | sm | md | lg | xl
+ *             data-direction = cw | ccw
+ *             data-trigger = always | hover
+ *             data-paused  = true
+ *             data-block   = true
+ *
+ * Variables : --halo-color --halo-radius --halo-duration --halo-padding
+ *             --halo-blur --halo-blur-far --halo-opacity --halo-opacity-far
+ */
+
+@use "./halo.token" as halo-token;
+@use "./halo.mixin" as halo-mixin;
+
+@property --halo-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.halo,
+k3ui-halo {
+  @include halo-mixin.halo-container();
+
+  &[data-block="true"] {
+    display: block;
+  }
+
+  > .halo__layers {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity var(--halo-fade) ease;
+  }
+
+  .halo__layer {
+    @include halo-mixin.halo-layer-base();
+  }
+
+  .halo__layer--near {
+    opacity: var(--halo-opacity);
+    filter: blur(var(--halo-blur));
+  }
+
+  .halo__layer--far {
+    opacity: var(--halo-opacity-far);
+    filter: blur(var(--halo-blur-far));
+  }
+
+  // ---- tailles ----
+  &[data-size="xs"] {
+    --halo-padding: #{halo-token.$halo-size-xs-padding};
+    --halo-blur: #{halo-token.$halo-size-xs-blur};
+    --halo-blur-far: #{halo-token.$halo-size-xs-blur-far};
+  }
+
+  &[data-size="sm"] {
+    --halo-padding: #{halo-token.$halo-size-sm-padding};
+    --halo-blur: #{halo-token.$halo-size-sm-blur};
+    --halo-blur-far: #{halo-token.$halo-size-sm-blur-far};
+  }
+
+  // Petites tailles + filled : halo clair sur fond foncé
+  &[data-size="xs"],
+  &[data-size="sm"] {
+    &:has(.btn--filled, .button--filled, .btn--selected.btn--filled, .button--selected.button--filled) {
+      --halo-color: var(--md-sys-color-on-primary);
+      --halo-opacity: 0.92;
+      --halo-opacity-far: 0.48;
+    }
+  }
+
+  &[data-size="md"] {
+    --halo-padding: #{halo-token.$halo-size-md-padding};
+    --halo-blur: #{halo-token.$halo-size-md-blur};
+    --halo-blur-far: #{halo-token.$halo-size-md-blur-far};
+  }
+
+  &[data-size="lg"] {
+    --halo-padding: #{halo-token.$halo-size-lg-padding};
+    --halo-blur: #{halo-token.$halo-size-lg-blur};
+    --halo-blur-far: #{halo-token.$halo-size-lg-blur-far};
+  }
+
+  &[data-size="xl"] {
+    --halo-padding: #{halo-token.$halo-size-xl-padding};
+    --halo-blur: #{halo-token.$halo-size-xl-blur};
+    --halo-blur-far: #{halo-token.$halo-size-xl-blur-far};
+  }
+
+  // ---- variantes ----
+  &[data-variant="dual"] .halo__layer {
+    background-image: repeating-conic-gradient(
+      from var(--halo-angle),
+      transparent 0%,
+      transparent 40%,
+      var(--halo-color) 50%
+    );
+  }
+
+  &[data-variant="rainbow"] .halo__layer {
+    background-image: conic-gradient(
+      from var(--halo-angle) in oklch longer hue,
+      oklch(0.8 0.15 0deg),
+      oklch(0.8 0.15 360deg)
+    );
+  }
+
+  &[data-variant="glow"] .halo__layer {
+    animation: none;
+    background-image: radial-gradient(
+      closest-corner at center,
+      var(--halo-color) 0%,
+      transparent 90%
+    );
+  }
+
+  &[data-variant="glow"] .halo__layer--near {
+    animation: halo-breathe-near var(--halo-duration) ease-out infinite;
+  }
+
+  &[data-variant="glow"] .halo__layer--far {
+    animation: halo-breathe-far var(--halo-duration) ease-out infinite;
+  }
+
+  &[data-variant="pulse"] .halo__layer {
+    --halo-beat: 1;
+    background-image: none;
+    background-color: var(--halo-color);
+    filter: blur(var(--halo-blur));
+    animation: halo-pulse calc(var(--halo-duration) / 2) ease-in-out infinite;
+  }
+
+  &[data-variant="pulse"] .halo__layer--near {
+    --halo-beat: var(--halo-opacity);
+    filter: blur(calc(var(--halo-blur) * 2));
+  }
+
+  &[data-variant="pulse"] .halo__layer--far {
+    --halo-beat: var(--halo-opacity-far);
+    filter: blur(var(--halo-blur-far));
+  }
+
+  &[data-direction="ccw"] .halo__layer {
+    animation-direction: reverse;
+  }
+
+  &[data-trigger="hover"] > .halo__layers {
+    opacity: 0;
+  }
+
+  &[data-trigger="hover"]:hover > .halo__layers,
+  &[data-trigger="hover"]:focus-within > .halo__layers {
+    opacity: 1;
+  }
+
+  &[data-paused="true"] .halo__layer {
+    animation-play-state: paused;
+  }
+
+  // ---- couleur contextuelle (tonal MD3 selon l'enfant) ----
+  &:has(.btn--filled, .button--filled, .btn--selected.btn--filled, .button--selected.button--filled) {
+    --halo-color: var(--md-sys-color-primary-container);
+  }
+
+  &:has(.btn--tonal, .button--tonal) {
+    --halo-color: var(--md-sys-color-primary);
+    --halo-opacity: 0.85;
+    --halo-opacity-far: 0.4;
+  }
+
+  &:has(.btn--elevated.btn--selected, .button--elevated.button--selected) {
+    --halo-color: var(--md-sys-color-primary-container);
+  }
+
+  &:has(.btn--elevated.btn--unselected, .button--elevated.button--unselected) {
+    --halo-color: var(--md-sys-color-primary);
+  }
+
+  &:has(.badge) {
+    --halo-color: var(--md-sys-color-primary-container);
+  }
+
+  &:has(.card--filled, .card) {
+    --halo-color: var(--md-sys-color-primary-container);
+  }
+
+  &:has(.chip, .chips) {
+    --halo-color: var(--md-sys-color-secondary-container);
+  }
+
+  &:has(.alert) {
+    --halo-color: var(--md-sys-color-error-container);
+  }
+}
+
+@keyframes halo-spin {
+  to {
+    --halo-angle: 360deg;
+  }
+}
+
+@keyframes halo-pulse {
+  0%,
+  100% {
+    opacity: calc(var(--halo-beat) * 0.15);
+  }
+
+  50% {
+    opacity: var(--halo-beat);
+  }
+}
+
+@keyframes halo-breathe-near {
+  20%,
+  80% {
+    opacity: var(--halo-opacity);
+    filter: blur(var(--halo-blur));
+  }
+
+  50% {
+    opacity: 1;
+    filter: blur(calc(var(--halo-blur) * 3));
+  }
+}
+
+@keyframes halo-breathe-far {
+  20%,
+  80% {
+    opacity: var(--halo-opacity-far);
+    filter: blur(var(--halo-blur-far));
+  }
+
+  50% {
+    opacity: calc(var(--halo-opacity-far) * 2);
+    filter: blur(calc(var(--halo-blur-far) * 1.5));
+  }
+}
+
+@supports not (background-image: conic-gradient(from 0deg in oklch longer hue, red, blue)) {
+  .halo[data-variant="rainbow"] .halo__layer,
+  k3ui-halo[data-variant="rainbow"] .halo__layer {
+    background-image: conic-gradient(
+      from var(--halo-angle),
+      #ff5d5d,
+      #ffd75d,
+      #5dff9b,
+      #5dd7ff,
+      #a95dff,
+      #ff5d5d
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .halo .halo__layer,
+  k3ui-halo .halo__layer {
+    animation: none;
+  }
+
+  .halo[data-variant="pulse"] .halo__layer,
+  k3ui-halo[data-variant="pulse"] .halo__layer {
+    opacity: calc(var(--halo-beat) * 0.7);
+  }
+}

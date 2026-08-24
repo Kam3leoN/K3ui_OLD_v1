@@ -1,0 +1,115 @@
+/**
+ * @file collapse.module.scss
+ * @description Module Collapse — accordion M3 Expressive
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/collapse.token' as collapse;
+@use '../mixins/collapse.mixin' as collapse-mixin;
+@use '../mixins/state.mixin' as state;
+
+.collapse {
+  @include collapse-mixin.collapse-base;
+
+  &__item {
+    @include collapse-mixin.collapse-item;
+  }
+
+  &__header {
+    @include collapse-mixin.collapse-header;
+    @include state.state-focus-visible;
+
+    &--open {
+      background: collapse.$collapse-header-bg-open;
+    }
+  }
+
+  &__leading {
+    @include collapse-mixin.collapse-slot;
+    font-size: collapse.$collapse-leading-font-size;
+
+    i,
+    .icon,
+    svg {
+      width: collapse.$collapse-slot-size;
+      height: collapse.$collapse-slot-size;
+      display: block;
+    }
+  }
+
+  &__label {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__trailing {
+    @include collapse-mixin.collapse-slot;
+
+    i,
+    .icon,
+    svg {
+      width: collapse.$collapse-chevron-size;
+      height: collapse.$collapse-chevron-size;
+      display: block;
+    }
+  }
+
+  &__chevron {
+    width: collapse.$collapse-chevron-size;
+    height: collapse.$collapse-chevron-size;
+    font-size: collapse.$collapse-chevron-size;
+    transition: transform collapse.$collapse-radius-duration collapse.$collapse-radius-easing;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  }
+
+  &__item--open &__chevron {
+    transform: rotate(180deg);
+  }
+
+  &__panel {
+    @include collapse-mixin.collapse-panel;
+
+    &--open {
+      grid-template-rows: 1fr;
+    }
+  }
+
+  &__clip {
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  &__body {
+    @include collapse-mixin.collapse-body;
+
+    &--visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    &--closing {
+      transition:
+        opacity collapse.$collapse-fade-out-duration collapse.$collapse-fade-out-easing,
+        transform collapse.$collapse-fade-out-duration collapse.$collapse-fade-out-easing,
+        border-radius collapse.$collapse-radius-duration collapse.$collapse-radius-easing;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collapse {
+    &__header,
+    &__chevron,
+    &__panel,
+    &__body {
+      transition-duration: 0.01ms !important;
+      transition-delay: 0ms !important;
+    }
+  }
+}

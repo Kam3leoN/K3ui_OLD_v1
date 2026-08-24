@@ -1,0 +1,18 @@
+/**
+ * @fileoverview Tokens de design pour Tilt
+ * @description Variables pour l'effet 3D parallax Tilt
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+/** Perspective 3D du conteneur */
+$tilt-perspective: 1200px;
+
+/** Durée de transition par défaut (ms) */
+$tilt-duration: 300ms;
+
+/** Opacité du reflet (highlight) */
+$tilt-highlight-opacity: 0.25;
+
+/** Flou de l'ombre portée */
+$tilt-shadow-blur: 30px;

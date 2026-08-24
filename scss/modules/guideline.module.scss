@@ -1,0 +1,103 @@
+/**
+ * @fileoverview Module Guideline (Do / Don't)
+ * @description Classes CSS pour les cartes de bonnes pratiques Material Design 3
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/guideline.token' as tokens;
+@use '../mixins/guideline.mixin' as mixin;
+
+// ============================================================================
+// GRILLE
+// ============================================================================
+
+.guideline-grid {
+    @include mixin.guideline-grid;
+}
+
+// ============================================================================
+// CARTE
+// ============================================================================
+
+.guideline {
+    display: flex;
+    flex-direction: column;
+
+    &__visual {
+        @include mixin.guideline-root;
+    }
+
+    &__media {
+        @include mixin.guideline-media;
+    }
+
+    &__label {
+        @include mixin.guideline-label(
+            tokens.$guideline-do-label-fg,
+            tokens.$guideline-do-label-bg
+        );
+    }
+
+    &__text {
+        @include mixin.guideline-text;
+    }
+
+    &__list {
+        margin: tokens.$guideline-text-margin-top 0 0;
+        padding-left: 1.25rem;
+        color: tokens.$guideline-text-color;
+
+        li + li {
+            margin-top: 0.35rem;
+        }
+    }
+
+    // --------------------------------------------------------------------------
+    // DO
+    // --------------------------------------------------------------------------
+    &--do {
+        .guideline__media {
+            @include mixin.guideline-media(tokens.$guideline-do-media-bg);
+        }
+
+        .guideline__label {
+            @include mixin.guideline-label(
+                tokens.$guideline-do-label-fg,
+                tokens.$guideline-do-label-bg
+            );
+        }
+    }
+
+    // --------------------------------------------------------------------------
+    // DON'T
+    // --------------------------------------------------------------------------
+    &--dont {
+        .guideline__media {
+            @include mixin.guideline-media(tokens.$guideline-dont-media-bg);
+        }
+
+        .guideline__label {
+            @include mixin.guideline-label(
+                tokens.$guideline-dont-label-fg,
+                tokens.$guideline-dont-label-bg
+            );
+        }
+    }
+
+    // --------------------------------------------------------------------------
+    // CAUTION (amber / warning)
+    // --------------------------------------------------------------------------
+    &--caution {
+        .guideline__media {
+            @include mixin.guideline-media(tokens.$guideline-caution-media-bg);
+        }
+
+        .guideline__label {
+            @include mixin.guideline-label(
+                tokens.$guideline-caution-label-fg,
+                tokens.$guideline-caution-label-bg
+            );
+        }
+    }
+}

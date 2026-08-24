@@ -1,0 +1,70 @@
+/**
+ * @fileoverview Mixins pour Autocomplete
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/autocomplete.token' as autocomplete;
+@use '../mixins/elevation.mixin' as elevation-mixin;
+@use '../mixins/reset.mixin' as reset;
+
+/**
+ * Panneau flottant des suggestions
+ */
+@mixin autocomplete-panel {
+  position: fixed;
+  z-index: autocomplete.$autocomplete-z-index;
+  min-width: autocomplete.$autocomplete-panel-min-width;
+  max-height: autocomplete.$autocomplete-panel-max-height;
+  overflow: auto;
+  margin: 0;
+  padding: autocomplete.$autocomplete-panel-gap 0;
+  border-radius: autocomplete.$autocomplete-panel-radius;
+  background-color: autocomplete.$autocomplete-panel-bg;
+  color: autocomplete.$autocomplete-option-color;
+  box-sizing: border-box;
+  @include elevation-mixin.elevation(2);
+  transition: opacity autocomplete.$autocomplete-transition-duration
+    autocomplete.$autocomplete-transition-timing;
+
+  &[hidden] {
+    display: none !important;
+  }
+}
+
+/**
+ * Option de suggestion
+ */
+@mixin autocomplete-option {
+  display: flex;
+  align-items: center;
+  min-height: autocomplete.$autocomplete-option-min-height;
+  padding: autocomplete.$autocomplete-option-padding-y autocomplete.$autocomplete-option-padding-x;
+  margin: 0;
+  list-style: none;
+  cursor: pointer;
+  color: autocomplete.$autocomplete-option-color;
+  box-sizing: border-box;
+
+  &:hover:not(.autocomplete__option--disabled) {
+    background-color: autocomplete.$autocomplete-option-hover-bg;
+  }
+
+  &--active:not(.autocomplete__option--disabled) {
+    background-color: autocomplete.$autocomplete-option-active-bg;
+    color: autocomplete.$autocomplete-option-active-color;
+  }
+
+  &--disabled {
+    opacity: autocomplete.$autocomplete-option-disabled-opacity;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+/**
+ * Status screen-reader
+ */
+@mixin autocomplete-status-sr {
+  @include reset.visually-hidden;
+}

@@ -1,0 +1,100 @@
+/**
+ * @fileoverview Module Bubble
+ * @description Classes CSS pour les bulles de conversation
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/bubble.token' as bubble;
+@use '../mixins/bubble.mixin' as bubble-mixin;
+
+.bubble {
+  @include bubble-mixin.bubble-base;
+
+  &__image {
+    @include bubble-mixin.bubble-image;
+  }
+
+  &__header {
+    @include bubble-mixin.bubble-meta;
+    grid-row-start: 1;
+  }
+
+  &__footer {
+    @include bubble-mixin.bubble-meta;
+    grid-row-start: 3;
+  }
+
+  &__body {
+    @include bubble-mixin.bubble-body;
+
+    &--primary {
+      @include bubble-mixin.bubble-body-color(
+        var(--md-sys-color-primary),
+        var(--md-sys-color-on-primary)
+      );
+    }
+
+    &--secondary {
+      @include bubble-mixin.bubble-body-color(
+        var(--md-sys-color-secondary),
+        var(--md-sys-color-on-secondary)
+      );
+    }
+
+    &--accent {
+      @include bubble-mixin.bubble-body-color(
+        var(--md-sys-color-tertiary),
+        var(--md-sys-color-on-tertiary)
+      );
+    }
+
+    &--neutral {
+      @include bubble-mixin.bubble-body-color(
+        var(--md-sys-color-inverse-surface),
+        var(--md-sys-color-inverse-on-surface)
+      );
+    }
+
+    &--info {
+      @include bubble-mixin.bubble-body-color(
+        var(--md-sys-color-info),
+        var(--md-sys-color-on-info)
+      );
+    }
+
+    &--success {
+      @include bubble-mixin.bubble-body-color(
+        var(--md-sys-color-success),
+        var(--md-sys-color-on-success)
+      );
+    }
+
+    &--warning {
+      @include bubble-mixin.bubble-body-color(
+        var(--md-sys-color-warning),
+        var(--md-sys-color-on-warning)
+      );
+    }
+
+    &--error {
+      @include bubble-mixin.bubble-body-color(
+        var(--md-sys-color-error),
+        var(--md-sys-color-on-error)
+      );
+    }
+  }
+
+  &--start {
+    @include bubble-mixin.bubble-start;
+  }
+
+  &--end {
+    @include bubble-mixin.bubble-end;
+  }
+}
+
+.bubble__footer--muted,
+.bubble__header time {
+  opacity: bubble.$bubble-meta-opacity;
+}

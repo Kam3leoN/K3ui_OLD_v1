@@ -1,0 +1,42 @@
+/**
+ * Mixins pour le composant Hero
+ * Fournit des mixins réutilisables pour styliser les sections d'en-tête
+ */
+
+@use '../tokens/hero.token' as hero;
+@use '../tokens/spacing.token' as spacing;
+@use '../tokens/typography.token' as typography;
+@use '../tokens/color.token' as color;
+@use '../mixins/elevation.mixin' as elevation;
+
+/**
+ * Mixin de base pour le composant Hero
+ * Applique les styles fondamentaux du hero avec style cadre bleu
+ */
+@mixin hero-base {
+  padding: hero.$k3ui-hero-padding-top hero.$k3ui-hero-padding-right 
+           hero.$k3ui-hero-padding-bottom hero.$k3ui-hero-padding-left;
+  background: hero.$k3ui-hero-background;
+  color: hero.$k3ui-hero-text-color;
+  width: calc(100% - 4rem);
+  display: block;
+  position: relative;
+  border-radius: hero.$k3ui-hero-border-radius;
+  @include elevation.elevation(hero.$k3ui-hero-elevation);
+  margin: 2rem;
+}
+
+// Typographie gérée par le système typography.module.scss existant
+
+/**
+ * Mixin responsive pour le hero
+ * Applique les styles adaptatifs selon la taille d'écran
+ */
+@mixin hero-responsive {
+  @media (max-width: hero.$k3ui-hero-mobile-breakpoint) {
+    padding-top: hero.$k3ui-hero-padding-top-mobile;
+    padding-bottom: hero.$k3ui-hero-padding-bottom-mobile;
+  }
+}
+
+// Les mixins de layout sont gérés par le système layout.module.scss existant

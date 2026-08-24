@@ -1,0 +1,154 @@
+/**
+ * @fileoverview Tokens Button Groups — Material Design 3 You Expressive
+ * @see https://m3.material.io/components/button-groups/specs
+ * @author K3UI Team
+ * @version 3.1.0
+ */
+
+@use 'motion.token' as motion;
+@use 'radius.token' as radius;
+@use 'typography.token' as typo;
+@use 'button.token' as button;
+
+// ============================================================================
+// GAP — standard constant 12dp ; connected = 2dp
+// ============================================================================
+
+/** Standard : gap constant 12dp (toutes tailles, M3 Expressive) */
+$button-groups-gap-standard: 12px !default;
+
+/** Connected : inner padding 2dp entre segments (M3) */
+$button-groups-gap-connected: 2px !default;
+
+/** Connected : inner corner par taille (M3 Expressive — junction entre segments) */
+$button-groups-connected-inner-xs: 4px !default;
+$button-groups-connected-inner-sm: 8px !default;
+$button-groups-connected-inner-md: 8px !default;
+$button-groups-connected-inner-lg: 16px !default;
+$button-groups-connected-inner-xl: 20px !default;
+
+// ============================================================================
+// CORNER RADIUS — square standard / inner / morph (shape scale M3)
+// ============================================================================
+
+$button-groups-corner-xs: 4px !default;
+$button-groups-corner-sm: 8px !default;
+$button-groups-corner-md: 12px !default;
+$button-groups-corner-lg: 16px !default;
+$button-groups-corner-xl: 28px !default;
+
+/** Connected square — outer corner = shape large */
+$button-groups-connected-outer-square: radius.$md-sys-shape-corner-large !default;
+
+/** Pill morph standard round / square→pill — 9999px (connected round utilise cap height/2) */
+$button-groups-pill-radius: 9999px !default;
+
+$button-groups-min-touch-target: 48px !default;
+$button-groups-expanded-ratio: 0.15 !default;
+
+/** Réduction de hauteur par palier de density (0, -1, -2, -3) — 4dp par niveau */
+$button-groups-density-step: 4px !default;
+$button-groups-density-min-height: 1.25rem !default;
+
+// ============================================================================
+// SIZES — hauteurs M3 Expressive : 32 / 40 / 56 / 96 / 136 dp
+// ============================================================================
+
+$button-groups-size-xs-height: 2rem !default; // 32px
+$button-groups-size-xs-padding-x: 0.75rem !default; // 12px
+$button-groups-size-xs-font: button.$md-comp-button-xs-typography-font-size !default;
+$button-groups-size-xs-line-height: button.$md-comp-button-xs-typography-line-height !default;
+$button-groups-size-xs-letter-spacing: button.$md-comp-button-xs-typography-letter-spacing !default;
+$button-groups-size-xs-font-family: typo.$md-sys-typescale-label-large-font-family-name !default;
+$button-groups-size-xs-font-weight: button.$md-comp-button-xs-typography-font-weight !default;
+$button-groups-size-xs-icon: 1.125rem !default; // 18px
+$button-groups-size-xs-gap: 0.25rem !default; // 4px
+
+$button-groups-size-sm-height: 2.5rem !default; // 40px
+$button-groups-size-sm-padding-x: 1rem !default; // 16px
+$button-groups-size-sm-font: button.$md-comp-button-sm-typography-font-size !default;
+$button-groups-size-sm-line-height: button.$md-comp-button-sm-typography-line-height !default;
+$button-groups-size-sm-letter-spacing: button.$md-comp-button-sm-typography-letter-spacing !default;
+$button-groups-size-sm-font-family: typo.$md-sys-typescale-label-large-font-family-name !default;
+$button-groups-size-sm-font-weight: button.$md-comp-button-sm-typography-font-weight !default;
+$button-groups-size-sm-icon: 1.25rem !default; // 20px
+$button-groups-size-sm-gap: 0.5rem !default; // 8px
+
+$button-groups-size-md-height: 3.5rem !default; // 56px
+$button-groups-size-md-padding-x: 1.5rem !default; // 24px
+$button-groups-size-md-font: button.$md-comp-button-md-typography-font-size !default;
+$button-groups-size-md-line-height: button.$md-comp-button-md-typography-line-height !default;
+$button-groups-size-md-letter-spacing: button.$md-comp-button-md-typography-letter-spacing !default;
+$button-groups-size-md-font-family: typo.$md-sys-typescale-title-medium-font-family-name !default;
+$button-groups-size-md-font-weight: button.$md-comp-button-md-typography-font-weight !default;
+$button-groups-size-md-icon: 1.5rem !default; // 24px
+$button-groups-size-md-gap: 0.5rem !default; // 8px
+
+$button-groups-size-lg-height: 6rem !default; // 96px
+$button-groups-size-lg-padding-x: 3rem !default; // 48px
+$button-groups-size-lg-font: button.$md-comp-button-lg-typography-font-size !default;
+$button-groups-size-lg-line-height: button.$md-comp-button-lg-typography-line-height !default;
+$button-groups-size-lg-letter-spacing: button.$md-comp-button-lg-typography-letter-spacing !default;
+$button-groups-size-lg-font-family: typo.$md-sys-typescale-headline-small-font-family-name !default;
+$button-groups-size-lg-font-weight: button.$md-comp-button-lg-typography-font-weight !default;
+$button-groups-size-lg-icon: 2rem !default; // 32px
+$button-groups-size-lg-gap: 0.75rem !default; // 12px
+
+$button-groups-size-xl-height: 8.5rem !default; // 136px
+$button-groups-size-xl-padding-x: 4rem !default; // 64px
+$button-groups-size-xl-font: button.$md-comp-button-xl-typography-font-size !default;
+$button-groups-size-xl-line-height: button.$md-comp-button-xl-typography-line-height !default;
+$button-groups-size-xl-letter-spacing: button.$md-comp-button-xl-typography-letter-spacing !default;
+$button-groups-size-xl-font-family: typo.$md-sys-typescale-headline-medium-font-family-name !default;
+$button-groups-size-xl-font-weight: button.$md-comp-button-xl-typography-font-weight !default;
+$button-groups-size-xl-icon: 2.5rem !default; // 40px
+$button-groups-size-xl-gap: 1rem !default; // 16px
+
+/** Connected round — outer cap = height/2 (fallback SCSS si --k3-button-groups-height absent) */
+$button-groups-connected-outer-xs: $button-groups-size-xs-height * 0.5 !default; // 16px
+$button-groups-connected-outer-sm: $button-groups-size-sm-height * 0.5 !default; // 20px
+$button-groups-connected-outer-md: $button-groups-size-md-height * 0.5 !default; // 28px
+$button-groups-connected-outer-lg: $button-groups-size-lg-height * 0.5 !default; // 48px
+$button-groups-connected-outer-xl: $button-groups-size-xl-height * 0.5 !default; // 68px
+
+// ============================================================================
+// MOTION — spatial (forme, expansion) + effects (état, overlay)
+// ============================================================================
+
+$button-groups-shape-duration: motion.spring-duration(spatial, fast) !default;
+$button-groups-shape-easing: motion.spring-easing(spatial, fast) !default;
+$button-groups-expand-duration: motion.spring-duration(spatial, fast) !default;
+$button-groups-expand-easing: motion.spring-easing(spatial, fast) !default;
+$button-groups-indicator-duration: motion.spring-duration(spatial, fast) !default;
+$button-groups-indicator-easing: motion.spring-easing(spatial, fast) !default;
+$button-groups-state-duration: motion.spring-duration(effects, default) !default;
+$button-groups-state-easing: motion.spring-easing(effects, default) !default;
+$button-groups-overlay-duration: motion.spring-duration(effects, fast) !default;
+$button-groups-overlay-easing: motion.spring-easing(effects, fast) !default;
+$button-groups-pressed-scale: 0.97 !default;
+
+// Legacy aliases (modules existants)
+$button-groups-gap-standard-xs: $button-groups-gap-standard !default;
+$button-groups-gap-standard-sm: $button-groups-gap-standard !default;
+$button-groups-gap-standard-md: $button-groups-gap-standard !default;
+$button-groups-gap-standard-lg: $button-groups-gap-standard !default;
+$button-groups-gap-standard-xl: $button-groups-gap-standard !default;
+
+$button-groups-inner-radius-xs: $button-groups-corner-xs !default;
+$button-groups-inner-radius-sm: $button-groups-corner-sm !default;
+$button-groups-inner-radius-md: $button-groups-corner-md !default;
+$button-groups-inner-radius-lg: $button-groups-corner-lg !default;
+$button-groups-inner-radius-xl: $button-groups-corner-xl !default;
+
+$button-groups-square-xs: $button-groups-corner-xs !default;
+$button-groups-square-sm: $button-groups-corner-sm !default;
+$button-groups-square-md: $button-groups-corner-md !default;
+$button-groups-square-lg: $button-groups-corner-lg !default;
+$button-groups-square-xl: $button-groups-corner-xl !default;
+
+// Cap height/2 — density + fallback outer connected round
+$button-groups-cap-xs: $button-groups-connected-outer-xs !default;
+$button-groups-cap-sm: $button-groups-connected-outer-sm !default;
+$button-groups-cap-md: $button-groups-connected-outer-md !default;
+$button-groups-cap-lg: $button-groups-connected-outer-lg !default;
+$button-groups-cap-xl: $button-groups-connected-outer-xl !default;

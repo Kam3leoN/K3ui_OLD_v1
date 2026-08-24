@@ -1,0 +1,263 @@
+/**
+ * @fileoverview Mixins Button Groups — Material Design 3 You Expressive
+ * @author K3UI Team
+ * @version 3.1.0
+ */
+
+@use 'sass:math';
+@use '../tokens/button-groups.token' as bg;
+
+@function button-groups-height-at-density($base-height, $density-level) {
+  @if $density-level == 0 {
+    @return $base-height;
+  }
+
+  $reduction: 0.25rem * math.abs($density-level);
+  @return max($base-height - $reduction, bg.$button-groups-density-min-height);
+}
+
+@function button-groups-cap-radius-at-density($base-height, $density-level) {
+  @return math.div(button-groups-height-at-density($base-height, $density-level), 2);
+}
+
+@mixin button-groups-container($gap: null) {
+  display: inline-flex;
+  align-items: center;
+  gap: $gap;
+  flex-wrap: nowrap;
+  max-width: 100%;
+}
+
+@mixin button-groups-touch-target() {
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: bg.$button-groups-min-touch-target;
+    min-height: bg.$button-groups-min-touch-target;
+    pointer-events: none;
+  }
+}
+
+@mixin button-groups-btn-base(
+  $height: bg.$button-groups-size-md-height,
+  $padding-x: bg.$button-groups-size-md-padding-x,
+  $font-size: bg.$button-groups-size-md-font,
+  $line-height: bg.$button-groups-size-md-line-height,
+  $letter-spacing: bg.$button-groups-size-md-letter-spacing,
+  $font-family: bg.$button-groups-size-md-font-family,
+  $font-weight: bg.$button-groups-size-md-font-weight,
+  $icon-size: bg.$button-groups-size-md-icon,
+  $gap: bg.$button-groups-size-md-gap
+) {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $gap;
+  height: var(--k3-button-groups-height, $height);
+  padding-left: var(--k3-button-groups-padding-x, $padding-x);
+  padding-right: var(--k3-button-groups-padding-x, $padding-x);
+  font-size: var(--k3-button-groups-font-size, $font-size);
+  line-height: var(--k3-button-groups-line-height, $line-height);
+  letter-spacing: var(--k3-button-groups-letter-spacing, $letter-spacing);
+  font-weight: var(--k3-button-groups-font-weight, $font-weight);
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  border: none;
+  font-family: var(--k3-button-groups-font-family, #{$font-family});
+  transition:
+    color bg.$button-groups-state-duration bg.$button-groups-state-easing,
+    background-color bg.$button-groups-state-duration bg.$button-groups-state-easing,
+    border-color bg.$button-groups-state-duration bg.$button-groups-state-easing,
+    box-shadow bg.$button-groups-state-duration bg.$button-groups-state-easing,
+    border-top-left-radius bg.$button-groups-shape-duration bg.$button-groups-shape-easing,
+    border-top-right-radius bg.$button-groups-shape-duration bg.$button-groups-shape-easing,
+    border-bottom-right-radius bg.$button-groups-shape-duration bg.$button-groups-shape-easing,
+    border-bottom-left-radius bg.$button-groups-shape-duration bg.$button-groups-shape-easing,
+    flex-grow bg.$button-groups-expand-duration bg.$button-groups-expand-easing;
+
+  .button-groups--standard & {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .button-groups--standard &.button-groups__btn--pressing {
+    flex-grow: var(--button-groups-flex-grow, calc(1 + #{bg.$button-groups-expanded-ratio}));
+    z-index: 1;
+  }
+
+  .button-groups--connected & {
+    flex: 1 1 auto;
+  }
+
+  .button-groups__icon,
+  > .icon,
+  > .k3ui-icon {
+    position: relative;
+    z-index: 1;
+    font-size: var(--k3-button-groups-icon-size, $icon-size);
+  }
+
+  .button-groups__label {
+    position: relative;
+    z-index: 1;
+    font-size: inherit;
+  }
+
+  .button-groups__icon {
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@mixin button-groups-indicator {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transform-origin: center center;
+  transform: scaleX(0);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform bg.$button-groups-indicator-duration bg.$button-groups-indicator-easing,
+    opacity bg.$button-groups-state-duration bg.$button-groups-state-easing;
+}
+
+@mixin button-groups-indicator-active {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+@mixin button-groups-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: transparent;
+  pointer-events: none;
+  transition: background-color bg.$button-groups-overlay-duration bg.$button-groups-overlay-easing;
+}
+
+@mixin button-groups-density-height($base-height, $density-level) {
+  height: button-groups-height-at-density($base-height, $density-level) !important;
+}
+
+/// Connected — 4 coins par position (CSS vars --k3-button-groups-radius-inner / outer)
+/// Propriétés logiques (RTL) + physiques (fallback LTR) — jamais de border-radius shorthand mixte
+/// @param {string} $position first | last | middle | standalone
+/// @param {length} $inner-fallback Fallback SCSS si --k3-button-groups-radius-inner absent
+/// @param {length} $outer-fallback Fallback SCSS si --k3-button-groups-radius-outer absent (height/2)
+@mixin button-groups-connected-corners(
+  $position,
+  $inner-fallback: bg.$button-groups-connected-inner-md,
+  $outer-fallback: bg.$button-groups-connected-outer-md
+) {
+  $inner: var(--k3-button-groups-radius-inner, #{$inner-fallback});
+  $outer: var(--k3-button-groups-radius-outer, #{$outer-fallback});
+
+  .button-groups__indicator,
+  .button-groups__overlay {
+    border-radius: inherit;
+  }
+
+  @if $position == 'first' {
+    border-start-start-radius: $outer !important;
+    border-end-start-radius: $outer !important;
+    border-start-end-radius: $inner !important;
+    border-end-end-radius: $inner !important;
+    border-top-left-radius: $outer !important;
+    border-bottom-left-radius: $outer !important;
+    border-top-right-radius: $inner !important;
+    border-bottom-right-radius: $inner !important;
+  } @else if $position == 'last' {
+    border-start-start-radius: $inner !important;
+    border-end-start-radius: $inner !important;
+    border-start-end-radius: $outer !important;
+    border-end-end-radius: $outer !important;
+    border-top-left-radius: $inner !important;
+    border-bottom-left-radius: $inner !important;
+    border-top-right-radius: $outer !important;
+    border-bottom-right-radius: $outer !important;
+  } @else if $position == 'middle' {
+    border-start-start-radius: $inner !important;
+    border-start-end-radius: $inner !important;
+    border-end-start-radius: $inner !important;
+    border-end-end-radius: $inner !important;
+    border-top-left-radius: $inner !important;
+    border-top-right-radius: $inner !important;
+    border-bottom-right-radius: $inner !important;
+    border-bottom-left-radius: $inner !important;
+  } @else {
+    border-start-start-radius: $outer !important;
+    border-start-end-radius: $outer !important;
+    border-end-start-radius: $outer !important;
+    border-end-end-radius: $outer !important;
+    border-top-left-radius: $outer !important;
+    border-top-right-radius: $outer !important;
+    border-bottom-right-radius: $outer !important;
+    border-bottom-left-radius: $outer !important;
+  }
+}
+
+/// Connected — morph press / sélection → stadium parfait (height/2 sur les 4 coins)
+/// @param {length} $outer-fallback Fallback SCSS si --k3-button-groups-radius-full absent
+@mixin button-groups-connected-morphed($outer-fallback: bg.$button-groups-connected-outer-md) {
+  $full: var(--k3-button-groups-radius-full, #{$outer-fallback});
+
+  .button-groups__indicator,
+  .button-groups__overlay {
+    border-radius: inherit;
+  }
+
+  border-start-start-radius: $full !important;
+  border-start-end-radius: $full !important;
+  border-end-start-radius: $full !important;
+  border-end-end-radius: $full !important;
+  border-top-left-radius: $full !important;
+  border-top-right-radius: $full !important;
+  border-bottom-right-radius: $full !important;
+  border-bottom-left-radius: $full !important;
+}
+
+/// Standard — forme repos (round = height/2 pill, square = corner par taille)
+@mixin button-groups-shape-standard-default(
+  $group-shape,
+  $corner-radius,
+  $outer-fallback: bg.$button-groups-connected-outer-md
+) {
+  @if $group-shape == 'round' {
+    border-radius: var(--k3-button-groups-radius-outer, #{$outer-fallback}) !important;
+  } @else {
+    border-radius: var(--k3-button-groups-radius-outer, #{$corner-radius}) !important;
+  }
+
+  .button-groups__indicator,
+  .button-groups__overlay {
+    border-radius: inherit;
+  }
+}
+
+/// Standard — morph sélection / press (round↔square inversé)
+@mixin button-groups-shape-standard-morphed(
+  $group-shape,
+  $corner-radius,
+  $outer-fallback: bg.$button-groups-connected-outer-md
+) {
+  @if $group-shape == 'round' {
+    border-radius: var(--k3-button-groups-radius-square, #{$corner-radius}) !important;
+  } @else if $group-shape == 'square' {
+    border-radius: var(--k3-button-groups-radius-full, #{$outer-fallback}) !important;
+  }
+
+  .button-groups__indicator,
+  .button-groups__overlay {
+    border-radius: inherit;
+  }
+}

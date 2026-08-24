@@ -1,0 +1,158 @@
+/**
+ * Field Tokens - Tokens pour le composant k3ui-field
+ * Basé sur MDUI text-field et Material Design 3
+ */
+
+@use 'sass:map';
+@use './spacing.token' as spacing;
+@use './radius.token' as radius;
+@use './motion.token' as motion;
+
+// ========================================
+// SPACING & SIZING
+// ========================================
+
+/** Padding du container (top, right, bottom, left) */
+$md-sys-field-padding-top: 0 !default; // 0px (géré par les variants)
+$md-sys-field-padding-right: spacing.$md-sys-spacing-md !default; // 16px
+$md-sys-field-padding-bottom: 0 !default; // 0px (géré par les variants)
+$md-sys-field-padding-left: spacing.$md-sys-spacing-md !default; // 16px
+
+/** Padding réduit quand il y a une icône */
+$md-sys-field-padding-left-with-icon: 12px !default; // 12px selon les specs
+$md-sys-field-padding-right-with-action: 12px !default; // 12px selon les specs
+
+/** Espacement entre les éléments */
+$md-sys-field-icon-spacing: spacing.$md-sys-spacing-md !default; // 16px
+$md-sys-field-action-spacing: spacing.$md-sys-spacing-md !default; // 16px selon les specs
+$md-sys-field-prefix-spacing: spacing.$md-sys-spacing-sm !default; // 8px entre prefix et saisie
+$md-sys-field-suffix-spacing-left: spacing.$md-sys-spacing-sm !default; // 8px entre saisie et suffix
+$md-sys-field-suffix-spacing-right: spacing.$md-sys-spacing-xs !default; // 4px
+$md-sys-field-adornment-gap: spacing.$md-sys-spacing-sm !default; // 8px gap flex text-wrapper
+
+// ========================================
+// BORDER & OUTLINE
+// ========================================
+
+/** Épaisseur de la bordure selon l'état (en px pour box-shadow) */
+$md-sys-field-border-width-default: 1 !default; // 1px
+$md-sys-field-border-width-hover: 1 !default; // 1px
+$md-sys-field-border-width-focused: 2 !default; // 2px
+$md-sys-field-border-width-disabled: 1 !default; // 1px
+
+/** Border-radius selon le variant */
+$md-sys-field-border-radius-filled-top: radius.$md-sys-shape-corner-extra-small !default; // 4px
+$md-sys-field-border-radius-outlined: radius.$md-sys-shape-corner-extra-small !default; // 4px
+$md-sys-field-border-radius-plain: radius.$md-sys-shape-corner-extra-small !default; // 4px
+
+// ========================================
+// LABEL
+// ========================================
+
+/** Position du label selon le variant */
+$md-sys-field-label-top-default: spacing.$md-sys-spacing-md !default; // 16px
+$md-sys-field-label-top-filled-active: spacing.$md-sys-spacing-xs !default; // 4px
+$md-sys-field-label-top-outlined-active: -8px !default; // -8px (au-dessus de la bordure)
+
+/** Padding du label outlined */
+$md-sys-field-label-padding-inline: spacing.$md-sys-spacing-xs !default; // 4px
+$md-sys-field-label-margin-inline: -#{spacing.$md-sys-spacing-xs} !default; // -4px
+
+/** Position du label outlined actif */
+$md-sys-field-label-outlined-active-left: 12px !default; // 12px (pas de token exact)
+
+
+// ========================================
+// INPUT
+// ========================================
+
+/** Padding de l'input */
+$md-sys-field-input-padding-top: 0 !default; // 0px (géré par le container)
+$md-sys-field-input-padding-right: 0 !default; // 0px (géré par le container)
+$md-sys-field-input-padding-bottom: 0 !default; // 0px (géré par le container)
+$md-sys-field-input-padding-left: 0 !default;
+$md-sys-field-input-padding-left-with-icon: 36px !default; // 52px (position finale) - 16px (container padding) = 36px
+
+/** Padding réduit avec action/suffix */
+$md-sys-field-input-padding-right-with-action: 40px !default; // 16px (espacement) + 24px (icône) = 40px
+$md-sys-field-input-padding-right-with-suffix: 0 !default;
+
+/** Hauteur du container selon les variants */
+$md-sys-field-height-filled: 56px !default; // 56dp M3 default
+$md-sys-field-height-outlined: 56px !default; // 56dp M3 default
+$md-sys-field-height-plain: 48px !default; // 48px minimum pour plain
+
+/** Densité M3 — default 56dp ; dense ≥48dp (touch target) ; compact pour grilles denses */
+$md-sys-field-height-comfortable: 48px !default;
+$md-sys-field-height-compact: 40px !default;
+
+/** Padding horizontal réduit en densité (Compose dense example : 12dp) */
+$md-sys-field-density-comfortable-padding-inline: 12px !default;
+$md-sys-field-density-compact-padding-inline: 12px !default;
+
+/** Label — position verticale ajustée par densité */
+$md-sys-field-label-top-comfortable: 12px !default;
+$md-sys-field-label-top-compact: 8px !default;
+$md-sys-field-label-top-filled-active-compact: 2px !default;
+
+/** Icônes plus petites en compact */
+$md-sys-field-icon-size-comfortable: 20px !default;
+$md-sys-field-icon-size-compact: 18px !default;
+
+/** Variant plain : label statique au-dessus */
+$md-sys-field-plain-label-gap: spacing.$md-sys-spacing-xs !default; // 4px entre label et input
+$md-sys-field-plain-padding-vertical: spacing.$md-sys-spacing-component-lg !default; // 12px
+$md-sys-field-plain-padding-horizontal: spacing.$md-sys-spacing-layout-sm !default; // 16px (proche de 20px CodePen)
+
+
+/** Padding pour variant filled */
+$md-sys-field-filled-padding-top: 0 !default; // 0px
+$md-sys-field-filled-padding-bottom: 0 !default; // 0px
+
+/** Padding pour variant outlined avec label flottant */
+$md-sys-field-outlined-label-top: 8px !default; // 8px du haut pour le label
+$md-sys-field-outlined-label-padding: 4px !default; // 4px padding vertical du label
+$md-sys-field-outlined-input-spacing: 8px !default; // 8px entre label et input
+
+// ========================================
+// SUPPORTING TEXT
+// ========================================
+
+/** Padding du texte d'aide */
+$md-sys-field-supporting-padding-top: spacing.$md-sys-spacing-xs !default; // 4px
+$md-sys-field-supporting-padding-inline: spacing.$md-sys-spacing-md !default; // 16px
+
+/** Espacement du counter */
+$md-sys-field-counter-spacing: spacing.$md-sys-spacing-md !default; // 16px
+
+// ========================================
+// ICONS
+// ========================================
+
+/** Taille des icônes */
+$md-sys-field-icon-size: 24px !default;
+
+/** Margin des button-icon */
+$md-sys-field-button-icon-margin: -8px !default;
+
+// ========================================
+// TYPOGRAPHY
+// ========================================
+
+/** Typescale pour les éléments */
+$md-sys-field-typescale-input: 'body-large' !default;
+$md-sys-field-typescale-label-default: 'body-large' !default;
+$md-sys-field-typescale-label-active: 'body-small' !default;
+$md-sys-field-typescale-supporting: 'body-small' !default;
+$md-sys-field-typescale-prefix-suffix: 'body-large' !default;
+
+// ========================================
+// TRANSITIONS
+// ========================================
+
+/** Durée des transitions */
+$md-sys-field-transition-duration: motion.spring-duration(effects, default) !default;
+$md-sys-field-transition-easing: motion.spring-easing(effects, default) !default;
+$md-sys-field-label-transition-duration: motion.spring-duration(spatial, fast) !default;
+$md-sys-field-label-transition-easing: motion.spring-easing(spatial, fast) !default;
+

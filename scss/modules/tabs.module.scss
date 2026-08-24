@@ -1,0 +1,237 @@
+/**
+ * @fileoverview Module Tabs (Material Design 3 Expressive)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/tabs.token' as tokens;
+@use '../mixins/tabs.mixin' as tabs-mixin;
+
+// ============================================================================
+// CONTENEUR (optionnel : .tabs-container enveloppe .tabs + .tabs-items)
+// ============================================================================
+
+.tabs-container {
+  display: block;
+
+  /** Disposition verticale : barre à gauche, contenu à droite */
+  &--vertical {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0;
+
+    .tabs {
+      flex-shrink: 0;
+      width: auto;
+      min-width: 160px;
+    }
+    .tabs-items {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+}
+
+// ============================================================================
+// BARRE D'ONGLETS
+// ============================================================================
+
+.tabs {
+  @include tabs-mixin.tabs-bar;
+
+  &--scrollable {
+    .tabs__scroller {
+      @include tabs-mixin.tabs-scroller--horizontal-scrollable;
+    }
+  }
+
+  &--layout-vertical {
+    .tabs__scroller {
+      flex-direction: column;
+    }
+    .tabs__scroller--scrollable {
+      @include tabs-mixin.tabs-scroller--vertical-scrollable;
+    }
+    .tabs__tab {
+      min-width: auto;
+      width: 100%;
+      height: tokens.$tabs-item-height-vertical;
+      justify-content: flex-start;
+      padding-left: 24px;
+      gap: 8px;
+    }
+    .tabs__indicator {
+      left: 0;
+      top: 0;
+      bottom: auto;
+      width: tokens.$tabs-indicator-size;
+      height: 0;
+    }
+  }
+
+  &__scroller {
+    @include tabs-mixin.tabs-scroller;
+  }
+
+  &__tab {
+    @include tabs-mixin.tabs-tab;
+  }
+
+  /** Primary tabs (MD3 You Expressive) : icône au-dessus du libellé (stacked), rendu par IconManager */
+  &--primary {
+    .tabs__tab {
+      flex-direction: column !important;
+      align-items: center;
+      justify-content: center;
+      min-width: 80px;
+      height: tokens.$tabs-item-height-primary;
+      padding: 8px 12px;
+      gap: tokens.$tabs-primary-icon-label-gap;
+
+      /* Icône au-dessus du texte, 24dp MD3 (cible aussi .k3ui-icon-loaded) */
+      .k3ui-icon,
+      [class*="k3ui-icon"],
+      i[name] {
+        order: -1;
+        display: block;
+        width: tokens.$tabs-icon-size-primary !important;
+        height: tokens.$tabs-icon-size-primary !important;
+        min-width: tokens.$tabs-icon-size-primary;
+        min-height: tokens.$tabs-icon-size-primary;
+        flex-shrink: 0;
+        color: inherit;
+
+        svg {
+          width: 100% !important;
+          height: 100% !important;
+          display: block;
+        }
+      }
+      .tabs__tab-label {
+        order: 0;
+        display: block;
+        width: max-content;
+        max-width: 100%;
+        font-size: 0.75rem;
+        font-weight: 500;
+        line-height: 1.2;
+        text-align: center;
+      }
+    }
+  }
+
+  /** Secondary tabs (MD3) : texte seul */
+  &--secondary {
+    .tabs__tab {
+      min-width: 90px;
+    }
+  }
+
+  &__indicator {
+    @include tabs-mixin.tabs-indicator;
+    left: 0;
+    bottom: 0;
+    height: tokens.$tabs-indicator-size;
+    width: 0;
+  }
+
+  &--indicator-reverse .tabs__indicator {
+    bottom: auto;
+    top: 0;
+  }
+
+  /** Indicateur Primary (MD3e) : 3dp, min 24dp, max = label, centré ; pas d'animation sur la largeur */
+  &.tabs--primary .tabs__indicator {
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    height: tokens.$tabs-indicator-primary-height;
+    min-width: tokens.$tabs-indicator-primary-min-width;
+    border-radius: tokens.$tabs-indicator-primary-border-radius;
+    transition: transform tokens.$tabs-indicator-transition-duration tokens.$tabs-indicator-transition-easing;
+  }
+
+  /** Style « filled » (fond primary, texte clair, type Varlet) */
+  &--filled {
+    background: var(--md-sys-color-primary, var(--k3ui-color-primary));
+    color: var(--md-sys-color-on-primary, #fff);
+
+    .tabs__tab {
+      color: rgba(255, 255, 255, 0.7);
+      &:hover:not([aria-disabled='true']) {
+        color: #fff;
+      }
+      &--active {
+        color: #fff;
+      }
+      &[aria-disabled='true'] {
+        color: rgba(255, 255, 255, 0.38);
+      }
+    }
+    .tabs__indicator {
+      background: #fff;
+    }
+  }
+}
+
+// Primary via data-variant (sans dépendre du JS pour le layout)
+.tabs-container[data-variant="primary"] {
+  .tabs__tab {
+    flex-direction: column !important;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    height: tokens.$tabs-item-height-primary;
+    padding: 8px 12px;
+    gap: tokens.$tabs-primary-icon-label-gap;
+
+    .k3ui-icon,
+    [class*="k3ui-icon"],
+    i[name] {
+      order: -1;
+      display: block;
+      width: tokens.$tabs-icon-size-primary !important;
+      height: tokens.$tabs-icon-size-primary !important;
+      min-width: tokens.$tabs-icon-size-primary;
+      min-height: tokens.$tabs-icon-size-primary;
+      flex-shrink: 0;
+      color: inherit;
+
+      svg {
+        width: 100% !important;
+        height: 100% !important;
+        display: block;
+      }
+    }
+    .tabs__tab-label {
+      order: 0;
+      display: block;
+      width: max-content;
+      max-width: 100%;
+      font-size: 0.75rem;
+      font-weight: 500;
+      line-height: 1.2;
+      text-align: center;
+    }
+  }
+  .tabs__indicator {
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    height: tokens.$tabs-indicator-primary-height;
+    min-width: tokens.$tabs-indicator-primary-min-width;
+    border-radius: tokens.$tabs-indicator-primary-border-radius;
+    transition: transform tokens.$tabs-indicator-transition-duration tokens.$tabs-indicator-transition-easing;
+  }
+}
+
+// ============================================================================
+// PANNEAUX (tabs-items)
+// ============================================================================
+
+.tabs-items {
+  @include tabs-mixin.tabs-items;
+}
+
+.tabs-item {
+  @include tabs-mixin.tabs-item;
+}

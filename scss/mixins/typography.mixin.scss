@@ -1,0 +1,238 @@
+/// @file typography.mixin.scss
+/// @brief Mixin typography pour appliquer un style typographique MD3
+@use '../tokens/typography.token' as typography;
+
+/**
+ * Mixin principal pour appliquer un style typographique Material Design 3
+ * @param {string} $style - Style typographique (display-large, headline-medium, body-small, etc.)
+ */
+@mixin typography($style: 'body-medium') {
+  @if $style == 'display-large' {
+    font-family: typography.typography-display('large', 'font-family-name');
+    font-size: typography.typography-display('large', 'font-size');
+    font-weight: typography.typography-display('large', 'font-weight');
+    line-height: typography.typography-display('large', 'line-height');
+    letter-spacing: typography.typography-display('large', 'letter-spacing');
+  } @else if $style == 'display-medium' {
+    font-family: typography.typography-display('medium', 'font-family-name');
+    font-size: typography.typography-display('medium', 'font-size');
+    font-weight: typography.typography-display('medium', 'font-weight');
+    line-height: typography.typography-display('medium', 'line-height');
+    letter-spacing: typography.typography-display('medium', 'letter-spacing');
+  } @else if $style == 'display-small' {
+    font-family: typography.typography-display('small', 'font-family-name');
+    font-size: typography.typography-display('small', 'font-size');
+    font-weight: typography.typography-display('small', 'font-weight');
+    line-height: typography.typography-display('small', 'line-height');
+    letter-spacing: typography.typography-display('small', 'letter-spacing');
+  } @else if $style == 'headline-large' {
+    font-family: typography.typography-headline('large', 'font-family-name');
+    font-size: typography.typography-headline('large', 'font-size');
+    font-weight: typography.typography-headline('large', 'font-weight');
+    line-height: typography.typography-headline('large', 'line-height');
+    letter-spacing: typography.typography-headline('large', 'letter-spacing');
+  } @else if $style == 'headline-medium' {
+    font-family: typography.typography-headline('medium', 'font-family-name');
+    font-size: typography.typography-headline('medium', 'font-size');
+    font-weight: typography.typography-headline('medium', 'font-weight');
+    line-height: typography.typography-headline('medium', 'line-height');
+    letter-spacing: typography.typography-headline('medium', 'letter-spacing');
+  } @else if $style == 'headline-small' {
+    font-family: typography.typography-headline('small', 'font-family-name');
+    font-size: typography.typography-headline('small', 'font-size');
+    font-weight: typography.typography-headline('small', 'font-weight');
+    line-height: typography.typography-headline('small', 'line-height');
+    letter-spacing: typography.typography-headline('small', 'letter-spacing');
+  } @else if $style == 'title-large' {
+    font-family: typography.typography-title('large', 'font-family-name');
+    font-size: typography.typography-title('large', 'font-size');
+    font-weight: typography.typography-title('large', 'font-weight');
+    line-height: typography.typography-title('large', 'line-height');
+    letter-spacing: typography.typography-title('large', 'letter-spacing');
+  } @else if $style == 'title-medium' {
+    font-family: typography.typography-title('medium', 'font-family-name');
+    font-size: typography.typography-title('medium', 'font-size');
+    font-weight: typography.typography-title('medium', 'font-weight');
+    line-height: typography.typography-title('medium', 'line-height');
+    letter-spacing: typography.typography-title('medium', 'letter-spacing');
+  } @else if $style == 'title-small' {
+    font-family: typography.typography-title('small', 'font-family-name');
+    font-size: typography.typography-title('small', 'font-size');
+    font-weight: typography.typography-title('small', 'font-weight');
+    line-height: typography.typography-title('small', 'line-height');
+    letter-spacing: typography.typography-title('small', 'letter-spacing');
+  } @else if $style == 'body-large' {
+    font-family: typography.typography-body('large', 'font-family-name');
+    font-size: typography.typography-body('large', 'font-size');
+    font-weight: typography.typography-body('large', 'font-weight');
+    line-height: typography.typography-body('large', 'line-height');
+    letter-spacing: typography.typography-body('large', 'letter-spacing');
+  } @else if $style == 'body-medium' {
+    font-family: typography.typography-body('medium', 'font-family-name');
+    font-size: typography.typography-body('medium', 'font-size');
+    font-weight: typography.typography-body('medium', 'font-weight');
+    line-height: typography.typography-body('medium', 'line-height');
+    letter-spacing: typography.typography-body('medium', 'letter-spacing');
+  } @else if $style == 'body-small' {
+    font-family: typography.typography-body('small', 'font-family-name');
+    font-size: typography.typography-body('small', 'font-size');
+    font-weight: typography.typography-body('small', 'font-weight');
+    line-height: typography.typography-body('small', 'line-height');
+    letter-spacing: typography.typography-body('small', 'letter-spacing');
+  } @else if $style == 'label-large' {
+    font-family: typography.typography-label('large', 'font-family-name');
+    font-size: typography.typography-label('large', 'font-size');
+    font-weight: typography.typography-label('large', 'font-weight');
+    line-height: typography.typography-label('large', 'line-height');
+    letter-spacing: typography.typography-label('large', 'letter-spacing');
+  } @else if $style == 'label-medium' {
+    font-family: typography.typography-label('medium', 'font-family-name');
+    font-size: typography.typography-label('medium', 'font-size');
+    font-weight: typography.typography-label('medium', 'font-weight');
+    line-height: typography.typography-label('medium', 'line-height');
+    letter-spacing: typography.typography-label('medium', 'letter-spacing');
+  } @else if $style == 'label-small' {
+    font-family: typography.typography-label('small', 'font-family-name');
+    font-size: typography.typography-label('small', 'font-size');
+    font-weight: typography.typography-label('small', 'font-weight');
+    line-height: typography.typography-label('small', 'line-height');
+    letter-spacing: typography.typography-label('small', 'letter-spacing');
+  }
+}
+
+// =============================================================================
+// MIXINS AVANCÉS
+// =============================================================================
+
+/**
+ * Mixin pour appliquer une typographie par catégorie et taille
+ * @param {string} $category - Catégorie (display, headline, title, body, label)
+ * @param {string} $size - Taille (large, medium, small)
+ */
+@mixin typography-category($category, $size) {
+  font-family: typography.typography($category, $size, 'font-family-name');
+  font-size: typography.typography($category, $size, 'font-size');
+  font-weight: typography.typography($category, $size, 'font-weight');
+  line-height: typography.typography($category, $size, 'line-height');
+  letter-spacing: typography.typography($category, $size, 'letter-spacing');
+}
+
+/**
+ * Mixin pour typographie responsive
+ * @param {string} $mobile-style - Style pour mobile
+ * @param {string} $tablet-style - Style pour tablette (optionnel)
+ * @param {string} $desktop-style - Style pour desktop (optionnel)
+ */
+@mixin typography-responsive($mobile-style, $tablet-style: null, $desktop-style: null) {
+  @include typography($mobile-style);
+  
+  @if $tablet-style {
+    @media (min-width: 768px) {
+      @include typography($tablet-style);
+    }
+  }
+  
+  @if $desktop-style {
+    @media (min-width: 1024px) {
+      @include typography($desktop-style);
+    }
+  }
+}
+
+/**
+ * Mixin pour typographie avec couleur personnalisée
+ * @param {string} $style - Style typographique
+ * @param {color} $color - Couleur du texte
+ */
+@mixin typography-colored($style, $color) {
+  @include typography($style);
+  color: $color;
+}
+
+/**
+ * Mixin pour typographie avec alignement
+ * @param {string} $style - Style typographique
+ * @param {string} $align - Alignement (left, center, right, justify)
+ */
+@mixin typography-aligned($style, $align: 'left') {
+  @include typography($style);
+  text-align: #{$align};
+}
+
+/**
+ * Mixin pour typographie avec transformation
+ * @param {string} $style - Style typographique
+ * @param {string} $transform - Transformation (uppercase, lowercase, capitalize, none)
+ */
+@mixin typography-transformed($style, $transform: 'none') {
+  @include typography($style);
+  text-transform: #{$transform};
+}
+
+/**
+ * Mixin pour typographie avec décoration
+ * @param {string} $style - Style typographique
+ * @param {string} $decoration - Décoration (underline, overline, line-through, none)
+ */
+@mixin typography-decorated($style, $decoration: 'none') {
+  @include typography($style);
+  text-decoration: #{$decoration};
+}
+
+/**
+ * Mixin pour typographie avec ombre
+ * @param {string} $style - Style typographique
+ * @param {string} $shadow - Ombre du texte
+ */
+@mixin typography-shadowed($style, $shadow) {
+  @include typography($style);
+  text-shadow: #{$shadow};
+}
+
+/**
+ * Mixin pour typographie avec espacement personnalisé
+ * @param {string} $style - Style typographique
+ * @param {number} $line-height - Hauteur de ligne personnalisée
+ * @param {number} $letter-spacing - Espacement des lettres personnalisé
+ */
+@mixin typography-spaced($style, $line-height: null, $letter-spacing: null) {
+  @include typography($style);
+  
+  @if $line-height {
+    line-height: $line-height;
+  }
+  
+  @if $letter-spacing {
+    letter-spacing: $letter-spacing;
+  }
+}
+
+/**
+ * Mixin pour typographie avec police personnalisée
+ * @param {string} $style - Style typographique
+ * @param {string} $font-family - Police personnalisée
+ */
+@mixin typography-custom-font($style, $font-family) {
+  @include typography($style);
+  font-family: $font-family;
+}
+
+/**
+ * Mixin pour typographie avec poids personnalisé
+ * @param {string} $style - Style typographique
+ * @param {number} $font-weight - Poids de police personnalisé
+ */
+@mixin typography-custom-weight($style, $font-weight) {
+  @include typography($style);
+  font-weight: $font-weight;
+}
+
+/**
+ * Mixin pour typographie avec taille personnalisée
+ * @param {string} $style - Style typographique
+ * @param {number} $font-size - Taille de police personnalisée
+ */
+@mixin typography-custom-size($style, $font-size) {
+  @include typography($style);
+  font-size: $font-size;
+} 

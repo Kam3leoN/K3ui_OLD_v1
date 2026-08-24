@@ -1,0 +1,27 @@
+/**
+ * @fileoverview Mixins pour Heatmap
+ * @description Mixins réutilisables pour le composant Heatmap
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/heatmap.token' as ht;
+
+/**
+ * Conteneur principal du heatmap
+ */
+@mixin heatmap-component {
+  display: block;
+  font-size: ht.$heatmap-label-font-size;
+  color: ht.$heatmap-label-color;
+}
+
+/**
+ * Cellule de la grille (niveaux 0-4)
+ */
+@mixin heatmap-cell {
+  width: var(--heatmap-cell-size, ht.$heatmap-cell-size);
+  height: var(--heatmap-cell-size, ht.$heatmap-cell-size);
+  border-radius: ht.$heatmap-cell-radius;
+  transition: background-color 0.15s ease;
+}

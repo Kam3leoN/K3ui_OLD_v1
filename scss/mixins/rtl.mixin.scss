@@ -1,0 +1,242 @@
+/// @file rtl.mixin.scss
+/// @brief Mixins pour la gestion RTL/LTR
+
+/**
+ * Mixin pour appliquer une propriété selon la direction (LTR/RTL)
+ * Inverse automatiquement les propriétés left/right en RTL
+ * 
+ * @param $property - Propriété CSS à appliquer (ex: margin, padding, left, right)
+ * @param $ltr-value - Valeur pour LTR
+ * @param $rtl-value - Valeur pour RTL (optionnel, utilise l'inverse de $ltr-value si non fourni)
+ * 
+ * @example
+ * ```scss
+ * .element {
+ *   @include rtl-property(margin-left, 16px, 0);
+ *   // En LTR: margin-left: 16px;
+ *   // En RTL: margin-right: 16px;
+ * }
+ * ```
+ */
+@mixin rtl-property($property, $ltr-value, $rtl-value: null) {
+  #{$property}: #{$ltr-value};
+
+  [dir="rtl"] &,
+  &[dir="rtl"] {
+    // Si la propriété contient left/right, inverser
+    @if str-index($property, 'left') {
+      $rtl-property: str-replace($property, 'left', 'right');
+      #{$rtl-property}: #{$rtl-value or $ltr-value};
+      #{$property}: unset;
+    } @else if str-index($property, 'right') {
+      $rtl-property: str-replace($property, 'right', 'left');
+      #{$rtl-property}: #{$rtl-value or $ltr-value};
+      #{$property}: unset;
+    } @else if $rtl-value {
+      #{$property}: #{$rtl-value};
+    }
+  }
+}
+
+/**
+ * Mixin pour utiliser les propriétés CSS logiques (margin-inline-start, etc.)
+ * Recommandé pour une meilleure prise en charge RTL native
+ * 
+ * @param $type - Type de propriété (margin, padding, border)
+ * @param $side - Côté (start, end)
+ * @param $value - Valeur à appliquer
+ * 
+ * @example
+ * ```scss
+ * .element {
+ *   @include logical-property(margin, start, 16px);
+ *   // Applique margin-inline-start: 16px (s'adapte automatiquement en RTL)
+ * }
+ * ```
+ */
+@mixin logical-property($type, $side, $value) {
+  @if $type == 'margin' {
+    @if $side == 'start' {
+      margin-inline-start: $value;
+    } @else if $side == 'end' {
+      margin-inline-end: $value;
+    } @else if $side == 'block-start' {
+      margin-block-start: $value;
+    } @else if $side == 'block-end' {
+      margin-block-end: $value;
+    }
+  } @else if $type == 'padding' {
+    @if $side == 'start' {
+      padding-inline-start: $value;
+    } @else if $side == 'end' {
+      padding-inline-end: $value;
+    } @else if $side == 'block-start' {
+      padding-block-start: $value;
+    } @else if $side == 'block-end' {
+      padding-block-end: $value;
+    }
+  } @else if $type == 'border' {
+    @if $side == 'start' {
+      border-inline-start: $value;
+    } @else if $side == 'end' {
+      border-inline-end: $value;
+    } @else if $side == 'block-start' {
+      border-block-start: $value;
+    } @else if $side == 'block-end' {
+      border-block-end: $value;
+    }
+  }
+}
+
+/**
+ * Mixin pour inverser left/right automatiquement en RTL
+ * 
+ * @param $ltr-left - Valeur pour left en LTR
+ * @param $ltr-right - Valeur pour right en LTR
+ * 
+ * @example
+ * ```scss
+ * .element {
+ *   @include rtl-invert(left, 10px, 20px);
+ *   // En LTR: left: 10px; right: 20px;
+ *   // En RTL: left: 20px; right: 10px;
+ * }
+ * ```
+ */
+@mixin rtl-invert($ltr-left, $ltr-right: null) {
+  left: $ltr-left;
+  @if $ltr-right {
+    right: $ltr-right;
+  }
+
+  [dir="rtl"] &,
+  &[dir="rtl"] {
+    left: $ltr-right or $ltr-left;
+    @if $ltr-left {
+      right: $ltr-left;
+    }
+  }
+}
+
+/**
+ * Mixin pour inverser les valeurs de transform translateX en RTL
+ * 
+ * @param $ltr-value - Valeur pour LTR
+ * 
+ * @example
+ * ```scss
+ * .element {
+ *   @include rtl-translate-x(20px);
+ *   // En LTR: transform: translateX(20px);
+ *   // En RTL: transform: translateX(-20px);
+ * }
+ * ```
+ */
+@mixin rtl-translate-x($ltr-value) {
+  transform: translateX($ltr-value);
+
+  [dir="rtl"] &,
+  &[dir="rtl"] {
+    transform: translateX(-$ltr-value);
+  }
+}
+
+/**
+ * Mixin pour inverser le flex-direction en RTL
+ * Utile pour les layouts flex qui doivent s'inverser
+ * 
+ * @param $ltr-direction - Direction flex en LTR (row, row-reverse)
+ * 
+ * @example
+ * ```scss
+ * .container {
+ *   @include rtl-flex-direction(row);
+ *   // En LTR: flex-direction: row;
+ *   // En RTL: flex-direction: row-reverse;
+ * }
+ * ```
+ */
+@mixin rtl-flex-direction($ltr-direction: row) {
+  flex-direction: $ltr-direction;
+
+  [dir="rtl"] &,
+  &[dir="rtl"] {
+    @if $ltr-direction == row {
+      flex-direction: row-reverse;
+    } @else if $ltr-direction == row-reverse {
+      flex-direction: row;
+    }
+  }
+}
+
+/**
+ * Mixin pour inverser text-align en RTL
+ * 
+ * @param $ltr-align - Alignement en LTR (left, right)
+ * 
+ * @example
+ * ```scss
+ * .text {
+ *   @include rtl-text-align(left);
+ *   // En LTR: text-align: left;
+ *   // En RTL: text-align: right;
+ * }
+ * ```
+ */
+@mixin rtl-text-align($ltr-align: left) {
+  text-align: $ltr-align;
+
+  [dir="rtl"] &,
+  &[dir="rtl"] {
+    @if $ltr-align == left {
+      text-align: right;
+    } @else if $ltr-align == right {
+      text-align: left;
+    }
+  }
+}
+
+/**
+ * Mixin pour gérer les propriétés de positionnement (left/right) en RTL
+ * 
+ * @param $property - left ou right
+ * @param $value - Valeur à appliquer
+ * 
+ * @example
+ * ```scss
+ * .positioned {
+ *   @include rtl-position(left, 10px);
+ *   // En LTR: left: 10px;
+ *   // En RTL: right: 10px;
+ * }
+ * ```
+ */
+@mixin rtl-position($property, $value) {
+  @if $property == 'left' {
+    left: $value;
+    [dir="rtl"] &,
+    &[dir="rtl"] {
+      left: unset;
+      right: $value;
+    }
+  } @else if $property == 'right' {
+    right: $value;
+    [dir="rtl"] &,
+    &[dir="rtl"] {
+      right: unset;
+      left: $value;
+    }
+  }
+}
+
+/**
+ * Fonction helper pour remplacer une sous-chaîne (utilisée par rtl-property)
+ */
+@function str-replace($string, $search, $replace: '') {
+  $index: str-index($string, $search);
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-slice($string, $index + str-length($search));
+  }
+  @return $string;
+}
+

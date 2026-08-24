@@ -1,0 +1,188 @@
+/**
+ * @fileoverview Mixins pour ButtonArrow Material Design 3 Expressive
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/button-arrow.token' as tokens;
+
+/// Conteneur split-arrows
+@mixin btn-arrow-base {
+  display: inline-flex;
+  align-items: center;
+  gap: tokens.$btn-arrow-gap;
+  isolation: isolate;
+  outline: none;
+}
+
+/// Moitié de bouton 48×48 — filled par défaut
+@mixin btn-arrow-half {
+  appearance: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  width: tokens.$btn-arrow-size;
+  height: tokens.$btn-arrow-size;
+  min-width: tokens.$btn-arrow-size;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+
+  background: tokens.$btn-arrow-filled-bg;
+  color: tokens.$btn-arrow-filled-fg;
+  box-shadow: none;
+  transition: background-color tokens.$btn-arrow-duration tokens.$btn-arrow-ease,
+    border-color tokens.$btn-arrow-duration tokens.$btn-arrow-ease,
+    color tokens.$btn-arrow-duration tokens.$btn-arrow-ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    background: tokens.$btn-arrow-filled-fg;
+    transition: opacity tokens.$btn-arrow-duration tokens.$btn-arrow-ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  &:hover::before {
+    opacity: 0.08;
+  }
+
+  &:focus-visible {
+    outline: 2px solid tokens.$btn-arrow-focus-ring;
+    outline-offset: 2px;
+  }
+
+  &:focus-visible::before {
+    opacity: 0.12;
+  }
+
+  &:hover {
+    box-shadow: none;
+  }
+
+  .k3ui-icon,
+  i,
+  svg {
+    width: tokens.$btn-arrow-icon-size;
+    height: tokens.$btn-arrow-icon-size;
+    font-size: tokens.$btn-arrow-icon-size;
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+    transition: transform tokens.$btn-arrow-icon-duration tokens.$btn-arrow-ease;
+    color: inherit;
+  }
+}
+
+/// Formes horizontal
+@mixin btn-arrow-shape-horizontal {
+  .btn-arrow__btn--a,
+  .button-arrow__btn--a {
+    border-radius: tokens.$btn-arrow-outer-radius tokens.$btn-arrow-inner-radius tokens.$btn-arrow-inner-radius tokens.$btn-arrow-outer-radius;
+  }
+
+  .btn-arrow__btn--b,
+  .button-arrow__btn--b {
+    border-radius: tokens.$btn-arrow-inner-radius tokens.$btn-arrow-outer-radius tokens.$btn-arrow-outer-radius tokens.$btn-arrow-inner-radius;
+  }
+
+  .btn-arrow__btn--a:hover .k3ui-icon,
+  .btn-arrow__btn--a:hover i,
+  .btn-arrow__btn--a:hover svg,
+  .button-arrow__btn--a:hover .k3ui-icon,
+  .button-arrow__btn--a:hover i,
+  .button-arrow__btn--a:hover svg {
+    transform: translateX(-#{tokens.$btn-arrow-icon-hover-offset});
+  }
+
+  .btn-arrow__btn--b:hover .k3ui-icon,
+  .btn-arrow__btn--b:hover i,
+  .btn-arrow__btn--b:hover svg,
+  .button-arrow__btn--b:hover .k3ui-icon,
+  .button-arrow__btn--b:hover i,
+  .button-arrow__btn--b:hover svg {
+    transform: translateX(#{tokens.$btn-arrow-icon-hover-offset});
+  }
+}
+
+/// Formes vertical
+@mixin btn-arrow-shape-vertical {
+  flex-direction: column;
+
+  .btn-arrow__btn--a,
+  .button-arrow__btn--a {
+    border-radius: tokens.$btn-arrow-outer-radius tokens.$btn-arrow-outer-radius tokens.$btn-arrow-inner-radius tokens.$btn-arrow-inner-radius;
+  }
+
+  .btn-arrow__btn--b,
+  .button-arrow__btn--b {
+    border-radius: tokens.$btn-arrow-inner-radius tokens.$btn-arrow-inner-radius tokens.$btn-arrow-outer-radius tokens.$btn-arrow-outer-radius;
+  }
+
+  .btn-arrow__btn--a:hover .k3ui-icon,
+  .btn-arrow__btn--a:hover i,
+  .btn-arrow__btn--a:hover svg,
+  .button-arrow__btn--a:hover .k3ui-icon,
+  .button-arrow__btn--a:hover i,
+  .button-arrow__btn--a:hover svg {
+    transform: translateY(-#{tokens.$btn-arrow-icon-hover-offset});
+  }
+
+  .btn-arrow__btn--b:hover .k3ui-icon,
+  .btn-arrow__btn--b:hover i,
+  .btn-arrow__btn--b:hover svg,
+  .button-arrow__btn--b:hover .k3ui-icon,
+  .button-arrow__btn--b:hover i,
+  .button-arrow__btn--b:hover svg {
+    transform: translateY(#{tokens.$btn-arrow-icon-hover-offset});
+  }
+}
+
+/// Variante tonal — secondary-container (comme Button tonal)
+@mixin btn-arrow-tonal {
+  .btn-arrow__btn,
+  .button-arrow__btn {
+    background: tokens.$btn-arrow-tonal-bg;
+    color: tokens.$btn-arrow-tonal-fg;
+    box-shadow: none;
+
+    &::before {
+      background: tokens.$btn-arrow-tonal-fg;
+    }
+
+    &:hover {
+      box-shadow: none;
+    }
+  }
+}
+
+/// Variante outlined — transparent + outline (comme Button outlined)
+@mixin btn-arrow-outlined {
+  .btn-arrow__btn,
+  .button-arrow__btn {
+    background: transparent;
+    color: tokens.$btn-arrow-outlined-fg;
+    border: 1px solid tokens.$btn-arrow-outline;
+    box-shadow: none;
+
+    &::before {
+      background: tokens.$btn-arrow-outlined-fg;
+    }
+
+    &:hover {
+      border-color: tokens.$btn-arrow-outline-hover;
+      box-shadow: none;
+    }
+  }
+}

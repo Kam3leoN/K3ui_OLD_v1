@@ -1,0 +1,17 @@
+/**
+ * @fileoverview Tokens timeline chrome flottant (ScrollToTop, FAB, FabMenu, coins fixes)
+ * @description Durées / easings partagés — spatial-fast (bottom) + spatial-default (horizontal)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+/** Marge bord écran (alignée button-fab-menu layer + button-fab). */
+$k3ui-floating-chrome-edge-inset: 16px !default;
+
+/** Vertical : bottom / top / apparition scroll-to-top (350ms expressive). */
+$k3ui-floating-chrome-vertical-duration: var(--md-sys-motion-spatial-fast-duration, 350ms) !default;
+$k3ui-floating-chrome-vertical-easing: var(--md-sys-motion-spatial-fast-easing, ease) !default;
+
+/** Horizontal : left / right / décalage sibling scroll-to-top (500ms expressive). */
+$k3ui-floating-chrome-horizontal-duration: var(--md-sys-motion-spatial-default-duration, 500ms) !default;
+$k3ui-floating-chrome-horizontal-easing: var(--md-sys-motion-spatial-default-easing, ease) !default;

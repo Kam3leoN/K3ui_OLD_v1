@@ -1,0 +1,423 @@
+/**
+ * @fileoverview Module ButtonFab Material Design 3 Expressive
+ * @description FAB, Extended FAB et mode morph (FAB ↔ Extended)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/button-fab.token' as bf;
+@use '../mixins/floating-chrome.mixin' as fc;
+@use '../tokens/motion.token' as motion;
+@use '../mixins/button-fab.mixin' as mix;
+
+$fab-effects-dur: motion.spring-duration(effects, fast);
+$fab-effects-ease: motion.spring-easing(effects, fast);
+$fab-spatial-fast-dur: motion.spring-duration(spatial, fast);
+$fab-spatial-fast-ease: motion.spring-easing(spatial, fast);
+$fab-spatial-default-dur: motion.spring-duration(spatial, default);
+$fab-spatial-default-ease: motion.spring-easing(spatial, default);
+
+// ============================================================================
+// CONTAINER
+// ============================================================================
+
+.button-fab,
+k3ui-button-fab {
+  @include mix.button-fab-container;
+  /** Padding FAB par rapport à l’écran / conteneur (specs M3: 16) */
+  --button-fab-container-padding: #{bf.$button-fab-container-padding};
+}
+
+// ============================================================================
+// SIZES (CSS vars pour JS / morph)
+// ============================================================================
+
+.button-fab[data-size='small'] {
+  --button-fab-size: #{bf.$button-fab-size-small};
+  --button-fab-icon-size: #{bf.$button-fab-icon-small};
+  --button-fab-ext-padding-start: #{bf.$button-fab-ext-padding-start-small};
+  --button-fab-ext-padding-end: #{bf.$button-fab-ext-padding-end-small};
+  --button-fab-ext-gap: #{bf.$button-fab-ext-gap-small};
+  --button-fab-label-size: #{bf.$button-fab-label-size-small};
+  --button-fab-label-weight: #{bf.$button-fab-label-weight-small};
+  --button-fab-label-letter-spacing: #{bf.$button-fab-label-letter-spacing-small};
+  --button-fab-label-line-height: #{bf.$button-fab-label-line-height-small};
+  --button-fab-radius: #{bf.$button-fab-radius-rounded-small};
+  --button-fab-radius-square: #{bf.$button-fab-radius-square-small};
+  --button-fab-ext-radius: #{bf.$button-fab-ext-radius-rounded-small};
+  --button-fab-ext-radius-square: #{bf.$button-fab-radius-square-small};
+}
+
+.button-fab[data-size='medium'] {
+  --button-fab-size: #{bf.$button-fab-size-medium};
+  --button-fab-icon-size: #{bf.$button-fab-icon-medium};
+  --button-fab-ext-padding-start: #{bf.$button-fab-ext-padding-start-medium};
+  --button-fab-ext-padding-end: #{bf.$button-fab-ext-padding-end-medium};
+  --button-fab-ext-gap: #{bf.$button-fab-ext-gap-medium};
+  --button-fab-label-size: #{bf.$button-fab-label-size-medium};
+  --button-fab-label-weight: #{bf.$button-fab-label-weight-medium};
+  --button-fab-label-letter-spacing: #{bf.$button-fab-label-letter-spacing-medium};
+  --button-fab-label-line-height: #{bf.$button-fab-label-line-height-medium};
+  --button-fab-radius: #{bf.$button-fab-radius-rounded-medium};
+  --button-fab-radius-square: #{bf.$button-fab-radius-square-medium};
+  --button-fab-ext-radius: #{bf.$button-fab-ext-radius-rounded-medium};
+  --button-fab-ext-radius-square: #{bf.$button-fab-radius-square-medium};
+}
+
+.button-fab[data-size='large'] {
+  --button-fab-size: #{bf.$button-fab-size-large};
+  --button-fab-icon-size: #{bf.$button-fab-icon-large};
+  --button-fab-ext-padding-start: #{bf.$button-fab-ext-padding-start-large};
+  --button-fab-ext-padding-end: #{bf.$button-fab-ext-padding-end-large};
+  --button-fab-ext-gap: #{bf.$button-fab-ext-gap-large};
+  --button-fab-label-size: #{bf.$button-fab-label-size-large};
+  --button-fab-label-weight: #{bf.$button-fab-label-weight-large};
+  --button-fab-label-letter-spacing: #{bf.$button-fab-label-letter-spacing-large};
+  --button-fab-label-line-height: #{bf.$button-fab-label-line-height-large};
+  --button-fab-radius: #{bf.$button-fab-radius-rounded-large};
+  --button-fab-radius-square: #{bf.$button-fab-radius-square-large};
+  --button-fab-ext-radius: #{bf.$button-fab-ext-radius-rounded-large};
+  --button-fab-ext-radius-square: #{bf.$button-fab-radius-square-large};
+}
+
+// ============================================================================
+// SHAPE
+// ============================================================================
+
+.button-fab[data-shape='rounded'] {
+  --button-fab-radius-use: var(--button-fab-radius);
+  --button-fab-ext-radius-use: var(--button-fab-ext-radius);
+}
+
+.button-fab[data-shape='square'] {
+  --button-fab-radius-use: var(--button-fab-radius-square);
+  --button-fab-ext-radius-use: var(--button-fab-ext-radius-square);
+}
+
+// ============================================================================
+// BUTTON ELEMENT
+// ============================================================================
+
+.button-fab__btn {
+  @include mix.button-fab-btn-base;
+  width: var(--button-fab-size);
+  min-width: var(--button-fab-size);
+  height: var(--button-fab-size);
+  border-radius: var(--button-fab-radius-use);
+  box-shadow: none;
+}
+
+.button-fab[data-size='small'] .button-fab__btn {
+  @include mix.button-fab-size-small;
+}
+
+.button-fab[data-size='medium'] .button-fab__btn {
+  @include mix.button-fab-size-medium;
+}
+
+.button-fab[data-size='large'] .button-fab__btn {
+  @include mix.button-fab-size-large;
+}
+
+// Variants — 6 variantes M3 (filled + container) + surface
+.button-fab[data-variant='primary'] .button-fab__btn {
+  background: bf.$button-fab-bg-primary;
+  color: bf.$button-fab-fg-primary;
+}
+
+.button-fab[data-variant='secondary'] .button-fab__btn {
+  background: bf.$button-fab-bg-secondary;
+  color: bf.$button-fab-fg-secondary;
+}
+
+.button-fab[data-variant='tertiary'] .button-fab__btn {
+  background: bf.$button-fab-bg-tertiary;
+  color: bf.$button-fab-fg-tertiary;
+}
+
+.button-fab[data-variant='primary-container'] .button-fab__btn {
+  background: bf.$button-fab-bg-primary-container;
+  color: bf.$button-fab-fg-primary-container;
+}
+
+.button-fab[data-variant='secondary-container'] .button-fab__btn {
+  background: bf.$button-fab-bg-secondary-container;
+  color: bf.$button-fab-fg-secondary-container;
+}
+
+.button-fab[data-variant='tertiary-container'] .button-fab__btn {
+  background: bf.$button-fab-bg-tertiary-container;
+  color: bf.$button-fab-fg-tertiary-container;
+}
+
+.button-fab[data-variant='surface'] .button-fab__btn {
+  background: bf.$button-fab-bg-surface;
+  color: bf.$button-fab-fg-surface;
+}
+
+// Lowered — pas d’ombre (même rendu que repos)
+.button-fab[data-lowered] .button-fab__btn {
+  box-shadow: none;
+}
+
+/* Focus visible uniquement (anneau box-shadow) — pas d’outline navigateur (rectangle) */
+.button-fab__btn:focus,
+.button-fab__btn:hover,
+.button-fab__btn:active {
+  outline: none !important;
+  outline-offset: 0;
+}
+
+.button-fab__btn:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 2px var(--md-sys-color-outline, currentColor);
+}
+
+// ============================================================================
+// MODE EXTENDED — padding + label
+// ============================================================================
+
+.button-fab[data-mode='extended'] .button-fab__btn {
+  @include mix.button-fab-extended;
+  border-radius: var(--button-fab-ext-radius-use);
+}
+
+.button-fab__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.button-fab__icon .k3ui-icon {
+  width: var(--button-fab-icon-size, bf.$button-fab-icon-medium);
+  height: var(--button-fab-icon-size, bf.$button-fab-icon-medium);
+}
+
+/**
+ * Logo — même taille FAB compact / Extended (85 % du --button-fab-size).
+ * Usage : <span class="button-fab__icon logo">…</span>
+ */
+.button-fab .button-fab__icon.logo,
+.button-fab--extended .button-fab__icon.logo,
+.button-fab[data-mode='extended'] .button-fab__icon.logo,
+.button-fab[data-mode='morph'].button-fab--extended .button-fab__icon.logo {
+  --button-fab-icon-size: calc(var(--button-fab-size, #{bf.$button-fab-size-small}) * 0.85);
+  width: var(--button-fab-icon-size);
+  height: var(--button-fab-icon-size);
+
+  i,
+  .k3ui-icon,
+  svg {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+  }
+}
+
+.button-fab__label {
+  @include mix.button-fab-label;
+  margin-inline-start: 0; /* gap géré par le bouton (--button-fab-ext-gap) */
+}
+
+// ============================================================================
+// MODE MORPH — transition width + radius (motion.token)
+// ============================================================================
+
+.button-fab[data-mode='morph'] .button-fab__btn {
+  border-radius: var(--button-fab-radius-use);
+  transition:
+    width $fab-spatial-fast-dur $fab-spatial-fast-ease,
+    min-width $fab-spatial-fast-dur $fab-spatial-fast-ease,
+    padding-inline $fab-spatial-fast-dur $fab-spatial-fast-ease,
+    border-radius $fab-spatial-fast-dur $fab-spatial-fast-ease;
+}
+
+.button-fab[data-mode='morph'].button-fab--extended .button-fab__btn {
+  @include mix.button-fab-extended;
+  border-radius: var(--button-fab-ext-radius-use);
+  transition:
+    width $fab-spatial-default-dur $fab-spatial-default-ease,
+    min-width $fab-spatial-default-dur $fab-spatial-default-ease,
+    padding-inline $fab-spatial-default-dur $fab-spatial-default-ease,
+    border-radius $fab-spatial-default-dur $fab-spatial-default-ease;
+}
+
+.button-fab[data-mode='morph'] .button-fab__label {
+  transition: opacity $fab-effects-dur $fab-effects-ease;
+}
+
+.button-fab[data-mode='morph'].button-fab--extended .button-fab__label {
+  transition: opacity $fab-effects-dur $fab-effects-ease;
+}
+
+// ============================================================================
+// ROUNDED STATE — transition square → rounded (comme button-fab-menu)
+// Utilisé au :active (shape square) ou quand le menu FAB est ouvert
+// ============================================================================
+
+$button-fab-rounded-state-easing: $fab-spatial-fast-ease !default;
+$button-fab-rounded-state-duration: $fab-spatial-fast-dur !default;
+
+.button-fab__btn {
+  transition:
+    background-color $fab-effects-dur $fab-effects-ease,
+    box-shadow $fab-effects-dur $fab-effects-ease,
+    border-radius $button-fab-rounded-state-duration $button-fab-rounded-state-easing;
+}
+
+.button-fab--rounded-state .button-fab__btn {
+  border-radius: 50%;
+  animation: button-fab-rounded-bounce $button-fab-rounded-state-duration $button-fab-rounded-state-easing forwards;
+}
+
+@keyframes button-fab-rounded-bounce {
+  0% {
+    transform: scale(1);
+  }
+  28% {
+    transform: scaleX(1.09) scaleY(0.92);
+  }
+  54% {
+    transform: scaleX(0.95) scaleY(1.05);
+  }
+  76% {
+    transform: scaleX(1.03) scaleY(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// ============================================================================
+// FIXED CORNER — décale selon --k3ui-rail-inset-* (utils/fab/layer.ts)
+// ============================================================================
+
+.button-fab--fixed,
+.button-fab[data-fixed],
+k3ui-button-fab[data-fixed] {
+  position: fixed !important;
+  z-index: 1100;
+  margin: 0;
+  @include fc.floating-chrome-position-motion;
+}
+
+.button-fab--fixed[data-position='bottom-left'],
+.button-fab[data-fixed][data-position='bottom-left'],
+k3ui-button-fab[data-fixed][data-position='bottom-left'],
+.button-fab--fixed:not([data-position]),
+.button-fab[data-fixed]:not([data-position]) {
+  bottom: calc(
+    bf.$button-fab-container-padding +
+    var(--k3ui-bottom-inset, 0px) +
+    var(--k3ui-navigation-bar-offset, 0px) +
+    var(--k3ui-appbar-bottom-offset, 0px) +
+    env(safe-area-inset-bottom, 0px)
+  );
+  left: calc(
+    var(--k3ui-rail-inset-left, 0px) + bf.$button-fab-container-padding + env(safe-area-inset-left, 0px)
+  );
+  top: auto;
+  right: auto;
+}
+
+.button-fab--fixed[data-position='bottom-right'],
+.button-fab[data-fixed][data-position='bottom-right'],
+k3ui-button-fab[data-fixed][data-position='bottom-right'] {
+  bottom: calc(
+    bf.$button-fab-container-padding +
+    var(--k3ui-bottom-inset, 0px) +
+    var(--k3ui-navigation-bar-offset, 0px) +
+    var(--k3ui-appbar-bottom-offset, 0px) +
+    env(safe-area-inset-bottom, 0px)
+  );
+  right: calc(
+    var(--k3ui-rail-inset-right, 0px) + bf.$button-fab-container-padding + env(safe-area-inset-right, 0px)
+  );
+  top: auto;
+  left: auto;
+  @include fc.floating-chrome-scrollbar-compensation;
+}
+
+.button-fab--fixed[data-position='top-left'],
+.button-fab[data-fixed][data-position='top-left'],
+k3ui-button-fab[data-fixed][data-position='top-left'] {
+  top: calc(bf.$button-fab-container-padding + env(safe-area-inset-top, 0px));
+  left: calc(
+    var(--k3ui-rail-inset-left, 0px) + bf.$button-fab-container-padding + env(safe-area-inset-left, 0px)
+  );
+  bottom: auto;
+  right: auto;
+}
+
+.button-fab--fixed[data-position='top-right'],
+.button-fab[data-fixed][data-position='top-right'],
+k3ui-button-fab[data-fixed][data-position='top-right'] {
+  top: calc(bf.$button-fab-container-padding + env(safe-area-inset-top, 0px));
+  right: calc(
+    var(--k3ui-rail-inset-right, 0px) + bf.$button-fab-container-padding + env(safe-area-inset-right, 0px)
+  );
+  bottom: auto;
+  left: auto;
+  @include fc.floating-chrome-scrollbar-compensation;
+}
+
+// ============================================================================
+// COIN FLOTTANT GÉNÉRIQUE — btn, button-icon, etc. (même décalage rail)
+// ============================================================================
+
+.k3ui-floating-corner {
+  position: fixed !important;
+  z-index: 1100;
+  margin: 0;
+  @include fc.floating-chrome-position-motion;
+}
+
+.k3ui-floating-corner[data-position='bottom-left'],
+.k3ui-floating-corner--bottom-left {
+  bottom: calc(
+    16px + var(--k3ui-bottom-inset, 0px) + var(--k3ui-navigation-bar-offset, 0px) +
+    var(--k3ui-appbar-bottom-offset, 0px) + env(safe-area-inset-bottom, 0px)
+  );
+  left: calc(var(--k3ui-rail-inset-left, 0px) + 16px + env(safe-area-inset-left, 0px));
+  top: auto;
+  right: auto;
+}
+
+.k3ui-floating-corner[data-position='bottom-right'],
+.k3ui-floating-corner--bottom-right {
+  bottom: calc(
+    16px + var(--k3ui-bottom-inset, 0px) + var(--k3ui-navigation-bar-offset, 0px) +
+    var(--k3ui-appbar-bottom-offset, 0px) + env(safe-area-inset-bottom, 0px)
+  );
+  right: calc(
+    var(--k3ui-rail-inset-right, 0px) +
+    16px +
+    env(safe-area-inset-right, 0px)
+  );
+  top: auto;
+  left: auto;
+  @include fc.floating-chrome-scrollbar-compensation;
+}
+
+.k3ui-floating-corner[data-position='top-left'],
+.k3ui-floating-corner--top-left {
+  top: calc(16px + env(safe-area-inset-top, 0px));
+  left: calc(var(--k3ui-rail-inset-left, 0px) + 16px + env(safe-area-inset-left, 0px));
+  bottom: auto;
+  right: auto;
+}
+
+.k3ui-floating-corner[data-position='top-right'],
+.k3ui-floating-corner--top-right {
+  top: calc(16px + env(safe-area-inset-top, 0px));
+  right: calc(
+    var(--k3ui-rail-inset-right, 0px) +
+    16px +
+    env(safe-area-inset-right, 0px)
+  );
+  bottom: auto;
+  left: auto;
+  @include fc.floating-chrome-scrollbar-compensation;
+}

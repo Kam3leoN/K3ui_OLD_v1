@@ -1,0 +1,96 @@
+/**
+ * @fileoverview Tokens de design pour ScrollSpy (ScrollSpy)
+ * @description Variables de design pour le sommaire « On this page »
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'motion.token' as motion;
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+/** Offset sticky / scroll-spy (px) */
+$scrollspy-offset-default: 96 !default;
+
+/** Breakpoint mobile (px) */
+$scrollspy-mobile-breakpoint: 960px !default;
+
+/** Padding horizontal des items */
+$scrollspy-item-padding-x: 24px !default;
+
+/** Padding vertical des items */
+$scrollspy-item-padding-y: 10px !default;
+
+/** Rayon pilule (full-rounded) */
+$scrollspy-item-radius: 9999px !default;
+
+/** Indentation h3 (px) */
+$scrollspy-level3-indent: 16px !default;
+
+/** Hauteur minimale cible tactile (48dp) */
+$scrollspy-touch-target-min: 48px !default;
+
+/** Largeur indicateur de progression */
+$scrollspy-progress-width: 2px !default;
+
+// ============================================================================
+// TYPOGRAPHIE
+// ============================================================================
+
+/** Overline — label-small 11sp */
+$scrollspy-overline-size: 0.6875rem !default;
+$scrollspy-overline-line-height: 1rem !default;
+$scrollspy-overline-weight: 500 !default;
+
+/** Titre de page — display réduit ~28/34 */
+$scrollspy-title-size: 1.75rem !default;
+$scrollspy-title-line-height: 2.125rem !default;
+$scrollspy-title-weight: 400 !default;
+
+/** Item — label-large 14/20 */
+$scrollspy-item-font-size: 0.875rem !default;
+$scrollspy-item-line-height: 1.25rem !default;
+$scrollspy-item-weight: 400 !default;
+$scrollspy-item-weight-active: 600 !default;
+
+// ============================================================================
+// COULEURS (M3 CSS vars)
+// ============================================================================
+
+$scrollspy-color-overline: var(--md-sys-color-on-surface-variant) !default;
+$scrollspy-color-title: var(--md-sys-color-on-surface) !default;
+$scrollspy-color-item: var(--md-sys-color-on-surface-variant) !default;
+$scrollspy-color-item-active: var(--md-sys-color-on-primary) !default;
+$scrollspy-color-hover-bg: var(--md-sys-color-secondary-container) !default;
+$scrollspy-color-hover-text: var(--md-sys-color-on-secondary-container) !default;
+$scrollspy-color-pill-bg: var(--md-sys-color-primary) !default;
+$scrollspy-color-progress: var(--md-sys-color-primary) !default;
+$scrollspy-color-focus: var(--md-sys-color-primary) !default;
+
+// ============================================================================
+// STATE LAYER
+// ============================================================================
+
+$scrollspy-state-hover-opacity: 0.08 !default;
+$scrollspy-state-pressed-opacity: 0.12 !default;
+
+// ============================================================================
+// MOTION
+// ============================================================================
+
+$scrollspy-pill-transition-duration: motion.spring-duration(spatial, default) !default;
+$scrollspy-pill-transition-easing: motion.spring-easing(spatial, default) !default;
+$scrollspy-progress-transition-duration: motion.spring-duration(effects, default) !default;
+$scrollspy-progress-transition-easing: motion.spring-easing(effects, default) !default;
+$scrollspy-drawer-transition-duration: motion.spring-duration(effects, slow) !default;
+$scrollspy-drawer-transition-easing: motion.spring-easing(effects, slow) !default;
+
+// ============================================================================
+// Z-INDEX
+// ============================================================================
+
+$scrollspy-z-sticky: 10 !default;
+$scrollspy-z-drawer: 1200 !default;
+$scrollspy-z-overlay: 1190 !default;

@@ -1,0 +1,273 @@
+/**
+ * @file radius.mixin.scss
+ * @description Mixins pour la gestion des radius Material Design 3 Expressive
+ * @see https://m3.material.io/foundations/design-tokens/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use '../tokens/radius.token' as tokens;
+
+// ============================================================================
+// MIXINS DE BASE
+// ============================================================================
+
+/**
+ * Mixin pour appliquer un radius personnalisé
+ * @param {string} $radius - Valeur du radius
+ */
+@mixin radius($radius) {
+  border-radius: $radius;
+}
+
+/**
+ * Mixin pour radius de base
+ * @param {string} $size - Taille du radius (extra-small, small, medium, large, extra-large, full)
+ */
+@mixin radius-base($size: 'medium') {
+  border-radius: tokens.radius($size);
+}
+
+/**
+ * Mixin pour radius par type de composant
+ * @param {string} $component - Type de composant (button, input, card, modal, tooltip, menu, avatar, badge)
+ */
+@mixin radius-component($component: 'card') {
+  border-radius: tokens.radius-component($component);
+}
+
+// ============================================================================
+// MIXINS POUR LES DIFFÉRENTES TAILLES
+// ============================================================================
+
+/**
+ * Mixin pour radius extra-small
+ */
+@mixin radius-extra-small {
+  border-radius: tokens.radius('extra-small');
+}
+
+/**
+ * Mixin pour radius small
+ */
+@mixin radius-small {
+  border-radius: tokens.radius('small');
+}
+
+/**
+ * Mixin pour radius medium
+ */
+@mixin radius-medium {
+  border-radius: tokens.radius('medium');
+}
+
+/**
+ * Mixin pour radius large
+ */
+@mixin radius-large {
+  border-radius: tokens.radius('large');
+}
+
+/**
+ * Mixin pour radius extra-large
+ */
+@mixin radius-extra-large {
+  border-radius: tokens.radius('extra-large');
+}
+
+/**
+ * Mixin pour radius full (circulaire)
+ */
+@mixin radius-full {
+  border-radius: tokens.radius('full');
+}
+
+// ============================================================================
+// MIXINS POUR LES TYPES DE COMPOSANTS
+// ============================================================================
+
+/**
+ * Mixin pour radius de bouton
+ */
+@mixin radius-button {
+  border-radius: tokens.radius-component('button');
+}
+
+/**
+ * Mixin pour radius d'input
+ */
+@mixin radius-input {
+  border-radius: tokens.radius-component('input');
+}
+
+/**
+ * Mixin pour radius de carte
+ */
+@mixin radius-card {
+  border-radius: tokens.radius-component('card');
+}
+
+/**
+ * Mixin pour radius de modale
+ */
+@mixin radius-modal {
+  border-radius: tokens.radius-component('modal');
+}
+
+/**
+ * Mixin pour radius de tooltip
+ */
+@mixin radius-tooltip {
+  border-radius: tokens.radius-component('tooltip');
+}
+
+/**
+ * Mixin pour radius de menu
+ */
+@mixin radius-menu {
+  border-radius: tokens.radius-component('menu');
+}
+
+/**
+ * Mixin pour radius d'avatar
+ */
+@mixin radius-avatar {
+  border-radius: tokens.radius-component('avatar');
+}
+
+/**
+ * Mixin pour radius de badge
+ */
+@mixin radius-badge {
+  border-radius: tokens.radius-component('badge');
+}
+
+// ============================================================================
+// MIXINS POUR LES COINS SPÉCIFIQUES
+// ============================================================================
+
+/**
+ * Mixin pour radius du coin supérieur gauche
+ * @param {string} $size - Taille du radius (extra-small, small, medium, large, extra-large, full)
+ */
+@mixin radius-top-left($size: 'medium') {
+  border-top-left-radius: tokens.radius($size);
+}
+
+/**
+ * Mixin pour radius du coin supérieur droit
+ * @param {string} $size - Taille du radius (extra-small, small, medium, large, extra-large, full)
+ */
+@mixin radius-top-right($size: 'medium') {
+  border-top-right-radius: tokens.radius($size);
+}
+
+/**
+ * Mixin pour radius du coin inférieur gauche
+ * @param {string} $size - Taille du radius (extra-small, small, medium, large, extra-large, full)
+ */
+@mixin radius-bottom-left($size: 'medium') {
+  border-bottom-left-radius: tokens.radius($size);
+}
+
+/**
+ * Mixin pour radius du coin inférieur droit
+ * @param {string} $size - Taille du radius (extra-small, small, medium, large, extra-large, full)
+ */
+@mixin radius-bottom-right($size: 'medium') {
+  border-bottom-right-radius: tokens.radius($size);
+}
+
+// ============================================================================
+// MIXINS POUR LES COMBINAISONS DE COINS
+// ============================================================================
+
+/**
+ * Mixin pour radius des coins supérieurs
+ * @param {string} $size - Taille du radius (extra-small, small, medium, large, extra-large, full)
+ */
+@mixin radius-top($size: 'medium') {
+  border-top-left-radius: tokens.radius($size);
+  border-top-right-radius: tokens.radius($size);
+}
+
+/**
+ * Mixin pour radius des coins inférieurs
+ * @param {string} $size - Taille du radius (extra-small, small, medium, large, extra-large, full)
+ */
+@mixin radius-bottom($size: 'medium') {
+  border-bottom-left-radius: tokens.radius($size);
+  border-bottom-right-radius: tokens.radius($size);
+}
+
+/**
+ * Mixin pour radius des coins gauches
+ * @param {string} $size - Taille du radius (extra-small, small, medium, large, extra-large, full)
+ */
+@mixin radius-left($size: 'medium') {
+  border-top-left-radius: tokens.radius($size);
+  border-bottom-left-radius: tokens.radius($size);
+}
+
+/**
+ * Mixin pour radius des coins droits
+ * @param {string} $size - Taille du radius (extra-small, small, medium, large, extra-large, full)
+ */
+@mixin radius-right($size: 'medium') {
+  border-top-right-radius: tokens.radius($size);
+  border-bottom-right-radius: tokens.radius($size);
+}
+
+// ============================================================================
+// MIXINS UTILITAIRES
+// ============================================================================
+
+/**
+ * Mixin pour supprimer le radius
+ */
+@mixin radius-none {
+  border-radius: 0;
+}
+
+/**
+ * Mixin pour radius responsive
+ * @param {map} $breakpoints - Map des breakpoints et radius
+ * @example
+ *   @include radius-responsive((
+ *     'default': 'small',
+ *     '768px': 'medium',
+ *     '1024px': 'large'
+ *   ));
+ */
+@mixin radius-responsive($breakpoints) {
+  @each $breakpoint, $size in $breakpoints {
+    @if $breakpoint == 'default' {
+      border-radius: tokens.radius($size);
+    } @else {
+      @media (min-width: $breakpoint) {
+        border-radius: tokens.radius($size);
+      }
+    }
+  }
+}
+
+/**
+ * Mixin pour radius avec fallback
+ * @param {string} $radius - Valeur du radius principale
+ * @param {string} $fallback - Valeur du radius de fallback (défaut: 0)
+ */
+@mixin radius-with-fallback($radius, $fallback: 0) {
+  border-radius: $fallback; // Fallback pour les navigateurs non supportés
+  border-radius: $radius;
+}
+
+/**
+ * Mixin pour radius avec support des navigateurs anciens
+ * @param {string} $radius - Valeur du radius
+ */
+@mixin radius-legacy($radius) {
+  // Support pour les navigateurs anciens
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  border-radius: $radius;
+} 

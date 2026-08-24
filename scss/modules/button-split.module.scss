@@ -1,0 +1,637 @@
+/**
+ * @fileoverview Module Button Split Material Design 3 Expressive
+ * @description Split button : main + trailing, gap 2dp, 5 tailles, 4 variantes
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/button-split.token' as bs;
+@use '../mixins/button-split.mixin' as mix;
+@use '../mixins/state.mixin' as state;
+
+// ============================================================================
+// CONTAINER
+// ============================================================================
+
+.split-btn,
+.split-button,
+.button-split,
+k3ui-button-split {
+  @include mix.button-split-container;
+  /* 2dp entre leading et trailing (M3 Expressive) — forcé pour tous les contextes */
+  display: inline-flex !important;
+  gap: bs.$button-split-gap !important;
+  /* Annuler toute marge sur les enfants pour que le gap reste visible */
+  > .split-btn__leading,
+  > .split-button__leading,
+  > .button-split__leading {
+    margin-right: 0 !important;
+  }
+  > .split-btn__trailing,
+  > .split-button__trailing,
+  > .button-split__trailing {
+    margin-left: 0 !important;
+  }
+}
+
+// ============================================================================
+// LEADING & TRAILING — base (md)
+// ============================================================================
+
+.split-btn__leading,
+.split-button__leading,
+.button-split__leading {
+  @include mix.button-split-leading-base;
+}
+
+.split-btn__trailing,
+.split-button__trailing,
+.button-split__trailing {
+  @include mix.button-split-trailing-base;
+}
+
+// ============================================================================
+// TRAILING ICON — rotation (fermé = bas, ouvert = haut)
+// ============================================================================
+
+/* Chevron : glyphe de base vers le haut → 180° fermé (bas), 0° ouvert (haut) */
+.split-btn--chevron .split-btn__trailing .button-split__icon,
+.split-button--chevron .split-button__trailing .button-split__icon,
+.button-split--chevron .button-split__trailing .button-split__icon {
+  transform: rotate(180deg);
+}
+
+.split-btn--chevron .split-btn__trailing.split-btn__trailing--expanded .button-split__icon,
+.split-btn--chevron .split-btn__trailing.split-button__trailing--expanded .button-split__icon,
+.split-button--chevron .split-button__trailing.split-btn__trailing--expanded .button-split__icon,
+.split-button--chevron .split-button__trailing.split-button__trailing--expanded .button-split__icon,
+.button-split--chevron .button-split__trailing.split-btn__trailing--expanded .button-split__icon,
+.button-split--chevron .button-split__trailing.split-button__trailing--expanded .button-split__icon {
+  transform: rotate(0deg);
+}
+
+/* Arrow : glyphe de base vers le bas → 0° fermé, 180° ouvert (haut) */
+.split-btn--arrow .split-btn__trailing.split-btn__trailing--expanded .button-split__icon,
+.split-btn--arrow .split-btn__trailing.split-button__trailing--expanded .button-split__icon,
+.split-button--arrow .split-button__trailing.split-btn__trailing--expanded .button-split__icon,
+.split-button--arrow .split-button__trailing.split-button__trailing--expanded .button-split__icon,
+.button-split--arrow .button-split__trailing.split-btn__trailing--expanded .button-split__icon,
+.button-split--arrow .button-split__trailing.split-button__trailing--expanded .button-split__icon {
+  transform: rotate(180deg);
+}
+
+/* Ellipsis vertical : 0° fermé, 90° ouvert (horizontal) */
+.split-btn--ellipsis .split-btn__trailing.split-btn__trailing--expanded .button-split__icon,
+.split-btn--ellipsis .split-btn__trailing.split-button__trailing--expanded .button-split__icon,
+.split-button--ellipsis .split-button__trailing.split-btn__trailing--expanded .button-split__icon,
+.split-button--ellipsis .split-button__trailing.split-button__trailing--expanded .button-split__icon,
+.button-split--ellipsis .button-split__trailing.split-btn__trailing--expanded .button-split__icon,
+.button-split--ellipsis .button-split__trailing.split-button__trailing--expanded .button-split__icon {
+  transform: rotate(90deg);
+}
+
+// ============================================================================
+// ICON-ONLY — base (dimensions par taille : section après SIZES)
+// ============================================================================
+
+.button-split--icon-only .button-split__leading .button-split__label,
+.split-btn--icon-only .split-btn__leading .button-split__label,
+.split-button--icon-only .split-button__leading .button-split__label {
+  display: none;
+}
+
+// Leading sans icône : pas de gap réservé entre label et slot icône absent
+.button-split--no-leading-icon .button-split__leading,
+.split-btn--no-leading-icon .split-btn__leading,
+.split-button--no-leading-icon .split-button__leading,
+k3ui-button-split.button-split--no-leading-icon .button-split__leading {
+  gap: 0;
+}
+
+// ============================================================================
+// SIZES — xs, sm, md, lg, xl
+// ============================================================================
+
+.split-btn--xs .split-btn__leading,
+.split-button--xs .split-button__leading,
+.button-split--xs .button-split__leading {
+  @include mix.button-split-leading-base(
+    bs.$button-split-xs-height,
+    bs.$button-split-xs-main-pl,
+    bs.$button-split-xs-main-pr,
+    bs.$button-split-xs-main-gap,
+    bs.$button-split-xs-font,
+    bs.$button-split-xs-icon,
+    bs.$button-split-xs-outer-radius,
+    bs.$button-split-xs-inner-radius
+  );
+  height: bs.$button-split-xs-height !important;
+  font-size: bs.$button-split-xs-font !important;
+  .button-split__icon { width: bs.$button-split-xs-icon !important; height: bs.$button-split-xs-icon !important; font-size: bs.$button-split-xs-icon !important; }
+}
+.split-btn--xs .split-btn__trailing,
+.split-button--xs .split-button__trailing,
+.button-split--xs .button-split__trailing {
+  @include mix.button-split-trailing-base(bs.$button-split-xs-height, bs.$button-split-xs-outer-radius, bs.$button-split-xs-inner-radius, bs.$button-split-xs-trailing-icon);
+  width: bs.$button-split-xs-height !important;
+  height: bs.$button-split-xs-height !important;
+  min-width: bs.$button-split-xs-height !important;
+  .button-split__icon { width: bs.$button-split-xs-trailing-icon !important; height: bs.$button-split-xs-trailing-icon !important; font-size: bs.$button-split-xs-trailing-icon !important; }
+}
+
+.split-btn--sm .split-btn__leading,
+.split-button--sm .split-button__leading,
+.button-split--sm .button-split__leading {
+  @include mix.button-split-leading-base(
+    bs.$button-split-sm-height,
+    bs.$button-split-sm-main-pl,
+    bs.$button-split-sm-main-pr,
+    bs.$button-split-sm-main-gap,
+    bs.$button-split-sm-font,
+    bs.$button-split-sm-icon,
+    bs.$button-split-sm-outer-radius,
+    bs.$button-split-sm-inner-radius
+  );
+  height: bs.$button-split-sm-height !important;
+  font-size: bs.$button-split-sm-font !important;
+  .button-split__icon { width: bs.$button-split-sm-icon !important; height: bs.$button-split-sm-icon !important; font-size: bs.$button-split-sm-icon !important; }
+}
+.split-btn--sm .split-btn__trailing,
+.split-button--sm .split-button__trailing,
+.button-split--sm .button-split__trailing {
+  @include mix.button-split-trailing-base(bs.$button-split-sm-height, bs.$button-split-sm-outer-radius, bs.$button-split-sm-inner-radius, bs.$button-split-sm-trailing-icon);
+  width: bs.$button-split-sm-height !important;
+  height: bs.$button-split-sm-height !important;
+  min-width: bs.$button-split-sm-height !important;
+  .button-split__icon { width: bs.$button-split-sm-trailing-icon !important; height: bs.$button-split-sm-trailing-icon !important; font-size: bs.$button-split-sm-trailing-icon !important; }
+}
+
+.split-btn--md .split-btn__leading,
+.split-button--md .split-button__leading,
+.button-split--md .button-split__leading {
+  @include mix.button-split-leading-base(
+    bs.$button-split-md-height,
+    bs.$button-split-md-main-pl,
+    bs.$button-split-md-main-pr,
+    bs.$button-split-md-main-gap,
+    bs.$button-split-md-font,
+    bs.$button-split-md-icon,
+    bs.$button-split-md-outer-radius,
+    bs.$button-split-md-inner-radius
+  );
+  height: bs.$button-split-md-height !important;
+  font-size: bs.$button-split-md-font !important;
+  .button-split__icon { width: bs.$button-split-md-icon !important; height: bs.$button-split-md-icon !important; font-size: bs.$button-split-md-icon !important; }
+}
+.split-btn--md .split-btn__trailing,
+.split-button--md .split-button__trailing,
+.button-split--md .button-split__trailing {
+  @include mix.button-split-trailing-base(bs.$button-split-md-height, bs.$button-split-md-outer-radius, bs.$button-split-md-inner-radius, bs.$button-split-md-trailing-icon);
+  width: bs.$button-split-md-height !important;
+  height: bs.$button-split-md-height !important;
+  min-width: bs.$button-split-md-height !important;
+  .button-split__icon { width: bs.$button-split-md-trailing-icon !important; height: bs.$button-split-md-trailing-icon !important; font-size: bs.$button-split-md-trailing-icon !important; }
+}
+
+.split-btn--lg .split-btn__leading,
+.split-button--lg .split-button__leading,
+.button-split--lg .button-split__leading {
+  @include mix.button-split-leading-base(
+    bs.$button-split-lg-height,
+    bs.$button-split-lg-main-pl,
+    bs.$button-split-lg-main-pr,
+    bs.$button-split-lg-main-gap,
+    bs.$button-split-lg-font,
+    bs.$button-split-lg-icon,
+    bs.$button-split-lg-outer-radius,
+    bs.$button-split-lg-inner-radius
+  );
+  height: bs.$button-split-lg-height !important;
+  font-size: bs.$button-split-lg-font !important;
+  .button-split__icon { width: bs.$button-split-lg-icon !important; height: bs.$button-split-lg-icon !important; font-size: bs.$button-split-lg-icon !important; }
+}
+.split-btn--lg .split-btn__trailing,
+.split-button--lg .split-button__trailing,
+.button-split--lg .button-split__trailing {
+  @include mix.button-split-trailing-base(bs.$button-split-lg-height, bs.$button-split-lg-outer-radius, bs.$button-split-lg-inner-radius, bs.$button-split-lg-trailing-icon);
+  width: bs.$button-split-lg-height !important;
+  height: bs.$button-split-lg-height !important;
+  min-width: bs.$button-split-lg-height !important;
+  .button-split__icon { width: bs.$button-split-lg-trailing-icon !important; height: bs.$button-split-lg-trailing-icon !important; font-size: bs.$button-split-lg-trailing-icon !important; }
+}
+
+.split-btn--xl .split-btn__leading,
+.split-button--xl .split-button__leading,
+.button-split--xl .button-split__leading {
+  @include mix.button-split-leading-base(
+    bs.$button-split-xl-height,
+    bs.$button-split-xl-main-pl,
+    bs.$button-split-xl-main-pr,
+    bs.$button-split-xl-main-gap,
+    bs.$button-split-xl-font,
+    bs.$button-split-xl-icon,
+    bs.$button-split-xl-outer-radius,
+    bs.$button-split-xl-inner-radius
+  );
+  height: bs.$button-split-xl-height !important;
+  font-size: bs.$button-split-xl-font !important;
+  .button-split__icon { width: bs.$button-split-xl-icon !important; height: bs.$button-split-xl-icon !important; font-size: bs.$button-split-xl-icon !important; }
+}
+.split-btn--xl .split-btn__trailing,
+.split-button--xl .split-button__trailing,
+.button-split--xl .button-split__trailing {
+  @include mix.button-split-trailing-base(bs.$button-split-xl-height, bs.$button-split-xl-outer-radius, bs.$button-split-xl-inner-radius, bs.$button-split-xl-trailing-icon);
+  width: bs.$button-split-xl-height !important;
+  height: bs.$button-split-xl-height !important;
+  min-width: bs.$button-split-xl-height !important;
+  .button-split__icon { width: bs.$button-split-xl-trailing-icon !important; height: bs.$button-split-xl-trailing-icon !important; font-size: bs.$button-split-xl-trailing-icon !important; }
+}
+
+// Même logique que .split-btn--{size} lorsque seul data-size est présent (ex. PHP avant autoinit).
+.split-btn[data-size='xs'] .split-btn__leading,
+.split-button[data-size='xs'] .split-button__leading,
+.button-split[data-size='xs'] .button-split__leading {
+  @include mix.button-split-leading-base(
+    bs.$button-split-xs-height,
+    bs.$button-split-xs-main-pl,
+    bs.$button-split-xs-main-pr,
+    bs.$button-split-xs-main-gap,
+    bs.$button-split-xs-font,
+    bs.$button-split-xs-icon,
+    bs.$button-split-xs-outer-radius,
+    bs.$button-split-xs-inner-radius
+  );
+  height: bs.$button-split-xs-height !important;
+  font-size: bs.$button-split-xs-font !important;
+  .button-split__icon { width: bs.$button-split-xs-icon !important; height: bs.$button-split-xs-icon !important; font-size: bs.$button-split-xs-icon !important; }
+}
+.split-btn[data-size='xs'] .split-btn__trailing,
+.split-button[data-size='xs'] .split-button__trailing,
+.button-split[data-size='xs'] .button-split__trailing {
+  @include mix.button-split-trailing-base(bs.$button-split-xs-height, bs.$button-split-xs-outer-radius, bs.$button-split-xs-inner-radius, bs.$button-split-xs-trailing-icon);
+  width: bs.$button-split-xs-height !important;
+  height: bs.$button-split-xs-height !important;
+  min-width: bs.$button-split-xs-height !important;
+  .button-split__icon { width: bs.$button-split-xs-trailing-icon !important; height: bs.$button-split-xs-trailing-icon !important; font-size: bs.$button-split-xs-trailing-icon !important; }
+}
+
+.split-btn[data-size='sm'] .split-btn__leading,
+.split-button[data-size='sm'] .split-button__leading,
+.button-split[data-size='sm'] .button-split__leading {
+  @include mix.button-split-leading-base(
+    bs.$button-split-sm-height,
+    bs.$button-split-sm-main-pl,
+    bs.$button-split-sm-main-pr,
+    bs.$button-split-sm-main-gap,
+    bs.$button-split-sm-font,
+    bs.$button-split-sm-icon,
+    bs.$button-split-sm-outer-radius,
+    bs.$button-split-sm-inner-radius
+  );
+  height: bs.$button-split-sm-height !important;
+  font-size: bs.$button-split-sm-font !important;
+  .button-split__icon { width: bs.$button-split-sm-icon !important; height: bs.$button-split-sm-icon !important; font-size: bs.$button-split-sm-icon !important; }
+}
+.split-btn[data-size='sm'] .split-btn__trailing,
+.split-button[data-size='sm'] .split-button__trailing,
+.button-split[data-size='sm'] .button-split__trailing {
+  @include mix.button-split-trailing-base(bs.$button-split-sm-height, bs.$button-split-sm-outer-radius, bs.$button-split-sm-inner-radius, bs.$button-split-sm-trailing-icon);
+  width: bs.$button-split-sm-height !important;
+  height: bs.$button-split-sm-height !important;
+  min-width: bs.$button-split-sm-height !important;
+  .button-split__icon { width: bs.$button-split-sm-trailing-icon !important; height: bs.$button-split-sm-trailing-icon !important; font-size: bs.$button-split-sm-trailing-icon !important; }
+}
+
+.split-btn[data-size='md'] .split-btn__leading,
+.split-button[data-size='md'] .split-button__leading,
+.button-split[data-size='md'] .button-split__leading {
+  @include mix.button-split-leading-base(
+    bs.$button-split-md-height,
+    bs.$button-split-md-main-pl,
+    bs.$button-split-md-main-pr,
+    bs.$button-split-md-main-gap,
+    bs.$button-split-md-font,
+    bs.$button-split-md-icon,
+    bs.$button-split-md-outer-radius,
+    bs.$button-split-md-inner-radius
+  );
+  height: bs.$button-split-md-height !important;
+  font-size: bs.$button-split-md-font !important;
+  .button-split__icon { width: bs.$button-split-md-icon !important; height: bs.$button-split-md-icon !important; font-size: bs.$button-split-md-icon !important; }
+}
+.split-btn[data-size='md'] .split-btn__trailing,
+.split-button[data-size='md'] .split-button__trailing,
+.button-split[data-size='md'] .button-split__trailing {
+  @include mix.button-split-trailing-base(bs.$button-split-md-height, bs.$button-split-md-outer-radius, bs.$button-split-md-inner-radius, bs.$button-split-md-trailing-icon);
+  width: bs.$button-split-md-height !important;
+  height: bs.$button-split-md-height !important;
+  min-width: bs.$button-split-md-height !important;
+  .button-split__icon { width: bs.$button-split-md-trailing-icon !important; height: bs.$button-split-md-trailing-icon !important; font-size: bs.$button-split-md-trailing-icon !important; }
+}
+
+.split-btn[data-size='lg'] .split-btn__leading,
+.split-button[data-size='lg'] .split-button__leading,
+.button-split[data-size='lg'] .button-split__leading {
+  @include mix.button-split-leading-base(
+    bs.$button-split-lg-height,
+    bs.$button-split-lg-main-pl,
+    bs.$button-split-lg-main-pr,
+    bs.$button-split-lg-main-gap,
+    bs.$button-split-lg-font,
+    bs.$button-split-lg-icon,
+    bs.$button-split-lg-outer-radius,
+    bs.$button-split-lg-inner-radius
+  );
+  height: bs.$button-split-lg-height !important;
+  font-size: bs.$button-split-lg-font !important;
+  .button-split__icon { width: bs.$button-split-lg-icon !important; height: bs.$button-split-lg-icon !important; font-size: bs.$button-split-lg-icon !important; }
+}
+.split-btn[data-size='lg'] .split-btn__trailing,
+.split-button[data-size='lg'] .split-button__trailing,
+.button-split[data-size='lg'] .button-split__trailing {
+  @include mix.button-split-trailing-base(bs.$button-split-lg-height, bs.$button-split-lg-outer-radius, bs.$button-split-lg-inner-radius, bs.$button-split-lg-trailing-icon);
+  width: bs.$button-split-lg-height !important;
+  height: bs.$button-split-lg-height !important;
+  min-width: bs.$button-split-lg-height !important;
+  .button-split__icon { width: bs.$button-split-lg-trailing-icon !important; height: bs.$button-split-lg-trailing-icon !important; font-size: bs.$button-split-lg-trailing-icon !important; }
+}
+
+.split-btn[data-size='xl'] .split-btn__leading,
+.split-button[data-size='xl'] .split-button__leading,
+.button-split[data-size='xl'] .button-split__leading {
+  @include mix.button-split-leading-base(
+    bs.$button-split-xl-height,
+    bs.$button-split-xl-main-pl,
+    bs.$button-split-xl-main-pr,
+    bs.$button-split-xl-main-gap,
+    bs.$button-split-xl-font,
+    bs.$button-split-xl-icon,
+    bs.$button-split-xl-outer-radius,
+    bs.$button-split-xl-inner-radius
+  );
+  height: bs.$button-split-xl-height !important;
+  font-size: bs.$button-split-xl-font !important;
+  .button-split__icon { width: bs.$button-split-xl-icon !important; height: bs.$button-split-xl-icon !important; font-size: bs.$button-split-xl-icon !important; }
+}
+.split-btn[data-size='xl'] .split-btn__trailing,
+.split-button[data-size='xl'] .split-button__trailing,
+.button-split[data-size='xl'] .button-split__trailing {
+  @include mix.button-split-trailing-base(bs.$button-split-xl-height, bs.$button-split-xl-outer-radius, bs.$button-split-xl-inner-radius, bs.$button-split-xl-trailing-icon);
+  width: bs.$button-split-xl-height !important;
+  height: bs.$button-split-xl-height !important;
+  min-width: bs.$button-split-xl-height !important;
+  .button-split__icon { width: bs.$button-split-xl-trailing-icon !important; height: bs.$button-split-xl-trailing-icon !important; font-size: bs.$button-split-xl-trailing-icon !important; }
+}
+
+// ============================================================================
+// ICON-ONLY — leading + trailing identiques (miroir), tap-target min 48×48 dp
+// Placé après SIZES pour primer sur width/padding trailing
+// ============================================================================
+
+@mixin button-split-icon-only-size-selectors($size) {
+  .split-btn--#{$size}.split-btn--icon-only .split-btn__leading,
+  .split-btn--#{$size}.split-btn--icon-only .split-btn__trailing,
+  .split-button--#{$size}.split-button--icon-only .split-button__leading,
+  .split-button--#{$size}.split-button--icon-only .split-button__trailing,
+  .button-split--#{$size}.button-split--icon-only .button-split__leading,
+  .button-split--#{$size}.button-split--icon-only .button-split__trailing,
+  .split-btn[data-size='#{$size}'].split-btn--icon-only .split-btn__leading,
+  .split-btn[data-size='#{$size}'].split-btn--icon-only .split-btn__trailing,
+  .split-button[data-size='#{$size}'].split-button--icon-only .split-button__leading,
+  .split-button[data-size='#{$size}'].split-button--icon-only .split-button__trailing,
+  .button-split[data-size='#{$size}'].button-split--icon-only .button-split__leading,
+  .button-split[data-size='#{$size}'].button-split--icon-only .button-split__trailing {
+    @content;
+  }
+}
+
+@include button-split-icon-only-size-selectors(xs) {
+  @include mix.button-split-icon-only-segment(bs.$button-split-xs-height, bs.$button-split-xs-icon);
+}
+@include button-split-icon-only-size-selectors(sm) {
+  @include mix.button-split-icon-only-segment(bs.$button-split-sm-height, bs.$button-split-sm-icon);
+}
+@include button-split-icon-only-size-selectors(md) {
+  @include mix.button-split-icon-only-segment(bs.$button-split-md-height, bs.$button-split-md-icon);
+}
+@include button-split-icon-only-size-selectors(lg) {
+  @include mix.button-split-icon-only-segment(bs.$button-split-lg-height, bs.$button-split-lg-icon);
+}
+@include button-split-icon-only-size-selectors(xl) {
+  @include mix.button-split-icon-only-segment(bs.$button-split-xl-height, bs.$button-split-xl-icon);
+}
+
+// ============================================================================
+// SHAPE — rounded = pill (outer = height/2), inner = 4/4/4/8/12 (xs/sm/md/lg/xl)
+// ============================================================================
+
+.split-btn--rounded.split-btn--xs .split-btn__leading,
+.split-button--rounded.split-button--xs .split-button__leading,
+.button-split--rounded.button-split--xs .button-split__leading {
+  @include mix.button-split-leading-radius(bs.$button-split-xs-rounded-pill, bs.$button-split-xs-inner-radius, true);
+}
+.split-btn--rounded.split-btn--sm .split-btn__leading,
+.split-button--rounded.split-button--sm .split-button__leading,
+.button-split--rounded.button-split--sm .button-split__leading {
+  @include mix.button-split-leading-radius(bs.$button-split-sm-rounded-pill, bs.$button-split-sm-inner-radius, true);
+}
+.split-btn--rounded.split-btn--md .split-btn__leading,
+.split-button--rounded.split-button--md .split-button__leading,
+.button-split--rounded.button-split--md .button-split__leading {
+  @include mix.button-split-leading-radius(bs.$button-split-md-rounded-pill, bs.$button-split-md-inner-radius, true);
+}
+.split-btn--rounded.split-btn--lg .split-btn__leading,
+.split-button--rounded.split-button--lg .split-button__leading,
+.button-split--rounded.button-split--lg .button-split__leading {
+  @include mix.button-split-leading-radius(bs.$button-split-lg-rounded-pill, bs.$button-split-lg-inner-radius, true);
+}
+.split-btn--rounded.split-btn--xl .split-btn__leading,
+.split-button--rounded.split-button--xl .split-button__leading,
+.button-split--rounded.button-split--xl .button-split__leading {
+  @include mix.button-split-leading-radius(bs.$button-split-xl-rounded-pill, bs.$button-split-xl-inner-radius, true);
+}
+
+.split-btn--rounded .split-btn__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded),
+.split-button--rounded .split-button__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded),
+.button-split--rounded .button-split__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded) {
+  @include mix.button-split-trailing-end-cap(9999px, true);
+}
+.split-btn--rounded.split-btn--xs .split-btn__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded),
+.split-button--rounded.split-button--xs .split-button__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded),
+.button-split--rounded.button-split--xs .button-split__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded) {
+  @include mix.button-split-trailing-radius(bs.$button-split-xs-rounded-pill, bs.$button-split-xs-inner-radius, true);
+}
+.split-btn--rounded.split-btn--sm .split-btn__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded),
+.split-button--rounded.split-button--sm .split-button__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded),
+.button-split--rounded.button-split--sm .button-split__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded) {
+  @include mix.button-split-trailing-radius(bs.$button-split-sm-rounded-pill, bs.$button-split-sm-inner-radius, true);
+}
+.split-btn--rounded.split-btn--md .split-btn__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded),
+.split-button--rounded.split-button--md .split-button__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded),
+.button-split--rounded.button-split--md .button-split__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded) {
+  @include mix.button-split-trailing-radius(bs.$button-split-md-rounded-pill, bs.$button-split-md-inner-radius, true);
+}
+.split-btn--rounded.split-btn--lg .split-btn__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded),
+.split-button--rounded.split-button--lg .split-button__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded),
+.button-split--rounded.button-split--lg .button-split__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded) {
+  @include mix.button-split-trailing-radius(bs.$button-split-lg-rounded-pill, bs.$button-split-lg-inner-radius, true);
+}
+.split-btn--rounded.split-btn--xl .split-btn__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded),
+.split-button--rounded.split-button--xl .split-button__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded),
+.button-split--rounded.button-split--xl .button-split__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded) {
+  @include mix.button-split-trailing-radius(bs.$button-split-xl-rounded-pill, bs.$button-split-xl-inner-radius, true);
+}
+
+// Icon-only rounded : pill = moitié du segment réel (max(height, 48dp))
+@mixin button-split-icon-only-rounded($size, $height, $inner-radius) {
+  $segment: max($height, bs.$button-split-touch-target-min);
+  $pill: $segment * 0.5;
+
+  .split-btn--rounded.split-btn--#{$size}.split-btn--icon-only .split-btn__leading,
+  .split-button--rounded.split-button--#{$size}.split-button--icon-only .split-button__leading,
+  .button-split--rounded.button-split--#{$size}.button-split--icon-only .button-split__leading,
+  .split-btn--rounded[data-size='#{$size}'].split-btn--icon-only .split-btn__leading,
+  .split-button--rounded[data-size='#{$size}'].split-button--icon-only .split-button__leading,
+  .button-split--rounded[data-size='#{$size}'].button-split--icon-only .button-split__leading {
+    @include mix.button-split-leading-radius($pill, $inner-radius, true);
+  }
+
+  .split-btn--rounded.split-btn--#{$size}.split-btn--icon-only .split-btn__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded),
+  .split-button--rounded.split-button--#{$size}.split-button--icon-only .split-button__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded),
+  .button-split--rounded.button-split--#{$size}.button-split--icon-only .button-split__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded),
+  .split-btn--rounded[data-size='#{$size}'].split-btn--icon-only .split-btn__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded),
+  .split-button--rounded[data-size='#{$size}'].split-button--icon-only .split-button__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded),
+  .button-split--rounded[data-size='#{$size}'].button-split--icon-only .button-split__trailing:not(.split-btn__trailing--expanded):not(.split-button__trailing--expanded) {
+    @include mix.button-split-trailing-radius($pill, $inner-radius, true);
+  }
+}
+
+@include button-split-icon-only-rounded(xs, bs.$button-split-xs-height, bs.$button-split-xs-inner-radius);
+@include button-split-icon-only-rounded(sm, bs.$button-split-sm-height, bs.$button-split-sm-inner-radius);
+@include button-split-icon-only-rounded(md, bs.$button-split-md-height, bs.$button-split-md-inner-radius);
+@include button-split-icon-only-rounded(lg, bs.$button-split-lg-height, bs.$button-split-lg-inner-radius);
+@include button-split-icon-only-rounded(xl, bs.$button-split-xl-height, bs.$button-split-xl-inner-radius);
+
+.split-btn--square.split-btn--xs .split-btn__leading,
+.split-btn--square.button-split--xs .button-split__leading,
+.split-button--square.split-button--xs .split-button__leading {
+  @include mix.button-split-leading-end-cap(bs.$button-split-square-xs, true);
+}
+.split-btn--square.split-btn--xs .split-btn__trailing:not(.split-btn__trailing--expanded),
+.split-btn--square.button-split--xs .button-split__trailing:not(.split-btn__trailing--expanded),
+.split-button--square.split-button--xs .split-button__trailing:not(.split-button__trailing--expanded) {
+  @include mix.button-split-trailing-end-cap(bs.$button-split-square-xs, true);
+}
+.split-btn--square.split-btn--sm .split-btn__leading,
+.split-btn--square.button-split--sm .button-split__leading,
+.split-button--square.split-button--sm .split-button__leading {
+  @include mix.button-split-leading-end-cap(bs.$button-split-square-sm, true);
+}
+.split-btn--square.split-btn--sm .split-btn__trailing:not(.split-btn__trailing--expanded),
+.split-btn--square.button-split--sm .button-split__trailing:not(.split-btn__trailing--expanded),
+.split-button--square.split-button--sm .split-button__trailing:not(.split-button__trailing--expanded) {
+  @include mix.button-split-trailing-end-cap(bs.$button-split-square-sm, true);
+}
+.split-btn--square.split-btn--md .split-btn__leading,
+.split-btn--square.button-split--md .button-split__leading,
+.split-button--square.split-button--md .split-button__leading {
+  @include mix.button-split-leading-end-cap(bs.$button-split-square-md, true);
+}
+.split-btn--square.split-btn--md .split-btn__trailing:not(.split-btn__trailing--expanded),
+.split-btn--square.button-split--md .button-split__trailing:not(.split-btn__trailing--expanded),
+.split-button--square.split-button--md .split-button__trailing:not(.split-button__trailing--expanded) {
+  @include mix.button-split-trailing-end-cap(bs.$button-split-square-md, true);
+}
+.split-btn--square.split-btn--lg .split-btn__leading,
+.split-btn--square.button-split--lg .button-split__leading,
+.split-button--square.split-button--lg .split-button__leading {
+  @include mix.button-split-leading-end-cap(bs.$button-split-square-lg, true);
+}
+.split-btn--square.split-btn--lg .split-btn__trailing:not(.split-btn__trailing--expanded),
+.split-btn--square.button-split--lg .button-split__trailing:not(.split-btn__trailing--expanded),
+.split-button--square.split-button--lg .split-button__trailing:not(.split-button__trailing--expanded) {
+  @include mix.button-split-trailing-end-cap(bs.$button-split-square-lg, true);
+}
+.split-btn--square.split-btn--xl .split-btn__leading,
+.split-btn--square.button-split--xl .button-split__leading,
+.split-button--square.split-button--xl .split-button__leading {
+  @include mix.button-split-leading-end-cap(bs.$button-split-square-xl, true);
+}
+.split-btn--square.split-btn--xl .split-btn__trailing:not(.split-btn__trailing--expanded),
+.split-btn--square.button-split--xl .button-split__trailing:not(.split-btn__trailing--expanded),
+.split-button--square.split-button--xl .split-button__trailing:not(.split-button__trailing--expanded) {
+  @include mix.button-split-trailing-end-cap(bs.$button-split-square-xl, true);
+}
+
+// ============================================================================
+// VARIANTS — filled, tonal, outlined, elevated
+// ============================================================================
+
+.split-btn--filled .split-btn__leading,
+.split-btn--filled .split-btn__trailing,
+.split-button--filled .split-button__leading,
+.split-button--filled .split-button__trailing,
+.button-split--filled .button-split__leading,
+.button-split--filled .button-split__trailing {
+  background-color: var(--md-sys-color-primary, #6750a4);
+  color: var(--md-sys-color-on-primary, #fff);
+  @include state.state-hover;
+  &:hover:not(:disabled) {
+    background-color: var(--md-sys-color-primary-hover);
+  }
+  &:active:not(:disabled) {
+    background-color: var(--md-sys-color-primary-pressed);
+  }
+}
+
+.split-btn--tonal .split-btn__leading,
+.split-btn--tonal .split-btn__trailing,
+.split-button--tonal .split-button__leading,
+.split-button--tonal .split-button__trailing,
+.button-split--tonal .button-split__leading,
+.button-split--tonal .button-split__trailing {
+  background-color: var(--md-sys-color-secondary-container, #e8def8);
+  color: var(--md-sys-color-on-secondary-container, #1d192b);
+  &:hover:not(:disabled) {
+    background-color: var(--md-sys-color-secondary-container-hover, #d8cef0);
+  }
+  &:active:not(:disabled) {
+    background-color: var(--md-sys-color-secondary-container-pressed, #c8bcea);
+  }
+}
+
+.split-btn--outlined .split-btn__leading,
+.split-btn--outlined .split-btn__trailing,
+.split-button--outlined .split-button__leading,
+.split-button--outlined .split-button__trailing,
+.button-split--outlined .button-split__leading,
+.button-split--outlined .button-split__trailing {
+  background-color: transparent;
+  color: var(--md-sys-color-primary, #6750a4);
+  border: 1.5px solid var(--md-sys-color-outline, #79747e);
+  &:hover:not(:disabled) {
+    background-color: rgba(103, 80, 164, 0.06);
+  }
+  &:active:not(:disabled) {
+    background-color: rgba(103, 80, 164, 0.12);
+  }
+}
+
+.split-btn--elevated .split-btn__leading,
+.split-btn--elevated .split-btn__trailing,
+.split-button--elevated .split-button__leading,
+.split-button--elevated .split-button__trailing,
+.button-split--elevated .button-split__leading,
+.button-split--elevated .button-split__trailing {
+  background-color: var(--md-sys-color-surface-container-low, #f7f2fa);
+  color: var(--md-sys-color-primary, #6750a4);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.14);
+  &:hover:not(:disabled) {
+    background-color: var(--md-sys-color-surface-container, #ede8f5);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  }
+  &:active:not(:disabled) {
+    background-color: var(--md-sys-color-surface-container-high, #ddd8eb);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
+  }
+}

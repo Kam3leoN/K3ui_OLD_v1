@@ -1,0 +1,168 @@
+/**
+ * @fileoverview Tokens de design pour List
+ * @description Variables de design pour le composant List Material Design 3 Expressive
+ * @author K3UI Team
+ * @version 1.0.1
+ */
+
+@use 'sass:map';
+@use 'color.token' as color;
+@use 'radius.token' as radius;
+@use 'spacing.token' as spacing;
+@use 'typography.token' as typography;
+@use 'motion.token' as motion;
+@use 'elevation.token' as elevation;
+
+// ============================================================================
+// ESPACEMENTS (MD3 Expressive)
+// ============================================================================
+
+/** Padding vertical des items */
+$list-item-padding-vertical: spacing.$md-sys-spacing-md !default; // 12-16dp
+
+/** Padding horizontal (16dp selon MD3) */
+$list-item-padding-horizontal: spacing.$md-sys-spacing-md !default;
+
+/** Padding droit zone trailing (24dp selon MD3) */
+$list-item-trailing-right-padding: spacing.$md-sys-spacing-lg !default;
+
+/** Hauteurs minimales MD3 Expressive (dp) */
+$list-item-min-height: 56px !default;           // Standard / one-line par défaut (56dp)
+$list-item-min-height-dense: 40px !default;     // Mode dense uniquement (40dp)
+$list-item-min-height-one-line: 56px !default;  // One-line par défaut = 56dp (40dp = dense)
+$list-item-min-height-two-line: 72px !default;  // Two-line (72dp)
+$list-item-min-height-three-line: 88px !default; // Three-line (88dp)
+
+/** Espacements internes */
+$list-item-leading-gap: spacing.$md-sys-spacing-md !default; // 16dp
+$list-item-trailing-gap: spacing.$md-sys-spacing-md !default; // 16dp
+
+// ============================================================================
+// COULEURS ET ÉTATS (MD3 Expressive — rôles 1–10)
+// ============================================================================
+// 1. Surface : fond distinct des items (surface-container-highest)
+// 2–6, 10. On surface variant : overline, supporting, trailing text/icon, leading icon
+// 3. On surface : label (primary text)
+// 7. Outline variant : divider
+// 8. Primary container : fond du leading avatar/initial
+// 9. On primary container : contenu sur ce fond
+
+/** Fond des items (rôle Surface — distinct du canvas) */
+$list-item-surface: var(--md-sys-color-surface-container-highest) !default;
+
+/** Texte principal / label (rôle On surface) */
+$list-item-primary-color: var(--md-sys-color-on-surface) !default;
+
+/** Texte secondaire, overline, supporting, trailing (rôle On surface variant) */
+$list-item-secondary-color: var(--md-sys-color-on-surface-variant) !default;
+$list-item-tertiary-color: var(--md-sys-color-on-surface-variant) !default;
+
+/** Icônes leading/trailing (rôle On surface variant) */
+$list-item-icon-color: var(--md-sys-color-on-surface-variant) !default;
+
+/** Leading avec fond coloré type avatar/initial (rôles Primary container, On primary container) */
+$list-item-leading-container-bg: var(--md-sys-color-primary-container) !default;
+$list-item-leading-container-color: var(--md-sys-color-on-primary-container) !default;
+
+/** Couleurs d'état MD3 */
+$list-item-hover-color: var(--md-sys-color-surface-container-highest) !default;
+$list-item-focus-color: var(--md-sys-color-surface-container-highest) !default;
+$list-item-selected-color: var(--md-sys-color-secondary-container) !default;
+$list-item-selected-text-color: var(--md-sys-color-on-secondary-container) !default;
+
+$list-item-disabled-opacity: 0.38 !default;
+
+// ============================================================================
+// VARIANTES (Standard vs Segmented)
+// ============================================================================
+
+/** Radius des items Standard (Shape Small/Medium MD3 — radius.token) */
+$list-standard-item-radius: radius.$md-sys-shape-corner-medium !default;
+/** Gap entre items Standard (4dp max — spacing.token xs) */
+$list-standard-gap: spacing.$md-sys-spacing-xs !default;
+
+/** Radius segmented : extérieur premier/dernier (12dp — radius.token medium) */
+$list-segmented-radius-outer: radius.$md-sys-shape-corner-medium !default;
+/** Radius segmented : bords entre éléments (4dp — radius.token extra-small) */
+$list-segmented-radius-inner: radius.$md-sys-shape-corner-extra-small !default;
+/** Radius segmented : hover, drag, selected, focused — tous les bords (16dp — radius.token large) */
+$list-segmented-radius-active: radius.$md-sys-shape-corner-large !default;
+/** Radius conteneur segmented (aligné sur outer) */
+$list-segmented-radius: $list-segmented-radius-outer !default;
+/** Gap entre segments (md.comp.list.segmented.gap = 2dp — spacing.token component-xs) */
+$list-segmented-gap: spacing.$md-sys-spacing-component-xs !default;
+
+// ============================================================================
+// ANIMATIONS (Spring MD3 Expressive)
+// ============================================================================
+
+$list-selection-transition-duration: motion.$md-sys-motion-duration-emphasized !default;
+$list-selection-transition-easing: motion.$md-sys-motion-easing-spring !default;
+$list-transition:
+  background-color motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+  color motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+  opacity motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+  transform motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing !default;
+$list-selection-transition: background-color $list-selection-transition-duration $list-selection-transition-easing !default;
+
+// ============================================================================
+// COMPATIBILITÉ MIXINS / MODULES (références existantes)
+// ============================================================================
+
+$list-item-padding-vertical-dense: spacing.$md-sys-spacing-sm !default;
+$list-item-padding-horizontal-dense: spacing.$md-sys-spacing-md !default;
+$list-item-min-height-two-line-supporting: 72px !default;
+$list-item-content-padding-vertical: spacing.$md-sys-spacing-sm !default;
+$list-item-content-padding-vertical-tall: 12px !default;
+$list-item-leading-icon-top-padding: spacing.$md-sys-spacing-sm !default;
+$list-item-leading-icon-top-padding-tall: 12px !default;
+
+$list-item-primary-font-size: typography.$md-sys-typescale-body-large-font-size !default;
+$list-item-primary-font-weight: typography.$md-sys-typescale-body-large-font-weight !default;
+$list-item-primary-line-height: typography.$md-sys-typescale-body-large-line-height !default;
+$list-item-secondary-font-size: typography.$md-sys-typescale-body-medium-font-size !default;
+$list-item-secondary-font-weight: typography.$md-sys-typescale-body-medium-font-weight !default;
+$list-item-secondary-line-height: typography.$md-sys-typescale-body-medium-line-height !default;
+$list-item-tertiary-font-size: typography.$md-sys-typescale-body-small-font-size !default;
+$list-item-tertiary-font-weight: typography.$md-sys-typescale-body-small-font-weight !default;
+$list-item-tertiary-line-height: typography.$md-sys-typescale-body-small-line-height !default;
+
+/** Overline (MD3 — texte au-dessus du headline, label small, uppercase) */
+$list-item-overline-font-size: typography.$md-sys-typescale-label-small-font-size !default;
+$list-item-overline-font-weight: typography.$md-sys-typescale-label-small-font-weight !default;
+$list-item-overline-line-height: typography.$md-sys-typescale-label-small-line-height !default;
+$list-item-overline-letter-spacing: 0.5px !default;
+$list-item-overline-color: $list-item-secondary-color !default;
+$list-item-overline-margin-bottom: spacing.$md-sys-spacing-xs !default;
+
+/** Meta (MD3 — texte trailing type heure, durée ; body small, simple) */
+$list-item-meta-font-size: typography.$md-sys-typescale-body-small-font-size !default;
+$list-item-meta-font-weight: typography.$md-sys-typescale-body-small-font-weight !default;
+$list-item-meta-line-height: typography.$md-sys-typescale-body-small-line-height !default;
+$list-item-meta-color: $list-item-secondary-color !default;
+
+$list-item-icon-size: 24px !default;
+$list-item-icon-size-dense: 20px !default;
+$list-item-image-size: 40px !default;
+$list-item-image-size-dense: 32px !default;
+$list-target-min-size: 48px !default;
+
+/** Divider (rôle Outline variant) */
+$list-divider-color: var(--md-sys-color-outline-variant) !default;
+$list-divider-thickness: 1px !default;
+$list-divider-margin: spacing.$md-sys-spacing-md !default;
+$list-divider-inset-left: spacing.$md-sys-spacing-md !default;
+$list-divider-inset-right: spacing.$md-sys-spacing-lg !default;
+$list-divider-padding-vertical: 0 !default;
+
+$list-item-disabled-color: transparent !default;
+$list-item-disabled-text-color: var(--md-sys-color-on-surface) !default;
+
+/** Espacement visuel entre groupes (îlots) — spacing.token */
+$list-item-gap: spacing.$md-sys-spacing-component-xs !default;
+/** Radius des bords au gap — radius.token */
+$list-item-gap-radius: radius.$md-sys-shape-corner-medium !default;
+
+$list-item-drag-bg: var(--md-sys-color-tertiary-container) !default;
+$list-item-drag-color: var(--md-sys-color-on-tertiary-container) !default;
+$list-item-placeholder-border: var(--md-sys-color-tertiary) !default;

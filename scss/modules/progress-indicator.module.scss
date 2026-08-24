@@ -1,0 +1,60 @@
+/**
+ * @fileoverview Module ProgressIndicator
+ * @description Classes CSS pour les indicateurs de progression MD3 Expressive
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/progress-indicator.token' as pi;
+@use '../mixins/progress-indicator.mixin' as pi-mixin;
+
+.progress-indicator,
+k3ui-progress-indicator {
+  @include pi-mixin.progress-indicator-host;
+  @include pi-mixin.progress-indicator-reduced-motion;
+
+  &--linear {
+    @include pi-mixin.progress-indicator-linear;
+  }
+
+  &--circular {
+    @include pi-mixin.progress-indicator-circular;
+  }
+
+  &--show-value {
+    @include pi-mixin.progress-indicator-show-value;
+  }
+
+  &--primary {
+    @include pi-mixin.progress-indicator-palette-primary;
+  }
+
+  &--secondary {
+    @include pi-mixin.progress-indicator-palette-secondary;
+  }
+
+  &--tertiary {
+    @include pi-mixin.progress-indicator-palette-tertiary;
+  }
+
+  &--error {
+    @include pi-mixin.progress-indicator-palette-error;
+  }
+
+  &__rotate {
+    @include pi-mixin.progress-indicator-rotate;
+  }
+
+  &__svg,
+  .progress-indicator__svg {
+    @include pi-mixin.progress-indicator-svg;
+  }
+
+  &__value {
+    @include pi-mixin.progress-indicator-value;
+  }
+
+  &__stop {
+    @include pi-mixin.progress-indicator-stop;
+  }
+}

@@ -1,0 +1,53 @@
+/**
+ * @fileoverview Tokens de design pour Heatmap
+ * @description Variables pour la grille type contribution (année, intensité par jour)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+/** Taille d'une cellule par défaut (px) */
+$heatmap-cell-size: 12px;
+/** Espacement entre cellules (px) */
+$heatmap-cell-gap: 3px;
+
+// ============================================================================
+// COULEURS – échelle d'intensité (style contribution)
+// ============================================================================
+
+/** Niveau 0 – aucune activité */
+$heatmap-color-level-0: var(--k3ui-color-surface-container-high, #e6e6e6);
+/** Niveau 1 – faible */
+$heatmap-color-level-1: #9be9a8;
+/** Niveau 2 */
+$heatmap-color-level-2: #40c463;
+/** Niveau 3 */
+$heatmap-color-level-3: #30a14e;
+/** Niveau 4 – forte */
+$heatmap-color-level-4: #216e39;
+
+// Thème sombre (optionnel, via variables CSS)
+$heatmap-color-level-0-dark: var(--k3ui-color-surface-container-high, #2d2d2d);
+$heatmap-color-level-1-dark: #0e4429;
+$heatmap-color-level-2-dark: #006d32;
+$heatmap-color-level-3-dark: #26a641;
+$heatmap-color-level-4-dark: #39d353;
+
+// ============================================================================
+// TYPOGRAPHIE (labels mois / jours)
+// ============================================================================
+
+/** Taille des labels */
+$heatmap-label-font-size: 0.65rem;
+/** Couleur des labels */
+$heatmap-label-color: var(--k3ui-color-on-surface-variant, #64748b);
+
+// ============================================================================
+// BORDURE / RAYON
+// ============================================================================
+
+/** Rayon des cellules */
+$heatmap-cell-radius: 2px;

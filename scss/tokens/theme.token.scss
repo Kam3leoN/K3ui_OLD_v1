@@ -1,0 +1,1369 @@
+/**
+ * @file theme.token.scss
+ * @description Tokens de colorimétrie Material Design 3 Expressive pour les thèmes clair et sombre
+ * @see https://m3.material.io/foundations/color/the-color-system/color-roles-and-states
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use 'sass:map';
+@use 'sass:color';
+@use 'sass:list';
+
+// ============================================================================
+// FONCTIONS UTILITAIRES DE CONVERSION
+// ============================================================================
+
+/**
+ * Convertit une couleur hex en format RGB
+ * @param {color} $color - La couleur hex
+ * @return {string} La couleur en format RGB (ex: "0, 100, 147")
+ */
+@function hex-to-rgb($color) {
+  @return color.channel($color, "red"), color.channel($color, "green"), color.channel($color, "blue");
+}
+
+// ============================================================================
+// PALETTE DE BASE - TONS NEUTRES
+// ============================================================================
+
+// Neutral palette (tons de gris)
+$md-ref-palette-neutral0: #000000;
+$md-ref-palette-neutral10: #1a1c18;
+$md-ref-palette-neutral20: #2f312d;
+$md-ref-palette-neutral25: #3a3c37;
+$md-ref-palette-neutral30: #464742;
+$md-ref-palette-neutral35: #52544e;
+$md-ref-palette-neutral40: #5e6059;
+$md-ref-palette-neutral50: #777970;
+$md-ref-palette-neutral60: #919388;
+$md-ref-palette-neutral70: #acada1;
+$md-ref-palette-neutral80: #c7c8bb;
+$md-ref-palette-neutral87: #ddddd6;
+$md-ref-palette-neutral90: #e4e4dd;
+$md-ref-palette-neutral92: #eaeae3;
+$md-ref-palette-neutral94: #f0f0e9;
+$md-ref-palette-neutral95: #f3f3ec;
+$md-ref-palette-neutral96: #f5f5ee;
+$md-ref-palette-neutral98: #fbfbf4;
+$md-ref-palette-neutral99: #fefefe;
+$md-ref-palette-neutral100: #ffffff;
+
+// Neutral variant palette (tons neutres avec une légère teinte)
+$md-ref-palette-neutral-variant0: #000000;
+$md-ref-palette-neutral-variant10: #191d16;
+$md-ref-palette-neutral-variant20: #2e322b;
+$md-ref-palette-neutral-variant25: #393d35;
+$md-ref-palette-neutral-variant30: #444840;
+$md-ref-palette-neutral-variant35: #50544c;
+$md-ref-palette-neutral-variant40: #5c6057;
+$md-ref-palette-neutral-variant50: #757970;
+$md-ref-palette-neutral-variant60: #8f9389;
+$md-ref-palette-neutral-variant70: #aaadb2;
+$md-ref-palette-neutral-variant80: #c5c8bd;
+$md-ref-palette-neutral-variant87: #dbe0d4;
+$md-ref-palette-neutral-variant90: #e2e7db;
+$md-ref-palette-neutral-variant92: #e8ede1;
+$md-ref-palette-neutral-variant94: #eef3e7;
+$md-ref-palette-neutral-variant95: #f1f6ea;
+$md-ref-palette-neutral-variant96: #f4f8ec;
+$md-ref-palette-neutral-variant98: #fafef2;
+$md-ref-palette-neutral-variant99: #fdfffe;
+$md-ref-palette-neutral-variant100: #ffffff;
+
+// ============================================================================
+// PALETTE PRIMAIRE
+// ============================================================================
+
+// Primary palette (couleur principale de l'app) - Material Design 3 par défaut
+$md-ref-palette-primary0: #000000;
+$md-ref-palette-primary10: #21005D;
+$md-ref-palette-primary20: #381E72;
+$md-ref-palette-primary25: #4F378B;
+$md-ref-palette-primary30: #5E4799;
+$md-ref-palette-primary35: #6D5A9E;
+$md-ref-palette-primary40: #6750A4;
+$md-ref-palette-primary50: #7E6FA8;
+$md-ref-palette-primary60: #9789B8;
+$md-ref-palette-primary70: #B2A3CC;
+$md-ref-palette-primary80: #CEBEE0;
+$md-ref-palette-primary87: #D9C9E8;
+$md-ref-palette-primary90: #EADDFF;
+$md-ref-palette-primary92: #F0E5FF;
+$md-ref-palette-primary94: #F5EBFF;
+$md-ref-palette-primary95: #F8EEFF;
+$md-ref-palette-primary96: #FAF0FF;
+$md-ref-palette-primary98: #FDF7FF;
+$md-ref-palette-primary99: #FFFBFF;
+$md-ref-palette-primary100: #FFFFFF;
+
+// ============================================================================
+// PALETTE SECONDAIRE
+// ============================================================================
+
+// Secondary palette (couleur secondaire complémentaire)
+$md-ref-palette-secondary0: #000000;
+$md-ref-palette-secondary10: #191c20;
+$md-ref-palette-secondary20: #2e3135;
+$md-ref-palette-secondary25: #393c40;
+$md-ref-palette-secondary30: #44474b;
+$md-ref-palette-secondary35: #505357;
+$md-ref-palette-secondary40: #5c5f63;
+$md-ref-palette-secondary50: #75787c;
+$md-ref-palette-secondary60: #8f9295;
+$md-ref-palette-secondary70: #aaacaf;
+$md-ref-palette-secondary80: #c5c7ca;
+$md-ref-palette-secondary87: #dbe0e6;
+$md-ref-palette-secondary90: #e2e7e6;
+$md-ref-palette-secondary92: #e8edec;
+$md-ref-palette-secondary94: #eef3f2;
+$md-ref-palette-secondary95: #f1f6f5;
+$md-ref-palette-secondary96: #f4f8f7;
+$md-ref-palette-secondary98: #fafefe;
+$md-ref-palette-secondary99: #fdfffe;
+$md-ref-palette-secondary100: #ffffff;
+
+// ============================================================================
+// PALETTE TERTIAIRE
+// ============================================================================
+
+// Tertiary palette (couleur d'accent complémentaire)
+$md-ref-palette-tertiary0: #000000;
+$md-ref-palette-tertiary10: #291800;
+$md-ref-palette-tertiary20: #442b00;
+$md-ref-palette-tertiary25: #523600;
+$md-ref-palette-tertiary30: #614100;
+$md-ref-palette-tertiary35: #704d00;
+$md-ref-palette-tertiary40: #805900;
+$md-ref-palette-tertiary50: #a07100;
+$md-ref-palette-tertiary60: #c18c00;
+$md-ref-palette-tertiary70: #e3a800;
+$md-ref-palette-tertiary80: #ffc947;
+$md-ref-palette-tertiary87: #ffdf9e;
+$md-ref-palette-tertiary90: #ffe7b3;
+$md-ref-palette-tertiary92: #ffecbe;
+$md-ref-palette-tertiary94: #fff2ca;
+$md-ref-palette-tertiary95: #fff5d1;
+$md-ref-palette-tertiary96: #fff7d6;
+$md-ref-palette-tertiary98: #fffce5;
+$md-ref-palette-tertiary99: #fffef2;
+$md-ref-palette-tertiary100: #ffffff;
+
+// ============================================================================
+// PALETTE D'ERREUR
+// ============================================================================
+
+// Error palette (couleurs pour les états d'erreur)
+$md-ref-palette-error0: #000000;
+$md-ref-palette-error10: #410002;
+$md-ref-palette-error20: #690005;
+$md-ref-palette-error25: #7d0007;
+$md-ref-palette-error30: #93000a;
+$md-ref-palette-error35: #a80710;
+$md-ref-palette-error40: #ba1a1a;
+$md-ref-palette-error50: #de3730;
+$md-ref-palette-error60: #ff5449;
+$md-ref-palette-error70: #ff897d;
+$md-ref-palette-error80: #ffb4ab;
+$md-ref-palette-error87: #ffd7d1;
+$md-ref-palette-error90: #ffdad6;
+$md-ref-palette-error92: #ffe0dc;
+$md-ref-palette-error94: #ffe7e3;
+$md-ref-palette-error95: #ffebe9;
+$md-ref-palette-error96: #ffeeed;
+$md-ref-palette-error98: #fff8f7;
+$md-ref-palette-error99: #fffbff;
+$md-ref-palette-error100: #ffffff;
+
+// Warning palette (couleurs pour les états d'avertissement)
+$md-ref-palette-warning0: #000000;
+$md-ref-palette-warning10: #2d1600;
+$md-ref-palette-warning20: #4a2800;
+$md-ref-palette-warning25: #5a3200;
+$md-ref-palette-warning30: #6b3d00;
+$md-ref-palette-warning35: #7c4800;
+$md-ref-palette-warning40: #8b5000;
+$md-ref-palette-warning50: #b26f00;
+$md-ref-palette-warning60: #d68a00;
+$md-ref-palette-warning70: #fba500;
+$md-ref-palette-warning80: #ffb74d;
+$md-ref-palette-warning87: #ffc766;
+$md-ref-palette-warning90: #ffdcc0;
+$md-ref-palette-warning92: #ffd54f;
+$md-ref-palette-warning94: #ffdd57;
+$md-ref-palette-warning95: #ffe082;
+$md-ref-palette-warning96: #ffe57f;
+$md-ref-palette-warning98: #fff3e0;
+$md-ref-palette-warning99: #fff8e1;
+$md-ref-palette-warning100: #ffffff;
+
+// Success palette (couleurs pour les états de succès)
+$md-ref-palette-success0: #000000;
+$md-ref-palette-success10: #042100;
+$md-ref-palette-success20: #00390a;
+$md-ref-palette-success25: #00450d;
+$md-ref-palette-success30: #005211;
+$md-ref-palette-success35: #005f15;
+$md-ref-palette-success40: #386a20;
+$md-ref-palette-success50: #008a1f;
+$md-ref-palette-success60: #00a926;
+$md-ref-palette-success70: #00c82d;
+$md-ref-palette-success80: #4caf50;
+$md-ref-palette-success87: #66bb6a;
+$md-ref-palette-success90: #b7f397;
+$md-ref-palette-success92: #8bc34a;
+$md-ref-palette-success94: #a5d6a7;
+$md-ref-palette-success95: #c8e6c9;
+$md-ref-palette-success96: #dcedc8;
+$md-ref-palette-success98: #e8f5e8;
+$md-ref-palette-success99: #f1f8e9;
+$md-ref-palette-success100: #ffffff;
+
+// Info palette (couleurs pour les états d'information)
+$md-ref-palette-info0: #000000;
+$md-ref-palette-info10: #001d36;
+$md-ref-palette-info20: #003258;
+$md-ref-palette-info25: #003d66;
+$md-ref-palette-info30: #004875;
+$md-ref-palette-info35: #005384;
+$md-ref-palette-info40: #0061a4;
+$md-ref-palette-info50: #0074b1;
+$md-ref-palette-info60: #008bcf;
+$md-ref-palette-info70: #00a2ed;
+$md-ref-palette-info80: #2196f3;
+$md-ref-palette-info87: #42a5f5;
+$md-ref-palette-info90: #d1e4ff;
+$md-ref-palette-info92: #90caf9;
+$md-ref-palette-info94: #bbdefb;
+$md-ref-palette-info95: #e3f2fd;
+$md-ref-palette-info96: #e8f4fd;
+$md-ref-palette-info98: #f3f9ff;
+$md-ref-palette-info99: #f8fcff;
+$md-ref-palette-info100: #ffffff;
+
+
+// ============================================================================
+// TOKENS SYSTÈME - THÈME CLAIR
+// ============================================================================
+
+// Surface colors (arrière-plans)
+$md-sys-color-surface-light: $md-ref-palette-neutral98;
+$md-sys-color-surface-dim-light: $md-ref-palette-neutral87;
+$md-sys-color-surface-bright-light: $md-ref-palette-neutral98;
+$md-sys-color-surface-container-lowest-light: $md-ref-palette-neutral100;
+$md-sys-color-surface-container-low-light: $md-ref-palette-neutral96;
+$md-sys-color-surface-container-light: $md-ref-palette-neutral94;
+$md-sys-color-surface-container-high-light: $md-ref-palette-neutral92;
+$md-sys-color-surface-container-highest-light: $md-ref-palette-neutral90;
+
+// On-surface colors (texte et icônes sur les surfaces)
+$md-sys-color-on-surface-light: $md-ref-palette-neutral10;
+$md-sys-color-on-surface-variant-light: $md-ref-palette-neutral-variant30;
+
+// Surface variant (variante de surface avec teinte légèrement différente)
+$md-sys-color-surface-variant-light: $md-ref-palette-neutral-variant90;
+
+// Background colors (fond principal de l'application)
+$md-sys-color-background-light: $md-ref-palette-neutral99;
+$md-sys-color-on-background-light: $md-ref-palette-neutral10;
+
+// Primary colors
+$md-sys-color-primary-light: $md-ref-palette-primary40;
+$md-sys-color-on-primary-light: $md-ref-palette-primary100;
+$md-sys-color-primary-container-light: $md-ref-palette-primary90;
+$md-sys-color-on-primary-container-light: $md-ref-palette-primary25;
+// Spec 2025 + états K3UI (fallback compile-time avant init JS)
+$md-sys-color-primary-dim-light: $md-ref-palette-primary30;
+$md-sys-color-primary-hover-light: $md-ref-palette-primary35;
+$md-sys-color-primary-pressed-light: $md-ref-palette-primary25;
+
+// Secondary colors
+$md-sys-color-secondary-light: $md-ref-palette-secondary40;
+$md-sys-color-on-secondary-light: $md-ref-palette-secondary100;
+$md-sys-color-secondary-container-light: $md-ref-palette-secondary90;
+$md-sys-color-on-secondary-container-light: $md-ref-palette-secondary10;
+$md-sys-color-secondary-dim-light: $md-ref-palette-secondary30;
+$md-sys-color-secondary-container-hover-light: $md-ref-palette-secondary87;
+$md-sys-color-secondary-container-pressed-light: $md-ref-palette-secondary80;
+
+// Tertiary colors
+$md-sys-color-tertiary-light: $md-ref-palette-tertiary40;
+$md-sys-color-on-tertiary-light: $md-ref-palette-tertiary100;
+$md-sys-color-tertiary-container-light: $md-ref-palette-tertiary90;
+$md-sys-color-on-tertiary-container-light: $md-ref-palette-tertiary10;
+$md-sys-color-tertiary-dim-light: $md-ref-palette-tertiary30;
+$md-sys-color-tertiary-hover-light: $md-ref-palette-tertiary35;
+$md-sys-color-tertiary-pressed-light: $md-ref-palette-tertiary25;
+
+// Error colors
+$md-sys-color-error-light: $md-ref-palette-error40;
+$md-sys-color-on-error-light: $md-ref-palette-error100;
+$md-sys-color-error-container-light: $md-ref-palette-error90;
+$md-sys-color-on-error-container-light: $md-ref-palette-error10;
+$md-sys-color-error-dim-light: $md-ref-palette-error30;
+
+// Warning colors
+$md-sys-color-warning-light: $md-ref-palette-warning40;
+$md-sys-color-on-warning-light: $md-ref-palette-warning100;
+$md-sys-color-warning-container-light: $md-ref-palette-warning90;
+$md-sys-color-on-warning-container-light: $md-ref-palette-warning10;
+$md-sys-color-warning-dim-light: $md-ref-palette-warning30;
+
+// Success colors
+$md-sys-color-success-light: $md-ref-palette-success40;
+$md-sys-color-on-success-light: $md-ref-palette-success100;
+$md-sys-color-success-container-light: $md-ref-palette-success90;
+$md-sys-color-on-success-container-light: $md-ref-palette-success10;
+$md-sys-color-success-dim-light: $md-ref-palette-success30;
+
+// Info colors
+$md-sys-color-info-light: $md-ref-palette-info40;
+$md-sys-color-on-info-light: $md-ref-palette-info100;
+$md-sys-color-info-container-light: $md-ref-palette-info90;
+$md-sys-color-on-info-container-light: $md-ref-palette-info10;
+$md-sys-color-info-dim-light: $md-ref-palette-info30;
+
+// Outline colors
+$md-sys-color-outline-light: $md-ref-palette-neutral-variant50;
+$md-sys-color-outline-variant-light: $md-ref-palette-neutral-variant80;
+
+// Primary Fixed colors (ne changent pas entre light/dark)
+$md-sys-color-primary-fixed-light: $md-ref-palette-primary90;
+$md-sys-color-primary-fixed-dim-light: $md-ref-palette-primary80;
+$md-sys-color-on-primary-fixed-light: $md-ref-palette-primary10;
+$md-sys-color-on-primary-fixed-variant-light: $md-ref-palette-primary30;
+
+// Secondary Fixed colors (ne changent pas entre light/dark)
+$md-sys-color-secondary-fixed-light: $md-ref-palette-secondary90;
+$md-sys-color-secondary-fixed-dim-light: $md-ref-palette-secondary80;
+$md-sys-color-on-secondary-fixed-light: $md-ref-palette-secondary10;
+$md-sys-color-on-secondary-fixed-variant-light: $md-ref-palette-secondary30;
+
+// Tertiary Fixed colors (ne changent pas entre light/dark)
+$md-sys-color-tertiary-fixed-light: $md-ref-palette-tertiary90;
+$md-sys-color-tertiary-fixed-dim-light: $md-ref-palette-tertiary80;
+$md-sys-color-on-tertiary-fixed-light: $md-ref-palette-tertiary10;
+$md-sys-color-on-tertiary-fixed-variant-light: $md-ref-palette-tertiary30;
+
+// Autres couleurs système
+$md-sys-color-inverse-surface-light: $md-ref-palette-neutral20;
+$md-sys-color-inverse-on-surface-light: $md-ref-palette-neutral95;
+$md-sys-color-inverse-primary-light: $md-ref-palette-primary80;
+$md-sys-color-shadow-light: $md-ref-palette-neutral0;
+$md-sys-color-scrim-light: $md-ref-palette-neutral0;
+$md-sys-color-surface-tint-light: $md-sys-color-primary-light;
+
+// ============================================================================
+// TOKENS SYSTÈME - THÈME SOMBRE
+// ============================================================================
+
+// Surface colors (arrière-plans)
+$md-sys-color-surface-dark: $md-ref-palette-neutral10;
+$md-sys-color-surface-dim-dark: $md-ref-palette-neutral0;
+$md-sys-color-surface-bright-dark: $md-ref-palette-neutral25;
+$md-sys-color-surface-container-lowest-dark: $md-ref-palette-neutral0;
+$md-sys-color-surface-container-low-dark: $md-ref-palette-neutral10;
+$md-sys-color-surface-container-dark: $md-ref-palette-neutral20;
+$md-sys-color-surface-container-high-dark: $md-ref-palette-neutral25;
+$md-sys-color-surface-container-highest-dark: $md-ref-palette-neutral30;
+
+// On-surface colors (texte et icônes sur les surfaces)
+$md-sys-color-on-surface-dark: $md-ref-palette-neutral90;
+$md-sys-color-on-surface-variant-dark: $md-ref-palette-neutral-variant80;
+
+// Surface variant (variante de surface avec teinte légèrement différente)
+$md-sys-color-surface-variant-dark: $md-ref-palette-neutral-variant30;
+
+// Background colors (fond principal de l'application)
+$md-sys-color-background-dark: $md-ref-palette-neutral10;
+$md-sys-color-on-background-dark: $md-ref-palette-neutral90;
+
+// Primary colors
+$md-sys-color-primary-dark: $md-ref-palette-primary80;
+$md-sys-color-on-primary-dark: $md-ref-palette-primary20;
+$md-sys-color-primary-container-dark: $md-ref-palette-primary30;
+$md-sys-color-on-primary-container-dark: $md-ref-palette-primary90;
+$md-sys-color-primary-dim-dark: $md-ref-palette-primary70;
+$md-sys-color-primary-hover-dark: $md-ref-palette-primary87;
+$md-sys-color-primary-pressed-dark: $md-ref-palette-primary92;
+
+// Secondary colors
+$md-sys-color-secondary-dark: $md-ref-palette-secondary80;
+$md-sys-color-on-secondary-dark: $md-ref-palette-secondary20;
+$md-sys-color-secondary-container-dark: $md-ref-palette-secondary30;
+$md-sys-color-on-secondary-container-dark: $md-ref-palette-secondary90;
+$md-sys-color-secondary-dim-dark: $md-ref-palette-secondary70;
+$md-sys-color-secondary-container-hover-dark: $md-ref-palette-secondary35;
+$md-sys-color-secondary-container-pressed-dark: $md-ref-palette-secondary40;
+
+// Tertiary colors
+$md-sys-color-tertiary-dark: $md-ref-palette-tertiary80;
+$md-sys-color-on-tertiary-dark: $md-ref-palette-tertiary20;
+$md-sys-color-tertiary-container-dark: $md-ref-palette-tertiary30;
+$md-sys-color-on-tertiary-container-dark: $md-ref-palette-tertiary90;
+$md-sys-color-tertiary-dim-dark: $md-ref-palette-tertiary70;
+$md-sys-color-tertiary-hover-dark: $md-ref-palette-tertiary87;
+$md-sys-color-tertiary-pressed-dark: $md-ref-palette-tertiary92;
+
+// Error colors
+$md-sys-color-error-dark: $md-ref-palette-error80;
+$md-sys-color-on-error-dark: $md-ref-palette-error20;
+$md-sys-color-error-container-dark: $md-ref-palette-error30;
+$md-sys-color-on-error-container-dark: $md-ref-palette-error90;
+$md-sys-color-error-dim-dark: $md-ref-palette-error70;
+
+// Warning colors
+$md-sys-color-warning-dark: $md-ref-palette-warning80;
+$md-sys-color-on-warning-dark: $md-ref-palette-warning20;
+$md-sys-color-warning-container-dark: $md-ref-palette-warning30;
+$md-sys-color-on-warning-container-dark: $md-ref-palette-warning90;
+$md-sys-color-warning-dim-dark: $md-ref-palette-warning70;
+
+// Success colors
+$md-sys-color-success-dark: $md-ref-palette-success80;
+$md-sys-color-on-success-dark: $md-ref-palette-success20;
+$md-sys-color-success-container-dark: $md-ref-palette-success30;
+$md-sys-color-on-success-container-dark: $md-ref-palette-success90;
+$md-sys-color-success-dim-dark: $md-ref-palette-success70;
+
+// Info colors
+$md-sys-color-info-dark: $md-ref-palette-info80;
+$md-sys-color-on-info-dark: $md-ref-palette-info20;
+$md-sys-color-info-container-dark: $md-ref-palette-info30;
+$md-sys-color-on-info-container-dark: $md-ref-palette-info90;
+$md-sys-color-info-dim-dark: $md-ref-palette-info70;
+
+// Outline colors
+$md-sys-color-outline-dark: $md-ref-palette-neutral-variant60;
+$md-sys-color-outline-variant-dark: $md-ref-palette-neutral-variant30;
+
+// Primary Fixed colors (identiques en dark, c'est leur caractéristique)
+$md-sys-color-primary-fixed-dark: $md-ref-palette-primary90;
+$md-sys-color-primary-fixed-dim-dark: $md-ref-palette-primary80;
+$md-sys-color-on-primary-fixed-dark: $md-ref-palette-primary10;
+$md-sys-color-on-primary-fixed-variant-dark: $md-ref-palette-primary30;
+
+// Secondary Fixed colors (identiques en dark)
+$md-sys-color-secondary-fixed-dark: $md-ref-palette-secondary90;
+$md-sys-color-secondary-fixed-dim-dark: $md-ref-palette-secondary80;
+$md-sys-color-on-secondary-fixed-dark: $md-ref-palette-secondary10;
+$md-sys-color-on-secondary-fixed-variant-dark: $md-ref-palette-secondary30;
+
+// Tertiary Fixed colors (identiques en dark)
+$md-sys-color-tertiary-fixed-dark: $md-ref-palette-tertiary90;
+$md-sys-color-tertiary-fixed-dim-dark: $md-ref-palette-tertiary80;
+$md-sys-color-on-tertiary-fixed-dark: $md-ref-palette-tertiary10;
+$md-sys-color-on-tertiary-fixed-variant-dark: $md-ref-palette-tertiary30;
+
+// Autres couleurs système
+$md-sys-color-inverse-surface-dark: $md-ref-palette-neutral90;
+$md-sys-color-inverse-on-surface-dark: $md-ref-palette-neutral20;
+$md-sys-color-inverse-primary-dark: $md-ref-palette-primary40;
+$md-sys-color-shadow-dark: $md-ref-palette-neutral0;
+$md-sys-color-scrim-dark: $md-ref-palette-neutral0;
+$md-sys-color-surface-tint-dark: $md-sys-color-primary-dark;
+
+// ============================================================================
+// TOKENS D'ÉTAT (HOVER, FOCUS, PRESSED, etc.)
+// ============================================================================
+
+// Opacités pour les états d'interaction
+$md-sys-state-hover-state-layer-opacity: 0.08;
+$md-sys-state-focus-state-layer-opacity: 0.12;
+$md-sys-state-pressed-state-layer-opacity: 0.12;
+$md-sys-state-dragged-state-layer-opacity: 0.16;
+
+// États désactivés
+$md-sys-state-disabled-content-opacity: 0.38;
+$md-sys-state-disabled-container-opacity: 0.12;
+
+// ============================================================================
+// TOKENS D'ALERTE (TOAST, NOTIFICATIONS) - DÉPLACÉS VERS toast.token.scss
+// ============================================================================
+// Les couleurs d'alerte spécifiques aux toasts sont maintenant dans toast.token.scss
+// pour une meilleure séparation des responsabilités
+
+// ============================================================================
+// MAPS ET COLLECTIONS
+// ============================================================================
+
+/**
+ * Map des palettes de couleurs
+ */
+$md-ref-palettes: (
+  neutral: (
+    0: $md-ref-palette-neutral0,
+    10: $md-ref-palette-neutral10,
+    20: $md-ref-palette-neutral20,
+    25: $md-ref-palette-neutral25,
+    30: $md-ref-palette-neutral30,
+    35: $md-ref-palette-neutral35,
+    40: $md-ref-palette-neutral40,
+    50: $md-ref-palette-neutral50,
+    60: $md-ref-palette-neutral60,
+    70: $md-ref-palette-neutral70,
+    80: $md-ref-palette-neutral80,
+    87: $md-ref-palette-neutral87,
+    90: $md-ref-palette-neutral90,
+    92: $md-ref-palette-neutral92,
+    94: $md-ref-palette-neutral94,
+    95: $md-ref-palette-neutral95,
+    96: $md-ref-palette-neutral96,
+    98: $md-ref-palette-neutral98,
+    99: $md-ref-palette-neutral99,
+    100: $md-ref-palette-neutral100
+  ),
+  neutral-variant: (
+    0: $md-ref-palette-neutral-variant0,
+    10: $md-ref-palette-neutral-variant10,
+    20: $md-ref-palette-neutral-variant20,
+    25: $md-ref-palette-neutral-variant25,
+    30: $md-ref-palette-neutral-variant30,
+    35: $md-ref-palette-neutral-variant35,
+    40: $md-ref-palette-neutral-variant40,
+    50: $md-ref-palette-neutral-variant50,
+    60: $md-ref-palette-neutral-variant60,
+    70: $md-ref-palette-neutral-variant70,
+    80: $md-ref-palette-neutral-variant80,
+    87: $md-ref-palette-neutral-variant87,
+    90: $md-ref-palette-neutral-variant90,
+    92: $md-ref-palette-neutral-variant92,
+    94: $md-ref-palette-neutral-variant94,
+    95: $md-ref-palette-neutral-variant95,
+    96: $md-ref-palette-neutral-variant96,
+    98: $md-ref-palette-neutral-variant98,
+    99: $md-ref-palette-neutral-variant99,
+    100: $md-ref-palette-neutral-variant100
+  ),
+  primary: (
+    0: $md-ref-palette-primary0,
+    10: $md-ref-palette-primary10,
+    20: $md-ref-palette-primary20,
+    25: $md-ref-palette-primary25,
+    30: $md-ref-palette-primary30,
+    35: $md-ref-palette-primary35,
+    40: $md-ref-palette-primary40,
+    50: $md-ref-palette-primary50,
+    60: $md-ref-palette-primary60,
+    70: $md-ref-palette-primary70,
+    80: $md-ref-palette-primary80,
+    87: $md-ref-palette-primary87,
+    90: $md-ref-palette-primary90,
+    92: $md-ref-palette-primary92,
+    94: $md-ref-palette-primary94,
+    95: $md-ref-palette-primary95,
+    96: $md-ref-palette-primary96,
+    98: $md-ref-palette-primary98,
+    99: $md-ref-palette-primary99,
+    100: $md-ref-palette-primary100
+  ),
+  secondary: (
+    0: $md-ref-palette-secondary0,
+    10: $md-ref-palette-secondary10,
+    20: $md-ref-palette-secondary20,
+    25: $md-ref-palette-secondary25,
+    30: $md-ref-palette-secondary30,
+    35: $md-ref-palette-secondary35,
+    40: $md-ref-palette-secondary40,
+    50: $md-ref-palette-secondary50,
+    60: $md-ref-palette-secondary60,
+    70: $md-ref-palette-secondary70,
+    80: $md-ref-palette-secondary80,
+    87: $md-ref-palette-secondary87,
+    90: $md-ref-palette-secondary90,
+    92: $md-ref-palette-secondary92,
+    94: $md-ref-palette-secondary94,
+    95: $md-ref-palette-secondary95,
+    96: $md-ref-palette-secondary96,
+    98: $md-ref-palette-secondary98,
+    99: $md-ref-palette-secondary99,
+    100: $md-ref-palette-secondary100
+  ),
+  tertiary: (
+    0: $md-ref-palette-tertiary0,
+    10: $md-ref-palette-tertiary10,
+    20: $md-ref-palette-tertiary20,
+    25: $md-ref-palette-tertiary25,
+    30: $md-ref-palette-tertiary30,
+    35: $md-ref-palette-tertiary35,
+    40: $md-ref-palette-tertiary40,
+    50: $md-ref-palette-tertiary50,
+    60: $md-ref-palette-tertiary60,
+    70: $md-ref-palette-tertiary70,
+    80: $md-ref-palette-tertiary80,
+    87: $md-ref-palette-tertiary87,
+    90: $md-ref-palette-tertiary90,
+    92: $md-ref-palette-tertiary92,
+    94: $md-ref-palette-tertiary94,
+    95: $md-ref-palette-tertiary95,
+    96: $md-ref-palette-tertiary96,
+    98: $md-ref-palette-tertiary98,
+    99: $md-ref-palette-tertiary99,
+    100: $md-ref-palette-tertiary100
+  ),
+  error: (
+    0: $md-ref-palette-error0,
+    10: $md-ref-palette-error10,
+    20: $md-ref-palette-error20,
+    25: $md-ref-palette-error25,
+    30: $md-ref-palette-error30,
+    35: $md-ref-palette-error35,
+    40: $md-ref-palette-error40,
+    50: $md-ref-palette-error50,
+    60: $md-ref-palette-error60,
+    70: $md-ref-palette-error70,
+    80: $md-ref-palette-error80,
+    87: $md-ref-palette-error87,
+    90: $md-ref-palette-error90,
+    92: $md-ref-palette-error92,
+    94: $md-ref-palette-error94,
+    95: $md-ref-palette-error95,
+    96: $md-ref-palette-error96,
+    98: $md-ref-palette-error98,
+    99: $md-ref-palette-error99,
+    100: $md-ref-palette-error100
+  ),
+  warning: (
+    0: $md-ref-palette-warning0,
+    10: $md-ref-palette-warning10,
+    20: $md-ref-palette-warning20,
+    25: $md-ref-palette-warning25,
+    30: $md-ref-palette-warning30,
+    35: $md-ref-palette-warning35,
+    40: $md-ref-palette-warning40,
+    50: $md-ref-palette-warning50,
+    60: $md-ref-palette-warning60,
+    70: $md-ref-palette-warning70,
+    80: $md-ref-palette-warning80,
+    87: $md-ref-palette-warning87,
+    90: $md-ref-palette-warning90,
+    92: $md-ref-palette-warning92,
+    94: $md-ref-palette-warning94,
+    95: $md-ref-palette-warning95,
+    96: $md-ref-palette-warning96,
+    98: $md-ref-palette-warning98,
+    99: $md-ref-palette-warning99,
+    100: $md-ref-palette-warning100
+  ),
+  success: (
+    0: $md-ref-palette-success0,
+    10: $md-ref-palette-success10,
+    20: $md-ref-palette-success20,
+    25: $md-ref-palette-success25,
+    30: $md-ref-palette-success30,
+    35: $md-ref-palette-success35,
+    40: $md-ref-palette-success40,
+    50: $md-ref-palette-success50,
+    60: $md-ref-palette-success60,
+    70: $md-ref-palette-success70,
+    80: $md-ref-palette-success80,
+    87: $md-ref-palette-success87,
+    90: $md-ref-palette-success90,
+    92: $md-ref-palette-success92,
+    94: $md-ref-palette-success94,
+    95: $md-ref-palette-success95,
+    96: $md-ref-palette-success96,
+    98: $md-ref-palette-success98,
+    99: $md-ref-palette-success99,
+    100: $md-ref-palette-success100
+  ),
+  info: (
+    0: $md-ref-palette-info0,
+    10: $md-ref-palette-info10,
+    20: $md-ref-palette-info20,
+    25: $md-ref-palette-info25,
+    30: $md-ref-palette-info30,
+    35: $md-ref-palette-info35,
+    40: $md-ref-palette-info40,
+    50: $md-ref-palette-info50,
+    60: $md-ref-palette-info60,
+    70: $md-ref-palette-info70,
+    80: $md-ref-palette-info80,
+    87: $md-ref-palette-info87,
+    90: $md-ref-palette-info90,
+    92: $md-ref-palette-info92,
+    94: $md-ref-palette-info94,
+    95: $md-ref-palette-info95,
+    96: $md-ref-palette-info96,
+    98: $md-ref-palette-info98,
+    99: $md-ref-palette-info99,
+    100: $md-ref-palette-info100
+  )
+) !default;
+
+/**
+ * Map des couleurs système pour le thème clair
+ */
+$md-sys-colors-light: (
+  surface: $md-sys-color-surface-light,
+  surface-dim: $md-sys-color-surface-dim-light,
+  surface-bright: $md-sys-color-surface-bright-light,
+  surface-container-lowest: $md-sys-color-surface-container-lowest-light,
+  surface-container-low: $md-sys-color-surface-container-low-light,
+  surface-container: $md-sys-color-surface-container-light,
+  surface-container-high: $md-sys-color-surface-container-high-light,
+  surface-container-highest: $md-sys-color-surface-container-highest-light,
+  on-surface: $md-sys-color-on-surface-light,
+  on-surface-variant: $md-sys-color-on-surface-variant-light,
+  surface-variant: $md-sys-color-surface-variant-light,
+  background: $md-sys-color-background-light,
+  on-background: $md-sys-color-on-background-light,
+  primary: $md-sys-color-primary-light,
+  on-primary: $md-sys-color-on-primary-light,
+  primary-container: $md-sys-color-primary-container-light,
+  on-primary-container: $md-sys-color-on-primary-container-light,
+  primary-dim: $md-sys-color-primary-dim-light,
+  primary-hover: $md-sys-color-primary-hover-light,
+  primary-pressed: $md-sys-color-primary-pressed-light,
+  secondary: $md-sys-color-secondary-light,
+  on-secondary: $md-sys-color-on-secondary-light,
+  secondary-container: $md-sys-color-secondary-container-light,
+  on-secondary-container: $md-sys-color-on-secondary-container-light,
+  secondary-dim: $md-sys-color-secondary-dim-light,
+  secondary-container-hover: $md-sys-color-secondary-container-hover-light,
+  secondary-container-pressed: $md-sys-color-secondary-container-pressed-light,
+  tertiary: $md-sys-color-tertiary-light,
+  on-tertiary: $md-sys-color-on-tertiary-light,
+  tertiary-container: $md-sys-color-tertiary-container-light,
+  on-tertiary-container: $md-sys-color-on-tertiary-container-light,
+  tertiary-dim: $md-sys-color-tertiary-dim-light,
+  tertiary-hover: $md-sys-color-tertiary-hover-light,
+  tertiary-pressed: $md-sys-color-tertiary-pressed-light,
+  error: $md-sys-color-error-light,
+  on-error: $md-sys-color-on-error-light,
+  error-container: $md-sys-color-error-container-light,
+  on-error-container: $md-sys-color-on-error-container-light,
+  error-dim: $md-sys-color-error-dim-light,
+  warning: $md-sys-color-warning-light,
+  on-warning: $md-sys-color-on-warning-light,
+  warning-container: $md-sys-color-warning-container-light,
+  on-warning-container: $md-sys-color-on-warning-container-light,
+  warning-dim: $md-sys-color-warning-dim-light,
+  success: $md-sys-color-success-light,
+  on-success: $md-sys-color-on-success-light,
+  success-container: $md-sys-color-success-container-light,
+  on-success-container: $md-sys-color-on-success-container-light,
+  success-dim: $md-sys-color-success-dim-light,
+  info: $md-sys-color-info-light,
+  on-info: $md-sys-color-on-info-light,
+  info-container: $md-sys-color-info-container-light,
+  on-info-container: $md-sys-color-on-info-container-light,
+  info-dim: $md-sys-color-info-dim-light,
+  outline: $md-sys-color-outline-light,
+  outline-variant: $md-sys-color-outline-variant-light,
+  primary-fixed: $md-sys-color-primary-fixed-light,
+  primary-fixed-dim: $md-sys-color-primary-fixed-dim-light,
+  on-primary-fixed: $md-sys-color-on-primary-fixed-light,
+  on-primary-fixed-variant: $md-sys-color-on-primary-fixed-variant-light,
+  secondary-fixed: $md-sys-color-secondary-fixed-light,
+  secondary-fixed-dim: $md-sys-color-secondary-fixed-dim-light,
+  on-secondary-fixed: $md-sys-color-on-secondary-fixed-light,
+  on-secondary-fixed-variant: $md-sys-color-on-secondary-fixed-variant-light,
+  tertiary-fixed: $md-sys-color-tertiary-fixed-light,
+  tertiary-fixed-dim: $md-sys-color-tertiary-fixed-dim-light,
+  on-tertiary-fixed: $md-sys-color-on-tertiary-fixed-light,
+  on-tertiary-fixed-variant: $md-sys-color-on-tertiary-fixed-variant-light,
+  inverse-surface: $md-sys-color-inverse-surface-light,
+  inverse-on-surface: $md-sys-color-inverse-on-surface-light,
+  inverse-primary: $md-sys-color-inverse-primary-light,
+  shadow: $md-sys-color-shadow-light,
+  scrim: $md-sys-color-scrim-light,
+  surface-tint: $md-sys-color-surface-tint-light
+) !default;
+
+/**
+ * Map des couleurs système pour le thème sombre
+ */
+$md-sys-colors-dark: (
+  surface: $md-sys-color-surface-dark,
+  surface-dim: $md-sys-color-surface-dim-dark,
+  surface-bright: $md-sys-color-surface-bright-dark,
+  surface-container-lowest: $md-sys-color-surface-container-lowest-dark,
+  surface-container-low: $md-sys-color-surface-container-low-dark,
+  surface-container: $md-sys-color-surface-container-dark,
+  surface-container-high: $md-sys-color-surface-container-high-dark,
+  surface-container-highest: $md-sys-color-surface-container-highest-dark,
+  on-surface: $md-sys-color-on-surface-dark,
+  on-surface-variant: $md-sys-color-on-surface-variant-dark,
+  surface-variant: $md-sys-color-surface-variant-dark,
+  background: $md-sys-color-background-dark,
+  on-background: $md-sys-color-on-background-dark,
+  primary: $md-sys-color-primary-dark,
+  on-primary: $md-sys-color-on-primary-dark,
+  primary-container: $md-sys-color-primary-container-dark,
+  on-primary-container: $md-sys-color-on-primary-container-dark,
+  primary-dim: $md-sys-color-primary-dim-dark,
+  primary-hover: $md-sys-color-primary-hover-dark,
+  primary-pressed: $md-sys-color-primary-pressed-dark,
+  secondary: $md-sys-color-secondary-dark,
+  on-secondary: $md-sys-color-on-secondary-dark,
+  secondary-container: $md-sys-color-secondary-container-dark,
+  on-secondary-container: $md-sys-color-on-secondary-container-dark,
+  secondary-dim: $md-sys-color-secondary-dim-dark,
+  secondary-container-hover: $md-sys-color-secondary-container-hover-dark,
+  secondary-container-pressed: $md-sys-color-secondary-container-pressed-dark,
+  tertiary: $md-sys-color-tertiary-dark,
+  on-tertiary: $md-sys-color-on-tertiary-dark,
+  tertiary-container: $md-sys-color-tertiary-container-dark,
+  on-tertiary-container: $md-sys-color-on-tertiary-container-dark,
+  tertiary-dim: $md-sys-color-tertiary-dim-dark,
+  tertiary-hover: $md-sys-color-tertiary-hover-dark,
+  tertiary-pressed: $md-sys-color-tertiary-pressed-dark,
+  error: $md-sys-color-error-dark,
+  on-error: $md-sys-color-on-error-dark,
+  error-container: $md-sys-color-error-container-dark,
+  on-error-container: $md-sys-color-on-error-container-dark,
+  error-dim: $md-sys-color-error-dim-dark,
+  warning: $md-sys-color-warning-dark,
+  on-warning: $md-sys-color-on-warning-dark,
+  warning-container: $md-sys-color-warning-container-dark,
+  on-warning-container: $md-sys-color-on-warning-container-dark,
+  warning-dim: $md-sys-color-warning-dim-dark,
+  success: $md-sys-color-success-dark,
+  on-success: $md-sys-color-on-success-dark,
+  success-container: $md-sys-color-success-container-dark,
+  on-success-container: $md-sys-color-on-success-container-dark,
+  success-dim: $md-sys-color-success-dim-dark,
+  info: $md-sys-color-info-dark,
+  on-info: $md-sys-color-on-info-dark,
+  info-container: $md-sys-color-info-container-dark,
+  on-info-container: $md-sys-color-on-info-container-dark,
+  info-dim: $md-sys-color-info-dim-dark,
+  outline: $md-sys-color-outline-dark,
+  outline-variant: $md-sys-color-outline-variant-dark,
+  primary-fixed: $md-sys-color-primary-fixed-dark,
+  primary-fixed-dim: $md-sys-color-primary-fixed-dim-dark,
+  on-primary-fixed: $md-sys-color-on-primary-fixed-dark,
+  on-primary-fixed-variant: $md-sys-color-on-primary-fixed-variant-dark,
+  secondary-fixed: $md-sys-color-secondary-fixed-dark,
+  secondary-fixed-dim: $md-sys-color-secondary-fixed-dim-dark,
+  on-secondary-fixed: $md-sys-color-on-secondary-fixed-dark,
+  on-secondary-fixed-variant: $md-sys-color-on-secondary-fixed-variant-dark,
+  tertiary-fixed: $md-sys-color-tertiary-fixed-dark,
+  tertiary-fixed-dim: $md-sys-color-tertiary-fixed-dim-dark,
+  on-tertiary-fixed: $md-sys-color-on-tertiary-fixed-dark,
+  on-tertiary-fixed-variant: $md-sys-color-on-tertiary-fixed-variant-dark,
+  inverse-surface: $md-sys-color-inverse-surface-dark,
+  inverse-on-surface: $md-sys-color-inverse-on-surface-dark,
+  inverse-primary: $md-sys-color-inverse-primary-dark,
+  shadow: $md-sys-color-shadow-dark,
+  scrim: $md-sys-color-scrim-dark,
+  surface-tint: $md-sys-color-surface-tint-dark
+) !default;
+
+// Les maps d'alerte ont été déplacées vers toast.token.scss
+
+// ============================================================================
+// LISTE DES TOKENS SUPPORTÉS (pour validation)
+// ============================================================================
+
+$md-sys-color-supported-tokens: (
+  // Surface
+  'surface',
+  'surface-dim',
+  'surface-bright',
+  'surface-container-lowest',
+  'surface-container-low',
+  'surface-container',
+  'surface-container-high',
+  'surface-container-highest',
+  'on-surface',
+  'on-surface-variant',
+  'surface-variant',
+  
+  // Background
+  'background',
+  'on-background',
+  
+  // Primary
+  'primary',
+  'on-primary',
+  'primary-container',
+  'on-primary-container',
+  'primary-dim',
+  'primary-hover',
+  'primary-pressed',
+  
+  // Secondary
+  'secondary',
+  'on-secondary',
+  'secondary-container',
+  'on-secondary-container',
+  'secondary-dim',
+  'secondary-container-hover',
+  'secondary-container-pressed',
+  
+  // Tertiary
+  'tertiary',
+  'on-tertiary',
+  'tertiary-container',
+  'on-tertiary-container',
+  'tertiary-dim',
+  'tertiary-hover',
+  'tertiary-pressed',
+  
+  // Error
+  'error',
+  'on-error',
+  'error-container',
+  'on-error-container',
+  'error-dim',
+  
+  // Fixed (Material Design 3 officiels)
+  'primary-fixed',
+  'primary-fixed-dim',
+  'on-primary-fixed',
+  'on-primary-fixed-variant',
+  'secondary-fixed',
+  'secondary-fixed-dim',
+  'on-secondary-fixed',
+  'on-secondary-fixed-variant',
+  'tertiary-fixed',
+  'tertiary-fixed-dim',
+  'on-tertiary-fixed',
+  'on-tertiary-fixed-variant',
+  
+  // Warning (K3UI spécifique)
+  'warning',
+  'on-warning',
+  'warning-container',
+  'on-warning-container',
+  'warning-dim',
+  
+  // Success (K3UI spécifique)
+  'success',
+  'on-success',
+  'success-container',
+  'on-success-container',
+  'success-dim',
+  
+  // Info (K3UI spécifique)
+  'info',
+  'on-info',
+  'info-container',
+  'on-info-container',
+  'info-dim',
+  
+  // Outline
+  'outline',
+  'outline-variant',
+  
+  // Inverse
+  'inverse-surface',
+  'inverse-on-surface',
+  'inverse-primary',
+  
+  // Utilitaires
+  'shadow',
+  'scrim',
+  'surface-tint'
+) !default;
+
+/**
+ * Valide qu'un token est supporté
+ * @param {string} $token - Nom du token à valider
+ * @return {bool} True si le token est supporté
+ */
+@function is-supported-token($token) {
+  @return list.index($md-sys-color-supported-tokens, $token) != null;
+}
+
+/**
+ * Valide tous les tokens d'une map et affiche des erreurs claires
+ * @param {Map} $tokens - Map des tokens à valider
+ * @param {bool} $throw-error - Si true, lance une erreur. Si false, affiche un warning
+ * @return {Map} La map des tokens (inchangée si validation OK)
+ * 
+ * @example scss
+ *   $tokens: (
+ *     'primary': #006493,
+ *     'invalid-token': #ff0000
+ *   );
+ *   $validated: validate-tokens($tokens); // Affiche un warning pour 'invalid-token'
+ */
+@function validate-tokens($tokens, $throw-error: false) {
+  $invalid-tokens: ();
+  
+  @each $token, $value in $tokens {
+    @if not is-supported-token($token) {
+      $invalid-tokens: list.append($invalid-tokens, $token);
+    }
+  }
+  
+  @if list.length($invalid-tokens) > 0 {
+    $invalid-list: list.join($invalid-tokens, ', ');
+    $message: 'Tokens non supportés détectés: #{$invalid-list}. Tokens valides: #{list.join($md-sys-color-supported-tokens, ", ")}';
+    
+    @if $throw-error {
+      @error $message;
+    } @else {
+      @warn $message;
+    }
+  }
+  
+  @return $tokens;
+}
+
+// ============================================================================
+// FONCTIONS UTILITAIRES
+// ============================================================================
+
+/**
+ * Fonction pour récupérer une couleur de palette
+ * @param {string} $palette - Nom de la palette (neutral, primary, secondary, tertiary, error)
+ * @param {number} $tone - Ton de la couleur (0-100)
+ * @return {string} Valeur de la couleur
+ */
+@function palette-color($palette, $tone) {
+  @return map.get(map.get($md-ref-palettes, $palette), $tone);
+}
+
+/**
+ * Fonction pour récupérer une couleur système du thème clair
+ * @param {string} $color - Nom de la couleur système
+ * @return {string} Valeur de la couleur
+ */
+@function sys-color-light($color) {
+  @return map.get($md-sys-colors-light, $color);
+}
+
+/**
+ * Fonction pour récupérer une couleur système du thème sombre
+ * @param {string} $color - Nom de la couleur système
+ * @return {string} Valeur de la couleur
+ */
+@function sys-color-dark($color) {
+  @return map.get($md-sys-colors-dark, $color);
+}
+
+// Les fonctions d'alerte ont été déplacées vers toast.token.scss
+
+/**
+ * Référence une couleur système via custom property (sans fallback Sass).
+ * Les tokens sont définis sur :root / html[data-theme] — pas de redéclaration hex dans le CSS.
+ * @param {string} $color - Nom de la couleur système
+ * @return {string} var(--md-sys-color-*)
+ */
+@function sys-color-var($color) {
+  @return var(--md-sys-color-#{$color});
+}
+
+/**
+ * Fonction pour récupérer une couleur système avec fallback CSS custom property
+ * @param {string} $color - Nom de la couleur système
+ * @param {string} $theme - Thème (light ou dark)
+ * @return {string} Valeur de la couleur avec fallback
+ */
+/// @deprecated Le paramètre `$theme` est ignoré — utiliser `sys-color-var($color)`.
+@function sys-color-with-fallback($color, $theme: 'light') {
+  @return sys-color-var($color);
+}
+
+// La fonction alert-color-with-fallback a été déplacée vers toast.token.scss
+
+/**
+ * Génère les tokens RGB pour toutes les couleurs d'une map
+ * @param {Map} $color-map - Map des couleurs (light ou dark)
+ * @return {Map} Map avec les tokens RGB
+ */
+@function generate-rgb-tokens($color-map) {
+  $rgb-tokens: ();
+  
+  @each $token, $value in $color-map {
+    $rgb-token: '#{$token}-rgb';
+    $rgb-value: hex-to-rgb($value);
+    $rgb-tokens: map.set($rgb-tokens, $rgb-token, $rgb-value);
+  }
+  
+  @return $rgb-tokens;
+}
+
+/**
+ * Génère tous les tokens pour un thème (couleurs + RGB)
+ * @param {Map} $color-map - Map des couleurs système
+ * @return {Map} Map complète avec tous les tokens
+ */
+@function generate-all-tokens($color-map) {
+  $all-tokens: $color-map;
+  $rgb-tokens: generate-rgb-tokens($color-map);
+  $all-tokens: map.merge($all-tokens, $rgb-tokens);
+  @return $all-tokens;
+}
+
+/**
+ * Obtient la map complète des tokens pour un thème
+ * @param {string} $scheme - 'light' ou 'dark'
+ * @return {Map} Map complète avec tous les tokens
+ */
+@function get-theme-tokens($scheme: 'light') {
+  @if $scheme == 'light' {
+    @return generate-all-tokens($md-sys-colors-light);
+  } @else {
+    @return generate-all-tokens($md-sys-colors-dark);
+  }
+}
+
+// ============================================================================
+// FONCTIONS DE CALCUL DEPUIS LA PALETTE (FLEXIBILITÉ)
+// ============================================================================
+
+/**
+ * Helper pour récupérer une couleur depuis une palette
+ * @param {Map} $palette - Map de la palette complète
+ * @param {string} $name - Nom de la palette (ex: 'primary', 'neutral')
+ * @param {number} $tone - Ton de la couleur (ex: 40, 90, 100)
+ * @return {color} La couleur demandée
+ */
+@function palette-color($palette, $name, $tone) {
+  @return map.get(map.get($palette, $name), $tone);
+}
+
+/**
+ * Calcule les tokens système Material Design 3 depuis une palette pour le thème clair
+ * Permet de changer la palette sans modifier les tokens système
+ * 
+ * @param {Map} $md-ref-palette - Map de la palette Material Design 3
+ *   Structure attendue: (
+ *     'neutral': (0: #000, 10: #..., 20: #..., ...),
+ *     'neutral-variant': (0: #000, 10: #..., ...),
+ *     'primary': (0: #000, 10: #..., ...),
+ *     'secondary': (0: #000, 10: #..., ...),
+ *     'tertiary': (0: #000, 10: #..., ...),
+ *     'error': (0: #000, 10: #..., ...),
+ *     'warning': (0: #000, 10: #..., ...),
+ *     'success': (0: #000, 10: #..., ...),
+ *     'info': (0: #000, 10: #..., ...)
+ *   )
+ * @return {Map} Map des tokens système pour le thème clair
+ * 
+ * @example scss
+ *   $my-palette: map.merge($md-ref-palettes, (
+ *     'primary': (
+ *       40: #ff0000, // Rouge au lieu de bleu
+ *       // ... autres tons
+ *     )
+ *   ));
+ *   $my-tokens: md-sys-color-values-light($my-palette);
+ */
+@function md-sys-color-values-light($md-ref-palette) {
+  $tokens: ();
+  
+  // Surface colors (depuis neutral)
+  $tokens: map.set($tokens, 'surface', palette-color($md-ref-palette, 'neutral', 98));
+  $tokens: map.set($tokens, 'surface-dim', palette-color($md-ref-palette, 'neutral', 87));
+  $tokens: map.set($tokens, 'surface-bright', palette-color($md-ref-palette, 'neutral', 98));
+  $tokens: map.set($tokens, 'surface-container-lowest', palette-color($md-ref-palette, 'neutral', 100));
+  $tokens: map.set($tokens, 'surface-container-low', palette-color($md-ref-palette, 'neutral', 96));
+  $tokens: map.set($tokens, 'surface-container', palette-color($md-ref-palette, 'neutral', 94));
+  $tokens: map.set($tokens, 'surface-container-high', palette-color($md-ref-palette, 'neutral', 92));
+  $tokens: map.set($tokens, 'surface-container-highest', palette-color($md-ref-palette, 'neutral', 90));
+  
+  // On-surface colors
+  $tokens: map.set($tokens, 'on-surface', palette-color($md-ref-palette, 'neutral', 10));
+  $tokens: map.set($tokens, 'on-surface-variant', palette-color($md-ref-palette, 'neutral-variant', 30));
+  
+  // Surface variant
+  $tokens: map.set($tokens, 'surface-variant', palette-color($md-ref-palette, 'neutral-variant', 90));
+  
+  // Background colors
+  $tokens: map.set($tokens, 'background', palette-color($md-ref-palette, 'neutral', 99));
+  $tokens: map.set($tokens, 'on-background', palette-color($md-ref-palette, 'neutral', 10));
+  
+  // Primary colors
+  $tokens: map.set($tokens, 'primary', palette-color($md-ref-palette, 'primary', 40));
+  $tokens: map.set($tokens, 'on-primary', palette-color($md-ref-palette, 'primary', 100));
+  $tokens: map.set($tokens, 'primary-container', palette-color($md-ref-palette, 'primary', 90));
+  $tokens: map.set($tokens, 'on-primary-container', palette-color($md-ref-palette, 'primary', 25));
+  
+  // Secondary colors
+  $tokens: map.set($tokens, 'secondary', palette-color($md-ref-palette, 'secondary', 40));
+  $tokens: map.set($tokens, 'on-secondary', palette-color($md-ref-palette, 'secondary', 100));
+  $tokens: map.set($tokens, 'secondary-container', palette-color($md-ref-palette, 'secondary', 90));
+  $tokens: map.set($tokens, 'on-secondary-container', palette-color($md-ref-palette, 'secondary', 10));
+  
+  // Tertiary colors
+  $tokens: map.set($tokens, 'tertiary', palette-color($md-ref-palette, 'tertiary', 40));
+  $tokens: map.set($tokens, 'on-tertiary', palette-color($md-ref-palette, 'tertiary', 100));
+  $tokens: map.set($tokens, 'tertiary-container', palette-color($md-ref-palette, 'tertiary', 90));
+  $tokens: map.set($tokens, 'on-tertiary-container', palette-color($md-ref-palette, 'tertiary', 10));
+  
+  // Error colors
+  $tokens: map.set($tokens, 'error', palette-color($md-ref-palette, 'error', 40));
+  $tokens: map.set($tokens, 'on-error', palette-color($md-ref-palette, 'error', 100));
+  $tokens: map.set($tokens, 'error-container', palette-color($md-ref-palette, 'error', 90));
+  $tokens: map.set($tokens, 'on-error-container', palette-color($md-ref-palette, 'error', 10));
+  
+  // Warning colors (K3UI spécifique)
+  $tokens: map.set($tokens, 'warning', palette-color($md-ref-palette, 'warning', 40));
+  $tokens: map.set($tokens, 'on-warning', palette-color($md-ref-palette, 'warning', 100));
+  $tokens: map.set($tokens, 'warning-container', palette-color($md-ref-palette, 'warning', 90));
+  $tokens: map.set($tokens, 'on-warning-container', palette-color($md-ref-palette, 'warning', 10));
+  
+  // Success colors (K3UI spécifique)
+  $tokens: map.set($tokens, 'success', palette-color($md-ref-palette, 'success', 40));
+  $tokens: map.set($tokens, 'on-success', palette-color($md-ref-palette, 'success', 100));
+  $tokens: map.set($tokens, 'success-container', palette-color($md-ref-palette, 'success', 90));
+  $tokens: map.set($tokens, 'on-success-container', palette-color($md-ref-palette, 'success', 10));
+  
+  // Info colors (K3UI spécifique)
+  $tokens: map.set($tokens, 'info', palette-color($md-ref-palette, 'info', 40));
+  $tokens: map.set($tokens, 'on-info', palette-color($md-ref-palette, 'info', 100));
+  $tokens: map.set($tokens, 'info-container', palette-color($md-ref-palette, 'info', 90));
+  $tokens: map.set($tokens, 'on-info-container', palette-color($md-ref-palette, 'info', 10));
+  
+  // Outline colors
+  $tokens: map.set($tokens, 'outline', palette-color($md-ref-palette, 'neutral-variant', 50));
+  $tokens: map.set($tokens, 'outline-variant', palette-color($md-ref-palette, 'neutral-variant', 80));
+  
+  // Primary Fixed colors (identiques en light/dark)
+  $tokens: map.set($tokens, 'primary-fixed', palette-color($md-ref-palette, 'primary', 90));
+  $tokens: map.set($tokens, 'primary-fixed-dim', palette-color($md-ref-palette, 'primary', 80));
+  $tokens: map.set($tokens, 'on-primary-fixed', palette-color($md-ref-palette, 'primary', 10));
+  $tokens: map.set($tokens, 'on-primary-fixed-variant', palette-color($md-ref-palette, 'primary', 30));
+  
+  // Secondary Fixed colors
+  $tokens: map.set($tokens, 'secondary-fixed', palette-color($md-ref-palette, 'secondary', 90));
+  $tokens: map.set($tokens, 'secondary-fixed-dim', palette-color($md-ref-palette, 'secondary', 80));
+  $tokens: map.set($tokens, 'on-secondary-fixed', palette-color($md-ref-palette, 'secondary', 10));
+  $tokens: map.set($tokens, 'on-secondary-fixed-variant', palette-color($md-ref-palette, 'secondary', 30));
+  
+  // Tertiary Fixed colors
+  $tokens: map.set($tokens, 'tertiary-fixed', palette-color($md-ref-palette, 'tertiary', 90));
+  $tokens: map.set($tokens, 'tertiary-fixed-dim', palette-color($md-ref-palette, 'tertiary', 80));
+  $tokens: map.set($tokens, 'on-tertiary-fixed', palette-color($md-ref-palette, 'tertiary', 10));
+  $tokens: map.set($tokens, 'on-tertiary-fixed-variant', palette-color($md-ref-palette, 'tertiary', 30));
+  
+  // Inverse colors
+  $tokens: map.set($tokens, 'inverse-surface', palette-color($md-ref-palette, 'neutral', 20));
+  $tokens: map.set($tokens, 'inverse-on-surface', palette-color($md-ref-palette, 'neutral', 95));
+  $tokens: map.set($tokens, 'inverse-primary', palette-color($md-ref-palette, 'primary', 80));
+  
+  // Utility colors
+  $tokens: map.set($tokens, 'shadow', palette-color($md-ref-palette, 'neutral', 0));
+  $tokens: map.set($tokens, 'scrim', palette-color($md-ref-palette, 'neutral', 0));
+  
+  // Surface tint (dérivé de primary)
+  $primary-value: palette-color($md-ref-palette, 'primary', 40);
+  $tokens: map.set($tokens, 'surface-tint', $primary-value);
+  
+  @return $tokens;
+}
+
+/**
+ * Calcule les tokens système Material Design 3 depuis une palette pour le thème sombre
+ * 
+ * @param {Map} $md-ref-palette - Map de la palette Material Design 3
+ * @return {Map} Map des tokens système pour le thème sombre
+ * 
+ * @example scss
+ *   $my-palette: map.merge($md-ref-palettes, (
+ *     'primary': (
+ *       80: #ff0000, // Rouge au lieu de bleu
+ *       // ... autres tons
+ *     )
+ *   ));
+ *   $my-tokens: md-sys-color-values-dark($my-palette);
+ */
+@function md-sys-color-values-dark($md-ref-palette) {
+  $tokens: ();
+  
+  // Surface colors (depuis neutral)
+  $tokens: map.set($tokens, 'surface', palette-color($md-ref-palette, 'neutral', 10));
+  $tokens: map.set($tokens, 'surface-dim', palette-color($md-ref-palette, 'neutral', 0));
+  $tokens: map.set($tokens, 'surface-bright', palette-color($md-ref-palette, 'neutral', 25));
+  $tokens: map.set($tokens, 'surface-container-lowest', palette-color($md-ref-palette, 'neutral', 0));
+  $tokens: map.set($tokens, 'surface-container-low', palette-color($md-ref-palette, 'neutral', 10));
+  $tokens: map.set($tokens, 'surface-container', palette-color($md-ref-palette, 'neutral', 20));
+  $tokens: map.set($tokens, 'surface-container-high', palette-color($md-ref-palette, 'neutral', 25));
+  $tokens: map.set($tokens, 'surface-container-highest', palette-color($md-ref-palette, 'neutral', 30));
+  
+  // On-surface colors
+  $tokens: map.set($tokens, 'on-surface', palette-color($md-ref-palette, 'neutral', 90));
+  $tokens: map.set($tokens, 'on-surface-variant', palette-color($md-ref-palette, 'neutral-variant', 80));
+  
+  // Surface variant
+  $tokens: map.set($tokens, 'surface-variant', palette-color($md-ref-palette, 'neutral-variant', 30));
+  
+  // Background colors
+  $tokens: map.set($tokens, 'background', palette-color($md-ref-palette, 'neutral', 10));
+  $tokens: map.set($tokens, 'on-background', palette-color($md-ref-palette, 'neutral', 90));
+  
+  // Primary colors
+  $tokens: map.set($tokens, 'primary', palette-color($md-ref-palette, 'primary', 80));
+  $tokens: map.set($tokens, 'on-primary', palette-color($md-ref-palette, 'primary', 20));
+  $tokens: map.set($tokens, 'primary-container', palette-color($md-ref-palette, 'primary', 30));
+  $tokens: map.set($tokens, 'on-primary-container', palette-color($md-ref-palette, 'primary', 90));
+  
+  // Secondary colors
+  $tokens: map.set($tokens, 'secondary', palette-color($md-ref-palette, 'secondary', 80));
+  $tokens: map.set($tokens, 'on-secondary', palette-color($md-ref-palette, 'secondary', 20));
+  $tokens: map.set($tokens, 'secondary-container', palette-color($md-ref-palette, 'secondary', 30));
+  $tokens: map.set($tokens, 'on-secondary-container', palette-color($md-ref-palette, 'secondary', 90));
+  
+  // Tertiary colors
+  $tokens: map.set($tokens, 'tertiary', palette-color($md-ref-palette, 'tertiary', 80));
+  $tokens: map.set($tokens, 'on-tertiary', palette-color($md-ref-palette, 'tertiary', 20));
+  $tokens: map.set($tokens, 'tertiary-container', palette-color($md-ref-palette, 'tertiary', 30));
+  $tokens: map.set($tokens, 'on-tertiary-container', palette-color($md-ref-palette, 'tertiary', 90));
+  
+  // Error colors
+  $tokens: map.set($tokens, 'error', palette-color($md-ref-palette, 'error', 80));
+  $tokens: map.set($tokens, 'on-error', palette-color($md-ref-palette, 'error', 20));
+  $tokens: map.set($tokens, 'error-container', palette-color($md-ref-palette, 'error', 30));
+  $tokens: map.set($tokens, 'on-error-container', palette-color($md-ref-palette, 'error', 90));
+  
+  // Warning colors (K3UI spécifique)
+  $tokens: map.set($tokens, 'warning', palette-color($md-ref-palette, 'warning', 80));
+  $tokens: map.set($tokens, 'on-warning', palette-color($md-ref-palette, 'warning', 20));
+  $tokens: map.set($tokens, 'warning-container', palette-color($md-ref-palette, 'warning', 30));
+  $tokens: map.set($tokens, 'on-warning-container', palette-color($md-ref-palette, 'warning', 90));
+  
+  // Success colors (K3UI spécifique)
+  $tokens: map.set($tokens, 'success', palette-color($md-ref-palette, 'success', 80));
+  $tokens: map.set($tokens, 'on-success', palette-color($md-ref-palette, 'success', 20));
+  $tokens: map.set($tokens, 'success-container', palette-color($md-ref-palette, 'success', 30));
+  $tokens: map.set($tokens, 'on-success-container', palette-color($md-ref-palette, 'success', 90));
+  
+  // Info colors (K3UI spécifique)
+  $tokens: map.set($tokens, 'info', palette-color($md-ref-palette, 'info', 80));
+  $tokens: map.set($tokens, 'on-info', palette-color($md-ref-palette, 'info', 20));
+  $tokens: map.set($tokens, 'info-container', palette-color($md-ref-palette, 'info', 30));
+  $tokens: map.set($tokens, 'on-info-container', palette-color($md-ref-palette, 'info', 90));
+  
+  // Outline colors
+  $tokens: map.set($tokens, 'outline', palette-color($md-ref-palette, 'neutral-variant', 60));
+  $tokens: map.set($tokens, 'outline-variant', palette-color($md-ref-palette, 'neutral-variant', 30));
+  
+  // Primary Fixed colors (identiques en light/dark)
+  $tokens: map.set($tokens, 'primary-fixed', palette-color($md-ref-palette, 'primary', 90));
+  $tokens: map.set($tokens, 'primary-fixed-dim', palette-color($md-ref-palette, 'primary', 80));
+  $tokens: map.set($tokens, 'on-primary-fixed', palette-color($md-ref-palette, 'primary', 10));
+  $tokens: map.set($tokens, 'on-primary-fixed-variant', palette-color($md-ref-palette, 'primary', 30));
+  
+  // Secondary Fixed colors
+  $tokens: map.set($tokens, 'secondary-fixed', palette-color($md-ref-palette, 'secondary', 90));
+  $tokens: map.set($tokens, 'secondary-fixed-dim', palette-color($md-ref-palette, 'secondary', 80));
+  $tokens: map.set($tokens, 'on-secondary-fixed', palette-color($md-ref-palette, 'secondary', 10));
+  $tokens: map.set($tokens, 'on-secondary-fixed-variant', palette-color($md-ref-palette, 'secondary', 30));
+  
+  // Tertiary Fixed colors
+  $tokens: map.set($tokens, 'tertiary-fixed', palette-color($md-ref-palette, 'tertiary', 90));
+  $tokens: map.set($tokens, 'tertiary-fixed-dim', palette-color($md-ref-palette, 'tertiary', 80));
+  $tokens: map.set($tokens, 'on-tertiary-fixed', palette-color($md-ref-palette, 'tertiary', 10));
+  $tokens: map.set($tokens, 'on-tertiary-fixed-variant', palette-color($md-ref-palette, 'tertiary', 30));
+  
+  // Inverse colors
+  $tokens: map.set($tokens, 'inverse-surface', palette-color($md-ref-palette, 'neutral', 90));
+  $tokens: map.set($tokens, 'inverse-on-surface', palette-color($md-ref-palette, 'neutral', 20));
+  $tokens: map.set($tokens, 'inverse-primary', palette-color($md-ref-palette, 'primary', 40));
+  
+  // Utility colors
+  $tokens: map.set($tokens, 'shadow', palette-color($md-ref-palette, 'neutral', 0));
+  $tokens: map.set($tokens, 'scrim', palette-color($md-ref-palette, 'neutral', 0));
+  
+  // Surface tint (dérivé de primary)
+  $primary-value: palette-color($md-ref-palette, 'primary', 80);
+  $tokens: map.set($tokens, 'surface-tint', $primary-value);
+  
+  @return $tokens;
+}

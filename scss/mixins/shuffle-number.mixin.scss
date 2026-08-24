@@ -1,0 +1,72 @@
+/**
+ * @fileoverview Mixins pour ShuffleNumber
+ * @see https://number-flow.barvian.me/ (mask-image, tabular-nums)
+ */
+
+@use '../tokens/shuffle-number.token' as sn;
+
+@mixin shuffle-number-root {
+  --shuffle-number-mask-height: #{sn.$shuffle-number-mask-height};
+  --shuffle-number-mask-width: #{sn.$shuffle-number-mask-width};
+
+  display: inline-flex;
+  align-items: baseline;
+  white-space: pre;
+  font-variant-numeric: tabular-nums;
+  line-height: sn.$shuffle-number-char-line-height;
+  // Masque dégradé aux bords (technique NumberFlow / Artur Bień)
+  padding-block: var(--shuffle-number-mask-height);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 var(--shuffle-number-mask-height),
+    #000 calc(100% - var(--shuffle-number-mask-height)),
+    transparent
+  );
+}
+
+@mixin shuffle-number-value {
+  display: inline-flex;
+  white-space: pre;
+}
+
+@mixin shuffle-number-affix {
+  flex: none;
+  white-space: pre;
+}
+
+@mixin shuffle-number-char {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  justify-content: center;
+  overflow: hidden;
+  overflow-x: visible;
+  overflow-y: clip;
+  line-height: inherit;
+  vertical-align: bottom;
+}
+
+@mixin shuffle-number-char-resizing {
+  overflow-x: clip;
+}
+
+@mixin shuffle-number-char-sizer {
+  visibility: hidden;
+  white-space: pre;
+}
+
+@mixin shuffle-number-char-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: pre;
+}
+
+@mixin shuffle-number-will-change {
+  .shuffle-number__char-face {
+    will-change: transform;
+  }
+}

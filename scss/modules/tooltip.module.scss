@@ -1,0 +1,264 @@
+/**
+ * @fileoverview Module Tooltips
+ * @description Flèche = ::after du panel, même surface, une seule pièce
+ * @author K3UI Team
+ * @version 2.2.0
+ */
+
+@use '../tokens/tooltip.token' as t;
+@use '../mixins/tooltip.mixin' as mixin;
+@use '../tokens/elevation.token' as elevation;
+
+// ============================================================================
+// STRUCTURE
+// ============================================================================
+
+.tooltip {
+  @include mixin.tooltip-root;
+}
+
+.tooltip__shell {
+  @include mixin.tooltip-shell;
+}
+
+.tooltip__panel {
+  @include mixin.tooltip-plain-panel;
+  @include mixin.tooltip-panel-arrow;
+}
+
+// ============================================================================
+// FLÈCHE — pseudo du panel, fusionnée (même bg, chevauchement)
+// ============================================================================
+
+$arrow-half-w: calc(#{t.$tooltip-arrow-width} / 2);
+$arrow-half-h: calc(#{t.$tooltip-arrow-height} / 2);
+// Décalage induit par la rotation 90° d'une flèche large (width ≠ height) :
+// la rotation se fait autour du centre, il faut recoller la base au panel.
+$arrow-rot-offset: calc((#{t.$tooltip-arrow-width} - #{t.$tooltip-arrow-height}) / 2);
+
+.tooltip--top .tooltip__panel::after {
+  top: calc(100% - #{t.$tooltip-arrow-overlap});
+  left: var(--tooltip-arrow-pos, 50%);
+  margin-left: calc(-1 * #{$arrow-half-w});
+}
+
+.tooltip--bottom .tooltip__panel::after {
+  bottom: calc(100% - #{t.$tooltip-arrow-overlap});
+  left: var(--tooltip-arrow-pos, 50%);
+  margin-left: calc(-1 * #{$arrow-half-w});
+  transform: rotate(180deg);
+}
+
+.tooltip--left .tooltip__panel::after {
+  left: calc(100% - #{t.$tooltip-arrow-overlap} - #{$arrow-rot-offset});
+  top: var(--tooltip-arrow-pos, 50%);
+  margin-top: calc(-1 * #{$arrow-half-h});
+  transform: rotate(-90deg);
+}
+
+.tooltip--right .tooltip__panel::after {
+  right: calc(100% - #{t.$tooltip-arrow-overlap} - #{$arrow-rot-offset});
+  top: var(--tooltip-arrow-pos, 50%);
+  margin-top: calc(-1 * #{$arrow-half-h});
+  transform: rotate(90deg);
+}
+
+// ============================================================================
+// ORIGINE SCALE
+// ============================================================================
+
+.tooltip--top { --tooltip-origin: bottom center; }
+.tooltip--bottom { --tooltip-origin: top center; }
+.tooltip--left { --tooltip-origin: center right; }
+.tooltip--right { --tooltip-origin: center left; }
+.tooltip--align-start { --tooltip-origin: top left; }
+.tooltip--align-center { --tooltip-origin: center; }
+.tooltip--align-end { --tooltip-origin: bottom right; }
+
+// ============================================================================
+// RICH
+// ============================================================================
+
+.tooltip--rich {
+  --tooltip-surface-bg: var(--md-sys-color-surface-container-high, #fff);
+  --tooltip-surface-border: var(--md-sys-color-outline-variant, rgba(20, 20, 46, 0.08));
+
+  .tooltip__shell {
+    filter: drop-shadow(#{elevation.$md-sys-elevation-level2});
+  }
+
+  .tooltip__panel {
+    @include mixin.tooltip-rich-panel;
+    color: var(--md-sys-color-on-surface, #1a1a2e);
+  }
+
+  &.tooltip--top .tooltip__panel {
+    border-bottom-color: transparent;
+  }
+
+  &.tooltip--bottom .tooltip__panel {
+    border-top-color: transparent;
+  }
+
+  &.tooltip--left .tooltip__panel {
+    border-right-color: transparent;
+  }
+
+  &.tooltip--right .tooltip__panel {
+    border-left-color: transparent;
+  }
+
+  .tooltip__title {
+    margin: 0 0 4px;
+    font-size: t.$tooltip-rich-title-size;
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface, inherit);
+  }
+
+  .tooltip__body {
+    margin: 0;
+    font-size: t.$tooltip-rich-body-size;
+    line-height: 1.5;
+    color: var(--md-sys-color-on-surface-variant, #5b5d6b);
+  }
+
+  .tooltip__actions {
+    display: flex;
+    gap: t.$tooltip-rich-actions-gap;
+    justify-content: flex-end;
+    margin-top: t.$tooltip-rich-actions-margin-top;
+  }
+}
+
+// Rich interactif : clics sur les boutons d'action (sinon pointer-events: none sur .tooltip)
+.tooltip--interactive.is-visible {
+  pointer-events: auto;
+}
+
+// ============================================================================
+// BOUTONS
+// ============================================================================
+
+.tooltip__btn {
+  font: inherit;
+  font-size: t.$tooltip-btn-font-size;
+  font-weight: 500;
+  line-height: 1;
+  padding: t.$tooltip-btn-padding;
+  border-radius: t.$tooltip-btn-radius;
+  border: none;
+  cursor: pointer;
+  transition: background 150ms ease, box-shadow 150ms ease;
+
+  &--text {
+    background: transparent;
+    color: var(--md-sys-color-primary, #1d9e75);
+
+    &:hover {
+      background: color-mix(in srgb, var(--md-sys-color-primary, #1d9e75) 10%, transparent);
+    }
+  }
+
+  &--filled {
+    background: var(--md-sys-color-primary, #1d9e75);
+    color: var(--md-sys-color-on-primary, #fff);
+
+    &:hover {
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    }
+  }
+}
+
+// ============================================================================
+// TYPES PLAIN — var surface sur .tooltip (panel + flèche)
+// ============================================================================
+
+html[data-theme='dark'] .tooltip--default:not(.tooltip--rich) {
+  --tooltip-surface-bg: var(--md-sys-color-inverse-surface, #e3e2e6);
+
+  .tooltip__panel {
+    color: var(--md-sys-color-inverse-on-surface, #1a1a2e);
+  }
+}
+
+.tooltip--primary:not(.tooltip--rich) {
+  @include mixin.tooltip-type-surface(
+    var(--md-sys-color-primary, #6750a4),
+    var(--md-sys-color-on-primary, #fff)
+  );
+}
+
+.tooltip--info:not(.tooltip--rich) {
+  @include mixin.tooltip-type-surface(
+    var(--md-sys-color-tertiary, #2196f3),
+    var(--md-sys-color-on-tertiary, #fff)
+  );
+}
+
+.tooltip--success:not(.tooltip--rich) {
+  @include mixin.tooltip-type-surface(
+    var(--k3ui-color-success, #4caf50),
+    var(--k3ui-color-on-success, #fff)
+  );
+}
+
+.tooltip--warning:not(.tooltip--rich) {
+  @include mixin.tooltip-type-surface(
+    var(--k3ui-color-warning, #ff9800),
+    var(--k3ui-color-on-warning, #fff)
+  );
+}
+
+.tooltip--danger:not(.tooltip--rich) {
+  @include mixin.tooltip-type-surface(
+    var(--k3ui-color-danger, #f44336),
+    var(--k3ui-color-on-danger, #fff)
+  );
+}
+
+// ============================================================================
+// MOTION
+// ============================================================================
+
+$schemes: expressive, standard;
+$speeds: fast, default, slow;
+
+@each $scheme in $schemes {
+  @each $speed in $speeds {
+    .tooltip[data-motion='#{$scheme}'][data-motion-speed='#{$speed}'] {
+      --tooltip-spatial-curve: var(--md-sys-motion-#{$scheme}-spatial-#{$speed}-easing);
+      --tooltip-spatial-dur: var(--md-sys-motion-#{$scheme}-spatial-#{$speed}-duration);
+      --tooltip-effects-curve: var(--md-sys-motion-#{$scheme}-effects-#{$speed}-easing);
+      --tooltip-effects-dur: var(--md-sys-motion-#{$scheme}-effects-#{$speed}-duration);
+    }
+  }
+}
+
+.tooltip[data-motion='expressive'] { --tooltip-scale-from: #{t.$tooltip-scale-from-expressive}; }
+.tooltip[data-motion='standard'] { --tooltip-scale-from: #{t.$tooltip-scale-from-standard}; }
+
+// ============================================================================
+// REDUCED MOTION
+// ============================================================================
+
+.tooltip--reduced-motion .tooltip__shell {
+  transition: opacity 120ms linear;
+  transform: none !important;
+  --tooltip-scale-from: 1;
+}
+
+.tooltip--reduced-motion.is-visible .tooltip__shell {
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tooltip__shell {
+    transition: opacity 120ms linear;
+    transform: none !important;
+    --tooltip-scale-from: 1;
+  }
+
+  .tooltip.is-visible .tooltip__shell {
+    transform: none !important;
+  }
+}

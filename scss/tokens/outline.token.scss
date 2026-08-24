@@ -1,0 +1,175 @@
+/**
+ * @file outline.token.scss
+ * @description Tokens d'outline pour le design system K3UI Material Design 3 Expressive
+ * @see https://m3.material.io/foundations/design-tokens/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use 'sass:map';
+@use 'theme.token' as theme;
+
+// ============================================================================
+// OUTLINE DE BASE
+// ============================================================================
+
+/**
+ * Largeur de l'outline par défaut
+ */
+$md-sys-outline-width: 1px !default;
+
+/**
+ * Style de l'outline par défaut
+ */
+$md-sys-outline-style: solid !default;
+
+/**
+ * Couleur de l'outline par défaut (thème clair)
+ */
+$md-sys-outline-color: theme.$md-ref-palette-neutral50 !default;
+
+/**
+ * Couleur de l'outline variant (thème clair)
+ */
+$md-sys-outline-variant-color: theme.$md-ref-palette-neutral80 !default;
+
+// ============================================================================
+// OUTLINE POUR THÈME SOMBRE
+// ============================================================================
+
+/**
+ * Couleur de l'outline par défaut (thème sombre)
+ */
+$md-sys-outline-color-dark: theme.$md-ref-palette-neutral60 !default;
+
+/**
+ * Couleur de l'outline variant (thème sombre)
+ */
+$md-sys-outline-variant-color-dark: theme.$md-ref-palette-neutral30 !default;
+
+// ============================================================================
+// OUTLINE POUR LES ÉTATS D'INTERACTION
+// ============================================================================
+
+/**
+ * Couleur de l'outline pour l'état focus
+ */
+$md-sys-outline-focus-color: theme.$md-ref-palette-primary50 !default;
+
+/**
+ * Couleur de l'outline pour l'état focus (thème sombre)
+ */
+$md-sys-outline-focus-color-dark: theme.$md-ref-palette-primary60 !default;
+
+/**
+ * Couleur de l'outline pour l'état error
+ */
+$md-sys-outline-error-color: theme.$md-ref-palette-error50 !default;
+
+/**
+ * Couleur de l'outline pour l'état error (thème sombre)
+ */
+$md-sys-outline-error-color-dark: theme.$md-ref-palette-error60 !default;
+
+// ============================================================================
+// OUTLINE POUR LES DIFFÉRENTS NIVEAUX
+// ============================================================================
+
+/**
+ * Largeur de l'outline fine
+ */
+$md-sys-outline-width-thin: 0.5px !default;
+
+/**
+ * Largeur de l'outline épaisse
+ */
+$md-sys-outline-width-thick: 2px !default;
+
+/**
+ * Largeur de l'outline très épaisse
+ */
+$md-sys-outline-width-thicker: 3px !default;
+
+// ============================================================================
+// OUTLINE POUR LES DIFFÉRENTS STYLES
+// ============================================================================
+
+/**
+ * Style de l'outline en pointillés
+ */
+$md-sys-outline-style-dashed: dashed !default;
+
+/**
+ * Style de l'outline en tirets
+ */
+$md-sys-outline-style-dotted: dotted !default;
+
+/**
+ * Style de l'outline double
+ */
+$md-sys-outline-style-double: double !default;
+
+// ============================================================================
+// MAPS ET COLLECTIONS
+// ============================================================================
+
+/**
+ * Map des largeurs d'outline
+ */
+$md-sys-outline-widths: (
+  thin: $md-sys-outline-width-thin,
+  default: $md-sys-outline-width,
+  thick: $md-sys-outline-width-thick,
+  thicker: $md-sys-outline-width-thicker
+) !default;
+
+/**
+ * Map des styles d'outline
+ */
+$md-sys-outline-styles: (
+  solid: $md-sys-outline-style,
+  dashed: $md-sys-outline-style-dashed,
+  dotted: $md-sys-outline-style-dotted,
+  double: $md-sys-outline-style-double
+) !default;
+
+/**
+ * Map des couleurs d'outline
+ */
+$md-sys-outline-colors: (
+  default: $md-sys-outline-color,
+  variant: $md-sys-outline-variant-color,
+  focus: $md-sys-outline-focus-color,
+  error: $md-sys-outline-error-color
+) !default;
+
+// ============================================================================
+// FONCTIONS UTILITAIRES
+// ============================================================================
+
+/**
+ * Fonction pour récupérer une largeur d'outline
+ * @param {string} $width - Type de largeur (thin, default, thick, thicker)
+ * @return {string} Valeur de largeur
+ */
+@function outline-width($width) {
+  @return map.get($md-sys-outline-widths, $width);
+}
+
+/**
+ * Fonction pour récupérer un style d'outline
+ * @param {string} $style - Type de style (solid, dashed, dotted, double)
+ * @return {string} Valeur de style
+ */
+@function outline-style($style) {
+  @return map.get($md-sys-outline-styles, $style);
+}
+
+/**
+ * Fonction pour récupérer une couleur d'outline
+ * @param {string} $color - Type de couleur (default, variant, focus, error)
+ * @return {string} Valeur de couleur
+ */
+@function outline-color($color) {
+  @return map.get($md-sys-outline-colors, $color);
+} 

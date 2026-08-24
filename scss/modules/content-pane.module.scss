@@ -1,0 +1,75 @@
+/**
+ * @fileoverview Module ContentPane
+ * @description Surfaces M3 Expressive scrollables pour layouts multi-colonnes
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/content-pane.token' as pane;
+@use '../mixins/content-pane.mixin' as content-pane;
+
+.panel-content,
+.content-pane,
+k3ui-panel-content,
+k3ui-content-pane {
+  display: block;
+  @include content-pane.panel-content-surface;
+}
+
+k3ui-panel-content,
+k3ui-content-pane {
+  min-height: 0;
+  min-width: 0;
+}
+
+.panel-content--scroll,
+.content-pane--scroll,
+k3ui-panel-content.panel-content--scroll,
+k3ui-content-pane.content-pane--scroll {
+  @include content-pane.panel-content-scroll;
+}
+
+.panel-content--leading.panel-content--scroll,
+.content-pane--leading.content-pane--scroll,
+.leading-pane.content-pane--scroll {
+  @include content-pane.content-pane-scrollbar(
+    pane.$panel-content-scrollbar-size-leading,
+    var(--md-sys-color-outline-variant, #cac4d0)
+  );
+}
+
+.panel-content--layout.panel-content--scroll,
+.content-pane--layout.content-pane--scroll,
+.layout-pane.content-pane--scroll {
+  @include content-pane.content-pane-scrollbar(
+    pane.$panel-content-scrollbar-size-layout,
+    var(--md-sys-color-outline-variant, #cac4d0)
+  );
+}
+
+.panel-content--trailing.panel-content--scroll,
+.content-pane--trailing.content-pane--scroll,
+.trailing-pane.content-pane--scroll {
+  padding: pane.$panel-content-trailing-padding-block pane.$panel-content-trailing-padding-inline;
+  @include content-pane.content-pane-scrollbar(
+    pane.$panel-content-scrollbar-size-trailing,
+    var(--md-sys-color-primary, #6750a4),
+    var(--md-sys-color-primary, #6750a4)
+  );
+}
+
+.panel-content--empty,
+.content-pane--empty,
+.trailing-pane--empty {
+  /* Colonne réservée sans contenu */
+}
+
+@media (max-width: 959px) {
+  .panel-content,
+  .content-pane,
+  k3ui-panel-content,
+  k3ui-content-pane {
+    border-radius: 0;
+    background: transparent;
+  }
+}

@@ -1,0 +1,318 @@
+/**
+ * @fileoverview Mixins pour Avatar
+ * @description Mixins réutilisables pour le composant Avatar
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/avatar.token' as avatar;
+@use '../tokens/elevation.token' as elevation;
+@use '../tokens/motion.token' as motion;
+@use '../mixins/state.mixin' as state;
+@use '../mixins/stack.mixin' as stack;
+
+/**
+ * Mixin de base pour le composant Avatar
+ * @param {string} $size - Taille (xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl)
+ */
+@mixin avatar-base($size: 'md') {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: avatar.avatar-size($size);
+  height: avatar.avatar-size($size);
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: avatar.$avatar-transition;
+  user-select: none;
+  pointer-events: auto; // Permettre les événements de souris pour les tooltips
+}
+
+/**
+ * Mixin pour les formes d'avatar
+ * @param {string} $shape - Forme (circle, rounded, square)
+ */
+@mixin avatar-shape($shape: 'circle') {
+  @if $shape == 'circle' {
+    border-radius: avatar.$avatar-radius-circle;
+  } @else if $shape == 'rounded' {
+    border-radius: avatar.$avatar-radius-rounded;
+  } @else if $shape == 'square' {
+    border-radius: avatar.$avatar-radius-square;
+  }
+}
+
+/**
+ * Mixin pour les variants d'avatar
+ * @param {string} $variant - Variant (filled, outlined, elevated)
+ * @param {string} $color - Couleur de la palette
+ */
+@mixin avatar-variant($variant: 'filled', $color: 'blue') {
+  @if $variant == 'filled' {
+    @if $color == 'blue' {
+      background-color: avatar.$avatar-color-blue;
+    } @else if $color == 'red' {
+      background-color: avatar.$avatar-color-red;
+    } @else if $color == 'green' {
+      background-color: avatar.$avatar-color-green;
+    } @else if $color == 'purple' {
+      background-color: avatar.$avatar-color-purple;
+    } @else if $color == 'orange' {
+      background-color: avatar.$avatar-color-orange;
+    } @else if $color == 'gray' {
+      background-color: avatar.$avatar-color-gray;
+    }
+    color: avatar.$avatar-text-color;
+    border: none;
+  } @else if $variant == 'outlined' {
+    background-color: transparent;
+    @if $color == 'blue' {
+      color: avatar.$avatar-color-blue;
+      border-color: avatar.$avatar-color-blue;
+    } @else if $color == 'red' {
+      color: avatar.$avatar-color-red;
+      border-color: avatar.$avatar-color-red;
+    } @else if $color == 'green' {
+      color: avatar.$avatar-color-green;
+      border-color: avatar.$avatar-color-green;
+    } @else if $color == 'purple' {
+      color: avatar.$avatar-color-purple;
+      border-color: avatar.$avatar-color-purple;
+    } @else if $color == 'orange' {
+      color: avatar.$avatar-color-orange;
+      border-color: avatar.$avatar-color-orange;
+    } @else if $color == 'gray' {
+      color: avatar.$avatar-color-gray;
+      border-color: avatar.$avatar-color-gray;
+    }
+    border: 2px solid;
+  } @else if $variant == 'elevated' {
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    box-shadow: elevation.$md-sys-elevation-level2;
+  }
+}
+
+/**
+ * Mixin pour les images d'avatar
+ */
+@mixin avatar-image() {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  // L'image doit hériter du border-radius de l'avatar pour être ronde
+  border-radius: inherit;
+}
+
+/**
+ * Mixin pour les initiales d'avatar
+ * @param {string} $size - Taille (xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl)
+ */
+@mixin avatar-initials($size: 'md') {
+  font-size: avatar.avatar-font-size($size);
+  font-weight: 500;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/**
+ * Mixin pour les badges de statut avec CSS mask et trigonometry
+ * Basé sur l'approche de codepen.io/simeydotme
+ */
+@mixin avatar-badge() {
+  // Variables CSS par défaut
+  --status-size: #{avatar.$avatar-status-size};
+  --status-gap: #{avatar.$avatar-status-gap};
+  --status-offset: #{avatar.$avatar-status-offset};
+  --status-angle: #{avatar.$avatar-status-angle};
+  
+  // Couleur de fond pour le gap transparent (utilise les couleurs de thème Material Design)
+  // Par défaut, utilise --md-sys-color-surface, mais peut être surchargée selon le contexte
+  --status-gap-background: var(--md-sys-color-surface, #ffffff);
+  
+  // Calcul du diamètre du mask (badge + gap de chaque côté)
+  --d: calc(var(--status-size) + (var(--status-gap) * 2));
+  
+  // Distance depuis le centre de l'avatar (rayon + offset)
+  --r: calc((100% / 2) + var(--status-offset));
+  
+  // Coordonnées x et y calculées avec trigonometry
+  --x: calc(var(--r) * cos(var(--status-angle) - 90deg) + (100% / 2));
+  --y: calc(var(--r) * sin(var(--status-angle) - 90deg) + (100% / 2));
+  
+  // Couleurs des statuts
+  --color-offline: #{avatar.$avatar-badge-offline};
+  --color-online: #{avatar.$avatar-badge-online};
+  --color-idle: #{avatar.$avatar-badge-idle};
+  --color-dnd: #{avatar.$avatar-badge-dnd};
+  --color-busy: #{avatar.$avatar-badge-busy};
+  --color-away: #{avatar.$avatar-badge-away};
+  
+  position: relative;
+  
+  // Le badge est créé via ::after
+  &::after {
+    content: "";
+    aspect-ratio: 1;
+    background: var(--color-offline);
+    border-radius: 100%;
+    position: absolute;
+    width: var(--status-size);
+    top: calc(var(--y) - (var(--status-size) / 2));
+    left: calc(var(--x) - (var(--status-size) / 2));
+    z-index: 10;
+    pointer-events: none;
+  }
+  
+  // Appliquer le mask UNIQUEMENT sur l'image, PAS sur les initiales
+  // Le mask crée un trou transparent dans l'image (diamètre = badge + gap de chaque côté)
+  // Le trou transparent laisse voir le gap (couleur de fond) à travers
+  // Les initiales doivent rester visibles, donc on ne leur applique pas le mask
+  &__image {
+    mask-image: radial-gradient(
+      var(--d) var(--d) at var(--x) var(--y),
+      transparent calc(50% - 0.5px),
+      black calc(50% + 0.5px)
+    );
+    -webkit-mask-image: radial-gradient(
+      var(--d) var(--d) at var(--x) var(--y),
+      transparent calc(50% - 0.5px),
+      black calc(50% + 0.5px)
+    );
+  }
+}
+
+/**
+ * Mixin pour les groupes d’avatars (délègue l’overlap à Stack)
+ * @param {string} $stacking - Direction d’empilement (left, right)
+ */
+@mixin avatar-group($stacking: 'left') {
+  @if $stacking == 'right' {
+    @include stack.stack-overlap('end');
+  } @else {
+    @include stack.stack-overlap('start');
+  }
+}
+
+/**
+ * Mixin pour le mode stacked (empilé avec scroll horizontal)
+ */
+@mixin avatar-group-stacked() {
+  @include stack.stack-scroll;
+
+  .avatar,
+  k3ui-avatar {
+    flex-shrink: 0;
+  }
+}
+
+/**
+ * Mixin pour le mode grid (grille responsive)
+ * @param {string} $size - Taille de base des avatars pour calculer minmax
+ */
+@mixin avatar-group-grid($size: 'lg') {
+  display: grid;
+  grid-gap: avatar.$avatar-group-offset;
+  grid-template-columns: repeat(auto-fit, minmax((avatar.avatar-size($size) + avatar.$avatar-group-offset), 1fr));
+  align-items: center;
+
+  .avatar {
+    position: relative;
+    margin: 0;
+  }
+}
+
+/**
+ * Mixin pour l’indicateur de reste dans les groupes
+ * @param {string} $size - Taille (xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl)
+ */
+@mixin avatar-group-remaining($size: 'lg') {
+  @include stack.stack-remaining;
+  width: avatar.avatar-size($size);
+  height: avatar.avatar-size($size);
+  min-width: avatar.avatar-size($size);
+  font-size: avatar.avatar-font-size($size);
+  border-radius: 50%;
+}
+
+/**
+ * Mixin pour les états hover
+ */
+@mixin avatar-hover() {
+  &:hover:not(:disabled) {
+    transform: scale(1.05);
+    cursor: pointer;
+  }
+}
+
+/**
+ * Mixin pour l'effet hover de grossissement
+ * L'avatar grossit au survol, minimum taille L (48px) ou supérieur selon la taille
+ */
+@mixin avatar-hover-grow() {
+  transition: transform avatar.$avatar-transition-duration avatar.$avatar-transition-easing,
+              width avatar.$avatar-transition-duration avatar.$avatar-transition-easing,
+              height avatar.$avatar-transition-duration avatar.$avatar-transition-easing;
+  
+  &:hover:not(:disabled) {
+    cursor: pointer;
+    z-index: 10;
+    
+    // Pour xs, sm, md : passe à lg (48px)
+    &.avatar--xs,
+    &.avatar--sm,
+    &.avatar--md {
+      width: avatar.avatar-size('lg');
+      height: avatar.avatar-size('lg');
+      
+      .avatar__initials {
+        font-size: avatar.avatar-font-size('lg');
+      }
+      
+      .avatar__badge {
+        width: avatar.avatar-badge-size('lg');
+        height: avatar.avatar-badge-size('lg');
+      }
+    }
+    
+    // Pour lg et supérieur : grossit de 20%
+    &.avatar--lg,
+    &.avatar--xl,
+    &.avatar--2xl,
+    &.avatar--3xl,
+    &.avatar--4xl,
+    &.avatar--5xl {
+      transform: scale(1.2);
+    }
+  }
+}
+
+/**
+ * Mixin pour les états focus
+ */
+@mixin avatar-focus() {
+  @include state.state-focus();
+  
+  &:focus:not(:disabled) {
+    outline: 2px solid var(--md-sys-color-primary);
+    outline-offset: 2px;
+  }
+}
+
+/**
+ * Mixin pour les états disabled
+ * Note: Opacité retirée selon demande utilisateur
+ * Déclarations enveloppées dans & {} pour conformité Sass mixed-decls (évite le warning).
+ */
+@mixin avatar-disabled() {
+  & {
+    cursor: not-allowed;
+    pointer-events: none;
+    user-select: none;
+  }
+}
+

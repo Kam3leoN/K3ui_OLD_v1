@@ -1,0 +1,274 @@
+/**
+ * Module Pin
+ * Styles pour le composant de saisie de codes PIN
+ */
+
+@use '../tokens/pin.token' as tokens;
+@use '../mixins/pin.mixin' as pin;
+
+/**
+ * Composant Pin principal
+ */
+.pin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  /**
+   * Conteneur des inputs
+   */
+  &__container {
+    @include pin.pin-container;
+    font-size: tokens.$pin-digit-font-size !important;
+    font-weight: tokens.$pin-digit-font-weight !important;
+  }
+
+  /**
+   * Input individuel pour un chiffre
+   */
+  &__digit {
+    // Override du reset global qui force 16px - AVANT le mixin
+    // Force 4rem et 700 pour les chiffres PIN
+    font-size: tokens.$pin-digit-font-size !important;
+    font-weight: tokens.$pin-digit-font-weight !important;
+    @include pin.pin-digit;
+  }
+
+  // Règle avec spécificité plus élevée pour écraser le reset
+  input[type="text"].pin__digit,
+  input[type="password"].pin__digit,
+  input[type="email"].pin__digit,
+  input[type="url"].pin__digit,
+  input[type="tel"].pin__digit,
+  input[type="number"].pin__digit,
+  input[type="search"].pin__digit,
+  input[type="datetime-local"].pin__digit,
+  input[type="date"].pin__digit,
+  input[type="month"].pin__digit,
+  input[type="week"].pin__digit,
+  input[type="time"].pin__digit {
+    font-size: tokens.$pin-digit-font-size !important;
+    font-weight: tokens.$pin-digit-font-weight !important;
+  }
+
+  /**
+   * Compteur de progression
+   */
+  &__counter {
+    // Styles de base sans background
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.75rem;
+    font-weight: 400;
+    text-align: right;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  /**
+   * Helper container: même largeur que le conteneur des cases
+   */
+  &__helper-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.125rem;
+    // Largeur dynamique basée sur --pin-length (3 à 12 cases)
+    width: calc(3.5rem * var(--pin-length, 12) + 0.25rem * (var(--pin-length, 12) - 1));
+    margin: 0.125rem auto 0;
+
+    .pin__helper {
+      font-family: 'JetBrains Mono', 'JetBrainsMono', monospace;
+      font-size: 0.75rem;
+      line-height: 1.33;
+      color: var(--md-sys-color-on-surface-variant);
+      text-align: left;
+      margin: 0;
+      padding: 0;
+      white-space: nowrap;
+      flex: 1;
+    }
+
+    .pin__counter {
+      font-family: 'JetBrains Mono', 'JetBrainsMono', monospace;
+      font-size: 0.75rem;
+      line-height: 1.33;
+      color: var(--md-sys-color-on-surface-variant);
+      text-align: right;
+      margin: 0;
+      padding: 0;
+      white-space: nowrap;
+      pointer-events: none;
+      flex-shrink: 0;
+    }
+  }
+
+
+  /**
+   * État désactivé
+   */
+  &--disabled {
+    @include pin.pin-disabled;
+  }
+
+  /**
+   * Variantes de style
+   */
+  &--outlined {
+    .pin__digit {
+      background-color: transparent !important;
+      outline: none;
+      border-radius: tokens.$pin-digit-border-radius;
+      border: 2px solid rgb(var(--md-sys-color-outline-rgb)) !important;
+      box-shadow: none !important;
+
+      &:hover {
+        border-color: rgb(var(--md-sys-color-outline-rgb)) !important;
+        box-shadow: none !important;
+      }
+
+      &:focus {
+        outline: none !important;
+        border-width: 2px !important;
+        border-color: rgb(var(--md-sys-color-primary-rgb)) !important;
+        box-shadow: none !important;
+      }
+    }
+  }
+
+  &--filled {
+    .pin__digit {
+      background-color: var(--md-sys-color-surface-container-highest);
+      border: none;
+      border-radius: tokens.$pin-digit-border-radius;
+
+      &:hover {
+        background-color: var(--md-sys-color-surface-container-highest);
+      }
+
+      &:focus {
+        outline: none !important;
+        background-color: var(--md-sys-color-surface-container-highest);
+        box-shadow: inset 0 0 0 2px rgb(var(--md-sys-color-primary-rgb)) !important;
+      }
+    }
+  }
+
+  /**
+   * Animation de focus
+   */
+  &__digit:focus {
+    transform: scale(1.05);
+  }
+
+  /**
+   * Animation de remplissage
+   */
+  &__digit:not(:placeholder-shown) {
+    animation: pin-fill 200ms tokens.$pin-transition-easing;
+  }
+
+  /**
+   * Responsive
+   */
+  @media (max-width: 480px) {
+    &__container {
+      gap: 0.25rem;
+    }
+
+    &__digit {
+      width: 2.5rem;
+      height: 2.5rem;
+      // font-size supprimé pour respecter les tailles définies
+    }
+  }
+}
+
+/**
+ * Animations
+ */
+@keyframes pin-fill {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/**
+ * États de validation
+ */
+.pin {
+  &--valid {
+    .pin__digit {
+      border-color: var(--md-sys-color-success);
+      background-color: var(--md-sys-color-success-container);
+      color: var(--md-sys-color-on-success-container);
+
+      &:hover {
+        border-color: var(--md-sys-color-success) !important;
+        background-color: var(--md-sys-color-success-container) !important;
+        color: var(--md-sys-color-on-success-container) !important;
+      }
+    }
+  }
+
+  &--invalid {
+    .pin__digit {
+      border-color: var(--md-sys-color-error);
+      background-color: var(--md-sys-color-error-container);
+      color: var(--md-sys-color-on-error-container);
+
+      &:hover {
+        border-color: var(--md-sys-color-error) !important;
+        background-color: var(--md-sys-color-error-container) !important;
+        color: var(--md-sys-color-on-error-container) !important;
+      }
+    }
+  }
+}
+
+/* Overrides pour les états sur la variante outlined */
+.pin.pin--outlined.pin--valid {
+  .pin__digit {
+    background-color: transparent !important;
+    color: inherit !important;
+    border-color: var(--md-sys-color-success) !important;
+
+    &:hover {
+      background-color: transparent !important;
+      color: inherit !important;
+      border-color: var(--md-sys-color-success) !important;
+    }
+
+    &:focus {
+      border-width: 2px !important;
+      border-color: var(--md-sys-color-success) !important;
+    }
+  }
+}
+
+.pin.pin--outlined.pin--invalid {
+  .pin__digit {
+    background-color: transparent !important;
+    color: inherit !important;
+    border-color: var(--md-sys-color-error) !important;
+
+    &:hover {
+      background-color: transparent !important;
+      color: inherit !important;
+      border-color: var(--md-sys-color-error) !important;
+    }
+
+    &:focus {
+      border-width: 2px !important;
+      border-color: var(--md-sys-color-error) !important;
+    }
+  }
+}

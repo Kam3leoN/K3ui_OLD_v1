@@ -1,0 +1,51 @@
+/**
+ * @fileoverview Mixins pour Firework
+ * @description Mixins réutilisables pour le composant feux d'artifice
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use './firework.token' as firework;
+
+/**
+ * Conteneur racine plein écran, fixe, sans capture des pointeurs
+ * @param {number} $z-index - Z-index du conteneur
+ */
+@mixin firework-root($z-index: firework.$firework-z-index) {
+  position: fixed;
+  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: $z-index;
+}
+
+/**
+ * Conteneur des canvas
+ * @param {color} $background - Couleur de fond
+ */
+@mixin firework-canvas-container($background: firework.$firework-canvas-bg) {
+  position: absolute;
+  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $background;
+  pointer-events: none;
+}
+
+/**
+ * Canvas de rendu (traînées ou principal)
+ */
+@mixin firework-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  mix-blend-mode: firework.$firework-blend-mode;
+  transform: translateZ(0);
+  pointer-events: none;
+}

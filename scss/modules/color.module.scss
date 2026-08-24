@@ -1,0 +1,6 @@
+/// @file color.module.scss
+/// @brief Classes utilitaires pour les couleurs Material Design 2
+@use '../mixins/color.mixin' as color;
+
+// Génération de toutes les classes de couleurs
+@include color.all-color-classes;

@@ -1,0 +1,73 @@
+/**
+ * @fileoverview Tokens de design pour Breadcrumb (fil d'Ariane)
+ * @description Variables MD3 Expressive pour le composant Breadcrumb
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'motion.token' as motion;
+
+// ============================================================================
+// Z-INDEX
+// ============================================================================
+
+$breadcrumb-z-index: 1;
+
+// ============================================================================
+// COULEURS (MD3)
+// ============================================================================
+
+$breadcrumb-color-link: var(--md-sys-color-on-surface, var(--k3ui-on-surface));
+$breadcrumb-color-link-hover: var(--md-sys-color-primary, var(--k3ui-primary));
+$breadcrumb-color-current: var(--md-sys-color-on-primary-container, var(--k3ui-on-primary-container));
+$breadcrumb-bg-current: var(--md-sys-color-primary-container, var(--k3ui-primary-container));
+$breadcrumb-color-separator: var(--md-sys-color-outline-variant, var(--k3ui-outline-variant));
+$breadcrumb-color-ellipsis: var(--md-sys-color-on-surface-variant, var(--k3ui-on-surface-variant));
+
+// Variant filled : élément actif en primary
+$breadcrumb-filled-bg-current: var(--md-sys-color-primary, var(--k3ui-primary));
+$breadcrumb-filled-color-current: var(--md-sys-color-on-primary, var(--k3ui-on-primary));
+
+// ============================================================================
+// ESPACEMENTS
+// ============================================================================
+
+$breadcrumb-gap: 0.25rem;
+$breadcrumb-gap-small: 0.125rem;
+$breadcrumb-gap-large: 0.375rem;
+
+$breadcrumb-padding-x-small: 0.375rem;
+$breadcrumb-padding-y-small: 0.25rem;
+$breadcrumb-padding-x-medium: 0.5rem;
+$breadcrumb-padding-y-medium: 0.375rem;
+$breadcrumb-padding-x-large: 0.75rem;
+$breadcrumb-padding-y-large: 0.5rem;
+
+$breadcrumb-icon-gap: 0.375rem;
+
+// ============================================================================
+// TYPOGRAPHIE
+// ============================================================================
+
+$breadcrumb-font-family: var(--md-sys-typescale-label-large-font-family-name, 'Google Sans', Arial, sans-serif);
+$breadcrumb-font-size-small: var(--md-sys-typescale-label-small-font-size, 11px);
+$breadcrumb-font-size-medium: var(--md-sys-typescale-label-medium-font-size, 12px);
+$breadcrumb-font-size-large: var(--md-sys-typescale-label-large-font-size, 14px);
+$breadcrumb-font-weight: var(--md-sys-typescale-label-large-font-weight, 500);
+$breadcrumb-line-height: var(--md-sys-typescale-label-large-line-height, 20px);
+
+// ============================================================================
+// FORMES
+// ============================================================================
+
+$breadcrumb-border-radius: var(--md-sys-shape-corner-extra-small, var(--k3ui-shape-extra-small, 4px));
+$breadcrumb-icon-size-small: 14px;
+$breadcrumb-icon-size-medium: 16px;
+$breadcrumb-icon-size-large: 18px;
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+$breadcrumb-transition-duration: 200ms;
+$breadcrumb-transition-easing: motion.spring-easing(effects, fast);

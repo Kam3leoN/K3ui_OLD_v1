@@ -1,0 +1,140 @@
+/**
+ * Textarea Tokens - Tokens pour le composant k3ui-textarea
+ * Basé sur Material Design 3 Expressive
+ */
+
+@use 'sass:map';
+@use './spacing.token' as spacing;
+@use './radius.token' as radius;
+@use './motion.token' as motion;
+
+// ========================================
+// SPACING & SIZING
+// ========================================
+
+/** Padding du container textarea */
+$md-sys-textarea-padding-top: spacing.$md-sys-spacing-md !default; // 16px
+$md-sys-textarea-padding-right: spacing.$md-sys-spacing-md !default; // 16px
+$md-sys-textarea-padding-bottom: spacing.$md-sys-spacing-md !default; // 16px
+$md-sys-textarea-padding-left: spacing.$md-sys-spacing-md !default; // 16px
+
+/** Padding réduit quand il y a une icône */
+$md-sys-textarea-padding-left-with-icon: 12px !default; // 12px selon les specs
+$md-sys-textarea-padding-right-with-action: 12px !default; // 12px selon les specs
+
+/** Espacement entre les éléments */
+$md-sys-textarea-icon-spacing: spacing.$md-sys-spacing-md !default; // 16px
+$md-sys-textarea-action-spacing: spacing.$md-sys-spacing-md !default; // 16px selon les specs
+$md-sys-textarea-prefix-spacing: 2px !default; // 2px (pas de token exact)
+$md-sys-textarea-suffix-spacing-left: 2px !default; // 2px (pas de token exact)
+$md-sys-textarea-suffix-spacing-right: spacing.$md-sys-spacing-xs !default; // 4px
+
+// ========================================
+// BORDER & OUTLINE
+// ========================================
+
+/** Épaisseur de la bordure selon l'état (en px pour box-shadow) */
+$md-sys-textarea-border-width-default: 1 !default; // 1px
+$md-sys-textarea-border-width-hover: 1 !default; // 1px
+$md-sys-textarea-border-width-focused: 2 !default; // 2px
+$md-sys-textarea-border-width-disabled: 1 !default; // 1px
+
+/** Border-radius selon le variant */
+$md-sys-textarea-border-radius-filled-top: radius.$md-sys-shape-corner-extra-small !default; // 4px
+$md-sys-textarea-border-radius-outlined: radius.$md-sys-shape-corner-extra-small !default; // 4px
+
+// ========================================
+// LABEL
+// ========================================
+
+/** Position du label selon le variant */
+$md-sys-textarea-label-top-default: spacing.$md-sys-spacing-md !default; // 16px
+$md-sys-textarea-label-top-filled-active: spacing.$md-sys-spacing-xs !default; // 4px
+$md-sys-textarea-label-top-outlined-active: -8px !default; // -8px (au-dessus de la bordure)
+
+/** Padding du label outlined */
+$md-sys-textarea-label-padding-inline: spacing.$md-sys-spacing-xs !default; // 4px
+$md-sys-textarea-label-margin-inline: -#{spacing.$md-sys-spacing-xs} !default; // -4px
+
+/** Position du label outlined actif */
+$md-sys-textarea-label-outlined-active-left: 12px !default; // 12px (pas de token exact)
+
+// ========================================
+// TEXTAREA ELEMENT
+// ========================================
+
+/** Hauteur minimale des textareas selon Material Design 3 */
+$md-sys-textarea-min-height: 96px !default; // 96px minimum pour les textareas selon MD3
+$md-sys-textarea-min-height-filled: 96px !default; // 96px pour filled
+$md-sys-textarea-min-height-outlined: 96px !default; // 96px pour outlined
+
+/** Hauteur par défaut des textareas (3 lignes de texte) */
+$md-sys-textarea-default-height: 120px !default; // 120px pour 3 lignes
+
+/** Padding vertical des textareas */
+$md-sys-textarea-padding-vertical: spacing.$md-sys-spacing-md !default; // 16px vertical
+$md-sys-textarea-padding-horizontal: 0 !default; // 0px horizontal (géré par container)
+
+/** Espacement des lignes dans les textareas */
+$md-sys-textarea-line-height: 1.5 !default; // 1.5 pour une meilleure lisibilité
+
+/** Hauteur maximale pour autosize */
+$md-sys-textarea-max-height: 200px !default; // 200px maximum pour autosize
+
+/** Hauteur du container selon les variants */
+$md-sys-textarea-height-filled: 122px !default; // 122px pour filled (96px + 26px padding)
+$md-sys-textarea-height-outlined: 122px !default; // 122px pour outlined (96px + 26px padding)
+
+/** Padding pour variant filled */
+$md-sys-textarea-filled-padding-top: spacing.$md-sys-spacing-md !default; // 16px
+$md-sys-textarea-filled-padding-bottom: spacing.$md-sys-spacing-md !default; // 16px
+
+/** Padding pour variant outlined avec label flottant */
+$md-sys-textarea-outlined-label-top: 8px !default; // 8px du haut pour le label
+$md-sys-textarea-outlined-label-padding: 4px !default; // 4px padding vertical du label
+$md-sys-textarea-outlined-input-spacing: 8px !default; // 8px entre label et input
+
+// ========================================
+// SUPPORTING TEXT
+// ========================================
+
+/** Padding du texte d'aide */
+$md-sys-textarea-supporting-padding-top: spacing.$md-sys-spacing-xs !default; // 4px
+$md-sys-textarea-supporting-padding-inline: spacing.$md-sys-spacing-md !default; // 16px
+
+/** Espacement du counter */
+$md-sys-textarea-counter-spacing: spacing.$md-sys-spacing-md !default; // 16px
+
+/** Padding pour le counter dans les textareas */
+$md-sys-textarea-counter-padding-bottom: spacing.$md-sys-spacing-lg !default; // 24px pour le counter
+
+// ========================================
+// ICONS
+// ========================================
+
+/** Taille des icônes */
+$md-sys-textarea-icon-size: 24px !default;
+
+/** Margin des button-icon */
+$md-sys-textarea-button-icon-margin: -8px !default;
+
+// ========================================
+// TYPOGRAPHY
+// ========================================
+
+/** Typescale pour les éléments */
+$md-sys-textarea-typescale-textarea: 'body-large' !default;
+$md-sys-textarea-typescale-label-default: 'body-large' !default;
+$md-sys-textarea-typescale-label-active: 'body-small' !default;
+$md-sys-textarea-typescale-supporting: 'body-small' !default;
+$md-sys-textarea-typescale-prefix-suffix: 'body-large' !default;
+
+// ========================================
+// TRANSITIONS
+// ========================================
+
+/** Durée des transitions */
+$md-sys-textarea-transition-duration: motion.spring-duration(effects, default) !default;
+$md-sys-textarea-transition-easing: motion.spring-easing(effects, default) !default;
+$md-sys-textarea-label-transition-duration: motion.spring-duration(spatial, fast) !default;
+$md-sys-textarea-label-transition-easing: motion.spring-easing(spatial, fast) !default;

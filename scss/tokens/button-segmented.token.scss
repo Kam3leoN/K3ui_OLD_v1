@@ -1,0 +1,48 @@
+/**
+ * @fileoverview Tokens pour Button Segmented Material Design 3 Expressive
+ * @description Conteneur outlineVariant×40, padding 4dp, gap 4dp — segment actif = pill primaryContainer
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'motion.token' as motion;
+
+// ============================================================================
+// CONTAINER — padding 4dp, gap 4dp
+// ============================================================================
+
+$button-segmented-container-padding: 4px !default;
+$button-segmented-segment-gap: 4px !default;
+
+// ============================================================================
+// BORDER RADIUS — conteneur et segment
+// ============================================================================
+
+/** Conteneur : rounded = 24px (pill), square = 10px */
+$button-segmented-wrap-radius-rounded: 24px !default;
+$button-segmented-wrap-radius-square: 10px !default;
+/** Segment (bouton / pill) : rounded = 20px, square = 6px */
+$button-segmented-segment-radius-rounded: 20px !default;
+$button-segmented-segment-radius-square: 6px !default;
+
+// ============================================================================
+// SEGMENT — typo, padding
+// ============================================================================
+
+$button-segmented-segment-padding-y: 7px !default;
+$button-segmented-segment-padding-x: 18px !default;
+$button-segmented-segment-font-size: 13px !default;
+$button-segmented-segment-font-weight: 500 !default;
+$button-segmented-segment-letter-spacing: 0.01em !default;
+$button-segmented-segment-font-family: var(--md-sys-typescale-label-large-font-family-name, 'Google Sans', Arial, sans-serif) !default;
+
+// ============================================================================
+// MOTION — M3 Expressive pill (navigation rail–style), pas d’animation de profondeur au clic
+// ============================================================================
+
+$button-segmented-pill-duration: motion.spring-duration(spatial, fast) !default;
+$button-segmented-pill-easing: motion.spring-easing(spatial, fast) !default;
+$button-segmented-press-duration: motion.spring-duration(effects, fast) !default;
+$button-segmented-press-easing: motion.spring-easing(effects, fast) !default;
+$button-segmented-effects-duration: motion.spring-duration(effects, fast) !default;
+$button-segmented-effects-easing: motion.spring-easing(effects, fast) !default;

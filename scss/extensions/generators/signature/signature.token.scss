@@ -1,0 +1,84 @@
+/**
+ * @fileoverview Tokens de design pour Signature
+ * @description Variables de design pour le composant Signature
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'sass:map';
+@use 'tokens/spacing.token' as spacing;
+@use 'tokens/color.token' as color;
+@use 'tokens/motion.token' as motion;
+@use 'tokens/radius.token' as radius;
+
+// ============================================================================
+// COULEURS
+// ============================================================================
+
+/** Couleur du stylo par défaut */
+$signature-pen-color: #000000 !default;
+
+/** Couleur de fond par défaut */
+$signature-background-color: rgba(0, 0, 0, 0) !default;
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+/** Largeur minimale du trait */
+$signature-min-width: 0.5 !default;
+
+/** Largeur maximale du trait */
+$signature-max-width: 2.5 !default;
+
+/** Taille du point */
+$signature-dot-size: 0 !default;
+
+// ============================================================================
+// ESPACEMENTS
+// ============================================================================
+
+/** Distance minimale entre les points */
+$signature-min-distance: 5px !default;
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+/** Durée de throttle par défaut */
+$signature-throttle: 16ms !default;
+
+// ============================================================================
+// FILTRES
+// ============================================================================
+
+/** Poids du filtre de vélocité */
+$signature-velocity-filter-weight: 0.7 !default;
+
+// ============================================================================
+// COMPOSITE OPERATION
+// ============================================================================
+
+/** Opération de composition par défaut */
+$signature-composite-operation: source-over !default;
+
+// ============================================================================
+// BORDURES
+// ============================================================================
+
+/** Border radius du canvas */
+$signature-border-radius: 4px !default;
+
+/** Épaisseur de la bordure */
+$signature-border-width: 1px !default;
+
+/** Couleur de la bordure */
+$signature-border-color: var(--md-sys-color-outline-variant, #79747e) !default;
+
+// ============================================================================
+// OMBRES
+// ============================================================================
+
+/** Ombre par défaut */
+$signature-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !default;
+

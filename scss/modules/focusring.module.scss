@@ -1,0 +1,42 @@
+/**
+ * @file focusring.module.scss
+ * @description Module pour le focus ring Material Design 3 Expressive
+ * @use '../mixins/focusring.mixin' pour accéder aux mixins du focus ring.
+ */
+
+@use '../mixins/focusring.mixin' as focusring;
+@use '../tokens/focusring.token' as tokens;
+
+// ============================================================================
+// FOCUS RING ELEMENT
+// ============================================================================
+
+/**
+ * Élément focus ring (custom element k3ui-focus-ring)
+ */
+k3ui-focus-ring {
+  @include focusring.focus-ring-base;
+  @include focusring.focus-ring-reduced-motion;
+
+  /**
+   * Focus ring visible
+   */
+  &[visible] {
+    @include focusring.focus-ring-visible;
+  }
+
+  /**
+   * Mode outward (par défaut)
+   */
+  &:not([inward]) {
+    @include focusring.focus-ring-outward;
+  }
+
+  /**
+   * Mode inward
+   */
+  &[inward] {
+    @include focusring.focus-ring-inward;
+  }
+}
+

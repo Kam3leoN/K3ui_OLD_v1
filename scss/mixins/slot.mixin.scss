@@ -1,0 +1,26 @@
+/**
+ * @fileoverview Mixins Slot (alias → ShuffleNumber)
+ * @deprecated Utiliser shuffle-number.mixin
+ */
+
+@use 'shuffle-number.mixin' as sn;
+
+@mixin slot-root {
+  @include sn.shuffle-number-root;
+}
+
+@mixin slot-char {
+  @include sn.shuffle-number-char;
+}
+
+@mixin slot-char-resizing {
+  @include sn.shuffle-number-char-resizing;
+}
+
+@mixin slot-char-sizer {
+  @include sn.shuffle-number-char-sizer;
+}
+
+@mixin slot-char-face {
+  @include sn.shuffle-number-char-face;
+}

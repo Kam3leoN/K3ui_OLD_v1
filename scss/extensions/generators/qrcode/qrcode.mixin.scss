@@ -1,0 +1,29 @@
+@use './qrcode.token' as qrcode;
+
+@mixin qrcode-container {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin qrcode-preview {
+  background: qrcode.$qrcode-preview-bg;
+  border-radius: qrcode.$qrcode-preview-radius;
+  padding: qrcode.$qrcode-preview-padding;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: qrcode.$qrcode-canvas-min-size;
+  min-height: qrcode.$qrcode-canvas-min-size;
+}
+
+@mixin qrcode-canvas {
+  line-height: 0;
+
+  svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+}

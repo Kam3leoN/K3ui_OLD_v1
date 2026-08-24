@@ -1,0 +1,306 @@
+/**
+ * @file shape.mixin.scss
+ * @description Mixins pour les shapes Material Design 3 Expressive
+ * @see https://m3.material.io/foundations/shape/overview
+ */
+
+@use 'sass:map';
+@use '../tokens/shape.token' as shape;
+
+/**
+ * Mixin de base pour les shapes
+ * @param {string} $shape - Nom de la shape
+ * @param {string} $variant - Variante (mask, border, outline, fill)
+ * @param {string} $size - Taille
+ */
+@mixin shape-base($shape: 'arch', $variant: 'mask', $size: 'md') {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  
+  // Dimensions par défaut
+  width: shape.shape-size($size);
+  height: shape.shape-size($size);
+  
+  // Transitions
+  transition: shape.$shape-transition;
+  
+  // Image de base
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+/**
+ * Mixin pour le masquage d'images avec shapes
+ * Découpe l'image selon la forme de la shape
+ * @param {string} $shape - Nom de la shape
+ * @param {string} $size - Taille
+ */
+@mixin shape-mask($shape: 'arch', $size: 'md') {
+  @include shape-base($shape, 'mask', $size);
+  
+  // Appliquer le masque directement à l'image
+  // Utilise la variable CSS custom property --k3ui-shape-path définie par le composant TypeScript
+  // Cette variable contient le chemin complet (assetsPath + shape + .svg)
+  // Fallback vers le chemin par défaut si la variable n'est pas définie
+  $default-path: '#{shape.$shape-assets-path}#{$shape}.svg';
+  img {
+    mask-image: url('#{$default-path}');
+    -webkit-mask-image: url('#{$default-path}');
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-mode: alpha;
+    -webkit-mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    -webkit-mask-composite: source-in;
+  }
+}
+
+/**
+ * Mixin pour les shapes avec bordure
+ * Ajoute une bordure autour de l'image selon la shape
+ * @param {string} $shape - Nom de la shape
+ * @param {string} $size - Taille
+ * @param {string} $border-color - Couleur de la bordure
+ */
+@mixin shape-border($shape: 'arch', $size: 'md', $border-color: shape.shape-color('border')) {
+  @include shape-base($shape, 'border', $size);
+  position: relative;
+  
+  // Bordure avec masque
+  &::after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+    background-color: $border-color;
+    mask-image: url('#{shape.$shape-assets-path}#{$shape}.svg');
+    -webkit-mask-image: url('#{shape.$shape-assets-path}#{$shape}.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    z-index: -1;
+  }
+  
+  // Image avec masque
+  img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mask-image: url('#{shape.$shape-assets-path}#{$shape}.svg');
+    -webkit-mask-image: url('#{shape.$shape-assets-path}#{$shape}.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+  }
+}
+
+/**
+ * Mixin pour les shapes avec contour
+ * Ajoute un contour selon la shape
+ * @param {string} $shape - Nom de la shape
+ * @param {string} $size - Taille
+ * @param {string} $outline-color - Couleur du contour
+ * @param {number} $outline-width - Épaisseur du contour
+ */
+@mixin shape-outline($shape: 'arch', $size: 'md', $outline-color: shape.shape-color('outline'), $outline-width: 2px) {
+  @include shape-base($shape, 'outline', $size);
+  position: relative;
+  
+  // Contour externe
+  &::before {
+    content: '';
+    position: absolute;
+    top: -#{$outline-width};
+    left: -#{$outline-width};
+    right: -#{$outline-width};
+    bottom: -#{$outline-width};
+    background-color: $outline-color;
+    mask-image: url('#{shape.$shape-assets-path}#{$shape}.svg');
+    -webkit-mask-image: url('#{shape.$shape-assets-path}#{$shape}.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    z-index: -2;
+  }
+  
+  // Fond blanc pour masquer l'image
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: shape.shape-color('background');
+    mask-image: url('#{shape.$shape-assets-path}#{$shape}.svg');
+    -webkit-mask-image: url('#{shape.$shape-assets-path}#{$shape}.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    z-index: -1;
+  }
+  
+  // Image avec masque
+  img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mask-image: url('#{shape.$shape-assets-path}#{$shape}.svg');
+    -webkit-mask-image: url('#{shape.$shape-assets-path}#{$shape}.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+  }
+}
+
+/**
+ * Mixin pour les shapes avec remplissage
+ * Remplit la shape avec une couleur
+ * @param {string} $shape - Nom de la shape
+ * @param {string} $size - Taille
+ * @param {string} $fill-color - Couleur de remplissage
+ */
+@mixin shape-fill($shape: 'arch', $size: 'md', $fill-color: shape.shape-color('fill')) {
+  @include shape-base($shape, 'fill', $size);
+  position: relative;
+  
+  // Fond coloré avec masque
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $fill-color;
+    mask-image: url('#{shape.$shape-assets-path}#{$shape}.svg');
+    -webkit-mask-image: url('#{shape.$shape-assets-path}#{$shape}.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    z-index: -1;
+  }
+  
+  // Image avec masque
+  img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mask-image: url('#{shape.$shape-assets-path}#{$shape}.svg');
+    -webkit-mask-image: url('#{shape.$shape-assets-path}#{$shape}.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+  }
+}
+
+/**
+ * Mixin pour les shapes avec taille personnalisée
+ * @param {string} $shape - Nom de la shape
+ * @param {string} $variant - Variante
+ * @param {string} $width - Largeur personnalisée
+ * @param {string} $height - Hauteur personnalisée
+ */
+@mixin shape-custom-size($shape: 'arch', $variant: 'mask', $width: 200px, $height: 200px) {
+  @include shape-base($shape, $variant, 'custom');
+  width: $width;
+  height: $height;
+  
+  @if $variant == 'mask' {
+    @include shape-mask($shape, 'custom');
+  } @else if $variant == 'border' {
+    @include shape-border($shape, 'custom');
+  } @else if $variant == 'outline' {
+    @include shape-outline($shape, 'custom');
+  } @else if $variant == 'fill' {
+    @include shape-fill($shape, 'custom');
+  }
+}
+
+/**
+ * Mixin pour les shapes responsives
+ * @param {string} $shape - Nom de la shape
+ * @param {string} $variant - Variante
+ */
+@mixin shape-responsive($shape: 'arch', $variant: 'mask') {
+  @include shape-base($shape, $variant, 'custom');
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  
+  @if $variant == 'mask' {
+    @include shape-mask($shape, 'custom');
+  } @else if $variant == 'border' {
+    @include shape-border($shape, 'custom');
+  } @else if $variant == 'outline' {
+    @include shape-outline($shape, 'custom');
+  } @else if $variant == 'fill' {
+    @include shape-fill($shape, 'custom');
+  }
+}
+
+/**
+ * Mixin pour les shapes avec hover effects
+ * @param {string} $shape - Nom de la shape
+ * @param {string} $variant - Variante
+ * @param {string} $size - Taille
+ */
+@mixin shape-with-hover($shape: 'arch', $variant: 'mask', $size: 'md') {
+  @if $variant == 'mask' {
+    @include shape-mask($shape, $size);
+  } @else if $variant == 'border' {
+    @include shape-border($shape, $size);
+  } @else if $variant == 'outline' {
+    @include shape-outline($shape, $size);
+  } @else if $variant == 'fill' {
+    @include shape-fill($shape, $size);
+  }
+  
+  &:hover {
+    transform: scale(shape.shape-transform('scale-hover'));
+    
+    img {
+      filter: brightness(shape.shape-filter('brightness-hover'));
+    }
+  }
+  
+  &:active {
+    transform: scale(shape.shape-transform('scale-active'));
+  }
+} 

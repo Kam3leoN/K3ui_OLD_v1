@@ -1,0 +1,115 @@
+/**
+ * @fileoverview Tokens pour Button Split Material Design 3 Expressive
+ * @description Split button — main + trailing, gap 3dp, 5 tailles, inner radius 4/8/12dp
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'motion.token' as motion;
+
+// ============================================================================
+// LAYOUT
+// ============================================================================
+
+/** Gap entre leading et trailing (2dp en prod — aligné module) */
+$button-split-gap: 2px !default;
+
+/** Zone tactile minimale M3 (Interaction) — icon-only */
+$button-split-touch-target-min: 48px !default;
+
+// ============================================================================
+// XS — 32dp
+// ============================================================================
+
+$button-split-xs-height: 32px !default;
+$button-split-xs-main-pl: 12px !default;
+$button-split-xs-main-pr: 10px !default;
+$button-split-xs-main-gap: 4px !default;
+$button-split-xs-font: 11px !default;
+$button-split-xs-icon: 20px !default;
+$button-split-xs-trailing-icon: 22px !default;
+$button-split-xs-outer-radius: 8px !default;
+$button-split-xs-inner-radius: 4px !default;
+$button-split-xs-rounded-pill: 16px !default;
+$button-split-square-xs: 2.8px !default;
+
+// ============================================================================
+// SM — 40dp
+// ============================================================================
+
+$button-split-sm-height: 40px !default;
+$button-split-sm-main-pl: 16px !default;
+$button-split-sm-main-pr: 12px !default;
+$button-split-sm-main-gap: 8px !default;
+$button-split-sm-font: 13px !default;
+$button-split-sm-icon: 20px !default;
+$button-split-sm-trailing-icon: 22px !default;
+$button-split-sm-outer-radius: 10px !default;
+$button-split-sm-inner-radius: 4px !default;
+$button-split-sm-rounded-pill: 20px !default;
+$button-split-square-sm: 3.5px !default;
+
+// ============================================================================
+// MD — 56dp
+// ============================================================================
+
+$button-split-md-height: 56px !default;
+$button-split-md-main-pl: 24px !default;
+$button-split-md-main-pr: 13px !default;
+$button-split-md-main-gap: 8px !default;
+$button-split-md-font: 16px !default;
+$button-split-md-icon: 24px !default;
+$button-split-md-trailing-icon: 26px !default;
+$button-split-md-outer-radius: 16px !default;
+$button-split-md-inner-radius: 4px !default;
+$button-split-md-rounded-pill: 28px !default;
+$button-split-square-md: 5.6px !default;
+
+// ============================================================================
+// LG — 96dp
+// ============================================================================
+
+$button-split-lg-height: 96px !default;
+$button-split-lg-main-pl: 48px !default;
+$button-split-lg-main-pr: 26px !default;
+$button-split-lg-main-gap: 12px !default;
+$button-split-lg-font: 24px !default;
+$button-split-lg-icon: 32px !default;
+$button-split-lg-trailing-icon: 38px !default;
+$button-split-lg-outer-radius: 28px !default;
+$button-split-lg-inner-radius: 8px !default;
+$button-split-lg-rounded-pill: 48px !default;
+$button-split-square-lg: 9.8px !default;
+
+// ============================================================================
+// XL — 136dp
+// ============================================================================
+
+$button-split-xl-height: 136px !default;
+$button-split-xl-main-pl: 64px !default;
+$button-split-xl-main-pr: 37px !default;
+$button-split-xl-main-gap: 16px !default;
+$button-split-xl-font: 32px !default;
+$button-split-xl-icon: 40px !default;
+$button-split-xl-trailing-icon: 50px !default;
+$button-split-xl-outer-radius: 40px !default;
+$button-split-xl-inner-radius: 12px !default;
+$button-split-xl-rounded-pill: 68px !default;
+$button-split-square-xl: 14px !default;
+
+// ============================================================================
+// MOTION — 12 springs M3 (effects-fast + spatial-fast, scheme-aware)
+// ============================================================================
+
+$button-split-effects-duration: motion.spring-duration(effects, fast) !default;
+$button-split-effects-easing: motion.spring-easing(effects, fast) !default;
+$button-split-spatial-duration: motion.spring-duration(spatial, fast) !default;
+$button-split-spatial-easing: motion.spring-easing(spatial, fast) !default;
+$button-split-trailing-rotation-duration: motion.spring-duration(spatial, fast) !default;
+$button-split-trailing-rotation-easing: motion.spring-easing(spatial, fast) !default;
+$button-split-pressed-scale: 0.975 !default;
+
+/** @deprecated Utiliser $button-split-effects-duration */
+$button-split-transition-duration: $button-split-effects-duration !default;
+/** @deprecated Utiliser $button-split-effects-easing */
+$button-split-transition-easing: $button-split-effects-easing !default;

@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-05-30T15:17:00.723Z",
+  "scssEntry": "scss/index.scss",
+  "files": {
+    "expanded": {
+      "path": "build/baseline.css",
+      "bytes": 2152278,
+      "gzipBytes": 174051
+    },
+    "min": {
+      "path": "build/baseline.min.css",
+      "bytes": 1727753,
+      "gzipBytes": 115511
+    }
+  },
+  "metrics": {
+    "bytes": 2152278,
+    "gzipBytes": 174051,
+    "ruleCount": 8478,
+    "uniqueSelectors": 6795,
+    "tokenVarReferences": 10289,
+    "mdSysColorPrimaryDefinitions": 10,
+    "mdSysColorPrimaryBySelector": {
+      ":root": 2,
+      "html[data-theme=light]": 1,
+      "html[data-theme=dark]": 1,
+      ".theme-light": 1,
+      ".theme-dark": 1,
+      ":is(:fullscreen, :-webkit-full-screen, :-moz-full-screen, :-ms-fullscreen) .theme-light": 1,
+      ":is(:fullscreen, :-webkit-full-screen, :-moz-full-screen, :-ms-fullscreen) .theme-dark": 1,
+      ":is(:fullscreen, :-webkit-full-screen, :-moz-full-screen, :-ms-fullscreen)[data-theme=light]": 1,
+      ":is(:fullscreen, :-webkit-full-screen, :-moz-full-screen, :-ms-fullscreen)[data-theme=dark]": 1
+    },
+    "cubicBezier034080341": 172,
+    "pseudoBeforeOpacityBlocks": 48
+  }
+}

@@ -1,0 +1,250 @@
+/**
+ * @file spacing.mixin.scss
+ * @description Mixins pour la gestion des espacements Material Design 3 Expressive
+ * @see https://m3.material.io/foundations/design-tokens/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use '../tokens/spacing.token' as tokens;
+
+// ============================================================================
+// MIXINS DE BASE
+// ============================================================================
+
+/**
+ * Mixin pour appliquer un espacement de base
+ * @param {string} $type - Type d'espacement (padding, margin)
+ * @param {string} $size - Taille de l'espacement (xs, sm, md, lg, xl)
+ */
+@mixin spacing($type: 'padding', $size: 'md') {
+  $value: tokens.spacing-with-fallback($size, 'base');
+  
+  @if $type == 'padding' {
+    padding: $value;
+  } @else if $type == 'margin' {
+    margin: $value;
+  }
+}
+
+/**
+ * Mixin pour appliquer un espacement de composant
+ * @param {string} $type - Type d'espacement (padding, margin)
+ * @param {string} $size - Taille de l'espacement (xs, sm, md, lg, xl)
+ */
+@mixin spacing-component($type: 'padding', $size: 'md') {
+  $value: tokens.spacing-with-fallback($size, 'component');
+  
+  @if $type == 'padding' {
+    padding: $value;
+  } @else if $type == 'margin' {
+    margin: $value;
+  }
+}
+
+/**
+ * Mixin pour appliquer un espacement de layout
+ * @param {string} $type - Type d'espacement (padding, margin)
+ * @param {string} $size - Taille de l'espacement (xs, sm, md, lg, xl)
+ */
+@mixin spacing-layout($type: 'padding', $size: 'md') {
+  $value: tokens.spacing-with-fallback($size, 'layout');
+  
+  @if $type == 'padding' {
+    padding: $value;
+  } @else if $type == 'margin' {
+    margin: $value;
+  }
+}
+
+/**
+ * Mixin pour appliquer un espacement de grille
+ * @param {string} $type - Type d'espacement (padding, margin)
+ * @param {string} $size - Taille de l'espacement (xs, sm, md, lg, xl)
+ */
+@mixin spacing-grid($type: 'padding', $size: 'md') {
+  $value: tokens.spacing-with-fallback($size, 'grid');
+  
+  @if $type == 'padding' {
+    padding: $value;
+  } @else if $type == 'margin' {
+    margin: $value;
+  }
+}
+
+// ============================================================================
+// MIXINS SPÉCIALISÉS
+// ============================================================================
+
+/**
+ * Mixin pour appliquer un padding de base
+ * @param {string} $size - Taille de l'espacement (xs, sm, md, lg, xl)
+ */
+@mixin padding($size: 'md') {
+  padding: tokens.spacing-with-fallback($size, 'base');
+}
+
+/**
+ * Mixin pour appliquer une margin de base
+ * @param {string} $size - Taille de l'espacement (xs, sm, md, lg, xl)
+ */
+@mixin margin($size: 'md') {
+  margin: tokens.spacing-with-fallback($size, 'base');
+}
+
+/**
+ * Mixin pour appliquer un padding de composant
+ * @param {string} $size - Taille de l'espacement (xs, sm, md, lg, xl)
+ */
+@mixin padding-component($size: 'md') {
+  padding: tokens.spacing-with-fallback($size, 'component');
+}
+
+/**
+ * Mixin pour appliquer une margin de composant
+ * @param {string} $size - Taille de l'espacement (xs, sm, md, lg, xl)
+ */
+@mixin margin-component($size: 'md') {
+  margin: tokens.spacing-with-fallback($size, 'component');
+}
+
+/**
+ * Mixin pour appliquer un padding de layout
+ * @param {string} $size - Taille de l'espacement (xs, sm, md, lg, xl)
+ */
+@mixin padding-layout($size: 'md') {
+  padding: tokens.spacing-with-fallback($size, 'layout');
+}
+
+/**
+ * Mixin pour appliquer une margin de layout
+ * @param {string} $size - Taille de l'espacement (xs, sm, md, lg, xl)
+ */
+@mixin margin-layout($size: 'md') {
+  margin: tokens.spacing-with-fallback($size, 'layout');
+}
+
+// ============================================================================
+// MIXINS RESPONSIFS
+// ============================================================================
+
+/**
+ * Mixin pour appliquer un espacement responsive
+ * @param {string} $type - Type d'espacement (padding, margin)
+ * @param {string} $size - Taille de l'espacement (xs, sm, md, lg, xl)
+ */
+@mixin spacing-responsive($type: 'padding', $size: 'md') {
+  // Mobile (par défaut)
+  $mobile-value: tokens.spacing-responsive('mobile', $size);
+  
+  @if $type == 'padding' {
+    padding: $mobile-value;
+  } @else if $type == 'margin' {
+    margin: $mobile-value;
+  }
+  
+  // Tablet
+  @media (min-width: 768px) {
+    $tablet-value: tokens.spacing-responsive('tablet', $size);
+    
+    @if $type == 'padding' {
+      padding: $tablet-value;
+    } @else if $type == 'margin' {
+      margin: $tablet-value;
+    }
+  }
+  
+  // Desktop
+  @media (min-width: 1024px) {
+    $desktop-value: tokens.spacing-responsive('desktop', $size);
+    
+    @if $type == 'padding' {
+      padding: $desktop-value;
+    } @else if $type == 'margin' {
+      margin: $desktop-value;
+    }
+  }
+}
+
+// ============================================================================
+// MIXINS AVANCÉS
+// ============================================================================
+
+/**
+ * Mixin pour appliquer un espacement avec des côtés spécifiques
+ * @param {string} $type - Type d'espacement (padding, margin)
+ * @param {string} $size - Taille de l'espacement (xs, sm, md, lg, xl)
+ * @param {string} $sides - Côtés (all, top, right, bottom, left, horizontal, vertical)
+ */
+@mixin spacing-sides($type: 'padding', $size: 'md', $sides: 'all') {
+  $value: tokens.spacing-with-fallback($size, 'base');
+  
+  @if $sides == 'all' {
+    @if $type == 'padding' {
+      padding: $value;
+    } @else if $type == 'margin' {
+      margin: $value;
+    }
+  } @else if $sides == 'top' {
+    @if $type == 'padding' {
+      padding-top: $value;
+    } @else if $type == 'margin' {
+      margin-top: $value;
+    }
+  } @else if $sides == 'right' {
+    @if $type == 'padding' {
+      padding-right: $value;
+    } @else if $type == 'margin' {
+      margin-right: $value;
+    }
+  } @else if $sides == 'bottom' {
+    @if $type == 'padding' {
+      padding-bottom: $value;
+    } @else if $type == 'margin' {
+      margin-bottom: $value;
+    }
+  } @else if $sides == 'left' {
+    @if $type == 'padding' {
+      padding-left: $value;
+    } @else if $type == 'margin' {
+      margin-left: $value;
+    }
+  } @else if $sides == 'horizontal' {
+    @if $type == 'padding' {
+      padding-left: $value;
+      padding-right: $value;
+    } @else if $type == 'margin' {
+      margin-left: $value;
+      margin-right: $value;
+    }
+  } @else if $sides == 'vertical' {
+    @if $type == 'padding' {
+      padding-top: $value;
+      padding-bottom: $value;
+    } @else if $type == 'margin' {
+      margin-top: $value;
+      margin-bottom: $value;
+    }
+  }
+}
+
+/**
+ * Mixin pour appliquer un espacement avec des valeurs différentes pour chaque côté
+ * @param {string} $type - Type d'espacement (padding, margin)
+ * @param {string} $top - Taille pour le haut (xs, sm, md, lg, xl)
+ * @param {string} $right - Taille pour la droite (xs, sm, md, lg, xl)
+ * @param {string} $bottom - Taille pour le bas (xs, sm, md, lg, xl)
+ * @param {string} $left - Taille pour la gauche (xs, sm, md, lg, xl)
+ */
+@mixin spacing-custom($type: 'padding', $top: 'md', $right: 'md', $bottom: 'md', $left: 'md') {
+  $top-value: tokens.spacing-with-fallback($top, 'base');
+  $right-value: tokens.spacing-with-fallback($right, 'base');
+  $bottom-value: tokens.spacing-with-fallback($bottom, 'base');
+  $left-value: tokens.spacing-with-fallback($left, 'base');
+  
+  @if $type == 'padding' {
+    padding: $top-value $right-value $bottom-value $left-value;
+  } @else if $type == 'margin' {
+    margin: $top-value $right-value $bottom-value $left-value;
+  }
+} 

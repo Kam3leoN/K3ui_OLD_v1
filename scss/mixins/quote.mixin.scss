@@ -1,0 +1,34 @@
+/**
+ * @file quote.mixin.scss
+ * @description Mixins pour le composant Quote
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/quote.token' as quote;
+@use '../mixins/notch.mixin' as notch-mixin;
+
+@mixin quote-base {
+  position: relative;
+  display: flex;
+  font-size: 1rem;
+  direction: ltr;
+  unicode-bidi: isolate;
+  width: 100%;
+  overflow: visible;
+}
+
+@mixin quote-surface {
+  position: relative;
+  background-color: quote.$quote-surface-bg;
+  width: 100%;
+  border-radius: quote.$quote-surface-radius;
+  color: quote.$quote-text-color;
+  /* Pastille + rounders à l’intérieur (réf. MYNT .card { overflow:hidden }) */
+  overflow: hidden;
+  @include notch-mixin.notch-host-surface;
+}
+
+@mixin quote-text {
+  margin: 0;
+}

@@ -1,0 +1,88 @@
+/**
+ * @fileoverview Mixins ButtonFabRail
+ */
+
+@use '../tokens/button-fab-rail.token' as bfr;
+
+@mixin button-fab-rail-root {
+  position: fixed;
+  z-index: bfr.$button-fab-rail-z-index;
+  width: var(--button-fab-rail-size, #{bfr.$button-fab-rail-trigger-size});
+  height: var(--button-fab-rail-size, #{bfr.$button-fab-rail-trigger-size});
+
+  &--static {
+    position: absolute;
+  }
+}
+
+@mixin button-fab-rail-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: bfr.$button-fab-rail-scrim-z;
+  border: 0;
+  padding: 0;
+  background: bfr.$button-fab-rail-scrim-bg;
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity bfr.$button-fab-rail-effects-duration bfr.$button-fab-rail-effects-easing;
+}
+
+@mixin button-fab-rail-slot {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+@mixin button-fab-rail-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--button-fab-rail-item-size, #{bfr.$button-fab-rail-action-size});
+  height: var(--button-fab-rail-item-size, #{bfr.$button-fab-rail-action-size});
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  background: bfr.$button-fab-rail-action-bg;
+  color: bfr.$button-fab-rail-action-color;
+  box-shadow: bfr.$button-fab-rail-action-shadow;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition:
+    border-radius bfr.$button-fab-rail-effects-duration bfr.$button-fab-rail-effects-easing,
+    transform bfr.$button-fab-rail-effects-duration bfr.$button-fab-rail-effects-easing;
+
+  &[data-pressed] {
+    border-radius: bfr.$button-fab-rail-press-radius;
+    transform: scale(0.92);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--md-sys-color-primary);
+    outline-offset: 3px;
+  }
+}
+
+@mixin button-fab-rail-item {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transform: translate3d(0, 0, 0) scale(0.4);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+  transition:
+    transform bfr.$button-fab-rail-exit-duration bfr.$button-fab-rail-exit-easing var(--button-fab-rail-delay-out, 0ms),
+    opacity bfr.$button-fab-rail-effects-duration bfr.$button-fab-rail-effects-easing var(--button-fab-rail-delay-out, 0ms);
+}
+
+@mixin button-fab-rail-item-open {
+  transform: translate3d(var(--button-fab-rail-x, 0), var(--button-fab-rail-y, 0), 0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+  transition:
+    transform bfr.$button-fab-rail-spatial-duration bfr.$button-fab-rail-spatial-easing var(--button-fab-rail-delay-in, 0ms),
+    opacity bfr.$button-fab-rail-effects-duration bfr.$button-fab-rail-effects-easing var(--button-fab-rail-delay-in, 0ms);
+}

@@ -1,0 +1,40 @@
+/**
+ * @fileoverview Mixins pour Tilt
+ * @description Styles Tilt intégrés au design system K3UI
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/tilt.token' as tilt;
+
+/**
+ * Conteneur racine Tilt
+ */
+@mixin tilt-root {
+  position: relative;
+  display: block;
+  perspective: tilt.$tilt-perspective;
+  transform: translate3d(0, 0, 0);
+}
+
+/**
+ * Calques internes Tilt (scale, rotate)
+ */
+@mixin tilt-layer {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition-property: transform;
+  display: block;
+}
+
+/**
+ * Ombre et reflet Tilt
+ */
+@mixin tilt-effect-layer {
+  position: absolute;
+  pointer-events: none;
+  transition-property: transform, opacity;
+  display: block;
+  opacity: 0;
+}

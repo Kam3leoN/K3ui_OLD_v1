@@ -1,0 +1,31 @@
+/**
+ * @fileoverview Tokens de design pour MenuContext
+ * @description Variables pour le menu contextuel (clic droit)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'menu.token' as menu;
+
+// ============================================================================
+// Z-INDEX / ANCRE
+// ============================================================================
+
+/** Z-index de l’ancre (hors flux visuel) */
+$menu-context-anchor-z-index: -1 !default;
+
+// ============================================================================
+// ZONE HÔTE (démo / zone ciblée)
+// ============================================================================
+
+/** Padding indicatif de la zone */
+$menu-context-host-padding: 1rem !default;
+
+/** Rayon de la zone démo */
+$menu-context-host-radius: menu.$menu-border-radius !default;
+
+/** Bordure outline de la zone démo */
+$menu-context-host-outline: var(--md-sys-color-outline-variant) !default;
+
+/** Fond surface de la zone démo */
+$menu-context-host-surface: var(--md-sys-color-surface-container-low) !default;

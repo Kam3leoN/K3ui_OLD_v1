@@ -1,0 +1,88 @@
+/**
+ * @fileoverview Mixins pour ProgressIndicator
+ * @author K3UI Team
+ */
+
+@use '../tokens/progress-indicator.token' as pi;
+
+@mixin progress-indicator-host {
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  color: pi.$progress-indicator-primary;
+}
+
+@mixin progress-indicator-linear {
+  width: 100%;
+  min-width: 120px;
+}
+
+@mixin progress-indicator-circular {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  position: relative;
+}
+
+@mixin progress-indicator-show-value {
+  isolation: isolate;
+}
+
+@mixin progress-indicator-rotate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center;
+}
+
+@mixin progress-indicator-svg {
+  display: block;
+  overflow: visible;
+}
+
+@mixin progress-indicator-value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  font-family: inherit;
+  font-size: pi.$progress-indicator-value-font-size;
+  font-weight: pi.$progress-indicator-value-font-weight;
+  line-height: pi.$progress-indicator-value-line-height;
+  font-variant-numeric: tabular-nums;
+  color: var(--md-sys-color-on-surface, currentColor);
+  z-index: 1;
+  user-select: none;
+}
+
+@mixin progress-indicator-stop {
+  pointer-events: none;
+}
+
+@mixin progress-indicator-palette-primary {
+  color: pi.$progress-indicator-primary;
+}
+
+@mixin progress-indicator-palette-secondary {
+  color: pi.$progress-indicator-secondary;
+}
+
+@mixin progress-indicator-palette-tertiary {
+  color: pi.$progress-indicator-tertiary;
+}
+
+@mixin progress-indicator-palette-error {
+  color: pi.$progress-indicator-error;
+}
+
+@mixin progress-indicator-reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    .progress-indicator__rotate {
+      transform: none !important;
+      will-change: auto !important;
+    }
+  }
+}

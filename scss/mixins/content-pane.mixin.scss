@@ -1,0 +1,78 @@
+/**
+ * @fileoverview Mixins pour ContentPane
+ * @description Mixins réutilisables pour surfaces scrollables M3 Expressive
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/content-pane.token' as pane;
+
+/**
+ * Surface card M3E de base
+ */
+@mixin panel-content-surface {
+  --panel-content-radius: #{pane.$panel-content-radius};
+  --panel-content-surface: #{pane.$panel-content-surface};
+  --content-pane-radius: var(--panel-content-radius);
+  --content-pane-surface: var(--panel-content-surface);
+  /* Encoche Field outlined = fond du panel */
+  --k3ui-field-outlined-notch-bg: var(--panel-content-surface);
+  background: var(--panel-content-surface);
+  border-radius: var(--panel-content-radius, #{pane.$panel-content-radius});
+  box-sizing: border-box;
+  color: var(--md-sys-color-on-surface, inherit);
+}
+
+/** @deprecated Utiliser panel-content-surface */
+@mixin content-pane-surface {
+  @include panel-content-surface;
+}
+
+@mixin panel-content-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  min-width: 0;
+}
+
+/** @deprecated Utiliser panel-content-scroll */
+@mixin content-pane-scroll {
+  @include panel-content-scroll;
+}
+
+/**
+ * Scrollbar personnalisable (WebKit + Firefox)
+ */
+@mixin content-pane-scrollbar(
+  $size: pane.$content-pane-scrollbar-size-layout,
+  $thumb: var(--md-sys-color-outline-variant, #cac4d0),
+  $thumb-hover: var(--md-sys-color-outline, #79747e)
+) {
+  scrollbar-width: thin;
+  scrollbar-color: #{$thumb} transparent;
+
+  &::-webkit-scrollbar {
+    width: $size;
+    height: $size;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 999px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #{$thumb};
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #{$thumb-hover};
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}

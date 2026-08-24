@@ -1,0 +1,226 @@
+/// @file fontface.mixin.scss
+/// @brief Mixins pour la gestion des polices (Google Sans stack + JetBrains Mono)
+
+/**
+ * @file fontface.mixin.scss
+ * @description Mixins SCSS pour les polices du projet : Google Sans / Text / Display (UI, aligné I/O 2026) et JetBrains Mono (monospace)
+ * @see https://io.google/2026/
+ * @see https://m3.material.io/foundations/typography/overview
+ */
+
+@use '../tokens/fontface.token' as tokens;
+
+// =============================================================================
+// JETBRAINS MONO
+// =============================================================================
+
+@mixin font-jetbrains-regular {
+  font-family: tokens.$font-family-code;
+  font-weight: 400;
+  font-style: normal;
+  src: url(tokens.$font-path-code + 'JetBrainsMono-Regular.ttf') format('truetype'); 
+  font-display: swap;
+}
+
+/**
+ * Mixin pour déclarer la police JetBrainsMono Medium
+ */
+@mixin font-jetbrains-medium {
+  font-family: tokens.$font-family-code;
+  font-weight: 500;
+  font-style: normal;
+  src: url(tokens.$font-path-code + 'JetBrainsMono-Medium.ttf') format('truetype');
+  font-display: swap;
+}
+
+/**
+ * Mixin pour déclarer la police JetBrainsMono Bold
+ */
+@mixin font-jetbrains-bold {
+  font-family: tokens.$font-family-code;
+  font-weight: 700;
+  font-style: normal;
+  src: url(tokens.$font-path-code + 'JetBrainsMono-Bold.ttf') format('truetype');
+  font-display: swap;
+}
+
+/**
+ * Mixin pour déclarer la police JetBrainsMono Light
+ */
+@mixin font-jetbrains-light {
+  font-family: tokens.$font-family-code;
+  font-weight: 300;
+  font-style: normal;
+  src: url(tokens.$font-path-code + 'JetBrainsMono-Light.ttf') format('truetype');
+  font-display: swap;
+}
+
+/**
+ * Mixin pour déclarer la police JetBrainsMono ExtraLight
+ */
+@mixin font-jetbrains-extralight {
+  font-family: tokens.$font-family-code;
+  font-weight: 200;
+  font-style: normal;
+  src: url(tokens.$font-path-code + 'JetBrainsMono-ExtraLight.ttf') format('truetype');
+  font-display: swap;
+}
+
+/**
+ * Mixin pour déclarer la police JetBrainsMono Thin
+ */
+@mixin font-jetbrains-thin {
+  font-family: tokens.$font-family-code;
+  font-weight: 100;
+  font-style: normal;
+  src: url(tokens.$font-path-code + 'JetBrainsMono-Thin.ttf') format('truetype');
+  font-display: swap;
+}
+
+/**
+ * Mixin pour déclarer la police JetBrainsMono ExtraBold
+ */
+@mixin font-jetbrains-extrabold {
+  font-family: tokens.$font-family-code;
+  font-weight: 800;
+  font-style: normal;
+  src: url(tokens.$font-path-code + 'JetBrainsMono-ExtraBold.ttf') format('truetype');
+  font-display: swap;
+}
+
+/**
+ * Mixin pour déclarer la police JetBrainsMono Italic
+ */
+@mixin font-jetbrains-italic {
+  font-family: tokens.$font-family-code;
+  font-weight: 400;
+  font-style: italic;
+  src: url(tokens.$font-path-code + 'JetBrainsMono-Italic.ttf') format('truetype');
+  font-display: swap;
+}
+
+/**
+ * Mixin pour déclarer la police JetBrainsMono Medium Italic
+ */
+@mixin font-jetbrains-medium-italic {
+  font-family: tokens.$font-family-code;
+  font-weight: 500;
+  font-style: italic;
+  src: url(tokens.$font-path-code + 'JetBrainsMono-MediumItalic.ttf') format('truetype');
+  font-display: swap;
+}
+
+/**
+ * Mixin pour déclarer la police JetBrainsMono Bold Italic
+ */
+@mixin font-jetbrains-bold-italic {
+  font-family: tokens.$font-family-code;
+  font-weight: 700;
+  font-style: italic;
+  src: url(tokens.$font-path-code + 'JetBrainsMono-BoldItalic.ttf') format('truetype');
+  font-display: swap;
+}
+
+/**
+ * Mixin pour injecter toutes les polices JetBrains Mono
+ */
+@mixin fontface-jetbrains {
+  @font-face { @include font-jetbrains-regular; }
+  @font-face { @include font-jetbrains-medium; }
+  @font-face { @include font-jetbrains-bold; }
+  @font-face { @include font-jetbrains-light; }
+  @font-face { @include font-jetbrains-extralight; }
+  @font-face { @include font-jetbrains-thin; }
+  @font-face { @include font-jetbrains-extrabold; }
+  @font-face { @include font-jetbrains-italic; }
+  @font-face { @include font-jetbrains-medium-italic; }
+  @font-face { @include font-jetbrains-bold-italic; }
+}
+
+/**
+ * Mixin pour injecter toutes les polices (Google Sans stack + JetBrains Mono)
+ */
+@mixin fontface-all {
+  @include fontface-googlesans;
+  @include fontface-jetbrains;
+}
+
+/**
+ * Mixin pour définir la police par défaut du système
+ * Utilise Google Sans comme police principale (comme io.google/2026)
+ */
+@mixin fontface-default {
+  font-family: tokens.$font-family-main, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/**
+ * Mixin pour définir la police monospace
+ * Utilise JetBrainsMono comme police monospace
+ */
+@mixin fontface-monospace {
+  font-family: 'JetBrains Mono', 'JetBrainsMono', monospace;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// =============================================================================
+// GOOGLE SANS / TEXT / DISPLAY (stack io.google/2026)
+// =============================================================================
+
+@mixin _font-face-file($family, $weight, $file, $unicode) {
+  font-family: $family;
+  font-style: normal;
+  font-weight: $weight;
+  font-display: swap;
+  src: url(tokens.$font-path-main + $file) format('woff2');
+  unicode-range: $unicode;
+}
+
+/**
+ * Déclarations @font-face Google Sans (400/500 partagent le même fichier VF, comme Google Fonts)
+ */
+@mixin fontface-googlesans {
+  // Google Sans — Regular / Medium
+  @font-face {
+    @include _font-face-file('Google Sans', 400, 'GoogleSans-Regular-latin-ext.woff2', tokens.$font-unicode-latin-ext);
+  }
+  @font-face {
+    @include _font-face-file('Google Sans', 400, 'GoogleSans-Regular-latin.woff2', tokens.$font-unicode-latin);
+  }
+  @font-face {
+    @include _font-face-file('Google Sans', 500, 'GoogleSans-Regular-latin-ext.woff2', tokens.$font-unicode-latin-ext);
+  }
+  @font-face {
+    @include _font-face-file('Google Sans', 500, 'GoogleSans-Regular-latin.woff2', tokens.$font-unicode-latin);
+  }
+
+  // Google Sans Text — Regular
+  @font-face {
+    @include _font-face-file('Google Sans Text', 400, 'GoogleSansText-Regular-latin-ext.woff2', tokens.$font-unicode-latin-ext);
+  }
+  @font-face {
+    @include _font-face-file('Google Sans Text', 400, 'GoogleSansText-Regular-latin.woff2', tokens.$font-unicode-latin);
+  }
+
+  // Google Sans Display — Regular / Medium
+  @font-face {
+    @include _font-face-file('Google Sans Display', 400, 'GoogleSansDisplay-Regular-latin-ext.woff2', tokens.$font-unicode-latin-ext);
+  }
+  @font-face {
+    @include _font-face-file('Google Sans Display', 400, 'GoogleSansDisplay-Regular-latin.woff2', tokens.$font-unicode-latin);
+  }
+  @font-face {
+    @include _font-face-file('Google Sans Display', 500, 'GoogleSansDisplay-Medium-latin-ext.woff2', tokens.$font-unicode-latin-ext);
+  }
+  @font-face {
+    @include _font-face-file('Google Sans Display', 500, 'GoogleSansDisplay-Medium-latin.woff2', tokens.$font-unicode-latin);
+  }
+}

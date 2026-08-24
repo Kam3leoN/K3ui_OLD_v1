@@ -1,0 +1,228 @@
+// ========================================
+// RESET MIXINS - Utilitaires réutilisables
+// ========================================
+
+@use '../tokens/reset.token' as reset;
+
+// ========================================
+// MIXINS PRINCIPAUX
+// ========================================
+
+// Reset complet d'un élément
+@mixin reset-element {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  box-sizing: reset.$box-sizing-default;
+}
+
+// Focus accessible et moderne
+@mixin focus-ring($color: reset.$color-focus, $width: reset.$focus-outline-width, $offset: reset.$focus-outline-offset) {
+  outline: $width reset.$focus-outline-style $color;
+  outline-offset: $offset;
+  
+  // Fallback pour les anciens navigateurs
+  box-shadow: 0 0 0 $width reset.$color-focus-ring;
+  
+  // Transition smooth
+  transition: reset.$transition-focus;
+}
+
+// Reset focus pour éléments custom
+@mixin reset-focus {
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  
+  &:focus-visible {
+    @include focus-ring();
+  }
+}
+
+// Typography optimisée cross-browser
+@mixin optimize-text {
+  text-rendering: reset.$text-rendering;
+  -webkit-font-smoothing: reset.$font-smoothing-webkit;
+  -moz-osx-font-smoothing: reset.$font-smoothing-moz;
+  font-feature-settings: 'kern' 1;
+  font-kerning: auto;
+}
+
+// Reset liste complète
+@mixin reset-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  
+  li {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+// Reset bouton moderne
+@mixin reset-button {
+  @include reset-element;
+  cursor: pointer;
+  user-select: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  
+  @include reset-focus;
+}
+
+// Reset input moderne
+@mixin reset-input {
+  @include reset-element;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: reset.$form-element-border-radius;
+  font-size: 16px !important; // Forcer la taille de police pour tous les inputs
+  
+  &::placeholder {
+    color: reset.$color-text-secondary;
+    opacity: 1; // Firefox fix
+  }
+  
+  @include reset-focus;
+}
+
+// Reset médias (images, vidéos, etc.)
+@mixin reset-media {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border: 0;
+}
+
+// Reset table moderne
+@mixin reset-table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  
+  th, td {
+    text-align: left;
+    vertical-align: top;
+    padding: 0;
+  }
+}
+
+// ========================================
+// MIXINS RESPONSIVE
+// ========================================
+
+@mixin mobile-only {
+  @media (max-width: #{reset.$breakpoint-mobile - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet-and-up {
+  @media (min-width: reset.$breakpoint-tablet) {
+    @content;
+  }
+}
+
+@mixin desktop-and-up {
+  @media (min-width: reset.$breakpoint-desktop) {
+    @content;
+  }
+}
+
+// ========================================
+// MIXINS ACCESSIBILITÉ
+// ========================================
+
+// Respecter les préférences de mouvement
+@mixin respect-motion-preferences {
+  @media (prefers-reduced-motion: reset.$prefers-reduced-motion) {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// Cache visuellement mais accessible aux lecteurs d'écran
+@mixin visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+// Inverse du visually-hidden
+@mixin visually-shown {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  padding: inherit !important;
+  margin: inherit !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+}
+
+// ========================================
+// MIXINS UTILITAIRES AVANCÉS
+// ========================================
+
+// Clearfix moderne
+@mixin clearfix {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+// Truncate text avec ellipsis
+@mixin text-truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// Centrage absolu
+@mixin absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// Aspect ratio container
+@mixin aspect-ratio($width: 16, $height: 9) {
+  position: relative;
+  
+  &::before {
+    content: '';
+    display: block;
+    padding-top: percentage($height / $width);
+  }
+  
+  > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}

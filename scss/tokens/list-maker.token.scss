@@ -1,0 +1,57 @@
+/**
+ * @fileoverview Tokens de design pour ListMaker
+ * @description Variables de design — marqueur = ButtonIcon XS narrow
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use './button-icon.token' as btn-icon;
+@use './motion.token' as motion;
+
+// ============================================================================
+// GÉOMÉTRIE (ButtonIcon XS narrow uniquement — pas de wide)
+// ============================================================================
+
+/** Largeur marqueur = icon-button XS narrow */
+$list-maker-marker-width: btn-icon.$md-comp-icon-button-xs-narrow-width;
+
+/** Hauteur marqueur = icon-button XS narrow */
+$list-maker-marker-height: btn-icon.$md-comp-icon-button-xs-narrow-height;
+
+/** Padding horizontal du marqueur */
+$list-maker-pad-x: 0;
+
+/** Border-radius pill */
+$list-maker-marker-radius: 999px;
+
+/** Rotation orientation horizontal (90° = paysage, pas de wide) */
+$list-maker-horizontal-rotation: 90deg;
+
+/** Taille texte marqueur */
+$list-maker-marker-font-size: 0.75rem;
+
+// ============================================================================
+// TYPOGRAPHIE
+// ============================================================================
+
+$list-maker-marker-font-weight: 500;
+$list-maker-marker-letter-spacing: 0.3px;
+$list-maker-body-letter-spacing: 0.25px;
+$list-maker-body-line-height: 1.43;
+
+// ============================================================================
+// COULEURS (MD3 — filled / tonal)
+// ============================================================================
+
+$list-maker-marker-bg-filled: var(--md-sys-color-primary);
+$list-maker-marker-fg-filled: var(--md-sys-color-on-primary);
+$list-maker-body-color: var(--md-sys-color-on-surface-variant);
+$list-maker-marker-bg-tonal: var(--md-sys-color-primary-container);
+$list-maker-marker-fg-tonal: var(--md-sys-color-on-primary-container);
+
+// ============================================================================
+// MOTION
+// ============================================================================
+
+$list-maker-transition-duration: motion.$md-sys-motion-duration-short;
+$list-maker-transition-easing: motion.$md-sys-motion-easing-standard;

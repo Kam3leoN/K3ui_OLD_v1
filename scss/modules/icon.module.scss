@@ -1,0 +1,392 @@
+/**
+ * @file icon.module.scss
+ * @description Module utilitaire générant les classes d'icônes à partir des mixins
+ * @use '../tokens/icon.tokens.scss' pour accéder aux tokens d'icônes
+ * @use '../mixins/icon.mixin.scss' pour accéder aux mixins d'icônes
+ */
+
+@use '../tokens/icon.token.scss' as tokens;
+@use '../mixins/icon.mixin.scss' as icon;
+
+/**
+ * Styles de base pour les icônes <i> et <span> avec attribut name
+ * Tailles : tokens M3 Expressive uniquement (xs–xl) ; défaut = md (24dp).
+ */
+i[name],
+span[name] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 1;
+  user-select: none;
+  /* color/fill seulement — jamais opacity/visibility (évite clignotement anti-FOUC) */
+  transition: color tokens.$md-sys-icon-transition-duration tokens.$md-sys-icon-transition-timing,
+              fill tokens.$md-sys-icon-transition-duration tokens.$md-sys-icon-transition-timing;
+
+  width: tokens.$md-sys-icon-size-default;
+  height: tokens.$md-sys-icon-size-default;
+  font-size: tokens.$md-sys-icon-size-default;
+  min-width: tokens.$md-sys-icon-size-default;
+  min-height: tokens.$md-sys-icon-size-default;
+  
+  // Couleur par défaut
+  color: currentColor;
+  fill: currentColor;
+
+  /*
+   * Anti-FOUC : boîte réservée, hors écran jusqu’à injection SVG.
+   * visibility + opacity sans transition = apparition nette (IconManager batch rAF).
+   */
+  &:not(.k3ui-icon-loaded) {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  &.k3ui-icon-loaded {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  
+  // SVG à l'intérieur
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: inherit;
+    
+    // Force les couleurs personnalisées
+    &[fill] {
+      fill: var(--icon-custom-color, inherit) !important;
+    }
+    
+    path, circle, rect, polygon, line, polyline {
+      &[fill] {
+        fill: var(--icon-custom-color, inherit) !important;
+      }
+    }
+  }
+  
+}
+
+// SVG multicolore (drapeaux type=flags, etc.) : IconManager ajoute .k3ui-icon--multicolor — ne pas forcer currentColor
+i[name].k3ui-icon--multicolor,
+span[name].k3ui-icon--multicolor {
+  color: unset;
+  fill: none !important;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    color: unset;
+
+    // Conserver les fills SVG d’origine (hex / rgb) ; currentColor suit la cascade locale
+    &[fill]:not([fill='currentColor']):not([fill='none']) {
+      fill: revert-layer !important;
+    }
+
+    path, circle, rect, polygon, line, polyline, g {
+      &[fill]:not([fill='currentColor']):not([fill='none']) {
+        fill: revert-layer !important;
+      }
+    }
+  }
+}
+
+// Grille docs : drapeaux en ratio 32×24, sans teinte forcée par le parent
+.icon-grid__item:has(i[type='flags']),
+.icon-grid__item:has(i.k3ui-icon--multicolor) {
+  .icon-grid__icon {
+    color: unset;
+    aspect-ratio: 32 / 24;
+    width: auto;
+    min-width: 2.5rem;
+  }
+
+  i[name],
+  i[name].k3ui-icon--multicolor {
+    color: unset;
+  }
+}
+
+@each $key, $val in tokens.$md-sys-icon-sizes {
+  i[name][size='#{$key}'],
+  span[name][size='#{$key}'] {
+    width: $val;
+    height: $val;
+    font-size: $val;
+    min-width: $val;
+    min-height: $val;
+  }
+}
+
+/**
+ * Classes de base pour les icônes
+ */
+.icon {
+  @include icon.icon();
+}
+
+/**
+ * Classes utilitaires pour les icônes
+ * Compatible avec l'ancien système k3ui-icon
+ */
+.k3ui-icon {
+  @include icon.icon();
+  
+  // Couleur par défaut et hover
+  color: tokens.$md-sys-icon-color-primary;
+  fill: tokens.$md-sys-icon-color-primary;
+  
+  a:hover & {
+    color: tokens.$md-sys-icon-color-secondary;
+    fill: tokens.$md-sys-icon-color-secondary;
+  }
+
+  &.k3ui-icon--multicolor {
+    color: inherit;
+    fill: none;
+
+    svg {
+      fill: unset;
+      color: unset;
+
+      &[fill] {
+        fill: revert-layer !important;
+      }
+
+      path, circle, rect, polygon, line, polyline {
+        &[fill] {
+          fill: revert-layer !important;
+        }
+      }
+    }
+
+    a:hover & {
+      color: inherit;
+      fill: none;
+    }
+  }
+}
+
+@each $key, $val in tokens.$md-sys-icon-sizes {
+  .k3ui-icon[size='#{$key}'],
+  i.k3ui-icon[size='#{$key}'],
+  span.k3ui-icon[size='#{$key}'] {
+    width: $val;
+    height: $val;
+    font-size: $val;
+    min-width: $val;
+    min-height: $val;
+  }
+}
+
+/**
+ * Classes de fallback pour les icônes - Supprimé car géré par IconManager.ts
+ */
+
+/**
+ * Classes de retournement pour compatibilité
+ */
+.k3ui-icon-flip-horizontal {
+  @include icon.icon-flip('md', 'horizontal');
+}
+
+.k3ui-icon-flip-vertical {
+  @include icon.icon-flip('md', 'vertical');
+}
+
+.k3ui-icon-flip-both {
+  @include icon.icon-flip('md', 'both');
+}
+
+/**
+ * Classes de tailles d'icônes
+ * .icon-xs … .icon-xl (M3 Expressive Icon Button uniquement)
+ */
+@each $size, $value in tokens.$md-sys-icon-sizes {
+  .icon-#{$size} {
+    @include icon.icon($size);
+  }
+}
+
+/**
+ * Classes de tailles pour compatibilité
+ */
+.k3ui-icon-xs  { @include icon.icon('xs'); }
+.k3ui-icon-sm  { @include icon.icon('sm'); }
+.k3ui-icon-md  { @include icon.icon('md'); }
+.k3ui-icon-lg  { @include icon.icon('lg'); }
+.k3ui-icon-xl  { @include icon.icon('xl'); }
+
+/**
+ * Classes de couleurs d'icônes
+ */
+.icon-primary {
+  @include icon.icon-primary();
+}
+
+.icon-secondary {
+  @include icon.icon-secondary();
+}
+
+.icon-tertiary {
+  @include icon.icon-tertiary();
+}
+
+.icon-error {
+  @include icon.icon-error();
+}
+
+.icon-disabled {
+  @include icon.icon-disabled();
+}
+
+/**
+ * Classes de rotation d'icônes
+ */
+.icon-rotate-90 {
+  @include icon.icon-rotate('xl', 90deg);
+}
+
+.icon-rotate-180 {
+  @include icon.icon-rotate('xl', 180deg);
+}
+
+.icon-rotate-270 {
+  @include icon.icon-rotate('xl', 270deg);
+}
+
+/**
+ * Classes de retournement d'icônes
+ */
+.icon-flip-horizontal {
+  @include icon.icon-flip('xl', 'horizontal');
+}
+
+.icon-flip-vertical {
+  @include icon.icon-flip('xl', 'vertical');
+}
+
+.icon-flip-both {
+  @include icon.icon-flip('xl', 'both');
+}
+
+/**
+ * Classes d'icônes avec contour
+ */
+.icon-stroke {
+  @include icon.icon-stroke();
+}
+
+.icon-stroke-primary {
+  @include icon.icon-stroke('xl', tokens.$md-sys-icon-color-primary);
+}
+
+.icon-stroke-error {
+  @include icon.icon-stroke('xl', tokens.$md-sys-icon-color-error);
+}
+
+/**
+ * Classes d'icônes avec hover
+ */
+.icon-hover {
+  @include icon.icon-hover();
+}
+
+/**
+ * Keyframes pour les animations d'icônes
+ */
+@keyframes icon-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes icon-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes icon-bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40%, 43% {
+    transform: translateY(-8px);
+  }
+  70% {
+    transform: translateY(-4px);
+  }
+  90% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes icon-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-2px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(2px);
+  }
+}
+
+/**
+ * Grid d'icônes pour bibliothèque (style K3UI)
+ */
+.icon-grid {
+  @include icon.icon-grid();
+}
+
+.icon-grid__item {
+  @include icon.icon-grid-item();
+}
+
+.icon-grid__icon {
+  @include icon.icon-grid-icon();
+}
+
+.icon-grid__label {
+  @include icon.icon-grid-label();
+}
+
+.icon-grid__badge {
+  position: absolute;
+  top: -0.625rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-block;
+  border-radius: 0.75em;
+  padding: 0.5em 1em;
+  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: 0.0625em;
+  white-space: nowrap;
+  font-size: calc(1em * 0.75);
+  font-weight: bold;
+  z-index: 10;
+  pointer-events: none;
+  user-select: none;
+}
+
+.icon-grid__badge--pro {
+  background:rgba(255, 193, 7, 1) !important;
+  color:rgba(33, 33, 33, 1) !important;
+} 

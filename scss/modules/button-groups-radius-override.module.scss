@@ -1,0 +1,427 @@
+/**
+
+ * @fileoverview Override Button Groups — priorité sur le module Button
+
+ * @description Annule morph/rayons du Button standalone dans les segments de groupe
+
+ */
+
+
+
+@use 'sass:map';
+
+@use '../tokens/button-groups.token' as bg;
+
+@use '../mixins/button-groups.mixin' as mix;
+
+
+
+$_corner: (
+
+  xs: bg.$button-groups-corner-xs,
+
+  sm: bg.$button-groups-corner-sm,
+
+  md: bg.$button-groups-corner-md,
+
+  lg: bg.$button-groups-corner-lg,
+
+  xl: bg.$button-groups-corner-xl,
+
+);
+
+
+
+$_connected-inner: (
+
+  xs: bg.$button-groups-connected-inner-xs,
+
+  sm: bg.$button-groups-connected-inner-sm,
+
+  md: bg.$button-groups-connected-inner-md,
+
+  lg: bg.$button-groups-connected-inner-lg,
+
+  xl: bg.$button-groups-connected-inner-xl,
+
+);
+
+
+
+$_connected-outer: (
+
+  xs: bg.$button-groups-connected-outer-xs,
+
+  sm: bg.$button-groups-connected-outer-sm,
+
+  md: bg.$button-groups-connected-outer-md,
+
+  lg: bg.$button-groups-connected-outer-lg,
+
+  xl: bg.$button-groups-connected-outer-xl,
+
+);
+
+
+
+$_heights: (
+
+  xs: bg.$button-groups-size-xs-height,
+
+  sm: bg.$button-groups-size-sm-height,
+
+  md: bg.$button-groups-size-md-height,
+
+  lg: bg.$button-groups-size-lg-height,
+
+  xl: bg.$button-groups-size-xl-height,
+
+);
+
+
+
+$_padding-x: (
+
+  xs: bg.$button-groups-size-xs-padding-x,
+
+  sm: bg.$button-groups-size-sm-padding-x,
+
+  md: bg.$button-groups-size-md-padding-x,
+
+  lg: bg.$button-groups-size-lg-padding-x,
+
+  xl: bg.$button-groups-size-xl-padding-x,
+
+);
+
+
+
+$_fonts: (
+
+  xs: bg.$button-groups-size-xs-font,
+
+  sm: bg.$button-groups-size-sm-font,
+
+  md: bg.$button-groups-size-md-font,
+
+  lg: bg.$button-groups-size-lg-font,
+
+  xl: bg.$button-groups-size-xl-font,
+
+);
+
+
+
+$_line-heights: (
+
+  xs: bg.$button-groups-size-xs-line-height,
+
+  sm: bg.$button-groups-size-sm-line-height,
+
+  md: bg.$button-groups-size-md-line-height,
+
+  lg: bg.$button-groups-size-lg-line-height,
+
+  xl: bg.$button-groups-size-xl-line-height,
+
+);
+
+
+
+$_letter-spacings: (
+
+  xs: bg.$button-groups-size-xs-letter-spacing,
+
+  sm: bg.$button-groups-size-sm-letter-spacing,
+
+  md: bg.$button-groups-size-md-letter-spacing,
+
+  lg: bg.$button-groups-size-lg-letter-spacing,
+
+  xl: bg.$button-groups-size-xl-letter-spacing,
+
+);
+
+
+
+$_font-weights: (
+
+  xs: bg.$button-groups-size-xs-font-weight,
+
+  sm: bg.$button-groups-size-sm-font-weight,
+
+  md: bg.$button-groups-size-md-font-weight,
+
+  lg: bg.$button-groups-size-lg-font-weight,
+
+  xl: bg.$button-groups-size-xl-font-weight,
+
+);
+
+
+
+$_font-families: (
+
+  xs: bg.$button-groups-size-xs-font-family,
+
+  sm: bg.$button-groups-size-sm-font-family,
+
+  md: bg.$button-groups-size-md-font-family,
+
+  lg: bg.$button-groups-size-lg-font-family,
+
+  xl: bg.$button-groups-size-xl-font-family,
+
+);
+
+
+
+// Neutralise sizing Button standalone — dimensions gérées par button-groups (tokens M3)
+
+.button-groups .button-groups__btn.btn,
+
+k3ui-button-groups .button-groups__btn.btn {
+
+  min-height: unset !important;
+
+  gap: inherit;
+
+  box-sizing: border-box;
+
+}
+
+
+
+@each $size, $height in $_heights {
+
+  $pad-x: map.get($_padding-x, $size);
+
+  $font: map.get($_fonts, $size);
+
+  $line-height: map.get($_line-heights, $size);
+
+  $letter-spacing: map.get($_letter-spacings, $size);
+
+  $font-weight: map.get($_font-weights, $size);
+
+  $font-family: map.get($_font-families, $size);
+
+
+
+  .button-groups.button-groups--#{$size} .button-groups__btn.btn,
+
+  k3ui-button-groups.button-groups--#{$size} .button-groups__btn.btn {
+
+    padding-left: var(--k3-button-groups-padding-x, $pad-x) !important;
+
+    padding-right: var(--k3-button-groups-padding-x, $pad-x) !important;
+
+    height: var(--k3-button-groups-height, $height) !important;
+
+    font-size: var(--k3-button-groups-font-size, $font) !important;
+
+    line-height: var(--k3-button-groups-line-height, $line-height) !important;
+
+    letter-spacing: var(--k3-button-groups-letter-spacing, $letter-spacing) !important;
+
+    font-weight: var(--k3-button-groups-font-weight, $font-weight) !important;
+
+    font-family: var(--k3-button-groups-font-family, #{$font-family}) !important;
+
+  }
+
+
+
+  .button-groups.button-groups--#{$size}:not([data-density]) .button-groups__btn.btn,
+
+  .button-groups.button-groups--#{$size}[data-density='0'] .button-groups__btn.btn,
+
+  k3ui-button-groups.button-groups--#{$size}:not([data-density]) .button-groups__btn.btn,
+
+  k3ui-button-groups.button-groups--#{$size}[data-density='0'] .button-groups__btn.btn {
+
+    height: var(--k3-button-groups-height, $height) !important;
+
+  }
+
+
+
+  @each $density in (-1, -2, -3) {
+
+    .button-groups.button-groups--#{$size}[data-density='#{$density}'] .button-groups__btn.btn,
+
+    k3ui-button-groups.button-groups--#{$size}[data-density='#{$density}'] .button-groups__btn.btn {
+
+      height: mix.button-groups-height-at-density($height, $density) !important;
+
+    }
+
+  }
+
+}
+
+
+
+// Morph Button module — désactivé (géré par button-groups)
+
+.button-groups .button-groups__btn.btn--rounded.pressing,
+
+.button-groups .button-groups__btn.btn--square.pressing,
+
+.button-groups .button-groups__btn.btn--rounded.releasing,
+
+.button-groups .button-groups__btn.btn--square.releasing,
+
+.button-groups .button-groups__btn.btn--rounded.btn--selected,
+
+.button-groups .button-groups__btn.btn--square.btn--selected,
+
+k3ui-button-groups .button-groups__btn.btn--rounded.pressing,
+
+k3ui-button-groups .button-groups__btn.btn--square.pressing,
+
+k3ui-button-groups .button-groups__btn.btn--rounded.releasing,
+
+k3ui-button-groups .button-groups__btn.btn--square.releasing,
+
+k3ui-button-groups .button-groups__btn.btn--rounded.btn--selected,
+
+k3ui-button-groups .button-groups__btn.btn--square.btn--selected {
+
+  animation: none !important;
+
+}
+
+
+
+// Standard — neutralise border-radius Button standalone avant morph button-groups
+
+.button-groups.button-groups--standard .button-groups__btn.btn.btn--rounded,
+
+.button-groups.button-groups--standard .button-groups__btn.btn.btn--square,
+
+k3ui-button-groups.button-groups--standard .button-groups__btn.btn.btn--rounded,
+
+k3ui-button-groups.button-groups--standard .button-groups__btn.btn.btn--square {
+
+  border-radius: 0 !important;
+
+}
+
+
+
+// Standard — morph round ↔ square (sélection + press, cap height/2)
+
+@each $size, $corner in $_corner {
+
+  $cap-fallback: map.get($_connected-outer, $size);
+
+  .button-groups.button-groups--standard.button-groups--round.button-groups--#{$size} .button-groups__btn.btn--rounded:not(.button-groups__btn--active):not(.button-groups__btn--pressing),
+
+  k3ui-button-groups.button-groups--standard.button-groups--round.button-groups--#{$size} .button-groups__btn.btn--rounded:not(.button-groups__btn--active):not(.button-groups__btn--pressing) {
+
+    @include mix.button-groups-shape-standard-default('round', $corner, $cap-fallback);
+
+  }
+
+
+
+  .button-groups.button-groups--standard.button-groups--round.button-groups--#{$size} .button-groups__btn.btn--rounded.button-groups__btn--active,
+
+  .button-groups.button-groups--standard.button-groups--round.button-groups--#{$size} .button-groups__btn.btn--rounded.button-groups__btn--pressing,
+
+  .button-groups.button-groups--standard.button-groups--round.button-groups--#{$size} .button-groups__btn.btn--rounded.pressing,
+
+  k3ui-button-groups.button-groups--standard.button-groups--round.button-groups--#{$size} .button-groups__btn.btn--rounded.button-groups__btn--active,
+
+  k3ui-button-groups.button-groups--standard.button-groups--round.button-groups--#{$size} .button-groups__btn.btn--rounded.button-groups__btn--pressing,
+
+  k3ui-button-groups.button-groups--standard.button-groups--round.button-groups--#{$size} .button-groups__btn.btn--rounded.pressing {
+
+    @include mix.button-groups-shape-standard-morphed('round', $corner, $cap-fallback);
+
+  }
+
+
+
+  .button-groups.button-groups--standard.button-groups--square.button-groups--#{$size} .button-groups__btn.btn--square:not(.button-groups__btn--active):not(.button-groups__btn--pressing),
+
+  k3ui-button-groups.button-groups--standard.button-groups--square.button-groups--#{$size} .button-groups__btn.btn--square:not(.button-groups__btn--active):not(.button-groups__btn--pressing) {
+
+    @include mix.button-groups-shape-standard-default('square', $corner, $cap-fallback);
+
+  }
+
+
+
+  .button-groups.button-groups--standard.button-groups--square.button-groups--#{$size} .button-groups__btn.btn--square.button-groups__btn--active,
+
+  .button-groups.button-groups--standard.button-groups--square.button-groups--#{$size} .button-groups__btn.btn--square.button-groups__btn--pressing,
+
+  .button-groups.button-groups--standard.button-groups--square.button-groups--#{$size} .button-groups__btn.btn--square.pressing,
+
+  k3ui-button-groups.button-groups--standard.button-groups--square.button-groups--#{$size} .button-groups__btn.btn--square.button-groups__btn--active,
+
+  k3ui-button-groups.button-groups--standard.button-groups--square.button-groups--#{$size} .button-groups__btn.btn--square.button-groups__btn--pressing,
+
+  k3ui-button-groups.button-groups--standard.button-groups--square.button-groups--#{$size} .button-groups__btn.btn--square.pressing {
+
+    @include mix.button-groups-shape-standard-morphed('square', $corner, $cap-fallback);
+
+  }
+
+}
+
+
+
+// Connected — neutralise border-radius pill du module Button (.btn / btn--rounded)
+
+.button-groups.button-groups--connected .button-groups__btn.btn:not(.button-groups__btn--active):not(.button-groups__btn--pressing),
+
+k3ui-button-groups.button-groups--connected .button-groups__btn.btn:not(.button-groups__btn--active):not(.button-groups__btn--pressing) {
+
+  border-radius: 0 !important;
+
+}
+
+
+
+// Connected — priorité sur le module Button (sans exiger btn--rounded / btn--square)
+
+@each $size, $inner-fallback in $_connected-inner {
+
+  $outer-fallback: map.get($_connected-outer, $size);
+
+  @each $position in ('standalone', 'first', 'middle', 'last') {
+
+    .button-groups.button-groups--connected.button-groups--#{$size} .button-groups__btn.btn.button-groups__btn--#{$position}:not(.button-groups__btn--active):not(.button-groups__btn--pressing),
+
+    k3ui-button-groups.button-groups--connected.button-groups--#{$size} .button-groups__btn.btn.button-groups__btn--#{$position}:not(.button-groups__btn--active):not(.button-groups__btn--pressing) {
+
+      @include mix.button-groups-connected-corners($position, $inner-fallback, $outer-fallback);
+
+    }
+
+  }
+
+}
+
+
+
+@each $size, $outer-fallback in $_connected-outer {
+
+  .button-groups.button-groups--connected.button-groups--#{$size} .button-groups__btn.button-groups__btn--active,
+
+  .button-groups.button-groups--connected.button-groups--#{$size} .button-groups__btn.button-groups__btn--pressing,
+
+  k3ui-button-groups.button-groups--connected.button-groups--#{$size} .button-groups__btn.button-groups__btn--active,
+
+  k3ui-button-groups.button-groups--connected.button-groups--#{$size} .button-groups__btn.button-groups__btn--pressing {
+
+    @include mix.button-groups-connected-morphed($outer-fallback);
+
+  }
+
+}
+
+

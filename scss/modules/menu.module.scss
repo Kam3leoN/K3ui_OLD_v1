@@ -1,0 +1,1165 @@
+/**
+ * Menu Module
+ * Styles pour le composant Menu selon le pattern K3UI
+ */
+
+@use '../tokens/menu.token' as menu;
+@use '../tokens/fontface.token' as fontface;
+@use '../tokens/spacing.token' as spacing;
+@use '../tokens/radius.token' as radius;
+@use '../mixins/zindex.mixin' as zindex;
+@use '../mixins/list.mixin' as list-mixin;
+@use '../tokens/motion.token' as motion;
+
+// ============================================================================
+// MENU CONTAINER
+// ============================================================================
+
+k3ui-menu {
+  display: inline-block;
+  position: relative;
+  // Permettre aux sous-menus de sortir du container
+  overflow: visible;
+  
+  // Masquer les éléments de structure HTML (ils sont utilisés uniquement pour le parsing)
+  menu-item,
+  menu-divider {
+    display: none;
+  }
+}
+
+.menu-container,
+ul.menu-content {
+  --k3ui-menu-animation-scale-start: #{menu.$menu-animation-scale-start};
+  padding: 4px; // Padding uniforme de 4px autour des groupes
+  list-style-type: none;
+  // Pas de box-shadow sur le container, c'est sur les groupes maintenant
+  background-color: transparent; // Transparent pour laisser voir les gaps entre groupes
+  border-radius: menu.$menu-border-radius-large; // 16px - Material Design 3 Expressive (coins extérieurs)
+  margin: 0;
+  display: none; // Cacher par défaut (sans !important pour permettre au JS de surcharger)
+  min-width: auto;
+  max-width: none; // Pas de limite de largeur maximale, le menu s'adapte au contenu
+  height: auto; // Hauteur automatique pour s'adapter au contenu
+  max-height: 320px; // Limite maximale avec scroll si nécessaire
+  // Activer le scroll vertical quand le contenu dépasse max-height
+  overflow-y: auto;
+  overflow-x: hidden; // Empêcher le slider horizontal (sous-menus gérés par position absolute)
+  opacity: 0;
+  // IMPORTANT: Ne pas définir position, top, left par défaut
+  // Popper.js gère ces propriétés via les styles inline (position: fixed ou absolute selon les options)
+  // Laisser Popper.js gérer complètement le positionnement pour éviter les conflits
+  // Pour les menus utilisant l'ancien système de positionnement, utiliser la classe .menu-container--legacy-position
+  z-index: menu.$menu-z-index;
+  transform-origin: top left; // Par défaut : haut-gauche (sera ajusté par JS selon position)
+  transform: scale(menu.$menu-animation-scale-start); // État initial pour animation CSS
+  user-select: none;
+  // Transition gérée par CSS avec classes .menu--open et .menu--closing
+  font-family: fontface.$font-family-main;
+
+  &.menu-container--open {
+    display: block;
+    // Opacity et transform seront gérés par JS pour l'animation
+    // S'assurer que le container s'adapte au contenu
+    min-height: fit-content;
+  }
+
+  // Trigger dans un dialog : le menu (hoisté sur body) doit passer au-dessus de la surface dialog
+  &.menu-container--in-dialog {
+    z-index: menu.$menu-z-index;
+  }
+
+  // Classe pour les menus utilisant l'ancien système de positionnement (sans Popper.js)
+  // Cette classe permet de définir position, top, left pour compatibilité avec l'ancien code
+  &.menu-container--legacy-position {
+    position: absolute;
+    // Par défaut, le menu touche le trigger (gap: 0px)
+    top: calc(100% + 0px);
+    
+    &.menu-container--top {
+      top: auto;
+      // Par défaut, le menu touche le trigger (gap: 0px)
+      bottom: calc(100% + 0px);
+      transform-origin: bottom left; // Bas-gauche si depuis le haut (sera ajusté par JS)
+    }
+    
+    // Si cover est activé, ajouter un espace de 4px
+    &.menu-container--cover {
+      top: calc(100% + 4px);
+      
+      &.menu-container--top {
+        top: auto;
+        bottom: calc(100% + 4px);
+      }
+    }
+  }
+  
+  // Wrapper interne pour gérer le scroll vertical si nécessaire
+  // Utiliser un wrapper interne plutôt que overflow sur le container
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+
+// ============================================================================
+// MENU GROUPS (Material Design 3 Expressive)
+// ============================================================================
+
+.menu-group {
+  position: relative; // Pour le pseudo-élément
+  padding: 0; // Pas de padding sur le groupe, géré par les items premier et dernier
+  margin-top: 0; // Pas de marge en haut, le padding du container crée l'espace
+  margin-bottom: 4px; // Gap uniforme de 4px entre groupes (correspond au padding du container)
+  overflow: visible; // Permettre aux sous-menus de sortir
+  // Background, border, shadow et border-radius gérés par le pseudo-élément ::before
+  
+  // Pseudo-élément pour créer le background, border, shadow et border-radius
+  // sans couper les sous-menus avec overflow: hidden
+  // IMPORTANT: Le ::before doit laisser un espace de 4px pour rendre visible le padding du container
+  // Le padding de 4px du container crée l'espace, le ::before est réduit de 4px de chaque côté
+  &::before {
+    content: '';
+    position: absolute;
+    // Réduire de 4px de chaque côté pour laisser visible le padding du container (4px uniforme)
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--md-sys-color-surface-container);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+    border-radius: menu.$menu-border-radius-small; // 8px par défaut
+    z-index: -1; // Derrière le contenu mais devant le background transparent
+    pointer-events: none; // Ne pas bloquer les interactions
+    box-sizing: border-box;
+  }
+  
+  // Premier groupe : coins supérieurs arrondis à 16px
+  &.menu-group--first {
+    &::before {
+      border-top-left-radius: menu.$menu-border-radius-large; // 16px
+      border-top-right-radius: menu.$menu-border-radius-large; // 16px
+      border-bottom-left-radius: menu.$menu-border-radius-small; // 8px
+      border-bottom-right-radius: menu.$menu-border-radius-small; // 8px
+    }
+  }
+  
+  // Dernier groupe : coins inférieurs arrondis à 16px
+  &.menu-group--last {
+    margin-bottom: 0; // Pas de margin sur le dernier groupe
+    
+    &::before {
+      border-top-left-radius: menu.$menu-border-radius-small; // 8px
+      border-top-right-radius: menu.$menu-border-radius-small; // 8px
+      border-bottom-left-radius: menu.$menu-border-radius-large; // 16px
+      border-bottom-right-radius: menu.$menu-border-radius-large; // 16px
+    }
+  }
+  
+  // Si un seul groupe, tous les coins à 16px
+  &.menu-group--first.menu-group--last {
+    &::before {
+      border-radius: menu.$menu-border-radius-large; // 16px
+    }
+  }
+}
+
+// ============================================================================
+// MENU ITEMS
+// ============================================================================
+
+.menu-item-wrapper {
+  position: relative;
+  // Permettre aux sous-menus de sortir du wrapper sans être coupés
+  overflow: visible;
+  // S'assurer que le wrapper ne déborde pas du groupe
+  width: 100%;
+  box-sizing: border-box;
+  
+  // Premier item du groupe : padding-top de 4px pour respecter l'espace uniforme du container
+  &:first-child {
+    .menu-item {
+      padding-top: 4px; // 4px pour correspondre au padding du container (espace uniforme)
+      
+      // Pour les items list-item, ajuster le padding du content (padding interne séparé)
+      &.list-item .list-item__content {
+        padding-top: 12px; // Garder le padding interne pour le contenu
+      }
+    }
+  }
+  
+  // Dernier item du groupe : padding-bottom de 4px pour respecter l'espace uniforme du container
+  &:last-child {
+    .menu-item {
+      padding-bottom: 4px; // 4px pour correspondre au padding du container (espace uniforme)
+      
+      // Pour les items list-item, ajuster le padding du content (padding interne séparé)
+      &.list-item .list-item__content {
+        padding-bottom: 12px; // Garder le padding interne pour le contenu
+      }
+    }
+  }
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0; // Pas de gap global, géré individuellement pour leading icon
+  padding: 0;
+  background-color: transparent; // Pas de background par défaut
+  width: 100%; // Utiliser 100% de la largeur, le padding du container (4px) crée l'espace
+  margin-inline-start: 0; // Pas de marge, le padding du container suffit
+  margin-inline-end: 0; // Pas de marge, le padding du container suffit
+  box-sizing: border-box; // S'assurer que le padding est inclus dans la largeur
+  
+  // Si l'item utilise la structure List
+  &.list-item {
+    // Les styles de base sont déjà dans list.module.scss
+    // On ajoute juste les ajustements spécifiques aux menus
+    @include list-mixin.list-item-hover();
+    
+    &:hover:not(:disabled):not(.list-item--disabled):not(.menu-item--hover):not(.menu-item--active-visual)::before {
+      background-color: transparent !important;
+    }
+
+    &.menu-item--hover:not(:disabled):not(.list-item--disabled)::before {
+      content: '' !important;
+      position: absolute;
+      left: 4px !important;
+      right: 4px !important;
+      top: 0;
+      bottom: 0;
+      z-index: -1;
+      background: rgba(var(--md-sys-color-primary-rgb), 0.12) !important;
+      border-radius: 4px !important;
+    }
+
+    &.menu-item--active-visual:not(.menu-item--hover):not(.menu-item--active):not(.list-item--selected)::before {
+      background-color: rgba(var(--md-sys-color-on-surface-rgb), menu.$menu-state-hover-opacity) !important;
+    }
+
+    &.menu-item--active-visual:active:not(.menu-item--hover)::before {
+      background-color: rgba(var(--md-sys-color-on-surface-rgb), menu.$menu-state-pressed-opacity) !important;
+    }
+
+    &.menu-item--active-visual:focus-visible:not(.menu-item--hover)::before {
+      background-color: rgba(var(--md-sys-color-on-surface-rgb), menu.$menu-state-focus-opacity) !important;
+    }
+    
+    // UNIQUEMENT si selected
+    &.menu-item--active,
+    &.list-item--selected {
+      @include list-mixin.list-item-selected();
+    }
+    
+    // Border radius dynamiques pour les items list-item avec transition
+    // IMPORTANT: Surcharger les border-radius du mixin avec une spécificité plus élevée
+    // Ajouter la transition sur le ::before pour le morphing fluide
+    &::before {
+      transition: border-radius motion.$md-sys-motion-expressive-effects-slow-duration motion.$md-sys-motion-expressive-effects-slow-easing !important;
+    }
+    
+    // Surcharger les positions des pseudo-éléments ::before pour respecter 4px du container
+    // Le mixin list-item utilise 2px par défaut, mais dans le menu on veut 4px
+    &.menu-item--active-visual::before,
+    &.menu-item--hover::before {
+      left: 4px !important; // 4px du bord du container
+      right: 4px !important; // 4px du bord du container
+    }
+    
+    &.menu-item--active::before,
+    &.list-item--selected::before {
+      left: 4px !important; // 4px du bord du container
+      right: 4px !important; // 4px du bord du container
+      border-radius: 12px !important; // 12px uniforme pour tous les items selected
+      transition: border-radius motion.$md-sys-motion-expressive-effects-slow-duration motion.$md-sys-motion-expressive-effects-slow-easing !important;
+    }
+    
+    // Surcharger les border-radius hover pour utiliser 4px par défaut
+    &.menu-item--active-visual::before,
+    &.menu-item--hover::before {
+      border-radius: 4px !important; // 4px par défaut pour hover
+    }
+    
+    // Premier item du premier groupe : 12px en haut, 4px en bas (hover) + top: 4px pour ne pas toucher le container
+    // S'applique aux groupes directs du menu-container ET des sous-menus
+    .menu-container > .menu-group:first-child &[data-is-first="true"],
+    .menu-submenu > .menu-group:first-child &[data-is-first="true"] {
+      &.menu-item--active-visual::before,
+      &.menu-item--hover::before {
+        top: 4px !important; // 4px du haut pour ne pas toucher le container
+        border-top-left-radius: 12px !important;
+        border-top-right-radius: 12px !important;
+        border-bottom-left-radius: 4px !important;
+        border-bottom-right-radius: 4px !important;
+      }
+    }
+    
+    // Dernier item du dernier groupe : 4px en haut, 12px en bas (hover) + bottom: 4px pour ne pas toucher le container
+    // S'applique aux groupes directs du menu-container ET des sous-menus
+    .menu-container > .menu-group:last-child &[data-is-last="true"],
+    .menu-submenu > .menu-group:last-child &[data-is-last="true"] {
+      &.menu-item--active-visual::before,
+      &.menu-item--hover::before {
+        bottom: 4px !important; // 4px du bas pour ne pas toucher le container
+        border-top-left-radius: 4px !important;
+        border-top-right-radius: 4px !important;
+        border-bottom-left-radius: 12px !important;
+        border-bottom-right-radius: 12px !important;
+      }
+    }
+    
+    // Si gap au-dessus : border-radius en haut = 4px pour hover (surcharge premier item)
+    .menu-item--gap + &[data-is-first="true"] {
+      &.menu-item--active-visual::before,
+      &.menu-item--hover::before {
+        border-top-left-radius: 4px !important;
+        border-top-right-radius: 4px !important;
+      }
+    }
+    
+    // Si gap en dessous : border-radius en bas = 4px pour hover (surcharge dernier item)
+    &.menu-item--gap[data-is-last="true"] {
+      &.menu-item--active-visual::before,
+      &.menu-item--hover::before {
+        border-bottom-left-radius: 4px !important;
+        border-bottom-right-radius: 4px !important;
+      }
+    }
+    
+    // Selected : 12px uniforme pour tous les items (premier, dernier, intermédiaires)
+    &.menu-item--active::before,
+    &.list-item--selected::before {
+      top: 0 !important;
+      bottom: 0 !important;
+      border-radius: 12px !important; // 12px uniforme pour selected
+      transition: border-radius motion.$md-sys-motion-expressive-effects-slow-duration motion.$md-sys-motion-expressive-effects-slow-easing !important;
+    }
+    
+    // Premier item du premier groupe selected : 12px uniforme + top: 4px pour ne pas toucher le container
+    // S'applique aux groupes directs du menu-container ET des sous-menus
+    .menu-container > .menu-group:first-child &[data-is-first="true"],
+    .menu-submenu > .menu-group:first-child &[data-is-first="true"] {
+      &.menu-item--active::before,
+      &.list-item--selected::before {
+        top: 4px !important; // 4px du haut pour ne pas toucher le container
+        border-radius: 12px !important; // 12px uniforme pour selected
+      }
+    }
+    
+    // Dernier item du dernier groupe selected : 12px uniforme + bottom: 4px pour ne pas toucher le container
+    // S'applique aux groupes directs du menu-container ET des sous-menus
+    .menu-container > .menu-group:last-child &[data-is-last="true"],
+    .menu-submenu > .menu-group:last-child &[data-is-last="true"] {
+      &.menu-item--active::before,
+      &.list-item--selected::before {
+        bottom: 4px !important; // 4px du bas pour ne pas toucher le container
+        border-radius: 12px !important; // 12px uniforme pour selected
+      }
+    }
+    
+    // Si gap au-dessus (premier item d'un groupe qui suit un autre groupe) : border-radius en haut = 4px pour selected
+    // IMPORTANT : Cette règle doit être après les règles générales pour surcharger
+    // S'applique aux groupes directs du menu-container ET des sous-menus
+    .menu-container > .menu-group:not(:first-child) &[data-is-first="true"].menu-item--active::before,
+    .menu-container > .menu-group:not(:first-child) &[data-is-first="true"].list-item--selected::before,
+    .menu-submenu > .menu-group:not(:first-child) &[data-is-first="true"].menu-item--active::before,
+    .menu-submenu > .menu-group:not(:first-child) &[data-is-first="true"].list-item--selected::before {
+      top: 4px !important; // 4px du haut pour ne pas toucher le container et laisser visible le padding
+      border-top-left-radius: 4px !important;
+      border-top-right-radius: 4px !important;
+    }
+    
+    // Si gap en dessous (dernier item d'un groupe qui précède un autre groupe) : border-radius en bas = 4px pour selected
+    // IMPORTANT : Cette règle doit être après les règles générales pour surcharger
+    // S'applique aux groupes directs du menu-container ET des sous-menus
+    .menu-container > .menu-group:not(:last-child) &[data-is-last="true"].menu-item--active::before,
+    .menu-container > .menu-group:not(:last-child) &[data-is-last="true"].list-item--selected::before,
+    .menu-submenu > .menu-group:not(:last-child) &[data-is-last="true"].menu-item--active::before,
+    .menu-submenu > .menu-group:not(:last-child) &[data-is-last="true"].list-item--selected::before {
+      bottom: 4px !important; // 4px du bas pour ne pas toucher le container et laisser visible le padding
+      border-bottom-left-radius: 4px !important;
+      border-bottom-right-radius: 4px !important;
+    }
+    
+    .list-item__content {
+      width: 100%;
+      padding: 12px 0 !important; // Padding vertical uniquement
+      box-sizing: border-box;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+    }
+    
+    // Bord gauche du content-item = 12px du bord gauche du leading-icon ou du texte
+    // Si leading présent: content a padding-inline-start: 12px
+    &:has(.list-item__leading) .list-item__content {
+      padding-inline-start: 12px !important;
+    }
+    
+    // Si trailing présent: content a padding-inline-end: 0 (le trailing gère son propre padding-inline-end)
+    &:has(.list-item__trailing) .list-item__content,
+    &:has(.menu-item-trailing-container) .list-item__content {
+      padding-inline-end: 0 !important;
+    }
+    
+    // Ajuster la hauteur selon la présence de supporting text
+    // Item seul = 48px (min-height par défaut)
+    // Item + 1 ligne supporting text = 64px (48 + 16)
+    // Item + 2 lignes supporting text = 80px (48 + 32)
+    &:has(.list-item__secondary-text) {
+      min-height: 64px; // 48px + 16px pour 1 ligne minimum
+      
+      .list-item__content {
+        min-height: 64px;
+        align-items: flex-start; // Aligner en haut pour permettre plusieurs lignes
+        padding-top: 12px; // Ajuster le padding vertical
+        padding-bottom: 12px;
+      }
+      
+      // Si 2 lignes de supporting text, augmenter à 80px
+      // Le secondary-text utilise déjà -webkit-line-clamp: 2 dans le mixin
+      .list-item__secondary-text {
+        line-clamp: 2; // Standard property (déjà dans le mixin)
+      }
+    }
+  }
+  
+  // Subheader/Label (32px de hauteur, padding-inline-start: 20px)
+  &.subheader,
+  &.list-item--subheader,
+  &[role="group"] {
+    min-height: 32px;
+    height: 32px;
+    padding-inline-start: 20px; // 20px au lieu de 12px pour les subheaders
+    padding-inline-end: 8px;
+    padding-top: 0;
+    padding-bottom: 0;
+    cursor: default;
+    pointer-events: none;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: var(--md-sys-typescale-body-small-font-size);
+    font-weight: var(--md-sys-typescale-body-small-font-weight);
+    line-height: var(--md-sys-typescale-body-small-line-height);
+    background-color: transparent; // Pas de background
+    
+    // Pas de hover ni selected pour les subheaders
+    &.menu-item--active-visual::before,
+    &.menu-item--active::before,
+    &.menu-item--hover::before {
+      display: none;
+    }
+  }
+  
+  // Supprimer les paddings horizontaux sur .menu-item (gérés par .list-item__content et enfants)
+  // Ces règles ne sont plus nécessaires car tout est géré dans .list-item__content
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  transition:
+    background motion.$md-sys-motion-expressive-effects-fast-duration motion.$md-sys-motion-expressive-effects-fast-easing,
+    border-radius motion.$md-sys-motion-expressive-effects-slow-duration motion.$md-sys-motion-expressive-effects-slow-easing;
+  min-height: 48px;
+  height: 48px; // Hauteur fixe de 48px pour tous les items (une seule ligne)
+  position: relative;
+  font-family: fontface.$font-family-main;
+  user-select: none;
+  clear: both;
+  width: 100%;
+  text-align: start;
+  border-radius: 0;
+  box-sizing: border-box;
+  // Permettre au ::before avec border-radius de s'afficher correctement
+  overflow: visible;
+  
+  // State layer M3 — calque ::before (apparition effects-fast ; morph coins en slow)
+  &::before {
+    transition:
+      background-color var(--md-sys-motion-effects-fast-duration) var(--md-sys-motion-effects-fast-easing),
+      opacity var(--md-sys-motion-effects-fast-duration) var(--md-sys-motion-effects-fast-easing),
+      border-radius motion.$md-sys-motion-expressive-effects-slow-duration motion.$md-sys-motion-expressive-effects-slow-easing;
+  }
+
+  // État actif unique (hover souris OU focus clavier) — state layer on-surface 8%
+  &.menu-item--active-visual:not(.subheader):not(.list-item--subheader):not([role="group"]):not(.menu-item--hover):not(.menu-item--active)::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(var(--md-sys-color-on-surface-rgb), menu.$menu-state-hover-opacity);
+    border-radius: 4px;
+    z-index: -1;
+  }
+
+  &.menu-item--active-visual:active:not(.menu-item--disabled):not(.menu-item--hover)::before {
+    background-color: rgba(var(--md-sys-color-on-surface-rgb), menu.$menu-state-pressed-opacity);
+  }
+
+  // Focus clavier — même opacité state layer (8%)
+  &.menu-item--active-visual:focus-visible:not(.menu-item--hover)::before {
+    background-color: rgba(var(--md-sys-color-on-surface-rgb), menu.$menu-state-focus-opacity);
+  }
+  
+  // Hover legacy CSS désactivé — état géré par .menu-item--active-visual (JS)
+  &:not(.list-item):not(.subheader):not(.list-item--subheader):not([role="group"]):hover:not(.menu-item--hover):not(.menu-item--active-visual)::before {
+    content: none;
+  }
+  
+  // Ancien bloc hover remplacé par .menu-item--active-visual (radius dynamiques ci-dessous)
+  &:not(.list-item):not(.subheader):not(.list-item--subheader):not([role="group"]).menu-item--active-visual:not(.menu-item--hover) {
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      left: 4px;
+      right: 4px;
+      top: 0;
+      bottom: 0;
+      z-index: -1;
+    }
+    
+    .menu-container > .menu-group:first-child &[data-is-first="true"]::before,
+    .menu-submenu > .menu-group:first-child &[data-is-first="true"]::before {
+      top: 4px;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+    
+    .menu-container > .menu-group:last-child &[data-is-last="true"]::before,
+    .menu-submenu > .menu-group:last-child &[data-is-last="true"]::before {
+      bottom: 4px;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+    
+    .menu-item--gap + &[data-is-first="true"]::before {
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+    }
+    
+    &.menu-item--gap[data-is-last="true"]::before {
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+  }
+  
+  // Activé = parent sous-menu ouvert (primary 12%) — distinct de active-visual
+  &.menu-item--hover {
+    position: relative;
+    
+    // Background avec coins arrondis via pseudo-élément pour éviter les conflits
+    // Le ::before commence à 4px du bord du container
+    &::before {
+      content: '';
+      position: absolute;
+      left: 4px; // 4px du bord du container
+      right: 4px; // 4px du bord du container
+      top: 0;
+      bottom: 0;
+      background: rgba(var(--md-sys-color-primary-rgb), 0.12) !important;
+      border-radius: 4px; // Par défaut 4px pour les items intermédiaires (hover)
+      z-index: -1;
+      transition: border-radius motion.$md-sys-motion-expressive-effects-slow-duration motion.$md-sys-motion-expressive-effects-slow-easing;
+    }
+    
+    // Premier item du premier groupe : 12px en haut, 4px en bas + top: 4px pour ne pas toucher le container
+    // S'applique aux groupes directs du menu-container ET des sous-menus
+    .menu-container > .menu-group:first-child &[data-is-first="true"]::before,
+    .menu-submenu > .menu-group:first-child &[data-is-first="true"]::before {
+      top: 4px; // 4px du haut pour ne pas toucher le container
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+    
+    // Dernier item du dernier groupe : 4px en haut, 12px en bas + bottom: 4px pour ne pas toucher le container
+    // S'applique aux groupes directs du menu-container ET des sous-menus
+    .menu-container > .menu-group:last-child &[data-is-last="true"]::before,
+    .menu-submenu > .menu-group:last-child &[data-is-last="true"]::before {
+      bottom: 4px; // 4px du bas pour ne pas toucher le container
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+    
+    // Si gap au-dessus : border-radius en haut = 4px (surcharge premier item)
+    .menu-item--gap + &[data-is-first="true"]::before {
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+    }
+    
+    // Si gap en dessous : border-radius en bas = 4px (surcharge dernier item)
+    &.menu-item--gap[data-is-last="true"]::before {
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+    
+    // Le padding du contenu reste inchangé pour éviter le décalage
+    
+    // Même en hover, rester bleu (activé prime sur hover)
+    &:hover {
+      &::before {
+        background: rgba(var(--md-sys-color-primary-rgb), 0.12) !important;
+      }
+    }
+    
+    // S'assurer que tous les éléments enfants gardent leur couleur normale
+    .menu-item-text,
+    .list-item__primary-text,
+    .menu-item-leading,
+    .list-item__leading,
+    .menu-item-trailing-icon,
+    .list-item__trailing-icon,
+    .menu-item-trailing-text,
+    .list-item__trailing-text,
+    .menu-item-trailing-container,
+    .list-item__trailing {
+      color: var(--md-sys-color-on-surface) !important;
+    }
+  }
+  
+  // Active/Selected : utilise le mixin List pour les items List
+  // UNIQUEMENT si active - pas de background par défaut
+  &.menu-item--active,
+  &.list-item--selected {
+    // Si c'est un list-item, le mixin List gère déjà le style
+    // Sinon, on applique le style spécifique
+    &:not(.list-item):not(.subheader):not(.list-item--subheader):not([role="group"]) {
+      position: relative;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        left: 4px; // 4px du bord du container
+        right: 4px; // 4px du bord du container
+        top: 0;
+        bottom: 0;
+        background-color: var(--md-sys-color-secondary-container);
+        border-radius: 12px; // 12px uniforme pour tous les items selected
+        z-index: -1;
+        transition: border-radius motion.$md-sys-motion-expressive-effects-slow-duration motion.$md-sys-motion-expressive-effects-slow-easing;
+      }
+      
+      // Premier item du premier groupe : 12px uniforme + top: 4px pour ne pas toucher le container
+      // S'applique aux groupes directs du menu-container ET des sous-menus
+      .menu-container > .menu-group:first-child &[data-is-first="true"]::before,
+      .menu-submenu > .menu-group:first-child &[data-is-first="true"]::before {
+        top: 4px; // 4px du haut pour ne pas toucher le container
+        border-radius: 12px; // 12px uniforme pour selected
+      }
+      
+      // Dernier item du dernier groupe : 12px uniforme + bottom: 4px pour ne pas toucher le container
+      // S'applique aux groupes directs du menu-container ET des sous-menus
+      .menu-container > .menu-group:last-child &[data-is-last="true"]::before,
+      .menu-submenu > .menu-group:last-child &[data-is-last="true"]::before {
+        bottom: 4px; // 4px du bas pour ne pas toucher le container
+        border-radius: 12px; // 12px uniforme pour selected
+      }
+      
+      // Si gap au-dessus (premier item d'un groupe qui suit un autre groupe) : border-radius en haut = 4px pour selected
+      // IMPORTANT : Cette règle doit être après les règles générales pour surcharger
+      // S'applique aux groupes directs du menu-container ET des sous-menus
+      .menu-container > .menu-group:not(:first-child) &[data-is-first="true"]::before,
+      .menu-submenu > .menu-group:not(:first-child) &[data-is-first="true"]::before {
+        top: 4px !important; // 4px du haut pour ne pas toucher le container et laisser visible le padding
+        border-top-left-radius: 4px !important;
+        border-top-right-radius: 4px !important;
+      }
+      
+      // Si gap en dessous (dernier item d'un groupe qui précède un autre groupe) : border-radius en bas = 4px pour selected
+      // IMPORTANT : Cette règle doit être après les règles générales pour surcharger
+      // S'applique aux groupes directs du menu-container ET des sous-menus
+      .menu-container > .menu-group:not(:last-child) &[data-is-last="true"]::before,
+      .menu-submenu > .menu-group:not(:last-child) &[data-is-last="true"]::before {
+        bottom: 4px !important; // 4px du bas pour ne pas toucher le container et laisser visible le padding
+        border-bottom-left-radius: 4px !important;
+        border-bottom-right-radius: 4px !important;
+      }
+    }
+    
+    // S'assurer que tous les éléments enfants gardent leur couleur normale
+    .menu-item-text,
+    .list-item__primary-text,
+    .menu-item-leading,
+    .list-item__leading,
+    .menu-item-trailing-icon,
+    .list-item__trailing-icon,
+    .menu-item-trailing-text,
+    .list-item__trailing-text,
+    .menu-item-trailing-container,
+    .list-item__trailing {
+      color: var(--md-sys-color-on-surface) !important;
+    }
+  }
+  
+  &.menu-item--disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  // Support du gap (alternative au divider) - Material Design 3 Expressive
+  // Les gaps sont créés par les groupes, donc on utilise les sélecteurs de groupes
+  // Dernier item d'un groupe qui précède un autre groupe (gap en dessous)
+  // S'applique aux groupes directs du menu-container ET des sous-menus
+  .menu-container > .menu-group:not(:last-child) &[data-is-last="true"],
+  .menu-submenu > .menu-group:not(:last-child) &[data-is-last="true"] {
+    // Arrondir les bords inférieurs à 4px pour hover (surcharge les règles dernier item)
+    &.menu-item--active-visual::before,
+    &.menu-item--hover::before {
+      bottom: 4px !important; // 4px du bas pour ne pas toucher le container et laisser visible le padding
+      border-bottom-left-radius: 4px !important;
+      border-bottom-right-radius: 4px !important;
+    }
+    
+    // Pour selected, 4px en bas car adjacent au gap suivant
+    &.menu-item--active::before,
+    &.list-item--selected::before {
+      bottom: 4px !important; // 4px du bas pour ne pas toucher le container et laisser visible le padding
+      border-bottom-left-radius: 4px !important;
+      border-bottom-right-radius: 4px !important;
+    }
+  }
+  
+  // Premier item d'un groupe qui suit un autre groupe (gap au-dessus)
+  // S'applique aux groupes directs du menu-container ET des sous-menus
+  .menu-container > .menu-group:not(:first-child) &[data-is-first="true"],
+  .menu-submenu > .menu-group:not(:first-child) &[data-is-first="true"] {
+    // Arrondir les bords supérieurs à 4px pour hover (surcharge les règles premier item)
+    &.menu-item--active-visual::before,
+    &.menu-item--hover::before {
+      top: 4px !important; // 4px du haut pour ne pas toucher le container et laisser visible le padding
+      border-top-left-radius: 4px !important;
+      border-top-right-radius: 4px !important;
+    }
+    
+    // Pour selected, 4px en haut car adjacent au gap précédent
+    &.menu-item--active::before,
+    &.list-item--selected::before {
+      top: 4px !important; // 4px du haut pour ne pas toucher le container et laisser visible le padding
+      border-top-left-radius: 4px !important;
+      border-top-right-radius: 4px !important;
+    }
+  }
+}
+
+.menu-item-leading {
+  color: var(--md-sys-color-on-surface-variant);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // 12px au début (bord du content item) et 8px avant le texte
+  padding-inline-start: 12px;
+  margin-inline-end: 8px;
+  
+  // L'icône à l'intérieur doit faire exactement 20px selon les recommandations Google Material Design
+  i[name],
+  i.k3ui-icon {
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 1rem !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.menu-item-text {
+  white-space: nowrap; // Texte inline, pas de retour à la ligne
+  flex: 1;
+  letter-spacing: 0.25px;
+  font-weight: 400;
+  text-align: start;
+  // Même couleur que leading icon pour cohérence
+  color: var(--md-sys-color-on-surface-variant);
+  // Pas de padding, géré par le menu-item parent
+}
+
+// Styles pour la structure List dans Menu
+.menu-item.list-item {
+  .list-item__leading {
+    color: var(--md-sys-color-on-surface-variant);
+    flex-shrink: 0;
+    padding: 0;
+    margin-inline-end: 8px; // Espace entre leading-icon et texte
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    
+    .list-item__leading-icon {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-shrink: 0;
+      
+      i[name] {
+        width: menu.$menu-icon-size !important;
+        height: menu.$menu-icon-size !important;
+        min-width: menu.$menu-icon-size !important;
+        min-height: menu.$menu-icon-size !important;
+        max-width: menu.$menu-icon-size !important;
+        max-height: menu.$menu-icon-size !important;
+        font-size: menu.$menu-icon-size !important;
+        display: block;
+        flex-shrink: 0;
+
+        svg {
+          width: 100% !important;
+          height: 100% !important;
+        }
+      }
+    }
+  }
+  
+  .list-item__text {
+    flex: 1;
+    
+    .list-item__primary-text {
+      white-space: nowrap;
+      letter-spacing: 0.25px;
+      font-weight: 400;
+      color: var(--md-sys-color-on-surface-variant);
+      margin: 0;
+      padding: 0;
+      text-align: start;
+    }
+  }
+  
+  // Règles d'espacement du texte selon les spécifications
+  // Texte seul (pas de leading, pas de trailing): padding-inline 12px
+  &:not(:has(.list-item__leading)):not(:has(.menu-item-leading)):not(:has(.list-item__trailing)):not(:has(.menu-item-trailing-container)) .list-item__text {
+    padding-inline: 12px;
+  }
+  
+  // Avec leading icon: margin-inline-end: 8px si trailing, ou padding-inline-end: 12px si pas de trailing
+  &:has(.list-item__leading) .list-item__text {
+    margin-inline-end: 8px; // Par défaut vers trailing
+  }
+  
+  // Avec leading icon mais sans trailing: padding-inline-end: 12px au lieu de margin-inline-end
+  &:has(.list-item__leading):not(:has(.list-item__trailing)):not(:has(.menu-item-trailing-container)) .list-item__text {
+    margin-inline-end: 0;
+    padding-inline-end: 12px;
+  }
+  
+  // Pas de leading mais trailing présent: padding-inline-start: 12px, margin-inline-end: 8px
+  &:not(:has(.list-item__leading)):not(:has(.menu-item-leading)):has(.list-item__trailing) .list-item__text,
+  &:not(:has(.list-item__leading)):not(:has(.menu-item-leading)):has(.menu-item-trailing-container) .list-item__text {
+    padding-inline-start: 12px;
+    margin-inline-end: 8px;
+  }
+  
+  .list-item__trailing {
+    flex-shrink: 0;
+    margin-inline-start: 8px;
+    padding-inline-end: 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px; // 12px entre trailing-icon et trailing-text quand les deux sont présents
+    
+    .list-item__trailing-icon {
+      color: var(--md-sys-color-on-surface-variant);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      i[name] {
+        width: 20px !important;
+        height: 20px !important;
+        font-size: 1rem !important;
+      }
+      
+      &.menu-item-trailing-icon--caret {
+        i[name] {
+          width: 20px !important;
+          height: 20px !important;
+          font-size: 1rem !important;
+          transform: rotate(90deg);
+        }
+      }
+    }
+    
+    .list-item__trailing-text {
+      color: var(--md-sys-color-on-surface-variant);
+      opacity: 0.7;
+      font-size: 12px;
+      font-weight: 400;
+      padding: 2px 6px;
+      background-color: var(--md-sys-color-surface-container-highest);
+      border-radius: menu.$menu-border-radius; // 12px - Material Design 3 Expressive
+      border: 1px solid var(--md-sys-color-outline-variant);
+      user-select: none;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+  }
+}
+
+
+// Conteneur pour les éléments trailing (icon et/ou text)
+.menu-item-trailing-container {
+  flex-shrink: 0;
+  margin-inline-start: auto;
+  display: flex;
+  flex-direction: row; // Par défaut horizontal
+  align-items: center;
+  gap: 0; // Gap par défaut
+  
+  // Si seulement le text est présent : conteneur gère les 12px après le cadre du trailing-text
+  &:has(.menu-item-trailing-text):not(:has(.menu-item-trailing-icon)) {
+    gap: 0;
+    padding-inline-end: 12px; // 12px du bord du content item
+  }
+  
+  // Si seulement l'icon est présent : le conteneur gère le padding-inline-end
+  &:has(.menu-item-trailing-icon):not(:has(.menu-item-trailing-text)) {
+    gap: 0;
+    padding-inline-end: 12px; // 12px du bord du content item
+  }
+  
+  // Si les deux sont présents : trailing-text prioritaire (au bout), 12px entre les deux
+  // Le conteneur gère les 12px après le cadre du trailing-text
+  &:has(.menu-item-trailing-icon):has(.menu-item-trailing-text) {
+    gap: 12px; // 12px entre trailing-icon et trailing-text
+    padding-inline-end: 12px; // 12px du bord du content item
+  }
+}
+
+.menu-item-trailing-icon {
+  color: var(--md-sys-color-on-surface-variant); // Même couleur que leading icon et texte
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // 8px avant le trailing pour espacer du texte
+  margin-inline-start: 8px;
+  // Si trailing-text est présent, pas de padding-right (trailing-text est prioritaire)
+  // Si seul, le padding-right est géré par le conteneur parent
+  
+  // L'icône à l'intérieur doit faire exactement 20px selon les recommandations Google Material Design
+  i[name],
+  i.k3ui-icon {
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 1rem !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  // Rotation du caret pour les sous-menus : 90° vers inline-end
+  &.menu-item-trailing-icon--caret {
+    i[name],
+    i.k3ui-icon {
+      width: 20px !important;
+      height: 20px !important;
+      font-size: 1rem !important;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transform: rotate(90deg);
+    }
+
+    :dir(rtl) & i[name],
+    :dir(rtl) & i.k3ui-icon {
+      transform: rotate(-90deg);
+    }
+  }
+}
+
+.menu-item-trailing-text {
+  // Style "désactivé" pour l'aide visuelle (raccourcis clavier)
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.7; // Apparence désactivée/atténuée
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 400; // Poids plus léger pour paraître moins important
+  padding: 2px 6px; // Padding interne uniquement, les 12px sont gérés par le conteneur parent
+  background-color: var(--md-sys-color-surface-container-highest);
+  border-radius: menu.$menu-border-radius; // 12px - Material Design 3 Expressive
+  border: 1px solid var(--md-sys-color-outline-variant);
+  user-select: none;
+  pointer-events: none; // Non interactif, juste une aide visuelle
+  transition:
+    opacity motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+    color motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+    background-color motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+    border-color motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+  white-space: nowrap;
+  // Les 12px après le cadre sont gérés par le conteneur parent (.menu-item-trailing-container)
+  // pour être cohérent avec trailing-icon qui a aussi 12px après l'icône
+}
+
+// ============================================================================
+// MENU DIVIDERS
+// ============================================================================
+
+.menu-divider {
+  height: 1px;
+  background: var(--md-sys-color-outline-variant);
+  margin: 4px 0; // Espacement vertical pour ne pas mordre sur les items
+  // Le divider doit toucher les deux bords du container (bord à bord)
+  // Il doit surcharger le padding de 4px du container des deux côtés
+  display: block;
+  margin-inline-start: 0; // Sortir du padding du container au bord inline-start pour toucher le bord
+  margin-inline-end: 4px; // Sortir du padding du container au bord inline-end pour toucher le bord
+  width: calc(100% + 8px); // Compenser les deux marges négatives pour faire 100% du container
+  box-sizing: border-box;
+}
+
+// ============================================================================
+// SUBMENU
+// ============================================================================
+
+.menu-submenu {
+  --k3ui-menu-animation-scale-start: #{menu.$menu-animation-scale-start};
+  position: fixed; // Utiliser fixed pour sortir complètement du contexte de positionnement
+  top: 0;
+  min-width: 112px;
+  max-width: none; // Pas de limite de largeur maximale, le sous-menu s'adapte au contenu
+  width: auto; // S'adapter au contenu naturellement
+  background-color: transparent; // Transparent pour laisser voir les gaps entre groupes
+  border-radius: menu.$menu-border-radius-large; // 16px - Material Design 3 Expressive (coins extérieurs)
+  // Pas de box-shadow sur le sous-menu, c'est sur les groupes maintenant
+  padding: 4px; // Padding uniforme de 4px autour des groupes (cohérent avec le menu principal)
+  z-index: menu.$menu-submenu-z-index;
+  // Le sous-menu est TOUJOURS dans le DOM mais peut être caché
+  display: block;
+  // Pas de scrollbars par défaut - le sous-menu doit s'afficher complètement à côté
+  overflow: visible;
+  max-height: none;
+  height: auto;
+  // État initial pour animation CSS
+  opacity: 0;
+  transform: scale(menu.$menu-animation-scale-start);
+  transform-origin: top left; // Sera ajusté par JS selon position horizontale/verticale
+  
+  // Sous-menu fermé (caché)
+  &.menu-submenu--closed {
+    display: none !important;
+  }
+  
+  // Sous-menu ouvert (visible)
+  &.menu-submenu--open {
+    display: block !important;
+  }
+  
+  // IMPORTANT: Le positionnement est géré par JavaScript avec position: absolute
+  // Le wrapper parent a position: relative, et le sous-menu utilise left: 100% ou right: 100%
+  // Les classes --right et --left sont utilisées uniquement comme marqueurs pour le JavaScript
+  // Le style de positionnement est appliqué directement par JS
+  
+  // Si le sous-menu doit avoir un scroll vertical, on l'applique uniquement si nécessaire (géré par JS)
+  &.menu-submenu--scrollable {
+    max-height: 320px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
+
+// ============================================================================
+// ANIMATIONS - MATERIAL DESIGN 3 EXPRESSIVE
+// ============================================================================
+
+// Transition CSS pour le menu principal
+// L'animation est déclenchée par la classe .menu-container--open
+.menu-container {
+  // État ouvert - déclenché par JS via classList
+  // Les pointer-events sont auto quand le menu est ouvert (géré par .menu-container--open)
+  // Par défaut, le menu fermé n'a pas besoin de pointer-events: none car il est display: none
+  
+  &.menu-container--open {
+    display: block !important;
+    pointer-events: auto;
+  }
+}
+
+// Sous-menus : spatial-fast (transform) + effects-fast (opacity)
+.menu-submenu {
+  transition:
+    opacity menu.$menu-animation-duration-out menu.$menu-animation-effects-easing,
+    transform menu.$menu-animation-duration-in menu.$menu-animation-spatial-easing;
+
+  pointer-events: none;
+
+  &.menu-submenu--open {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+  }
+
+  &.menu-submenu--closing {
+    opacity: 0;
+    transform: scale(menu.$menu-animation-scale-start);
+    pointer-events: none;
+    transition:
+      opacity menu.$menu-animation-duration-out menu.$menu-animation-effects-easing,
+      transform menu.$menu-animation-duration-out menu.$menu-animation-spatial-easing;
+  }
+}
+
+// Les sous-menus existants (déjà ouverts) n'ont pas d'animation
+// pour éviter le scintillement lors du repositionnement
+.menu-submenu--existing {
+  animation: none !important;
+  transition: none !important;
+}
+
+// Désactiver les animations si l'utilisateur préfère (accessibilité)
+@media (prefers-reduced-motion: reduce) {
+  .menu-container,
+  .menu-submenu {
+    transition: none !important;
+  }
+}
+
+// ============================================================================
+// ACCESSIBILITY
+// ============================================================================
+
+body.keyboard-focused {
+  .menu-item:focus {
+    background-color: var(--md-sys-color-surface-variant);
+    outline: none;
+  }
+}
+
+// Pas de cadre/outline sur les items de menu (list-item applique un outline au focus)
+// On supprime aussi le fond focus de la liste pour éviter le double fond (élément + ::before).
+.menu-container .menu-item,
+.menu-container .menu-item.list-item {
+  &:focus,
+  &:focus-visible {
+    outline: none !important;
+    outline-offset: 0 !important;
+    box-shadow: none !important; // au cas où le navigateur utilise box-shadow pour le focus
+    background-color: transparent !important; // un seul fond : le ::before (hover/active) du menu
+  }
+}
+
+// ============================================================================
+// RESPONSIVE
+// ============================================================================
+
+@media (max-width: 768px) {
+  .menu-container,
+  .menu-submenu {
+    min-width: 112px;
+    max-width: 90vw;
+  }
+}
+

@@ -1,0 +1,116 @@
+/**
+ * @fileoverview Module ButtonFabDial — FAB Speed Dial en éventail
+ */
+
+@use '../tokens/button-fab-dial.token' as bfd;
+@use '../mixins/button-fab-dial.mixin' as mix;
+@use '../mixins/button-fab-speed-dial-trigger.mixin' as trigger;
+
+.button-fab-dial,
+k3ui-button-fab-dial {
+  @include mix.button-fab-dial-root;
+}
+
+.button-fab-dial__scrim {
+  @include mix.button-fab-dial-scrim;
+}
+
+.button-fab-dial__menu {
+  @include mix.button-fab-dial-menu;
+}
+
+.button-fab-dial[data-open='true'] .button-fab-dial__scrim {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.button-fab-dial__slot {
+  @include mix.button-fab-dial-slot;
+}
+
+.button-fab-dial__item {
+  @include mix.button-fab-dial-item;
+}
+
+.button-fab-dial[data-open='true'] .button-fab-dial__item {
+  @include mix.button-fab-dial-item-open;
+}
+
+.button-fab-dial__action {
+  @include mix.button-fab-dial-action-btn;
+
+  .k3ui-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+.button-fab-dial__action--accent {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.button-fab-dial__label {
+  @include mix.button-fab-dial-label;
+}
+
+.button-fab-dial--left .button-fab-dial__label {
+  inset-inline-end: auto;
+  inset-inline-start: calc(100% + 0.75rem);
+  transform: translateX(-0.5rem);
+}
+
+.button-fab-dial[data-open='true'] .button-fab-dial__label {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: var(--button-fab-dial-delay-in, 0ms);
+}
+
+.button-fab-dial__main {
+  @include mix.button-fab-dial-trigger-btn;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  opacity: 0;
+  transform: scale(0.6);
+  pointer-events: none;
+  transition:
+    transform bfd.$button-fab-dial-spatial-duration bfd.$button-fab-dial-spatial-easing,
+    opacity bfd.$button-fab-dial-effects-duration bfd.$button-fab-dial-effects-easing,
+    border-radius bfd.$button-fab-dial-effects-duration bfd.$button-fab-dial-effects-easing;
+}
+
+.button-fab-dial[data-open='true'] .button-fab-dial__main {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.button-fab-dial[data-open='true'][data-has-main='true'] .button-fab-dial__trigger-wrap {
+  opacity: 0;
+  transform: scale(0.6);
+  pointer-events: none;
+}
+
+.button-fab-dial__trigger-wrap {
+  pointer-events: auto;
+  transition:
+    opacity bfd.$button-fab-dial-effects-duration bfd.$button-fab-dial-effects-easing,
+    transform bfd.$button-fab-dial-effects-duration bfd.$button-fab-dial-effects-easing;
+}
+
+.button-fab-dial__trigger-wrap .button-fab {
+  flex-shrink: 0;
+  --button-fab-size: var(--button-fab-dial-size, #{bfd.$button-fab-dial-trigger-size});
+  --button-fab-icon-size: 1.5rem;
+}
+
+@include trigger.button-fab-speed-dial-trigger('button-fab-dial', --button-fab-dial-rotate);
+
+@media (prefers-reduced-motion: reduce) {
+  .button-fab-dial,
+  .button-fab-dial *:not(.button-fab-dial__icon-rotator):not(.button-fab-dial__icon-rotator *) {
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+  }
+}

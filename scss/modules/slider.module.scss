@@ -1,0 +1,512 @@
+/// @file slider.module.scss
+/// @brief Module slider Material 3 Expressive
+
+@use '../mixins/slider.mixin' as slider;
+@use '../tokens/slider.token' as tokens;
+
+/**
+ * Classe de base pour le slider
+ */
+k3ui-slider,
+.slider {
+  @include slider.slider-base;
+  @include slider.slider-states;
+  
+  // Permettre à la bulle de dépasser sans être coupée
+  overflow: visible !important;
+
+  /**
+   * Container du slider
+   */
+  &__container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    overflow: visible; // Permettre au handle de dépasser
+  }
+  
+  /**
+   * Container du slider vertical
+   */
+  &[data-vertical] &__container {
+    width: auto;
+    overflow: visible !important; // Permettre au handle et à la bulle de dépasser
+  }
+
+  /**
+   * Track (rail) du slider
+   * Le handle dépasse légèrement du track (handle height > track height)
+   */
+  &__track {
+    @include slider.slider-track('m');
+    
+    // Tailles selon Material Design 3 Expressive
+    [data-size="xs"] & {
+      @include slider.slider-track('xs');
+    }
+    
+    [data-size="s"] & {
+      @include slider.slider-track('s');
+    }
+    
+    [data-size="m"] & {
+      @include slider.slider-track('m');
+    }
+    
+    [data-size="l"] & {
+      @include slider.slider-track('l');
+    }
+    
+    [data-size="xl"] & {
+      @include slider.slider-track('xl');
+    }
+  }
+
+  /**
+   * Track actif
+   * Les dimensions (width/height, left/right/top/bottom) sont calculées dynamiquement en JavaScript
+   * Les styles SCSS définissent seulement les styles de base et les border-radius
+   */
+  &__track-active {
+    @include slider.slider-track-active('m');
+    
+    // Tailles selon Material Design 3 Expressive
+    [data-size="xs"] & {
+      @include slider.slider-track-active('xs');
+    }
+    
+    [data-size="s"] & {
+      @include slider.slider-track-active('s');
+    }
+    
+    [data-size="m"] & {
+      @include slider.slider-track-active('m');
+    }
+    
+    [data-size="l"] & {
+      @include slider.slider-track-active('l');
+    }
+    
+    [data-size="xl"] & {
+      @include slider.slider-track-active('xl');
+    }
+    
+    // Pour range slider - track actif entre les deux handles
+    k3ui-slider[data-range] &,
+    [data-range] & {
+      border-radius: tokens.$md-sys-slider-m-inner-radius;
+      // Désactiver les transitions pour éviter l'animation indésirable du track actif
+      // qui le fait défiler depuis la gauche en RTL/LTR et en disabled
+      // Utiliser !important pour surcharger les transitions définies dans le mixin
+      transition: none !important;
+    }
+  }
+
+  /**
+   * Track inactif
+   * Les dimensions (width/height, left/right/top/bottom) sont calculées dynamiquement en JavaScript
+   * Les styles SCSS définissent seulement les styles de base et les border-radius
+   */
+  &__track-inactive {
+    @include slider.slider-track-inactive('m');
+    
+    // Tailles selon Material Design 3 Expressive
+    [data-size="xs"] & {
+      @include slider.slider-track-inactive('xs');
+    }
+    
+    [data-size="s"] & {
+      @include slider.slider-track-inactive('s');
+    }
+    
+    [data-size="m"] & {
+      @include slider.slider-track-inactive('m');
+    }
+    
+    [data-size="l"] & {
+      @include slider.slider-track-inactive('l');
+    }
+    
+    [data-size="xl"] & {
+      @include slider.slider-track-inactive('xl');
+    }
+    
+    // Pour range slider - track inactif gauche
+    [data-range] &[data-position="start"] {
+      left: 0;
+      right: auto;
+    }
+    
+    // Pour range slider - track inactif droit
+    [data-range] &[data-position="end"] {
+      right: 0;
+      left: auto;
+    }
+  }
+
+  /**
+   * Track inactif droit/haut (pour mode centered)
+   */
+  &__track-inactive-right {
+    position: absolute;
+    background-color: tokens.$md-sys-slider-track-inactive-color;
+    z-index: tokens.$md-sys-slider-track-inactive-z-index;
+    transition: width tokens.$md-sys-slider-transition-duration tokens.$md-sys-slider-transition-easing,
+                height tokens.$md-sys-slider-transition-duration tokens.$md-sys-slider-transition-easing,
+                left tokens.$md-sys-slider-transition-duration tokens.$md-sys-slider-transition-easing,
+                right tokens.$md-sys-slider-transition-duration tokens.$md-sys-slider-transition-easing,
+                top tokens.$md-sys-slider-transition-duration tokens.$md-sys-slider-transition-easing,
+                bottom tokens.$md-sys-slider-transition-duration tokens.$md-sys-slider-transition-easing,
+                background-color tokens.$md-sys-slider-transition-duration tokens.$md-sys-slider-transition-easing,
+                opacity tokens.$md-sys-slider-transition-duration tokens.$md-sys-slider-transition-easing;
+  }
+  
+  /**
+   * Track inactif haut (pour range slider vertical)
+   */
+  &__track-inactive-top {
+    position: absolute;
+    background-color: tokens.$md-sys-slider-track-inactive-color;
+    z-index: tokens.$md-sys-slider-track-inactive-z-index;
+    transition: width tokens.$md-sys-slider-transition-duration tokens.$md-sys-slider-transition-easing,
+                height tokens.$md-sys-slider-transition-duration tokens.$md-sys-slider-transition-easing,
+                left tokens.$md-sys-slider-transition-duration tokens.$md-sys-slider-transition-easing,
+                right tokens.$md-sys-slider-transition-duration tokens.$md-sys-slider-transition-easing,
+                top tokens.$md-sys-slider-transition-duration tokens.$md-sys-slider-transition-easing,
+                bottom tokens.$md-sys-slider-transition-duration tokens.$md-sys-slider-transition-easing,
+                background-color tokens.$md-sys-slider-transition-duration tokens.$md-sys-slider-transition-easing,
+                opacity tokens.$md-sys-slider-transition-duration tokens.$md-sys-slider-transition-easing;
+  }
+
+  /**
+   * Icône inset dans la barre
+   * @description Icône positionnée à gauche (LTR) ou à droite (RTL), bascule entre track actif/inactif
+   * Uniquement pour les tailles M, L et XL
+   */
+  &__icon {
+    @include slider.slider-icon;
+    
+    // Uniquement pour M, L, XL
+    [data-size="m"] &,
+    [data-size="l"] &,
+    [data-size="xl"] & {
+      display: flex;
+    }
+    
+    // Masquer pour XS et S
+    [data-size="xs"] &,
+    [data-size="s"] & {
+      display: none !important;
+    }
+    
+    // Position dans le track (relatif au track parent)
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 15; // Au-dessus des tracks mais sous le handle
+    
+    // Position LTR (par défaut) - à gauche
+    left: 12px;
+    right: auto;
+    
+    // Position RTL - à droite
+    [dir="rtl"] & {
+      left: auto;
+      right: 12px;
+    }
+    
+    // Icône interne
+    .k3ui-icon {
+      width: 100% !important;
+      height: 100% !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      // S'assurer que le SVG à l'intérieur hérite aussi de la taille
+      svg {
+        width: 100% !important;
+        height: 100% !important;
+      }
+    }
+    
+    // Tailles d'icônes selon la taille du slider
+    [data-size="m"] &,
+    [data-size="l"] & {
+      width: tokens.$md-sys-slider-icon-size-m;
+      height: tokens.$md-sys-slider-icon-size-m;
+    }
+    
+    [data-size="xl"] & {
+      width: tokens.$md-sys-slider-icon-size-xl;
+      height: tokens.$md-sys-slider-icon-size-xl;
+    }
+    
+    // Couleur de l'icône selon le track
+    &[data-track="active"] {
+      color: var(--md-sys-color-on-primary);
+    }
+    
+    &[data-track="inactive"] {
+      color: var(--md-sys-color-on-surface-variant);
+    }
+  }
+
+  /**
+   * Handle (poignée) du slider
+   */
+  &__handle {
+    @include slider.slider-handle('m');
+    
+    // Tailles selon Material Design 3 Expressive
+    [data-size="xs"] & {
+      @include slider.slider-handle('xs');
+      --handle-width: #{tokens.$md-sys-slider-xs-handle-width};
+      --handle-height: #{tokens.$md-sys-slider-xs-handle-height};
+    }
+    
+    [data-size="s"] & {
+      @include slider.slider-handle('s');
+      --handle-width: #{tokens.$md-sys-slider-s-handle-width};
+      --handle-height: #{tokens.$md-sys-slider-s-handle-height};
+    }
+    
+    [data-size="m"] & {
+      @include slider.slider-handle('m');
+      --handle-width: #{tokens.$md-sys-slider-m-handle-width};
+      --handle-height: #{tokens.$md-sys-slider-m-handle-height};
+    }
+    
+    [data-size="l"] & {
+      @include slider.slider-handle('l');
+      --handle-width: #{tokens.$md-sys-slider-l-handle-width};
+      --handle-height: #{tokens.$md-sys-slider-l-handle-height};
+    }
+    
+    [data-size="xl"] & {
+      @include slider.slider-handle('xl');
+      --handle-width: #{tokens.$md-sys-slider-xl-handle-width};
+      --handle-height: #{tokens.$md-sys-slider-xl-handle-height};
+    }
+    
+    // Handle actif (lors du drag) - styles appliqués par JavaScript
+    &--active {
+      // Pas d'élévation (box-shadow) selon Material Design 3
+      z-index: 30; // tokens.$md-sys-slider-handle-active-z-index
+    }
+    
+    // Handle start pour range slider - z-index légèrement inférieur pour être visible même si chevauchement
+    &[data-handle="start"] {
+      z-index: 21; // Légèrement supérieur au z-index de base (20) pour être visible
+      display: block;
+      visibility: visible;
+      opacity: 1;
+    }
+    
+    // Handle end pour range slider - z-index légèrement supérieur au start pour être visible
+    &[data-handle="end"] {
+      z-index: 22; // Légèrement supérieur au start pour être visible même en cas de chevauchement
+      display: block;
+      visibility: visible;
+      opacity: 1;
+    }
+    
+    // Handle actif pour range slider (start ou end)
+    &[data-handle="start"].slider__handle--active,
+    &[data-handle="end"].slider__handle--active {
+      z-index: 30; // tokens.$md-sys-slider-handle-active-z-index
+      display: block;
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  /**
+   * Stop indicators
+   * @description Points aux extrémités du slider (min et max)
+   * 
+   * Couleurs :
+   * - Par défaut : primary (sur track inactif)
+   * - Active : on-primary (sur track actif)
+   * - Selected + inactive : primary (sur track inactif)
+   * - Active + selected : on-primary (sur track actif)
+   * 
+   * @note ORDRE IMPORTANT : Les règles plus spécifiques doivent venir APRÈS les règles moins spécifiques
+   */
+  &__stop-indicator {
+    @include slider.slider-stop-indicator;
+    
+    // Couleur par défaut : primary (sur track inactif)
+    background-color: tokens.$md-sys-slider-discrete-point-inactive-color !important;
+    
+    // Selected mais pas active : primary (sur track inactif)
+    &--selected:not(&--active) {
+      background-color: tokens.$md-sys-slider-discrete-point-inactive-color !important;
+    }
+    
+    // Sur track actif : on-primary
+    &--active {
+      background-color: tokens.$md-sys-slider-discrete-point-color !important;
+    }
+    
+    // Active ET selected : on-primary (spécificité la plus élevée)
+    &--active--selected {
+      background-color: tokens.$md-sys-slider-discrete-point-color !important;
+    }
+  }
+
+  /**
+   * Container des points discrets
+   */
+  &__discrete-points {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: tokens.$md-sys-slider-discrete-points-z-index;
+  }
+
+  /**
+   * Points discrets
+   */
+  &__discrete-point {
+    width: tokens.$md-sys-slider-discrete-point-size;
+    height: tokens.$md-sys-slider-discrete-point-size;
+    @include slider.slider-discrete-point;
+    
+    &--active {
+      background-color: tokens.$md-sys-slider-discrete-point-color;
+    }
+  }
+
+  /**
+   * Label de valeur
+   */
+  &__value-label {
+    @include slider.slider-value-label;
+    
+    & {
+      z-index: 1000 !important; // Z-index élevé pour être au-dessus de tout
+    }
+    
+    [data-dragging] & {
+      opacity: 1;
+    }
+    
+    // En mode vertical : s'assurer que la bulle n'est pas contrainte par le container
+    [data-vertical] & {
+      width: auto !important;
+      min-width: 0 !important;
+      max-width: none !important;
+    }
+    
+    // État visible : le parent doit aussi être visible
+    &--visible {
+      opacity: 1 !important;
+    }
+  }
+  
+  /**
+   * Contenu du label de valeur
+   * @description Animation de scale depuis 4dp x 4dp vers 48dp x 44dp depuis le centre bas
+   */
+  &__value-label-content {
+    background-color: var(--md-sys-color-on-surface);
+    color: var(--md-sys-color-surface);
+    width: tokens.$md-sys-slider-label-container-width;
+    height: tokens.$md-sys-slider-label-container-height;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: tokens.$md-sys-slider-label-border-radius;
+    font-size: tokens.$md-sys-slider-label-font-size;
+    font-weight: tokens.$md-sys-slider-label-font-weight;
+    line-height: 1;
+    box-shadow: tokens.$md-sys-slider-label-elevation;
+    position: relative;
+    white-space: nowrap;
+    // Animation : de 4dp x 4dp vers 48dp x 44dp depuis le centre bas (horizontal par défaut)
+    transform-origin: center bottom;
+    transform: scale(0.0833, 0.0909); // 4dp / 48dp = 0.0833, 4dp / 44dp = 0.0909
+    opacity: 0;
+    transition: transform tokens.$md-sys-slider-transition-duration tokens.$md-sys-slider-transition-easing,
+                opacity tokens.$md-sys-slider-transition-duration tokens.$md-sys-slider-transition-easing;
+    
+    // En mode vertical : pas de rotation, juste le scale initial
+    [data-vertical] &__value-label & {
+      width: tokens.$md-sys-slider-label-container-width !important; // 48dp de large
+      height: tokens.$md-sys-slider-label-container-height !important; // 44dp de haut
+      min-width: tokens.$md-sys-slider-label-container-width !important;
+      max-width: tokens.$md-sys-slider-label-container-width !important;
+      min-height: tokens.$md-sys-slider-label-container-height !important;
+      max-height: tokens.$md-sys-slider-label-container-height !important;
+      // Scale initial seulement, pas de rotation
+      transform: scale(0.0833, 0.0909);
+      box-sizing: border-box;
+    }
+  }
+  
+  // Règles pour le transform-origin selon la position de la bulle
+  // Mode horizontal
+  &:not([data-vertical]) &__value-label[data-label-position="top"] &__value-label-content,
+  &:not([data-vertical]) &__value-label:not([data-label-position]) &__value-label-content {
+    transform-origin: center bottom;
+  }
+  
+  &:not([data-vertical]) &__value-label[data-label-position="bottom"] &__value-label-content {
+    transform-origin: center top;
+  }
+  
+  // Mode vertical
+  [data-vertical] &__value-label[data-label-position="left"] &__value-label-content {
+    transform-origin: center right;
+  }
+  
+  [data-vertical] &__value-label[data-label-position="right"] &__value-label-content,
+  [data-vertical] &__value-label:not([data-label-position]) &__value-label-content {
+    transform-origin: center left;
+  }
+  
+  // État visible : animation vers pleine taille
+  &__value-label--visible &__value-label-content {
+    transform: scale(1, 1) !important;
+    opacity: 1 !important;
+  }
+  
+  // État visible en mode vertical (scale seulement, pas de rotation)
+  [data-vertical] &__value-label--visible &__value-label-content {
+    transform: scale(1, 1) !important;
+    opacity: 1 !important;
+  }
+
+  /**
+   * Label du slider
+   */
+  &__label {
+    @include slider.slider-label;
+  }
+
+  /**
+   * Input caché
+   */
+  &__input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /**
+   * Slider vertical
+   */
+  &[data-vertical] {
+    @include slider.slider-vertical;
+  }
+
+  /**
+   * Slider centré
+   */
+  &[data-centered] {
+    @include slider.slider-centered;
+  }
+}
+

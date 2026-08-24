@@ -1,0 +1,247 @@
+/**
+ * @fileoverview Mixins NavigationMenu (Material Design 3 Expressive / M3E nav-menu)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/navigation-menu.token' as tokens;
+@use '../mixins/outline.mixin' as outline;
+
+@mixin navigation-menu-container {
+  display: block;
+  outline: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  scrollbar-width: tokens.$navigation-menu-scrollbar-width;
+  scrollbar-color: tokens.$navigation-menu-scrollbar-color transparent;
+  padding-block: tokens.$navigation-menu-padding-block;
+  padding-inline: tokens.$navigation-menu-padding-inline;
+  box-sizing: border-box;
+}
+
+/**
+ * Calque pilule (indicateur) — position absolute, scaleX horizontal M3E
+ */
+@mixin navigation-menu-item-indicator {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: transparent;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: var(--navigation-menu-indicator-origin-x, center) center;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/**
+ * State layer hover/pressed — calque séparé (évite le clignotement scaleX au clic)
+ */
+@mixin navigation-menu-item-state-layer {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: transparent;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity tokens.$navigation-menu-indicator-fade-duration tokens.$navigation-menu-effects-fast-easing;
+}
+
+@mixin navigation-menu-item-row {
+  display: flex;
+  align-items: center;
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-height: tokens.$navigation-menu-item-height;
+  padding-inline: tokens.$navigation-menu-item-padding-inline;
+  column-gap: tokens.$navigation-menu-item-spacing;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: tokens.$navigation-menu-item-font-size;
+  font-weight: tokens.$navigation-menu-item-font-weight;
+  line-height: tokens.$navigation-menu-item-line-height;
+  letter-spacing: tokens.$navigation-menu-item-tracking;
+  color: tokens.$navigation-menu-item-label-color;
+  border-radius: tokens.$navigation-menu-item-shape;
+  text-align: start;
+  -webkit-tap-highlight-color: transparent;
+  transition: color tokens.$navigation-menu-effects-fast-duration tokens.$navigation-menu-effects-fast-easing;
+
+  &::before {
+    @include navigation-menu-item-indicator;
+  }
+
+  &::after {
+    @include navigation-menu-item-state-layer;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    @include outline.outline-focus;
+  }
+
+  &:hover:not(:disabled)::after {
+    background-color: tokens.$navigation-menu-item-hover-bg;
+    opacity: 1;
+  }
+
+  &:active:not(:disabled)::after {
+    background-color: tokens.$navigation-menu-item-pressed-bg;
+    opacity: 1;
+  }
+}
+
+@mixin navigation-menu-item-selected {
+  color: tokens.$navigation-menu-item-selected-label-color;
+
+  &::before {
+    background-color: tokens.$navigation-menu-item-selected-container-color;
+    opacity: 1;
+    animation: navigation-menu-indicator-grow tokens.$navigation-menu-indicator-duration
+      tokens.$navigation-menu-indicator-easing forwards;
+  }
+
+  &:hover:not(:disabled)::after,
+  &:active:not(:disabled)::after {
+    background-color: color-mix(
+      in srgb,
+      tokens.$navigation-menu-item-selected-label-color 8%,
+      transparent
+    );
+  }
+}
+
+/**
+ * Pilule parent (branche sélectionnée) — visible sans scaleX
+ * pour éviter le double flash avec la feuille du même groupe
+ */
+@mixin navigation-menu-item-open {
+  &::before {
+    background-color: tokens.$navigation-menu-item-open-container-color;
+    opacity: 1;
+    transform: scaleX(1);
+    animation: none;
+  }
+
+  &:hover:not(:disabled)::after,
+  &:active:not(:disabled)::after {
+    background-color: color-mix(in srgb, tokens.$navigation-menu-item-label-color 8%, transparent);
+  }
+}
+
+/** Keyframes ouverture horizontale de la pilule (M3E selection-indicator grow) */
+@mixin navigation-menu-indicator-keyframes {
+  @keyframes navigation-menu-indicator-grow {
+    0% {
+      transform: scaleX(0);
+    }
+
+    100% {
+      transform: scaleX(1);
+    }
+  }
+}
+
+@mixin navigation-menu-item-disabled {
+  opacity: tokens.$navigation-menu-item-disabled-opacity;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+@mixin navigation-menu-item-icon {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: tokens.$navigation-menu-item-icon-size;
+  height: tokens.$navigation-menu-item-icon-size;
+  margin-inline-start: -4px;
+}
+
+@mixin navigation-menu-item-label {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin navigation-menu-item-badge {
+  flex: none;
+  font-size: tokens.$navigation-menu-badge-font-size;
+  font-weight: tokens.$navigation-menu-badge-font-weight;
+}
+
+@mixin navigation-menu-item-toggle {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-inline-end: -4px;
+  transition: transform tokens.$navigation-menu-toggle-duration tokens.$navigation-menu-toggle-easing;
+}
+
+/**
+ * Panneau enfants — grille 0fr/1fr (spring spatial M3 Expressive)
+ */
+@mixin navigation-menu-item-children {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows tokens.$navigation-menu-expand-duration tokens.$navigation-menu-expand-easing;
+}
+
+@mixin navigation-menu-item-children-open {
+  grid-template-rows: 1fr;
+}
+
+@mixin navigation-menu-item-children-closing {
+  transition: grid-template-rows tokens.$navigation-menu-collapse-duration tokens.$navigation-menu-collapse-easing;
+}
+
+/**
+ * Clip overflow pour l’animation de hauteur
+ */
+@mixin navigation-menu-item-clip {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+  padding-inline-start: tokens.$navigation-menu-item-inset;
+  opacity: 0;
+  transform: translateY(tokens.$navigation-menu-content-offset-y);
+  transition:
+    opacity tokens.$navigation-menu-effects-fast-duration tokens.$navigation-menu-effects-fast-easing,
+    transform tokens.$navigation-menu-collapse-duration tokens.$navigation-menu-collapse-easing;
+}
+
+@mixin navigation-menu-item-clip-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity tokens.$navigation-menu-effects-duration tokens.$navigation-menu-effects-easing
+      tokens.$navigation-menu-content-enter-delay,
+    transform tokens.$navigation-menu-expand-duration tokens.$navigation-menu-expand-easing
+      tokens.$navigation-menu-content-enter-delay;
+}
+
+@mixin navigation-menu-group-label {
+  font-size: tokens.$navigation-menu-group-label-font-size;
+  font-weight: tokens.$navigation-menu-group-label-font-weight;
+  color: tokens.$navigation-menu-group-label-color;
+  padding-inline-start: tokens.$navigation-menu-group-label-inset;
+  margin-block: tokens.$navigation-menu-group-label-space;
+}

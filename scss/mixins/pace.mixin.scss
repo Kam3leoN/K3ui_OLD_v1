@@ -1,0 +1,137 @@
+/**
+ * @fileoverview Mixins pour Pace (barre de chargement de page)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use "../tokens/pace.token" as pace;
+
+/**
+ * Conteneur principal Pace (non-interactif, au-dessus de tout)
+ */
+@mixin pace-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: pace.$pace-z-index;
+  -webkit-pointer-events: none;
+  pointer-events: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+/**
+ * Piste (conteneur) de la barre – couleur tonal
+ */
+@mixin pace-progress-track(
+  $z-index: pace.$pace-z-index,
+  $height: pace.$pace-bar-height,
+  $track-color: pace.$pace-track-color
+) {
+  background: $track-color;
+  position: fixed;
+  z-index: $z-index;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: $height;
+  /* Piste derrière le remplissage */
+  isolation: isolate;
+}
+
+/**
+ * Remplissage de la barre – couleur primary (translate3d pour l’animation)
+ */
+@mixin pace-progress-fill($color: pace.$pace-bar-color) {
+  background: $color;
+}
+
+// ============================================================================
+// Mixins thèmes – structure commune pour faciliter l’ajout de thèmes
+// ============================================================================
+
+/**
+ * Piste de progression pour un thème (barre ou overlay).
+ * @param $height - Hauteur en px (ignoré si $full-height: true)
+ * @param $z-index - Z-index de la piste
+ * @param $background - Couleur/fond de la piste (souvent var(--pace-bar-color, ...))
+ * @param $full-height - Si true, top/right/bottom/left pour overlay pleine hauteur
+ * @param $box-shadow - Optionnel, ombre portée
+ */
+@mixin pace-theme-track(
+  $height: pace.$pace-bar-height,
+  $z-index: pace.$pace-z-index,
+  $background: var(--pace-track-color, pace.$pace-track-color),
+  $full-height: false,
+  $box-shadow: null
+) {
+  position: fixed;
+  z-index: $z-index;
+  left: 0;
+  right: 0;
+  width: 100%;
+  isolation: isolate;
+  background: $background;
+  @if $box-shadow {
+    box-shadow: $box-shadow;
+  }
+  @if $full-height {
+    top: 0;
+    bottom: 0;
+  } @else {
+    top: 0;
+    height: $height;
+  }
+}
+
+/**
+ * Remplissage animé (inner) – commun à tous les thèmes (translate3d(progress%, 0, 0)).
+ */
+@mixin pace-theme-inner($background: pace.$pace-track-color) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  z-index: 1;
+  background: $background;
+  transform-origin: left;
+  will-change: transform;
+}
+
+/** Activité masquée (thèmes sans spinner) */
+@mixin pace-theme-activity-hidden {
+  display: none;
+}
+
+/**
+ * Spinner d’activité (thème flash).
+ * @param $color - Couleur des bords (souvent var(--pace-bar-color, ...))
+ * @param $size - Taille du carré (px)
+ * @param $offset - Offset top/right (px)
+ */
+@mixin pace-theme-activity-spinner(
+  $color: var(--pace-bar-color, pace.$pace-bar-color),
+  $size: pace.$pace-flash-activity-size,
+  $offset: pace.$pace-flash-activity-offset
+) {
+  display: block;
+  position: fixed;
+  z-index: pace.$pace-z-index;
+  top: $offset;
+  right: $offset;
+  width: $size;
+  height: $size;
+  border: solid 2px transparent;
+  border-top-color: $color;
+  border-left-color: $color;
+  border-radius: 10px;
+  -webkit-animation: pace-spinner 400ms linear infinite;
+  -moz-animation: pace-spinner 400ms linear infinite;
+  -ms-animation: pace-spinner 400ms linear infinite;
+  -o-animation: pace-spinner 400ms linear infinite;
+  animation: pace-spinner 400ms linear infinite;
+}

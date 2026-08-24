@@ -1,0 +1,24 @@
+/**
+ * @file index.scss
+ * @description Point d'entrée principal SCSS pour K3UI
+ * @author Kam3leon
+ * @version 1.0.0
+ * 
+ * ORDRE DE CHARGEMENT CRITIQUE :
+ * 1. Bases (variables, global, normalize)
+ * 2. Tokens (design tokens)
+ * 3. Mixins (utilitaires réutilisables)
+ * 4. Modules (composants, reset en premier)
+ */
+
+// 1. BASES - Variables et styles de base
+@forward './bases';
+
+// 2. TOKENS - Design tokens du système
+@forward './tokens';
+
+// 3. MIXINS - Utilitaires réutilisables
+@forward './mixins';
+
+// 4. MODULES - Composants (reset en premier, puis par ordre alphabétique)
+@forward './modules';

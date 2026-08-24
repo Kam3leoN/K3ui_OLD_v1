@@ -1,0 +1,138 @@
+/**
+ * @fileoverview Mixins pour ColorPicker
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use "../tokens/color-picker.token" as cp;
+@use "../tokens/motion.token" as motion;
+
+@mixin color-picker-container($root: 'k3ui-color-picker.color-picker') {
+  #{$root} {
+  .color-picker__container {
+    margin-bottom: cp.$color-picker-margin-bottom;
+  }
+
+  .color-picker__title {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0 0 0.75rem;
+    color: var(--md-sys-color-on-surface, #1c1b1f);
+  }
+
+  .color-picker__main {
+    display: flex;
+    gap: cp.$color-picker-gap;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+  }
+
+  .color-picker__preview {
+    width: cp.$color-picker-preview-size;
+    height: cp.$color-picker-preview-size;
+    min-width: cp.$color-picker-preview-size;
+    border-radius: cp.$color-picker-border-radius;
+    border: 2px solid var(--md-sys-color-outline-variant, #cac4d0);
+    background: var(--color-picker-current, #6750A4);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color motion.$md-sys-motion-duration-short motion.$md-sys-motion-easing-standard;
+  }
+
+  .color-picker__area-wrap {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+  }
+
+  .color-picker__area {
+    width: 100%;
+    aspect-ratio: cp.$color-picker-area-aspect;
+    max-height: cp.$color-picker-area-max-height;
+    border-radius: cp.$color-picker-border-radius;
+    cursor: crosshair;
+    touch-action: none;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid var(--md-sys-color-outline-variant, #cac4d0);
+    background: linear-gradient(to bottom, transparent, black),
+      linear-gradient(to right, white, var(--color-picker-hue, #f00));
+    &:focus-visible {
+      outline: 2px solid var(--md-sys-color-primary, #6750a4);
+      outline-offset: 2px;
+    }
+  }
+
+  .color-picker__handle {
+    position: absolute;
+    width: cp.$color-picker-handle-size;
+    height: cp.$color-picker-handle-size;
+    margin-left: -(cp.$color-picker-handle-size * 0.5);
+    margin-top: -(cp.$color-picker-handle-size * 0.5);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    left: 0;
+    top: 0;
+  }
+
+  .color-picker__hue-wrap {
+    margin-top: 0.75rem;
+    position: relative;
+    overflow: visible;
+    padding-block: 0.75rem;
+  }
+
+  /* Slider K3UI utilisé pour la teinte (Hue) : track en dégradé, sans contour, bords nets au handle */
+  .color-picker__hue-slider {
+    overflow: visible;
+
+    .slider__track {
+      background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+      border: none;
+      border-radius: cp.$color-picker-hue-radius;
+      cursor: pointer;
+    }
+    .slider__track-active,
+    .slider__track-inactive,
+    .slider__track-inactive-right,
+    .slider__track-inactive-top {
+      background-color: transparent !important;
+      pointer-events: none;
+    }
+    /* Handle M3 : contraste blanc/noir pour rester visible sur tout le dégradé */
+    .slider__handle {
+      background-color: var(--md-sys-color-on-surface, #1c1b1f);
+      box-shadow:
+        0 0 0 2px #fff,
+        0 0 0 3px rgba(0, 0, 0, 0.25);
+      pointer-events: auto;
+      cursor: grab;
+
+      &.slider__handle--active {
+        cursor: grabbing;
+      }
+    }
+    .slider__value-label {
+      display: none;
+    }
+  }
+
+  .color-picker__values {
+    margin-top: 1rem;
+    width: 100%;
+  }
+
+  .color-picker__formats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: cp.$color-picker-values-gap;
+    width: 100%;
+  }
+
+  .color-picker__format-field {
+    width: 100%;
+    min-width: 0;
+  }
+  }
+}

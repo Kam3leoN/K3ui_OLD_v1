@@ -1,0 +1,336 @@
+/**
+ * @file state.module.scss
+ * @description Module utilitaire générant les classes d'états d'interaction à partir des mixins.
+ * @use '../mixins/state.mixin.scss' pour accéder aux mixins d'états.
+ */
+
+@use '../tokens/state.token' as tokens;
+@use '../mixins/state.mixin' as state;
+
+// ============================================================================
+// CLASSES UTILITAIRES D'ÉTATS D'INTERACTION
+// ============================================================================
+
+/**
+ * Calque d'état M3 réutilisable (pseudo ::before, suit le thème)
+ */
+.k3-state-layer {
+  @include state.k3-state-layer('layer');
+}
+
+.k3-state-layer--primary {
+  @include state.k3-state-layer('on-primary');
+}
+
+.k3-state-layer--secondary {
+  @include state.k3-state-layer('on-secondary-container');
+}
+
+/**
+ * Classes pour les state layers
+ */
+.state-hover {
+  @include state.state-layer-color('hover');
+}
+
+.state-focus {
+  @include state.state-layer-color('focus');
+}
+
+.state-pressed {
+  @include state.state-layer-color('pressed');
+}
+
+.state-selected {
+  @include state.state-layer-color('selected');
+}
+
+.state-activated {
+  @include state.state-layer-color('activated');
+}
+
+.state-dragged {
+  @include state.state-layer-color('dragged');
+}
+
+.state-disabled {
+  @include state.state-disabled();
+}
+
+// ============================================================================
+// CLASSES POUR LES ÉTATS SPÉCIALISÉS
+// ============================================================================
+
+/**
+ * Classes pour les états d'erreur
+ */
+.state-error {
+  @include state.state-error();
+}
+
+/**
+ * Classes pour les états de succès
+ */
+.state-success {
+  @include state.state-success();
+}
+
+/**
+ * Classes pour les états d'avertissement
+ */
+.state-warning {
+  @include state.state-warning();
+}
+
+/**
+ * Classes pour les états d'information
+ */
+.state-info {
+  @include state.state-info();
+}
+
+/**
+ * Classes pour les états de chargement
+ */
+.state-loading {
+  @include state.state-loading();
+}
+
+/**
+ * Classes pour les états en lecture seule
+ */
+.state-readonly {
+  @include state.state-readonly();
+}
+
+/**
+ * Classes pour les états requis
+ */
+.state-required {
+  @include state.state-required();
+}
+
+// ============================================================================
+// CLASSES POUR LES ÉTATS INTERACTIFS
+// ============================================================================
+
+/**
+ * Classes pour les éléments interactifs
+ */
+.state-interactive {
+  @include state.state-interactive();
+}
+
+/**
+ * Classes pour les state layers interactifs
+ */
+.state-layer-interactive {
+  @include state.state-layer-interactive();
+}
+
+// ============================================================================
+// CLASSES POUR LES STATE LAYERS PAR COULEUR
+// ============================================================================
+
+/**
+ * Classes pour les state layers avec couleurs spécialisées
+ */
+.state-layer-error {
+  @include state.state-layer-hover('error');
+  @include state.state-layer-focus('error');
+  @include state.state-layer-pressed('error');
+}
+
+.state-layer-success {
+  @include state.state-layer-hover('success');
+  @include state.state-layer-focus('success');
+  @include state.state-layer-pressed('success');
+}
+
+.state-layer-warning {
+  @include state.state-layer-hover('warning');
+  @include state.state-layer-focus('warning');
+  @include state.state-layer-pressed('warning');
+}
+
+.state-layer-info {
+  @include state.state-layer-hover('info');
+  @include state.state-layer-focus('info');
+  @include state.state-layer-pressed('info');
+}
+
+// ============================================================================
+// CLASSES POUR LES ÉTATS AVEC TRANSITIONS
+// ============================================================================
+
+/**
+ * Classes pour les états avec transitions
+ */
+.state-with-transition {
+  transition: tokens.state-transition('full');
+}
+
+.state-hover-with-transition {
+  @include state.state-layer-hover();
+  transition: tokens.state-transition('full');
+}
+
+.state-focus-with-transition {
+  @include state.state-layer-focus();
+  transition: tokens.state-transition('full');
+}
+
+.state-pressed-with-transition {
+  @include state.state-layer-pressed();
+  transition: tokens.state-transition('full');
+}
+
+.state-selected-with-transition {
+  @include state.state-layer-selected();
+  transition: tokens.state-transition('full');
+}
+
+.state-activated-with-transition {
+  @include state.state-layer-activated();
+  transition: tokens.state-transition('full');
+}
+
+.state-dragged-with-transition {
+  @include state.state-layer-dragged();
+  transition: tokens.state-transition('full');
+}
+
+// ============================================================================
+// CLASSES POUR LES ÉTATS AVEC OUTLINES
+// ============================================================================
+
+/**
+ * Classes pour les états avec outlines
+ */
+.state-focus-outline {
+  @include state.state-focus();
+}
+
+.state-focus-visible-outline {
+  @include state.state-focus-visible();
+}
+
+// ============================================================================
+// CLASSES POUR LES ÉTATS AVEC CURSORS
+// ============================================================================
+
+/**
+ * Classes pour les curseurs
+ */
+.state-cursor-pointer {
+  cursor: tokens.state-cursor('pointer');
+}
+
+.state-cursor-disabled {
+  cursor: tokens.state-cursor('disabled');
+}
+
+.state-cursor-loading {
+  cursor: tokens.state-cursor('loading');
+}
+
+.state-cursor-readonly {
+  cursor: tokens.state-cursor('readonly');
+}
+
+// ============================================================================
+// CLASSES POUR LES ÉTATS AVEC OPACITÉS
+// ============================================================================
+
+/**
+ * Classes pour les opacités d'états
+ */
+.state-opacity-hover {
+  opacity: tokens.state-opacity('hover');
+}
+
+.state-opacity-focus {
+  opacity: tokens.state-opacity('focus');
+}
+
+.state-opacity-pressed {
+  opacity: tokens.state-opacity('pressed');
+}
+
+.state-opacity-selected {
+  opacity: tokens.state-opacity('selected');
+}
+
+.state-opacity-activated {
+  opacity: tokens.state-opacity('activated');
+}
+
+.state-opacity-dragged {
+  opacity: tokens.state-opacity('dragged');
+}
+
+.state-opacity-disabled {
+  opacity: tokens.state-opacity('disabled');
+}
+
+// ============================================================================
+// CLASSES POUR LES ÉTATS AVEC COULEURS
+// ============================================================================
+
+/**
+ * Classes pour les couleurs d'états
+ */
+.state-color-layer {
+  color: tokens.state-color('layer');
+}
+
+.state-color-layer-dark {
+  color: tokens.state-color('layer-dark');
+}
+
+.state-color-error {
+  color: tokens.state-color('error');
+}
+
+.state-color-success {
+  color: tokens.state-color('success');
+}
+
+.state-color-warning {
+  color: tokens.state-color('warning');
+}
+
+.state-color-info {
+  color: tokens.state-color('info');
+}
+
+// ============================================================================
+// CLASSES POUR LES ÉTATS AVEC BACKGROUNDS
+// ============================================================================
+
+/**
+ * Classes pour les arrière-plans d'états
+ */
+.state-bg-layer {
+  background-color: tokens.state-color('layer');
+}
+
+.state-bg-layer-dark {
+  background-color: tokens.state-color('layer-dark');
+}
+
+.state-bg-error {
+  background-color: tokens.state-color('error');
+}
+
+.state-bg-success {
+  background-color: tokens.state-color('success');
+}
+
+.state-bg-warning {
+  background-color: tokens.state-color('warning');
+}
+
+.state-bg-info {
+  background-color: tokens.state-color('info');
+} 

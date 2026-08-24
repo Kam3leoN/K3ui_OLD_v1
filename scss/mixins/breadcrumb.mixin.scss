@@ -1,0 +1,121 @@
+/**
+ * @fileoverview Mixins pour Breadcrumb (fil d'Ariane)
+ * @description Styles communs et variantes MD3 Expressive
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use "../tokens/breadcrumb.token" as bc;
+
+@mixin breadcrumb-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+}
+
+@mixin breadcrumb-item-base {
+  display: inline-flex;
+  align-items: center;
+  gap: bc.$breadcrumb-icon-gap;
+  font-family: bc.$breadcrumb-font-family;
+  font-weight: bc.$breadcrumb-font-weight;
+  line-height: bc.$breadcrumb-line-height;
+  transition:
+    color bc.$breadcrumb-transition-duration bc.$breadcrumb-transition-easing,
+    background-color bc.$breadcrumb-transition-duration bc.$breadcrumb-transition-easing;
+}
+
+@mixin breadcrumb-link {
+  @include breadcrumb-item-base;
+  color: bc.$breadcrumb-color-link;
+  text-decoration: none;
+  padding: bc.$breadcrumb-padding-y-medium bc.$breadcrumb-padding-x-medium;
+  border-radius: bc.$breadcrumb-border-radius;
+
+  &:hover {
+    color: bc.$breadcrumb-color-link-hover;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--md-sys-color-outline, var(--k3ui-outline));
+    outline-offset: 2px;
+  }
+}
+
+@mixin breadcrumb-link-current-plain {
+  @include breadcrumb-item-base;
+  color: bc.$breadcrumb-color-current;
+  background-color: bc.$breadcrumb-bg-current;
+  padding: bc.$breadcrumb-padding-y-medium bc.$breadcrumb-padding-x-medium;
+  border-radius: bc.$breadcrumb-border-radius;
+  font-weight: 600;
+}
+
+@mixin breadcrumb-link-current-filled {
+  @include breadcrumb-item-base;
+  color: bc.$breadcrumb-filled-color-current;
+  background-color: bc.$breadcrumb-filled-bg-current;
+  padding: bc.$breadcrumb-padding-y-medium bc.$breadcrumb-padding-x-medium;
+  border-radius: bc.$breadcrumb-border-radius;
+  font-weight: 600;
+}
+
+@mixin breadcrumb-separator {
+  display: inline-flex;
+  align-items: center;
+  color: bc.$breadcrumb-color-separator;
+  padding: 0 bc.$breadcrumb-gap;
+  font-size: 0.9em;
+}
+
+@mixin breadcrumb-ellipsis {
+  color: bc.$breadcrumb-color-ellipsis;
+  padding: 0 bc.$breadcrumb-gap;
+  user-select: none;
+}
+
+@mixin breadcrumb-size-small {
+  .breadcrumb__link,
+  .breadcrumb__link--current {
+    padding: bc.$breadcrumb-padding-y-small bc.$breadcrumb-padding-x-small;
+    font-size: bc.$breadcrumb-font-size-small;
+  }
+  .breadcrumb__icon {
+    width: bc.$breadcrumb-icon-size-small;
+    height: bc.$breadcrumb-icon-size-small;
+  }
+  .breadcrumb__separator {
+    padding: 0 bc.$breadcrumb-gap-small;
+  }
+}
+
+@mixin breadcrumb-size-medium {
+  .breadcrumb__link,
+  .breadcrumb__link--current {
+    padding: bc.$breadcrumb-padding-y-medium bc.$breadcrumb-padding-x-medium;
+    font-size: bc.$breadcrumb-font-size-medium;
+  }
+  .breadcrumb__icon {
+    width: bc.$breadcrumb-icon-size-medium;
+    height: bc.$breadcrumb-icon-size-medium;
+  }
+}
+
+@mixin breadcrumb-size-large {
+  .breadcrumb__link,
+  .breadcrumb__link--current {
+    padding: bc.$breadcrumb-padding-y-large bc.$breadcrumb-padding-x-large;
+    font-size: bc.$breadcrumb-font-size-large;
+  }
+  .breadcrumb__icon {
+    width: bc.$breadcrumb-icon-size-large;
+    height: bc.$breadcrumb-icon-size-large;
+  }
+  .breadcrumb__separator {
+    padding: 0 bc.$breadcrumb-gap-large;
+  }
+}

@@ -1,0 +1,151 @@
+/**
+ * @fileoverview Mixins indicateur nav item partagé (Bar + Rail) — M3E Expressive
+ * Un seul calque `.…__pill` : transform TOUJOURS `translate(-50%, -50%) scaleX(n)`
+ * (interpolable collapsed ↔ expanded). Entrée : scaleX 0.4→1 + fade (Android ActiveIndicator).
+ * @see material-components-android NavigationBarItemView.ActiveIndicatorTransform
+ * @see https://m3.material.io/styles/motion/overview/specs — spatial-fast + effects
+ */
+
+@use 'sass:map';
+@use '../tokens/navigation-item.token' as item;
+@use '../tokens/motion.token' as motion;
+
+/// Config map attendue :
+/// - width-vertical, height-vertical, radius-vertical
+/// - height-horizontal, radius-horizontal
+/// - bg, hover-bg, hover-duration
+/// - prefix: 'navigation-bar' | 'navigation-rail'
+/// - expanded-parent: sélecteur parent expanded (rail only), ex. '.navigation-rail--expanded'
+
+@mixin nav-item-indicator($config) {
+  $w-v: map.get($config, width-vertical);
+  $h-v: map.get($config, height-vertical);
+  $r-v: map.get($config, radius-vertical);
+  $h-h: map.get($config, height-horizontal);
+  $r-h: map.get($config, radius-horizontal);
+  $bg: map.get($config, bg);
+  $hover: map.get($config, hover-bg);
+  $hover-dur: map.get($config, hover-duration);
+  $prefix: map.get($config, prefix);
+  $expanded: map.get($config, expanded-parent);
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* Formule unique Bar + Rail (compact / expanded) — obligatoire pour morph fluide */
+  transform: translate(-50%, -50%) scaleX(1);
+  width: $w-v;
+  height: $h-v;
+  /* Fond hover par défaut : évite le flash « pill active » puis hover (double effet) */
+  background-color: $hover;
+  border-radius: $r-v;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+  box-sizing: border-box;
+  transform-origin: center center;
+  #{item.$nav-item-indicator-easing-var}: #{item.$nav-item-indicator-easing};
+  #{item.$nav-item-indicator-duration-var}: #{item.$nav-item-indicator-duration};
+  #{item.$nav-item-indicator-fade-duration-var}: #{item.$nav-item-indicator-fade-duration};
+  transition:
+    opacity item.$nav-item-indicator-fade-duration linear,
+    background-color item.$nav-item-hover-duration motion.$md-sys-motion-easing-standard,
+    width item.$nav-item-indicator-morph-duration item.$nav-item-indicator-morph-easing,
+    height item.$nav-item-indicator-morph-duration item.$nav-item-indicator-morph-easing,
+    border-radius item.$nav-item-indicator-morph-duration item.$nav-item-indicator-morph-easing,
+    top item.$nav-item-indicator-morph-duration item.$nav-item-indicator-morph-easing,
+    left item.$nav-item-indicator-morph-duration item.$nav-item-indicator-morph-easing;
+
+  /* Hover inactive : un seul calque (fade opacity, déjà en couleur hover) */
+  .#{$prefix}__item:hover:not(.#{$prefix}__item--active) & {
+    opacity: 1;
+  }
+
+  /* Rail compact : centre sur la zone icône (première rangée du item-content) */
+  .#{$prefix}__item-content > & {
+    top: calc(#{$h-v} / 2);
+    left: 50%;
+  }
+
+  @if $expanded {
+    /*
+     * Rail expanded : capsule pleine largeur, MÊME transform que compact.
+     * width:100% + left:50% + translate(-50%,-50%) = stretch centré interpolable.
+     */
+    #{$expanded} .#{$prefix}__item-content > &,
+    #{$expanded}.#{$prefix} .#{$prefix}__item-content > & {
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: $h-h;
+      border-radius: $r-h;
+      transform: translate(-50%, -50%) scaleX(1);
+      transform-origin: center center;
+    }
+  }
+}
+
+@mixin nav-item-indicator--active {
+  opacity: 1;
+  background-color: item.$nav-item-indicator-bg;
+}
+
+/// Entrée sélection (bar + rail compact / expanded) — scaleX + fade Android-aligned
+@mixin nav-item-indicator--anim-enter($anim-prefix: 'nav-item') {
+  animation-name: #{$anim-prefix}-indicator-scale, #{$anim-prefix}-indicator-fade;
+  animation-duration: var(#{item.$nav-item-indicator-duration-var}), var(#{item.$nav-item-indicator-duration-var});
+  animation-timing-function: var(#{item.$nav-item-indicator-easing-var}), linear;
+  animation-fill-mode: forwards, forwards;
+}
+
+/// Alias horizontal (même keyframes — transform unifié)
+@mixin nav-item-indicator--anim-enter-horizontal($anim-prefix: 'nav-item') {
+  @include nav-item-indicator--anim-enter($anim-prefix);
+}
+
+@mixin nav-item-indicator-keyframes($anim-prefix: 'nav-item') {
+  /* M3 / Android : scaleX 0.4 → 1 (ActiveIndicatorTransform.SCALE_X_HIDDEN) */
+  @keyframes #{$anim-prefix}-indicator-scale {
+    0% {
+      transform: translate(-50%, -50%) scaleX(#{item.$nav-item-indicator-scale-from});
+    }
+    100% {
+      transform: translate(-50%, -50%) scaleX(1);
+    }
+  }
+
+  /*
+   * Alpha sur le premier cinquième (Android ALPHA_FRACTION = 1/5).
+   * Même durée que le scale pour synchroniser la progress.
+   */
+  @keyframes #{$anim-prefix}-indicator-fade {
+    0% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* Rétrocompat noms historiques (évite FOUC si CSS cache ancien) */
+  @keyframes #{$anim-prefix}-indicator-scale-v {
+    0% {
+      transform: translate(-50%, -50%) scaleX(#{item.$nav-item-indicator-scale-from});
+    }
+    100% {
+      transform: translate(-50%, -50%) scaleX(1);
+    }
+  }
+
+  @keyframes #{$anim-prefix}-indicator-scale-h {
+    0% {
+      transform: translate(-50%, -50%) scaleX(#{item.$nav-item-indicator-scale-from});
+    }
+    100% {
+      transform: translate(-50%, -50%) scaleX(1);
+    }
+  }
+}

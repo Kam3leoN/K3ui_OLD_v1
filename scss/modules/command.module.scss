@@ -1,0 +1,492 @@
+/**
+ * @fileoverview Module Command (palette de commandes) K3UI - MD3 You Expressive
+ * @description Styles pour la command palette
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use "../tokens/command.token" as cmd;
+@use "../tokens/list.token" as list;
+@use "../tokens/typography.token" as typo-token;
+@use "../tokens/reset.token" as reset;
+@use "../mixins/command.mixin" as cmd-mixin;
+@use "../tokens/motion.token" as motion;
+
+// ============================================================================
+// SCRIM (legacy, conservé si besoin)
+// ============================================================================
+
+.command__scrim {
+  @include cmd-mixin.command-scrim;
+}
+
+// ============================================================================
+// DIALOG PALETTE (template Dialog : header = recherche, content = liste, footer = navigation)
+// ============================================================================
+
+.command-palette-dialog.dialog {
+  width: cmd.$command-width-default;
+  max-width: calc(100vw - 48px);
+
+  &.command__container--compact {
+    width: cmd.$command-width-compact;
+  }
+
+  &.command__container--expanded {
+    width: cmd.$command-width-expanded;
+  }
+
+  // Header = recherche (pas de surcouche, respect du template dialog)
+  .dialog-header {
+    padding-bottom: 0;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dialog-content {
+    padding: 0 0 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0;
+    flex: 1;
+  }
+
+  .dialog-footer {
+    padding: 16px 24px;
+    min-height: 52px;
+    justify-content: space-between;
+    align-items: center;
+
+    .command__footer {
+      border-top: none;
+      padding: 0;
+      width: 100%;
+    }
+  }
+}
+
+// ============================================================================
+// CONTAINER (legacy scrim mode)
+// ============================================================================
+
+.command__container {
+  @include cmd-mixin.command-container;
+}
+
+// ============================================================================
+// SURFACE (legacy scrim mode uniquement ; dans le dialog pas de surface colorée)
+// ============================================================================
+
+.command__surface {
+  @include cmd-mixin.command-surface;
+}
+
+// Dans la palette-dialog, pas de surface : le header/content/footer utilisent le fond du template dialog
+.command-palette-dialog .dialog-header,
+.command-palette-dialog .dialog-content,
+.command-palette-dialog .dialog-footer {
+  background: transparent;
+  color: inherit;
+}
+
+// ============================================================================
+// SEARCH
+// ============================================================================
+
+.command__search {
+  display: flex;
+  align-items: center;
+  gap: cmd.$command-search-gap;
+  padding: cmd.$command-search-padding cmd.$command-search-padding 0;
+}
+
+.command__search-icon {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: cmd.$command-search-icon-size;
+  flex-shrink: 0;
+  transition:
+    color motion.$md-sys-motion-expressive-effects-fast-duration motion.$md-sys-motion-expressive-effects-fast-easing,
+    font-variation-settings motion.$md-sys-motion-expressive-effects-fast-duration motion.$md-sys-motion-expressive-effects-fast-easing;
+
+  &.command__search-icon--active {
+    color: var(--md-sys-color-primary);
+    font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+  }
+}
+
+.command__search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--md-sys-typescale-title-medium-font, "Google Sans", sans-serif);
+  font-size: cmd.$command-search-input-size;
+  font-weight: 400;
+  color: var(--md-sys-color-on-surface);
+  caret-color: var(--md-sys-color-primary);
+  padding: 4px 0;
+
+  &::placeholder {
+    color: var(--md-sys-color-on-surface-variant);
+    opacity: 0.7;
+  }
+}
+
+.command__search-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 4px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transform: scale(0.7);
+  pointer-events: none;
+  transition:
+    opacity motion.$md-sys-motion-expressive-effects-fast-duration motion.$md-sys-motion-expressive-effects-fast-easing,
+    transform motion.$md-sys-motion-expressive-effects-fast-duration motion.$md-sys-motion-expressive-spatial-fast-easing,
+    background motion.$md-sys-motion-expressive-effects-fast-duration motion.$md-sys-motion-expressive-effects-fast-easing;
+
+  &.command__search-clear--visible {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: all;
+  }
+
+  &:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface-variant) 8%, transparent);
+  }
+}
+
+// ============================================================================
+// DIVIDER
+// ============================================================================
+
+.command__divider {
+  height: 1px;
+  background: var(--md-sys-color-outline-variant);
+  margin: 12px 0 0;
+  opacity: 0.6;
+}
+
+// ============================================================================
+// RESULTS
+// ============================================================================
+
+.command__results {
+  overflow-y: auto;
+  padding: 8px 0;
+  flex: 1;
+
+  .command__item:hover::before {
+    opacity: cmd.$command-state-hover-opacity;
+  }
+
+  .command__item--active {
+    background: cmd.$command-state-active-bg;
+
+    &::before {
+      opacity: 0;
+    }
+
+    .command__item-icon {
+      background: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+    }
+
+    .command__item-name {
+      color: var(--md-sys-color-primary);
+    }
+  }
+}
+
+// Liste segmentée (composant List) pour les résultats
+.command__results-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 8px 8px;
+
+  .list {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  // Grouped : pas de gap entre items d'un même groupe (style premier/dernier respecté par List)
+  .list--segmented .list__container {
+    gap: 0;
+  }
+}
+
+// ============================================================================
+// SECTIONS (titres h6 au-dessus de chaque liste groupée, à part des items)
+// ============================================================================
+
+.command__section {
+  margin-top: cmd.$command-group-spacing;
+  margin-bottom: 0;
+
+  &:first-child {
+    margin-top: 4px;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Titres de section : typo title-large (token, comme typography.module / page doc)
+@mixin _command-section-title-typography($important: false) {
+  $suffix: '';
+
+  @if $important {
+    $suffix: ' !important';
+  }
+
+  font-family: typo-token.typography-title('large', 'font-family-name')#{$suffix};
+  font-size: typo-token.typography-title('large', 'font-size')#{$suffix};
+  font-weight: typo-token.typography-title('large', 'font-weight')#{$suffix};
+  line-height: typo-token.typography-title('large', 'line-height')#{$suffix};
+  letter-spacing: typo-token.typography-title('large', 'letter-spacing')#{$suffix};
+}
+
+.command__section-title {
+  margin: 0 0 6px;
+  padding: 0 16px;
+  color: var(--md-sys-color-on-surface-variant);
+  @include _command-section-title-typography(false);
+}
+
+// Forcer la typo dans le dialog (évite que .dialog__content ou autre écrase)
+.command-palette-dialog .command__section-title {
+  @include _command-section-title-typography(true);
+}
+
+
+.command__section-list {
+  min-width: 0;
+}
+
+// List grouped par section : item seul = 16dp ; premier/dernier/milieu = tokens MD3 (12/4dp)
+.command__results-list {
+  .list__container > .list__item-wrapper:first-child:last-child,
+  .list__container > .list__item-wrapper:first-child:last-child .list__item-inner {
+    border-radius: list.$list-segmented-radius-active !important;
+  }
+  .list__container > .list__item-wrapper:first-child:not(:last-child),
+  .list__container > .list__item-wrapper:first-child:not(:last-child) .list__item-inner {
+    border-radius: list.$list-segmented-radius-outer list.$list-segmented-radius-outer list.$list-segmented-radius-inner list.$list-segmented-radius-inner !important;
+  }
+  .list__container > .list__item-wrapper:last-child:not(:first-child),
+  .list__container > .list__item-wrapper:last-child:not(:first-child) .list__item-inner {
+    border-radius: list.$list-segmented-radius-inner list.$list-segmented-radius-inner list.$list-segmented-radius-outer list.$list-segmented-radius-outer !important;
+  }
+  .list__container > .list__item-wrapper:not(:first-child):not(:last-child),
+  .list__container > .list__item-wrapper:not(:first-child):not(:last-child) .list__item-inner {
+    border-radius: list.$list-segmented-radius-inner !important;
+  }
+}
+
+// ============================================================================
+// EMPTY STATE
+// ============================================================================
+
+.command__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: cmd.$command-empty-padding;
+  gap: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+
+  .material-symbols-rounded,
+  .k3ui-icon {
+    font-size: cmd.$command-empty-icon-size;
+    opacity: 0.4;
+  }
+
+  p {
+    font-size: 14px;
+    text-align: center;
+    opacity: 0.7;
+  }
+}
+
+// ============================================================================
+// GROUP HEADER
+// ============================================================================
+
+.command__group-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: cmd.$command-group-header-padding;
+  font-size: cmd.$command-group-header-size;
+  font-weight: cmd.$command-group-header-weight;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--md-sys-color-on-surface-variant);
+
+  .material-symbols-rounded {
+    font-size: 12px;
+    opacity: 0.7;
+  }
+}
+
+// ============================================================================
+// ITEM
+// ============================================================================
+
+.command__item {
+  display: flex;
+  align-items: center;
+  gap: cmd.$command-item-gap;
+  padding: 0 12px;
+  margin: 1px cmd.$command-item-margin-x;
+  height: cmd.$command-item-height;
+  border-radius: cmd.$command-item-radius;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background motion.$md-sys-motion-expressive-effects-fast-duration motion.$md-sys-motion-expressive-effects-fast-easing;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--md-sys-color-on-surface);
+    opacity: 0;
+    border-radius: inherit;
+    transition: opacity motion.$md-sys-motion-expressive-effects-fast-duration motion.$md-sys-motion-expressive-effects-fast-easing;
+    pointer-events: none;
+  }
+}
+
+.command__item-icon {
+  width: cmd.$command-item-icon-size;
+  height: cmd.$command-item-icon-size;
+  border-radius: cmd.$command-icon-radius;
+  background: var(--md-sys-color-surface-container-highest);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--md-sys-color-on-surface-variant);
+  transition:
+    background motion.$md-sys-motion-expressive-effects-fast-duration motion.$md-sys-motion-expressive-effects-fast-easing,
+    color motion.$md-sys-motion-expressive-effects-fast-duration motion.$md-sys-motion-expressive-effects-fast-easing,
+    transform motion.$md-sys-motion-expressive-effects-fast-duration motion.$md-sys-motion-expressive-spatial-fast-easing;
+
+  .command__item--active & {
+    transform: scale(1.08);
+  }
+
+  .material-symbols-rounded {
+    font-size: cmd.$command-item-icon-inner;
+  }
+}
+
+.command__item-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.command__item-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color motion.$md-sys-motion-expressive-effects-fast-duration motion.$md-sys-motion-expressive-effects-fast-easing;
+
+  .command__item-highlight {
+    color: var(--md-sys-color-primary);
+    font-weight: 600;
+  }
+}
+
+.command__item-desc {
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+  opacity: 0.8;
+}
+
+.command__item-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.command__shortcut {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+
+  kbd {
+    font-family: var(--md-sys-typescale-body-medium-font, #{reset.$font-family-mono});
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 6px;
+    background: var(--md-sys-color-surface-container-highest);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: 4px;
+    color: var(--md-sys-color-on-surface-variant);
+    line-height: 1.4;
+  }
+
+  .command__item--active kbd {
+    background: color-mix(in srgb, var(--md-sys-color-primary) 12%, var(--md-sys-color-surface-container-highest));
+    border-color: color-mix(in srgb, var(--md-sys-color-primary) 30%, var(--md-sys-color-outline-variant));
+    color: var(--md-sys-color-primary);
+  }
+}
+
+// ============================================================================
+// FOOTER
+// ============================================================================
+
+.command__footer {
+  padding: cmd.$command-footer-padding;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  opacity: 0.6;
+}
+
+.command__footer-hint {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: cmd.$command-footer-hint-size;
+  color: var(--md-sys-color-on-surface-variant);
+
+  kbd {
+    font-family: var(--md-sys-typescale-body-medium-font, #{reset.$font-family-mono});
+    font-size: 10px;
+    padding: 1px 5px;
+    background: var(--md-sys-color-surface-container-highest);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: 3px;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+}
+
+.command__footer-spacer {
+  flex: 1;
+}
+
+.command__footer-count {
+  font-size: cmd.$command-footer-hint-size;
+  color: var(--md-sys-color-on-surface-variant);
+}
+

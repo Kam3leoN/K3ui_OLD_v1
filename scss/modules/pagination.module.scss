@@ -1,0 +1,47 @@
+/**
+ * @fileoverview Module Pagination
+ * @description Pagination numérique MD3 Expressive (boutons numérotés + nav)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use "../tokens/pagination.token" as pagination;
+@use "../mixins/pagination.mixin" as pagination-mixin;
+
+.pagination {
+  @include pagination-mixin.pagination-root;
+}
+
+.pagination__inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.pagination__nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.pagination__page-btn {
+  @include pagination-mixin.pagination-page-btn;
+}
+
+.pagination__page-btn--active {
+  @include pagination-mixin.pagination-page-btn-active;
+}
+
+.pagination__nav-btn {
+  @include pagination-mixin.pagination-nav-btn;
+}
+
+.pagination__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: pagination.$pagination-size-btn;
+  height: pagination.$pagination-size-btn;
+  color: pagination.$pagination-color-on-surface-variant;
+}
+

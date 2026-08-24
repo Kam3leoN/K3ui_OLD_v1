@@ -1,0 +1,367 @@
+/**
+ * @file dialog.tokens.scss
+ * @description Tokens pour le composant Dialog K3UI - Material Design 3 You Expressive
+ * @see https://m3.material.io/components/dialogs/overview
+ * @author Kam3leon
+ * @version 2.0.0
+ */
+
+@use 'sass:map';
+@use 'spacing.token' as spacing;
+@use 'radius.token' as radius;
+@use 'motion.token' as motion;
+@use 'elevation.token' as elevation;
+@use 'typography.token' as typography;
+@use 'theme.token' as theme;
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+/// Largeur maximale du dialog (M3 : 560dp — seul plafond spec, sans palier par classe de fenêtre)
+/// @type Length
+$dialog-max-width: 560px !default;
+
+/// Largeur maximale du dialog alert (M3 : 400dp)
+/// @type Length
+$dialog-alert-max-width: 400px !default;
+
+/// Largeur minimale du dialog (M3 : 280dp — enveloppée en CSS via min(..., disponible))
+/// @type Length
+$dialog-min-width: 280px !default;
+
+/// Hauteur maximale du dialog (M3 : dynamique, plafond viewport)
+/// @type Length
+$dialog-max-height: 80vh !default;
+
+/// Hauteur maximale du bottom-sheet
+/// @type Length
+$dialog-bottom-sheet-max-height: 45% !default;
+
+// ============================================================================
+// BORDERS (utilise les tokens radius)
+// ============================================================================
+
+/// Rayon de bordure du dialog (MD3: 28px)
+/// @type Length
+$dialog-border-radius: 28px !default;
+
+/// Rayon de bordure du bottom-sheet
+/// @type Length
+$dialog-bottom-sheet-border-radius: radius.radius('large') radius.radius('large') 0 0 !default;
+
+// ============================================================================
+// POSITIONING (utilise les tokens spacing)
+// ============================================================================
+
+/// Position de départ en haut
+/// @type Length
+$dialog-starting-top: 4% !default;
+
+/// Position de fin en haut
+/// @type Length
+$dialog-ending-top: 10% !default;
+
+// ============================================================================
+// TIMING (utilise les tokens motion)
+// ============================================================================
+
+/// Durée d'ouverture du dialog (material-web : 500ms emphasized)
+/// @type Duration
+$dialog-in-duration: 500ms !default;
+
+/// Durée de fermeture du dialog (material-web : 150ms emphasized-accelerate)
+/// @type Duration
+$dialog-out-duration: 150ms !default;
+
+/// Fonction de timing pour les animations
+/// @type Timing
+$dialog-timing-function: ease-out !default;
+
+// ============================================================================
+// OPACITY
+// ============================================================================
+
+/// Opacité de l'overlay/scrim (MD3: 0.32 pour light theme, 0.64 pour dark theme)
+/// @type Number
+$dialog-overlay-opacity: 0.32 !default;
+
+// ============================================================================
+// Z-INDEX
+// ============================================================================
+
+/// Z-index de l'overlay (aligné Chrome Web Store : ~2000)
+/// @type Number
+$dialog-overlay-z-index: 2000 !default;
+
+/// Z-index du dialog
+/// @type Number
+$dialog-z-index: 2001 !default;
+
+// ============================================================================
+// BREAKPOINTS
+// ============================================================================
+
+/// Breakpoint mobile pour les dialogs
+/// @type String
+$dialog-mobile-breakpoint: '(max-width: 768px)' !default;
+
+/// Breakpoint plein écran M3 (≤600dp → viewport complet)
+/// @type String
+$dialog-fullscreen-breakpoint: '(max-width: 600px)' !default;
+
+/// Hauteur barre d'actions fullscreen (M3 : 56dp)
+/// @type Length
+$dialog-fullscreen-toolbar-height: 56px !default;
+
+/// Padding latéral header fullscreen (M3 : 16dp)
+/// @type Length
+$dialog-fullscreen-header-side-padding: 16px !default;
+
+/// Padding titre fullscreen sous la toolbar (M3 : 20dp)
+/// @type Length
+$dialog-fullscreen-title-padding: 0 20px 16px !default;
+
+/// Padding contenu fullscreen (M3 : 24dp)
+/// @type Length
+$dialog-fullscreen-content-padding: 24px !default;
+
+/// Marge horizontale desktop pour dialog fullscreen non plein viewport (M3 : 200dp)
+/// @type Length
+$dialog-fullscreen-desktop-margin: 200px !default;
+
+/// Largeur max modal intermédiaire fullscreen (M3 : 560dp)
+/// @type Length
+$dialog-fullscreen-modal-max-width: 560px !default;
+
+/// Hauteur max modal intermédiaire fullscreen (M3 : 560dp)
+/// @type Length
+$dialog-fullscreen-modal-max-height: 560px !default;
+
+// ============================================================================
+// PADDING (utilise les tokens spacing)
+// ============================================================================
+
+/// Padding horizontal du dialog (Chrome Web Store / M3 : 24dp)
+/// @type Length
+$dialog-inline-padding: 24px !default;
+
+/// Padding du header du dialog (CWS : 24dp 24dp 16dp)
+/// @type Length
+$dialog-header-padding: 24px 24px 16px !default;
+
+/// Padding du content du dialog
+/// @type Length
+$dialog-content-padding: 24px !default;
+
+/// Padding du corps (M3 : 24dp latéral ; gap body→actions = 24dp via footer)
+/// @type Length
+$dialog-body-padding: 0 24px 0 !default;
+
+/// Padding du footer du dialog (M3 : 24dp top/sides/bottom — gap body→actions + padding container)
+/// @type Length
+$dialog-footer-padding: 24px 24px 24px !default;
+
+/// Padding mobile du footer
+/// @type Length
+$dialog-footer-padding-mobile: 16px 20px 20px !default;
+
+/// Inset viewport horizontal (24dp × 2 = 48px)
+/// @type Length
+$dialog-viewport-inset: 48px !default;
+
+/// Inset viewport vertical M3 (80dp × 2)
+/// @type Length
+$dialog-viewport-inset-block: 80px !default;
+
+/// Inset viewport vertical paysage / petite hauteur (24dp)
+/// @type Length
+$dialog-viewport-inset-block-compact: 24px !default;
+
+/// Inset viewport vertical mobile étroit (48dp)
+/// @type Length
+$dialog-viewport-inset-block-mobile: 48px !default;
+
+/// Padding bas du contenu quand des actions sont présentes (M3 : 24dp)
+/// @type Length
+$dialog-content-padding-bottom-with-actions: 24px !default;
+
+/// Gap entre headline et supporting text
+/// @type Length
+$dialog-headline-to-body-gap: 16px !default;
+
+/// Taille icône optionnelle du dialog
+/// @type Length
+$dialog-icon-size: 24px !default;
+
+// ============================================================================
+// GAPS (utilise les tokens spacing)
+// ============================================================================
+
+/// Gap entre les éléments du header
+/// @type Length
+$dialog-header-gap: 16px !default;
+
+/// Gap entre les boutons du footer
+/// @type Length
+$dialog-footer-gap: 8px !default;
+
+// ============================================================================
+// TYPOGRAPHY (utilise les tokens typography)
+// ============================================================================
+
+/// Style typographique du titre
+/// @type String
+$dialog-title-typography: 'headline-small' !default;
+
+/// Style typographique du contenu
+/// @type String
+$dialog-content-typography: 'body-medium' !default;
+
+/// Style typographique des boutons
+/// @type String
+$dialog-button-typography: 'label-large' !default;
+
+// ============================================================================
+// COLORS (utilise les variables CSS Material Design 3)
+// ============================================================================
+
+/// Couleur de fond du dialog (M3 : surface-container-high)
+/// @type Color
+$dialog-background-color: var(--md-sys-color-surface-container-high) !default;
+
+/// Couleur du texte du dialog
+/// @type Color
+$dialog-text-color: var(--md-sys-color-on-surface) !default;
+
+/// Couleur du texte secondaire du dialog
+/// @type Color
+$dialog-text-secondary-color: var(--md-sys-color-on-surface-variant) !default;
+
+/// Ombre d'élévation du dialog (CWS : surface plate, pas d'ombre visible)
+/// @type String
+$dialog-elevation-shadow: none !default;
+
+/// Couleur de l'overlay
+/// @type Color
+$dialog-overlay-color: rgba(0, 0, 0, $dialog-overlay-opacity) !default;
+
+/// Couleur de la bordure du dialog
+/// @type Color
+$dialog-border-color: var(--md-sys-color-outline-variant) !default;
+
+/// Couleur du bouton de fermeture
+/// @type Color
+$dialog-close-button-color: var(--md-sys-color-on-surface-variant) !default;
+
+/// Couleur de fond du bouton de fermeture au hover
+/// @type Color
+$dialog-close-button-hover-color: rgba(var(--md-sys-color-on-surface-rgb), 0.08) !default;
+
+/// Couleur de fond du bouton de fermeture au focus
+/// @type Color
+$dialog-close-button-focus-color: rgba(var(--md-sys-color-on-surface-rgb), 0.12) !default;
+
+/// Couleur de fond du bouton de fermeture au active
+/// @type Color
+$dialog-close-button-active-color: rgba(var(--md-sys-color-on-surface-rgb), 0.16) !default;
+
+// ============================================================================
+// ELEVATION (utilise les tokens elevation)
+// ============================================================================
+
+/// Niveau d'élévation du dialog
+/// @type Number
+$dialog-elevation-level: 3 !default;
+
+/// Niveau d'élévation de l'overlay
+/// @type Number
+$dialog-overlay-elevation-level: 2 !default;
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+/// Animation d'ouverture du dialog
+/// @type String
+$dialog-open-animation: 'zoom-in' !default;
+
+/// Animation de fermeture du dialog
+/// @type String
+$dialog-close-animation: 'zoom-out' !default;
+
+/// Animation d'ouverture du bottom-sheet
+/// @type String
+$dialog-bottom-sheet-open-animation: 'reveal-down' !default;
+
+/// Animation de fermeture du bottom-sheet
+/// @type String
+$dialog-bottom-sheet-close-animation: 'reveal-up' !default;
+
+// ============================================================================
+// STATES
+// ============================================================================
+
+/// Opacité de l'état disabled
+/// @type Number
+$dialog-disabled-opacity: 0.38 !default;
+
+/// Opacité de l'état loading
+/// @type Number
+$dialog-loading-opacity: 0.6 !default;
+
+// ============================================================================
+// RESPONSIVE
+// ============================================================================
+
+/// Padding du header sur mobile
+/// @type Length
+$dialog-header-padding-mobile: 16px !default;
+
+/// Padding du content sur mobile
+/// @type Length
+$dialog-content-padding-mobile: 12px !default;
+
+// ============================================================================
+// ACCESSIBILITY
+// ============================================================================
+
+/// Focus outline width
+/// @type Length
+$dialog-focus-outline-width: 2px !default;
+
+/// Focus outline offset
+/// @type Length
+$dialog-focus-outline-offset: 2px !default;
+
+/// Focus outline color
+/// @type Color
+$dialog-focus-outline-color: var(--md-sys-color-primary) !default;
+
+// ============================================================================
+// SCROLLBAR (rail custom hors surface — même modèle panel / docs-layout)
+// ============================================================================
+
+/// Gutter hors `.dialog-container` pour le rail custom
+/// @type Length
+$dialog-scrollbar-gutter: 8px !default;
+
+/// Largeur du thumb au repos
+/// @type Length
+$dialog-scrollbar-thumb-width: 5px !default;
+
+/// Largeur du thumb au hover / drag
+/// @type Length
+$dialog-scrollbar-thumb-width-active: 7px !default;
+
+/// Hauteur minimale du thumb
+/// @type Length
+$dialog-scrollbar-thumb-min-height: 24px !default;
+
+/// Couleur du thumb (alignée panel trailing / primary)
+/// @type Color
+$dialog-scrollbar-thumb-color: var(--md-sys-color-primary, #6750a4) !default;
+
+/// Durée du fade d'apparition
+/// @type Duration
+$dialog-scrollbar-fade-duration: 180ms !default;

@@ -1,0 +1,61 @@
+/**
+ * @fileoverview Tokens de design pour LoadingIndicator
+ * @description Material Design 3 Expressive – indicateur de chargement morphing
+ * @see https://m3.material.io/components/loading-indicator
+ * @author K3UI Team
+ */
+
+@use 'sass:math';
+@use 'motion.token' as motion;
+
+// ============================================================================
+// DIMENSIONS – M3 (24–240dp)
+// ============================================================================
+
+/** Taille par défaut (px) – M3 circular progress size 48 */
+$loading-indicator-size-default: 48;
+
+/** Ratio shape/container — 42/48 (headroom pill + rotation, M3 base 38/48) */
+$loading-indicator-shape-ratio: math.div(42, 48);
+
+// ============================================================================
+// COULEURS – M3 (primary / primary-container / on-primary-container)
+// ============================================================================
+
+/** Shape — variante default (Primary) */
+$loading-indicator-color: var(--loading-indicator-color, var(--md-sys-color-primary, #6750a4));
+
+/** Fond — variante contained (Primary container) */
+$loading-indicator-container-bg: var(
+  --loading-indicator-container-color,
+  var(--md-sys-color-primary-container, #eaddff)
+);
+
+/** Shape — variante contained (On primary container) */
+$loading-indicator-container-shape-color: var(
+  --loading-indicator-color,
+  var(--md-sys-color-on-primary-container, #21005d)
+);
+
+// ============================================================================
+// CONTAINER SHAPE – cercle parfait (full / circulaire)
+// ============================================================================
+
+$loading-indicator-container-radius: 50%;
+
+// ============================================================================
+// ANIMATION – tokens motion spatial-slow (morph par shape)
+// ============================================================================
+
+/** Durée par shape — spring spatial-slow actif */
+$loading-indicator-duration-per-shape: motion.spring-duration(spatial, slow);
+
+/** Durée cycle complet — exposée via JS (--loading-indicator-cycle-duration) */
+$loading-indicator-cycle-duration: var(--loading-indicator-cycle-duration, #{7 * 650ms});
+
+/** Easing morph — spring spatial-slow actif */
+$loading-indicator-morph-easing: motion.spring-easing(spatial, slow);
+
+/** Rotation cycle (mode cycle legacy) */
+$loading-indicator-rotation-duration: $loading-indicator-cycle-duration;
+$loading-indicator-easing: linear;

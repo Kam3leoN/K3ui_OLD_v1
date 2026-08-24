@@ -1,0 +1,94 @@
+/**
+ * @fileoverview Tokens de design pour Badge
+ * @description Variables de design pour le composant Badge conforme Material Design 3 Expressive
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use './spacing.token' as spacing;
+@use './radius.token' as radius;
+@use './typography.token' as typography;
+@use './motion.token' as motion;
+@use './color.token' as color;
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+/** Taille du badge small (point uniquement) - 8px selon React (w-2 h-2) */
+$badge-size-small: 8px;
+
+/** Hauteur minimale du badge large - 20px selon React (h-5) */
+$badge-height-large: 20px;
+
+/** Largeur minimale du badge large (un chiffre) - 20px selon React (min-w-[20px]) */
+$badge-width-min-large: 20px;
+
+/** Padding horizontal du badge large - 6px selon React (px-1.5) */
+$badge-padding-horizontal: 6px;
+
+// ============================================================================
+// TYPOGRAPHIE
+// ============================================================================
+
+/** Taille de police du badge large */
+$badge-font-size: 12px;
+
+/** Poids de police */
+$badge-font-weight: 500;
+
+/** Hauteur de ligne */
+$badge-line-height: 1;
+
+// ============================================================================
+// FORMES ET BORDURES
+// ============================================================================
+
+/** Border radius pour badge small (cercle) */
+$badge-border-radius-small: 50%;
+
+/** Border radius pour badge small - 3dp selon MD3 (cercle parfait) */
+$badge-border-radius-small-value: 3px;
+
+/** Border radius pour badge large - 10px pour rectangle aux angles arrondis (pas ovale) */
+$badge-border-radius-large: 10px;
+
+// ============================================================================
+// COULEURS
+// ============================================================================
+
+/** Couleur de fond par défaut */
+$badge-background-color-default: #ee4540;
+
+/** Couleur de texte par défaut */
+$badge-text-color-default: #ffffdd;
+
+// ============================================================================
+// ANIMATIONS ET TRANSITIONS
+// ============================================================================
+
+/** Durée de transition */
+$badge-transition-duration: motion.$md-sys-motion-duration-entering; // 200ms
+
+/** Courbe d'animation */
+$badge-transition-easing: motion.$md-sys-motion-easing-standard;
+
+// ============================================================================
+// Z-INDEX
+// ============================================================================
+
+/** Z-index par défaut */
+$badge-z-index: 100;
+
+// ============================================================================
+// POSITIONS
+// ============================================================================
+
+/** Offset small badge depuis le coin top-trailing - 6x6dp selon MD3 */
+$badge-offset-small-x: 6px;
+$badge-offset-small-y: 6px;
+
+/** Offset large badge depuis le coin top-trailing - 14x12dp selon MD3 */
+$badge-offset-large-x: 12px;
+$badge-offset-large-y: 14px;
+

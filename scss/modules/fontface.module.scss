@@ -1,0 +1,24 @@
+// fontface.module.scss
+/**
+ * @file fontface.module.scss
+ * @description Module SCSS pour les polices du projet : Google Sans / Text / Display (UI) et JetBrains Mono (monospace)
+ * @see https://io.google/2026/
+ */
+
+@use '../mixins/fontface.mixin' as fontface; 
+
+/// Utilitaire pour injecter Google Sans stack + JetBrains Mono
+.fontface-all {
+  @include fontface.fontface-all;
+}
+
+/// Utilitaire pour injecter uniquement JetBrains Mono
+.fontface-jetbrains {
+  @include fontface.fontface-jetbrains;
+}
+
+// =============================================================================
+// DÉCLARATION @FONT-FACE — Google Sans / Text / Display (police principale)
+// =============================================================================
+
+@include fontface.fontface-googlesans;

@@ -1,0 +1,66 @@
+@use './variables' as vars;
+@use '../tokens/fontface.token' as fontface;
+@use '../modules/typography.module' as typography;
+
+/**
+ * @file _global.scss
+ * @description Styles globaux pour le body, incluant la gestion du thème light/dark via tokens CSS.
+ */
+
+// Règles de base pour empêcher les scrollbars horizontales
+html {
+  font-family: fontface.$font-family-main;
+  box-sizing: border-box;
+  overflow-x: hidden; // Empêche les scrollbars horizontales
+  line-height: 1.5;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  color: vars.$text-color;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box; // Changé de inherit à border-box
+}
+
+body {
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  /* Encoche Field outlined sur surface page */
+  --k3ui-field-outlined-notch-bg: var(--md-sys-color-surface);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; // Empêche les scrollbars horizontales
+  width: 100%; // Assure que le body ne dépasse pas
+  max-width: 100vw; // Empêche le débordement
+}
+
+// Préférence système : réduire les animations décoratives (sans dépendre du toggle JS)
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// Respect global de la préférence reduced motion (override utilisateur via JS)
+html.k3ui-reduced-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+// Règle globale pour empêcher les débordements
+* {
+  max-width: 100%; // Empêche tout élément de déborder
+}
+
+// Tokens couleur light/dark : theme.module.scss (html[data-theme], :root auto-theme)
+
+code {
+  font-family: fontface.$font-family-code;
+}

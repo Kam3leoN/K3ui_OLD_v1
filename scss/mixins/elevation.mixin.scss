@@ -1,0 +1,19 @@
+@use '../tokens' as tokens;
+
+/// @file elevation.mixin.scss
+/// @brief Mixin elevation fidèle à Material 3 (0 à 5)
+@mixin elevation($level: 1) {
+  @if $level == 0 {
+    box-shadow: var(--md-sys-elevation-level0, #{tokens.$md-sys-elevation-level0});
+  } @else if $level == 1 {
+    box-shadow: var(--md-sys-elevation-level1, #{tokens.$md-sys-elevation-level1});
+  } @else if $level == 2 {
+    box-shadow: var(--md-sys-elevation-level2, #{tokens.$md-sys-elevation-level2});
+  } @else if $level == 3 {
+    box-shadow: var(--md-sys-elevation-level3, #{tokens.$md-sys-elevation-level3});
+  } @else if $level == 4 {
+    box-shadow: var(--md-sys-elevation-level4, #{tokens.$md-sys-elevation-level4});
+  } @else if $level == 5 {
+    box-shadow: var(--md-sys-elevation-level5, #{tokens.$md-sys-elevation-level5});
+  }
+} 

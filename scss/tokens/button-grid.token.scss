@@ -1,0 +1,75 @@
+/**
+ * @fileoverview Tokens pour ButtonGrid Material Design 3 Expressive
+ * @description Grille 3×3 — Small (S) : 48×48 · gap 2 · outer-r 24 · inner-r 4 · grid 148×148
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'motion.token' as motion;
+
+// ============================================================================
+// GÉOMÉTRIE — Small (S)
+// ============================================================================
+
+/** Taille d'une cellule (dp) */
+$btn-grid-cell: 48px !default;
+
+/**
+ * Gap CSS entre les cellules (gutter clair, hors border / hors ombre).
+ * Grille = 3×48 + 2×gap = 148px.
+ */
+$btn-grid-gap: 2px !default;
+
+/** Taille totale de la grille (48×3 + 2×2) */
+$btn-grid-size: 148px !default;
+
+/** Rayon extérieur (coins externes de la grille) */
+$btn-grid-outer-radius: 24px !default;
+
+/** Rayon intérieur (jonctions / arêtes / centre) */
+$btn-grid-inner-radius: 4px !default;
+
+/** Taille d'icône SVG (FAB) */
+$btn-grid-icon-size: 28px !default;
+
+// ============================================================================
+// MOTION
+// ============================================================================
+
+$btn-grid-spring: cubic-bezier(0.34, 1.4, 0.64, 1) !default;
+$btn-grid-decelerate: cubic-bezier(0.2, 0, 0, 1) !default;
+$btn-grid-effects: cubic-bezier(0.05, 0.7, 0.1, 1) !default;
+$btn-grid-state-duration: 200ms !default;
+
+/** Stagger open : centre → arêtes → coins */
+$btn-grid-stagger-0: 0.04s !default;
+$btn-grid-stagger-1: 0.11s !default;
+$btn-grid-stagger-2: 0.18s !default;
+
+$btn-grid-spring-ease: motion.spring-easing(effects, fast) !default;
+
+// ============================================================================
+// COULEURS — alignées sur le thème courant
+// ============================================================================
+
+$btn-grid-filled-bg: var(--md-sys-color-primary) !default;
+$btn-grid-filled-fg: var(--md-sys-color-on-primary) !default;
+
+$btn-grid-tonal-bg: var(--md-sys-color-secondary-container) !default;
+$btn-grid-tonal-fg: var(--md-sys-color-on-secondary-container) !default;
+
+$btn-grid-outlined-fg: var(--md-sys-color-primary) !default;
+$btn-grid-outline: var(--md-sys-color-outline-variant) !default;
+$btn-grid-outline-hover: var(--md-sys-color-outline) !default;
+$btn-grid-focus-ring: var(--md-sys-color-primary) !default;
+
+/** FAB seul : ombre portée autorisée */
+$btn-grid-fab-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.06) !default;
+$btn-grid-fab-shadow-hover: 0 2px 6px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.08) !default;
+
+/**
+ * Cellules grille : inset uniquement — pas d’ombre portée
+ * (sinon le gutter 2dp paraît inégal entre lignes et colonnes).
+ */
+$btn-grid-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06) !default;
+$btn-grid-shadow-hover: inset 0 1px 0 rgba(255, 255, 255, 0.1) !default;

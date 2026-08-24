@@ -1,0 +1,774 @@
+/**
+ * Field Mixins - Mixins pour le composant k3ui-field
+ * Basé sur MDUI text-field et Material Design 3
+ */
+
+@use 'sass:map';
+@use '../tokens/field.token' as field;
+@use '../tokens/motion.token' as tokens;
+@use './motion.mixin' as motionmix;
+@use './typography.mixin' as typo;
+
+// ========================================
+// CONTAINER
+// ========================================
+
+/**
+ * Mixin pour le container du field
+ * Gère le padding et les bordures via box-shadow
+ */
+@mixin field-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: var(--k3ui-field-height, #{field.$md-sys-field-height-filled});
+  min-height: var(--k3ui-field-height, #{field.$md-sys-field-height-filled});
+  padding: field.$md-sys-field-padding-top var(--k3ui-field-padding-inline, #{field.$md-sys-field-padding-right})
+    field.$md-sys-field-padding-bottom var(--k3ui-field-padding-inline, #{field.$md-sys-field-padding-left});
+  transition: box-shadow field.$md-sys-field-transition-duration
+    field.$md-sys-field-transition-easing;
+}
+
+/**
+ * Mixin pour le container avec icône
+ */
+@mixin field-container-with-icon {
+  padding-left: field.$md-sys-field-padding-left-with-icon;
+}
+
+/**
+ * Mixin pour le container avec action/suffix/right-icon
+ */
+@mixin field-container-with-action {
+  padding-right: field.$md-sys-field-padding-right-with-action;
+}
+
+/**
+ * Mixin pour le container des textareas
+ * S'adapte à la hauteur du textarea au lieu d'avoir une hauteur fixe
+ * Selon Material Design 3 Expressive
+ */
+@mixin field-container-textarea {
+  position: relative;
+  display: flex;
+  flex-direction: column; // Pour que le textarea puisse s'étendre
+  min-height: field.$md-sys-field-textarea-min-height; // 80px minimum selon MD3
+  height: auto; // Hauteur automatique pour s'adapter au textarea
+  padding: field.$md-sys-field-textarea-padding-vertical field.$md-sys-field-padding-right
+    field.$md-sys-field-textarea-padding-vertical field.$md-sys-field-padding-left;
+  transition: box-shadow field.$md-sys-field-transition-duration
+    field.$md-sys-field-transition-easing;
+}
+
+// ========================================
+// VARIANT FILLED
+// ========================================
+
+/**
+ * Mixin pour le variant filled (par défaut)
+ * Utilise box-shadow pour simuler une bordure bottom
+ */
+@mixin field-filled {
+  box-shadow: inset 0 calc(-1 * #{field.$md-sys-field-border-width-default}px)
+    0 0 rgb(var(--md-sys-color-on-surface-variant-rgb));
+  background-color: var(--k3ui-field-filled-bg, var(--md-sys-color-surface-container-highest));
+  border-radius: field.$md-sys-field-border-radius-filled-top
+    field.$md-sys-field-border-radius-filled-top 0 0;
+}
+
+/**
+ * Mixin pour le variant filled en hover
+ */
+@mixin field-filled-hover {
+  box-shadow: inset 0 calc(-1 * #{field.$md-sys-field-border-width-hover}px) 0
+    0 rgb(var(--md-sys-color-on-surface-rgb));
+}
+
+/**
+ * Mixin pour le variant filled en focus
+ */
+@mixin field-filled-focused {
+  box-shadow: inset 0 calc(-1 * #{field.$md-sys-field-border-width-focused}px)
+    0 0 rgb(var(--md-sys-color-primary-rgb));
+}
+
+/**
+ * Mixin pour le variant filled disabled
+ */
+@mixin field-filled-disabled {
+  box-shadow: inset 0 calc(-1 * #{field.$md-sys-field-border-width-disabled}px)
+    0 0 rgba(var(--md-sys-color-on-surface-rgb), 0.38);
+  background-color: rgba(var(--md-sys-color-on-surface-rgb), 0.04);
+}
+
+/**
+ * Mixin pour le variant filled en erreur
+ */
+@mixin field-filled-invalid {
+  box-shadow: inset 0 calc(-1 * #{field.$md-sys-field-border-width-default}px)
+    0 0 rgb(var(--md-sys-color-error-rgb));
+}
+
+/**
+ * Mixin pour le variant filled en erreur hover
+ */
+@mixin field-filled-invalid-hover {
+  box-shadow: inset 0 calc(-1 * #{field.$md-sys-field-border-width-hover}px) 0
+    0 rgb(var(--md-sys-color-error-rgb));
+}
+
+/**
+ * Mixin pour le variant filled en erreur focused
+ */
+@mixin field-filled-invalid-focused {
+  box-shadow: inset 0 calc(-1 * #{field.$md-sys-field-border-width-focused}px)
+    0 0 rgb(var(--md-sys-color-error-rgb));
+}
+
+// ========================================
+// VARIANT OUTLINED
+// ========================================
+
+/**
+ * Mixin pour le variant outlined
+ * Utilise box-shadow pour simuler une bordure complète
+ */
+@mixin field-outlined {
+  height: var(--k3ui-field-height, #{field.$md-sys-field-height-outlined});
+  min-height: var(--k3ui-field-height, #{field.$md-sys-field-height-outlined});
+  box-shadow: inset 0 0 0 #{field.$md-sys-field-border-width-default}px
+    rgb(var(--md-sys-color-outline-rgb));
+  border-radius: field.$md-sys-field-border-radius-outlined;
+}
+
+/**
+ * Mixin pour le variant outlined en hover
+ * La bordure outlined doit rester visible en permanence
+ */
+@mixin field-outlined-hover {
+  box-shadow: inset 0 0 0 #{field.$md-sys-field-border-width-default}px
+    rgb(var(--md-sys-color-outline-rgb));
+}
+
+/**
+ * Mixin pour le variant outlined en focus
+ */
+@mixin field-outlined-focused {
+  box-shadow: inset 0 0 0 #{field.$md-sys-field-border-width-focused}px
+    rgb(var(--md-sys-color-primary-rgb));
+}
+
+/**
+ * Mixin pour le variant outlined disabled
+ */
+@mixin field-outlined-disabled {
+  box-shadow: inset 0 0 0 #{field.$md-sys-field-border-width-disabled}px
+    rgba(var(--md-sys-color-outline-rgb), 0.38);
+}
+
+/**
+ * Mixin pour le variant outlined en erreur
+ */
+@mixin field-outlined-invalid {
+  box-shadow: inset 0 0 0 #{field.$md-sys-field-border-width-default}px
+    rgb(var(--md-sys-color-error-rgb));
+}
+
+/**
+ * Mixin pour le variant outlined en erreur hover
+ * La bordure outlined doit rester visible même en erreur
+ */
+@mixin field-outlined-invalid-hover {
+  box-shadow: inset 0 0 0 #{field.$md-sys-field-border-width-default}px
+    rgb(var(--md-sys-color-error-rgb));
+}
+
+/**
+ * Mixin pour le variant outlined en erreur focused
+ */
+@mixin field-outlined-invalid-focused {
+  box-shadow: inset 0 0 0 #{field.$md-sys-field-border-width-focused}px
+    rgb(var(--md-sys-color-error-rgb));
+}
+
+// ========================================
+// VARIANT PLAIN
+// ========================================
+
+/**
+ * Container du variant plain (hauteur auto, padding interne)
+ */
+@mixin field-container-plain {
+  height: auto;
+  min-height: var(--k3ui-field-height, #{field.$md-sys-field-height-plain});
+  padding: field.$md-sys-field-plain-padding-vertical
+    var(--k3ui-field-padding-inline, #{field.$md-sys-field-plain-padding-horizontal});
+}
+
+/**
+ * Variant plain : fond sans bordure, coins 4dp
+ */
+@mixin field-plain {
+  box-shadow: none;
+  border: none;
+  border-radius: field.$md-sys-field-border-radius-plain;
+  background-color: rgba(var(--md-sys-color-on-surface-rgb), 0.08);
+}
+
+@mixin field-plain-hover {
+  background-color: rgba(var(--md-sys-color-on-surface-rgb), 0.1);
+}
+
+@mixin field-plain-focused {
+  background-color: rgba(var(--md-sys-color-on-surface-rgb), 0.12);
+  outline: 2px solid rgb(var(--md-sys-color-primary-rgb));
+  outline-offset: 0;
+}
+
+@mixin field-plain-disabled {
+  background-color: rgba(var(--md-sys-color-on-surface-rgb), 0.04);
+}
+
+@mixin field-plain-invalid {
+  background-color: rgba(var(--md-sys-color-error-rgb), 0.08);
+  outline: #{field.$md-sys-field-border-width-default}px solid rgb(var(--md-sys-color-error-rgb));
+  outline-offset: 0;
+}
+
+@mixin field-plain-invalid-hover {
+  background-color: rgba(var(--md-sys-color-error-rgb), 0.1);
+  outline: #{field.$md-sys-field-border-width-hover}px solid rgb(var(--md-sys-color-error-rgb));
+  outline-offset: 0;
+}
+
+@mixin field-plain-invalid-focused {
+  background-color: rgba(var(--md-sys-color-error-rgb), 0.12);
+  outline: #{field.$md-sys-field-border-width-focused}px solid rgb(var(--md-sys-color-error-rgb));
+  outline-offset: 0;
+}
+
+/**
+ * Label statique au-dessus du champ (variant plain)
+ */
+@mixin field-label-plain {
+  position: static;
+  pointer-events: auto;
+  display: block;
+  max-width: 100%;
+  overflow: visible;
+  -webkit-line-clamp: unset;
+  margin: 0 0 field.$md-sys-field-plain-label-gap;
+  padding: 0;
+  left: auto;
+  top: auto;
+  transform: none;
+  @include typo.typography(field.$md-sys-field-typescale-label-active);
+  color: rgb(var(--md-sys-color-on-surface-variant-rgb));
+}
+
+// ========================================
+// LABEL
+// ========================================
+
+/**
+ * Mixin pour le label (état par défaut)
+ */
+@mixin field-label {
+  position: absolute;
+  pointer-events: none;
+  left: var(--k3ui-field-label-inset-start, #{field.$md-sys-field-padding-left});
+  max-width: calc(
+    100% - var(--k3ui-field-label-inset-start, #{field.$md-sys-field-padding-left}) -
+      var(--k3ui-field-label-inset-end, #{field.$md-sys-field-padding-right})
+  );
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  top: var(--k3ui-field-label-top, #{field.$md-sys-field-label-top-default});
+  color: rgb(var(--md-sys-color-on-surface-variant-rgb));
+  @include typo.typography(field.$md-sys-field-typescale-label-default);
+  transition:
+    color field.$md-sys-field-transition-duration field.$md-sys-field-transition-easing,
+    opacity field.$md-sys-field-transition-duration field.$md-sys-field-transition-easing,
+    font-size field.$md-sys-field-label-transition-duration field.$md-sys-field-label-transition-easing,
+    line-height field.$md-sys-field-label-transition-duration field.$md-sys-field-label-transition-easing,
+    top field.$md-sys-field-label-transition-duration field.$md-sys-field-label-transition-easing,
+    transform field.$md-sys-field-label-transition-duration field.$md-sys-field-label-transition-easing,
+    max-width field.$md-sys-field-label-transition-duration field.$md-sys-field-label-transition-easing,
+    left field.$md-sys-field-label-transition-duration field.$md-sys-field-label-transition-easing;
+}
+
+/**
+ * Mixin pour le label outlined (avec padding et position)
+ * Position par défaut à l'intérieur du champ
+ */
+@mixin field-label-outlined {
+  padding: 0 field.$md-sys-field-label-padding-inline;
+  margin: 0 field.$md-sys-field-label-margin-inline;
+  left: var(--k3ui-field-label-inset-start, #{field.$md-sys-field-padding-left});
+  max-width: calc(
+    100% - var(--k3ui-field-label-inset-start, #{field.$md-sys-field-padding-left}) -
+      var(--k3ui-field-label-inset-end, #{field.$md-sys-field-padding-right})
+  );
+  top: var(--k3ui-field-label-top, #{field.$md-sys-field-label-top-default});
+}
+
+/**
+ * Mixin pour le label outlined en hover
+ */
+@mixin field-label-outlined-hover {
+  color: rgb(var(--md-sys-color-on-surface-rgb));
+}
+
+/**
+ * Mixin pour le label en erreur
+ */
+@mixin field-label-invalid {
+  color: rgb(var(--md-sys-color-error-rgb));
+}
+
+/**
+ * Mixin pour le label en erreur hover
+ */
+@mixin field-label-invalid-hover {
+  color: rgb(var(--md-sys-color-error-rgb));
+}
+
+/**
+ * Mixin pour le label en focus
+ */
+@mixin field-label-focused {
+  color: rgb(var(--md-sys-color-primary-rgb));
+}
+
+/**
+ * Mixin pour le label en focus et erreur
+ */
+@mixin field-label-focused-invalid {
+  color: rgb(var(--md-sys-color-error-rgb));
+}
+
+/**
+ * Mixin pour le label filled actif
+ */
+@mixin field-label-filled-active {
+  @include typo.typography(field.$md-sys-field-typescale-label-active);
+  top: var(--k3ui-field-label-top-filled-active, #{field.$md-sys-field-label-top-filled-active});
+}
+
+/**
+ * Mixin pour le label filled inactif avec icône à gauche
+ * Position : 12px (padding) + 24px (icône) + 16px (espacement) = 52px
+ */
+@mixin field-label-filled-inactive-with-icon {
+  @include typo.typography(field.$md-sys-field-typescale-label-default);
+  top: var(--k3ui-field-label-top, #{field.$md-sys-field-label-top-default});
+}
+
+/**
+ * Mixin pour le label filled actif avec icône à gauche
+ */
+@mixin field-label-filled-active-with-icon {
+  @include typo.typography(field.$md-sys-field-typescale-label-active);
+  top: var(--k3ui-field-label-top-filled-active, #{field.$md-sys-field-label-top-filled-active});
+}
+
+/**
+ * Mixin pour le label filled actif avec icône à droite (trailing icon)
+ */
+@mixin field-label-filled-active-with-trailing-icon {
+  @include typo.typography(field.$md-sys-field-typescale-label-active);
+  top: var(--k3ui-field-label-top-filled-active, #{field.$md-sys-field-label-top-filled-active});
+}
+
+/**
+ * Mixin pour le label outlined actif
+ * Le label est placé dans une zone qui "coupe" le trait du champ : le fond du label
+ * reprend la couleur du conteneur (surface par défaut), donnant l’illusion d’une encoche
+ * dans la bordure (style Material Design 3 outlined).
+ * Utilise --k3ui-field-outlined-notch-bg pour s’adapter au fond (ex. field dans une card).
+ */
+@mixin field-label-outlined-active {
+  @include typo.typography(field.$md-sys-field-typescale-label-active);
+  top: field.$md-sys-field-label-top-outlined-active;
+  left: var(--k3ui-field-label-inset-start, #{field.$md-sys-field-label-outlined-active-left});
+  max-width: calc(
+    100% - var(--k3ui-field-label-inset-start, #{field.$md-sys-field-label-outlined-active-left}) -
+      var(--k3ui-field-label-inset-end, #{field.$md-sys-field-padding-right})
+  );
+  padding: 0 field.$md-sys-field-outlined-label-padding;
+  margin: 0;
+  $notch-bg: var(--k3ui-field-outlined-notch-bg, var(--md-sys-color-surface));
+  background-color: $notch-bg;
+  box-shadow: 0 0 0 calc(#{field.$md-sys-field-border-width-focused}px + 1px) $notch-bg;
+}
+
+/**
+ * Mixin pour le label disabled
+ */
+@mixin field-label-disabled {
+  color: rgba(var(--md-sys-color-on-surface-rgb), 0.38);
+}
+
+// ========================================
+// INPUT
+// ========================================
+
+/**
+ * Mixin pour l'input
+ */
+@mixin field-input {
+  display: block;
+  width: 100%;
+  border: none !important;
+  outline: none !important;
+  background: none;
+  appearance: none;
+  resize: none;
+  cursor: inherit;
+  font-family: inherit;
+  box-shadow: none !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  // Pas de padding par défaut sur l'input, géré par le container et les mixins spécialisés
+  @include typo.typography(field.$md-sys-field-typescale-input);
+  color: rgb(var(--md-sys-color-on-surface-rgb));
+  caret-color: rgb(var(--md-sys-color-primary-rgb));
+
+  &::placeholder {
+    color: rgb(var(--md-sys-color-on-surface-variant-rgb));
+  }
+
+  &:focus {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  &:focus-visible {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+
+/**
+ * Mixin pour l'input avec icône leading
+ */
+@mixin field-input-with-leading-icon {
+  padding-left: field.$md-sys-field-input-padding-left-with-icon !important;
+}
+
+/**
+ * Mixin pour l'input avec action
+ */
+@mixin field-input-with-action {
+  padding-right: field.$md-sys-field-input-padding-right-with-action !important;
+}
+
+/**
+ * Mixin pour l'input avec suffix
+ */
+@mixin field-input-with-suffix {
+  padding-right: field.$md-sys-field-input-padding-right-with-suffix;
+}
+
+/**
+ * Mixin pour l'input filled avec label
+ */
+@mixin field-input-filled-with-label {
+  padding-top: 0; // Pas de padding spécial, géré par le container
+  padding-bottom: 0; // Pas de padding spécial, géré par le container
+}
+
+/**
+ * Mixin pour l'input en erreur
+ */
+@mixin field-input-invalid {
+  caret-color: rgb(var(--md-sys-color-error-rgb));
+}
+
+/**
+ * Mixin pour l'input disabled
+ */
+@mixin field-input-disabled {
+  color: rgba(var(--md-sys-color-on-surface-rgb), 0.38);
+}
+
+/**
+ * Mixin pour le textarea selon Material Design 3 Expressive
+ */
+@mixin field-textarea {
+  padding-top: 0;
+  margin-top: 0; // Pas de margin-top pour les textareas
+  min-height: field.$md-sys-field-textarea-min-height; // 80px minimum selon MD3
+  height: field.$md-sys-field-textarea-default-height; // 120px par défaut (3 lignes)
+  resize: vertical; // Permettre le redimensionnement vertical uniquement
+  overflow-y: auto; // Scroll vertical si nécessaire
+  overflow-x: hidden; // Pas de scroll horizontal
+  word-wrap: break-word; // Casser les mots longs
+  white-space: pre-wrap; // Préserver les retours à la ligne
+  box-sizing: border-box; // Inclure padding et border dans la hauteur
+  line-height: field.$md-sys-field-textarea-line-height; // 1.5 pour une meilleure lisibilité
+  font-family: inherit; // Hériter de la police du parent
+}
+
+/**
+ * Mixin pour le textarea filled avec label
+ */
+@mixin field-textarea-filled-with-label {
+  padding-top: 0;
+  margin-top: 0; // Pas de margin spécial pour les textareas
+}
+
+/**
+ * Mixin pour les textareas avec autosize selon Material Design 3
+ */
+@mixin field-textarea-autosize {
+  height: auto !important;
+  resize: none !important;
+  overflow: hidden !important;
+  min-height: field.$md-sys-field-textarea-min-height !important;
+  max-height: field.$md-sys-field-textarea-max-height !important;
+  line-height: field.$md-sys-field-textarea-line-height;
+}
+
+/**
+ * Mixin pour les textareas avec counter selon Material Design 3
+ */
+@mixin field-textarea-with-counter {
+  padding-bottom: field.$md-sys-field-textarea-counter-padding-bottom !important;
+  height: field.$md-sys-field-textarea-default-height !important;
+  resize: vertical !important;
+  overflow-y: auto !important;
+}
+
+// ========================================
+// ICONS & ACTIONS
+// ========================================
+
+/**
+ * Mixin pour les icônes et actions
+ */
+@mixin field-icon {
+  display: flex;
+  user-select: none;
+  color: rgb(var(--md-sys-color-on-surface-variant-rgb));
+  font-size: var(--k3ui-field-icon-size, #{field.$md-sys-field-icon-size}) !important;
+  width: var(--k3ui-field-icon-size, #{field.$md-sys-field-icon-size}) !important;
+  height: var(--k3ui-field-icon-size, #{field.$md-sys-field-icon-size}) !important;
+  align-items: center;
+  justify-content: center;
+}
+
+/**
+ * Mixin pour les icônes disabled
+ */
+@mixin field-icon-disabled {
+  color: rgba(var(--md-sys-color-on-surface-rgb), 0.38);
+}
+
+/**
+ * Mixin pour l'icône d'erreur
+ */
+@mixin field-icon-error {
+  color: rgb(var(--md-sys-color-error-rgb));
+}
+
+/**
+ * Mixin pour l'icône d'erreur hover
+ */
+@mixin field-icon-error-hover {
+  color: rgb(var(--md-sys-color-error-rgb));
+}
+
+/**
+ * Mixin pour l'icône d'erreur focused
+ */
+@mixin field-icon-error-focused {
+  color: rgb(var(--md-sys-color-error-rgb));
+}
+
+/**
+ * Mixin pour les button-icon
+ */
+@mixin field-button-icon {
+  margin-left: field.$md-sys-field-button-icon-margin;
+  margin-right: field.$md-sys-field-button-icon-margin;
+}
+
+// ========================================
+// PREFIX & SUFFIX
+// ========================================
+
+/**
+ * Mixin pour le prefix/suffix
+ */
+@mixin field-prefix-suffix {
+  display: none;
+  @include typo.typography(field.$md-sys-field-typescale-prefix-suffix);
+}
+
+/**
+ * Mixin pour le prefix/suffix text (différent des icônes)
+ */
+@mixin field-prefix-suffix-text {
+  user-select: none;
+  color: rgb(var(--md-sys-color-on-surface-variant-rgb));
+  @include typo.typography(field.$md-sys-field-typescale-prefix-suffix);
+  vertical-align: baseline;
+  line-height: inherit;
+}
+
+/**
+ * Mixin pour le prefix/suffix text disabled
+ */
+@mixin field-prefix-suffix-text-disabled {
+  color: rgba(var(--md-sys-color-on-surface-rgb), 0.38);
+}
+
+/**
+ * Mixin pour le prefix/suffix visible
+ */
+@mixin field-prefix-suffix-visible {
+  display: inline;
+}
+
+/**
+ * Mixin pour le prefix
+ */
+@mixin field-prefix {
+  padding-right: field.$md-sys-field-prefix-spacing;
+}
+
+/**
+ * Mixin pour le prefix avec icône leading
+ */
+@mixin field-prefix-with-leading-icon {
+  padding-left: field.$md-sys-field-action-spacing; // 16px d'espacement avec l'icône
+  padding-right: field.$md-sys-field-prefix-spacing;
+}
+
+/**
+ * Mixin pour le suffix
+ */
+@mixin field-suffix {
+  padding-right: field.$md-sys-field-suffix-spacing-right;
+  padding-left: field.$md-sys-field-suffix-spacing-left;
+}
+
+/**
+ * Mixin pour le suffix avec icône trailing
+ */
+@mixin field-suffix-with-trailing-icon {
+  padding-left: field.$md-sys-field-suffix-spacing-left;
+  padding-right: field.$md-sys-field-action-spacing; // 16px d'espacement avec l'icône
+}
+
+/**
+ * Mixin pour le prefix/suffix filled avec label
+ */
+@mixin field-prefix-suffix-filled-with-label {
+  padding-top: 0; // Pas de padding spécial, géré par le container
+}
+
+// ========================================
+// SUPPORTING TEXT
+// ========================================
+
+/**
+ * Mixin pour le texte d'aide
+ */
+@mixin field-supporting {
+  display: flex;
+  justify-content: space-between;
+  padding: field.$md-sys-field-supporting-padding-top
+    field.$md-sys-field-supporting-padding-inline;
+  color: rgb(var(--md-sys-color-on-surface-variant));
+}
+
+/**
+ * Mixin pour le texte d'aide en erreur
+ */
+@mixin field-supporting-invalid {
+  color: rgb(var(--md-sys-color-error-rgb));
+}
+
+/**
+ * Mixin pour le helper
+ */
+@mixin field-helper {
+  display: block;
+  opacity: 1;
+  transition: opacity field.$md-sys-field-transition-duration linear;
+  @include typo.typography(field.$md-sys-field-typescale-supporting);
+}
+
+/**
+ * Mixin pour le helper disabled
+ */
+@mixin field-helper-disabled {
+  color: rgba(var(--md-sys-color-on-surface-rgb), 0.38);
+}
+
+/**
+ * Mixin pour le helper masqué
+ */
+@mixin field-helper-hidden {
+  opacity: 0;
+}
+
+/**
+ * Mixin pour le helper visible
+ */
+@mixin field-helper-visible {
+  opacity: 1;
+}
+
+/**
+ * Mixin pour l'erreur
+ */
+@mixin field-error {
+  @include typo.typography(field.$md-sys-field-typescale-supporting);
+}
+
+/**
+ * Mixin pour le counter
+ */
+@mixin field-counter {
+  flex-wrap: nowrap;
+  padding-left: field.$md-sys-field-counter-spacing;
+  @include typo.typography(field.$md-sys-field-typescale-supporting);
+}
+
+/**
+ * Mixin pour le counter positionné en bas à droite
+ */
+@mixin field-counter-bottom {
+  position: static; // Position statique pour être en dessous du container
+  margin-top: 4px; // Espacement avec le container du field
+  padding: 0 field.$md-sys-field-padding-right;
+  font-size: 12px;
+  line-height: 1.33;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: right;
+  pointer-events: none; // Empêcher les interactions avec le counter
+}
+
+/**
+ * Mixin pour le helper text positionné en bas à gauche
+ */
+@mixin field-helper-bottom {
+  position: static; // Position statique pour être en dessous du container
+  margin-top: 4px; // Espacement avec le container du field
+  padding: 0 field.$md-sys-field-padding-left;
+  font-size: 12px;
+  line-height: 1.33;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: left;
+  pointer-events: none; // Empêcher les interactions avec le helper
+}
+
+
+

@@ -1,0 +1,395 @@
+/**
+ * @fileoverview Module CodeBlock (Material Design 3 Expressive)
+ * @description Bloc de code avec carte et toolbar
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/codeblock.token' as cb;
+@use '../mixins/codeblock.mixin' as codeblock;
+@use '../tokens/motion.token' as motion;
+
+// =============================================================================
+// CODEBLOCK - CARD + TOOLBAR (filled de base, gap 2dp, radius 16/4)
+// =============================================================================
+
+.codeblock {
+  display: block;
+  margin: 1rem 0;
+  /* Évite surlignage clic (tap) et outline qui peuvent apparaître comme une carte blanche */
+  -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+  }
+
+  &__card {
+    @include codeblock.codeblock-card;
+    box-shadow: none !important;
+    gap: cb.$codeblock-card-gap !important;
+  }
+
+  /* Mode multiple : .tabs-container impose display:block et annule le gap — on force flex + gap 2dp */
+  &__card.tabs-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: cb.$codeblock-card-gap !important;
+  }
+
+  /* Mode multiple : gap 2dp obligatoire entre toolbar et tabs-items uniquement */
+  &__card > .tabs-items {
+    margin-block-start: 0;
+    padding-block-start: 0;
+  }
+
+  /* Annule le padding-top des panneaux Tabs (1rem par défaut) pour ne garder que le gap 2dp de la card */
+  &__card .tabs-item {
+    padding-block-start: 0 !important;
+  }
+
+  &__toolbar {
+    @include codeblock.codeblock-toolbar;
+    border-radius: cb.$codeblock-radius-large cb.$codeblock-radius-large cb.$codeblock-radius-small cb.$codeblock-radius-small !important;
+
+    /* Avec onglets : pas de padding en bas — seul le gap 2dp de la card crée l'espace avec tabs-items */
+    &:has(.codeblock__tabs) {
+      padding-bottom: 0 !important;
+    }
+  }
+
+  /* Mode multiple : toolbar sans padding bas pour respecter strictement le gap 2dp */
+  &--multiple &__toolbar {
+    padding-bottom: 0 !important;
+  }
+
+  &__toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: cb.$codeblock-content-padding;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  &__tabs {
+    flex: 0 1 auto;
+    min-width: 0;
+
+    .tabs-container {
+      margin: 0;
+      background: none;
+    }
+
+    .tabs {
+      min-height: 40px;
+      background: none;
+    }
+
+    .tabs__scroller {
+      padding: 0;
+      background: none;
+    }
+
+    /* Primary sans icône dans l'entête : pas de fond, pas de padding bloc (comme référence Tabs) */
+    .tabs--primary .tabs__tab {
+      background: none;
+      padding: 0 12px;
+      min-width: 0;
+      height: 40px;
+      flex-direction: row;
+      gap: 0;
+    }
+
+    .tabs--primary .tabs__tab-label {
+      font-size: inherit;
+    }
+  }
+
+  &__toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: cb.$codeblock-content-padding;
+    flex-shrink: 0;
+    margin-inline-start: auto;
+  }
+
+  &__label {
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  &__copy,
+  &__download {
+    flex-shrink: 0;
+    min-width: auto;
+    min-height: 40px;
+    width: 40px;
+    height: 40px;
+    color: cb.$codeblock-toolbar-on-surface !important;
+
+    .btn-icon__icon,
+    .button-icon__icon,
+    i[name],
+    .k3ui-icon,
+    svg {
+      width: 24px !important;
+      height: 24px !important;
+      color: inherit;
+      fill: currentColor;
+    }
+
+    /* Survol gris, clic tonal (comme appbar footer) — surcharge ButtonIcon */
+    &:hover:not(:disabled) {
+      background-color: rgba(0, 0, 0, 0.04) !important;
+      color: cb.$codeblock-toolbar-on-surface !important;
+    }
+    &:focus:not(:disabled),
+    &:focus-visible:not(:disabled) {
+      background-color: rgba(0, 0, 0, 0.06) !important;
+      color: cb.$codeblock-toolbar-on-surface !important;
+    }
+    &:active:not(:disabled) {
+      background-color: rgba(0, 0, 0, 0.08) !important;
+      color: cb.$codeblock-toolbar-on-surface !important;
+    }
+  }
+
+  &__copy {
+    &[data-copy-state='success'] {
+      color: #81C995 !important;
+    }
+
+    &[data-copy-state='error'] {
+      color: var(--md-sys-color-error, var(--k3ui-color-error)) !important;
+    }
+  }
+
+  &__content {
+    @include codeblock.codeblock-content;
+    border-radius: cb.$codeblock-radius-small cb.$codeblock-radius-small cb.$codeblock-radius-large cb.$codeblock-radius-large !important;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Collapsible : zone code repliable + barre « Voir plus » / « Réduire »
+  // ---------------------------------------------------------------------------
+  &--collapsible &__card {
+    gap: cb.$codeblock-card-gap;
+  }
+
+  &--collapsible &__content {
+    border-radius: cb.$codeblock-radius-small cb.$codeblock-radius-small cb.$codeblock-radius-small cb.$codeblock-radius-small !important;
+    position: relative;
+    height: var(--codeblock-collapsed-height, cb.$codeblock-collapsed-height);
+    overflow: hidden;
+    transition: height motion.$md-sys-motion-expressive-spatial-default-duration motion.$md-sys-motion-expressive-spatial-default-easing;
+
+    &.codeblock__content--expanded {
+      height: var(--full-height);
+      overflow-x: auto;
+      overflow-y: visible;
+    }
+
+    /* Dégradé en bas quand replié */
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: linear-gradient(to bottom, transparent, cb.$codeblock-card-fill);
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.25s ease;
+      z-index: 1;
+    }
+
+    &.codeblock__content--expanded::after {
+      opacity: 0;
+    }
+  }
+
+  &__expand-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 9px cb.$codeblock-content-padding;
+    background-color: cb.$codeblock-card-fill;
+    border-radius: cb.$codeblock-radius-small cb.$codeblock-radius-small cb.$codeblock-radius-large cb.$codeblock-radius-large;
+    cursor: pointer;
+    color: cb.$codeblock-toolbar-on-surface;
+    font-size: cb.$codeblock-label-font-size;
+    font-weight: 500;
+    transition: color 0.15s ease, background-color 0.15s ease;
+    user-select: none;
+
+    &:hover {
+      background-color: var(--md-sys-color-surface-container-high, var(--k3ui-color-surface-container));
+      color: var(--md-sys-color-on-surface-variant, #49454f);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--md-sys-color-primary, var(--k3ui-color-primary));
+      outline-offset: 2px;
+    }
+
+    .k3ui-icon,
+    i[name],
+    svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      transition: transform motion.$md-sys-motion-expressive-spatial-default-duration motion.$md-sys-motion-expressive-spatial-default-easing;
+    }
+  }
+
+  &__expand-bar--expanded .k3ui-icon,
+  &__expand-bar--expanded i[name],
+  &__expand-bar--expanded svg {
+    transform: rotate(180deg);
+  }
+
+  // Tokens de coloration syntaxique (Prism Okaidia via codeblock.token)
+  &__token {
+    &--comment,
+    &--prolog,
+    &--doctype,
+    &--cdata { color: cb.$codeblock-token-comment; }
+    &--comment { font-style: italic; }
+    &--punctuation { color: cb.$codeblock-token-punctuation; }
+    &--property,
+    &--tag,
+    &--constant,
+    &--symbol,
+    &--deleted { color: cb.$codeblock-token-tag; }
+    &--boolean,
+    &--number { color: cb.$codeblock-token-number; }
+    &--selector,
+    &--attr,
+    &--string,
+    &--char,
+    &--builtin,
+    &--inserted { color: cb.$codeblock-token-string; }
+    &--operator,
+    &--entity,
+    &--url,
+    &--variable { color: cb.$codeblock-token-variable; }
+    &--atrule,
+    &--attr-value,
+    &--function,
+    &--class-name { color: cb.$codeblock-token-function; }
+    &--keyword { color: cb.$codeblock-token-keyword; }
+    &--regex,
+    &--important { color: cb.$codeblock-token-regex; }
+    &--important { font-weight: bold; }
+  }
+
+  /* Pas de cadre shadow sur la card (ni au focus) */
+  &__card:focus,
+  &__card:focus-visible {
+    outline: none;
+  }
+
+  // Variante Okaidia — thème clair (défaut pour .codeblock--okaidia)
+  &--okaidia .codeblock__token {
+    &--comment,
+    &--prolog,
+    &--doctype,
+    &--cdata { color: cb.$codeblock-token-okaidia-light-comment; }
+    &--punctuation { color: cb.$codeblock-token-okaidia-light-punctuation; }
+    &--property,
+    &--tag,
+    &--symbol,
+    &--deleted { color: cb.$codeblock-token-okaidia-light-tag; }
+    &--constant { color: cb.$codeblock-token-okaidia-light-constant; }
+    &--boolean,
+    &--number { color: cb.$codeblock-token-okaidia-light-number; }
+    &--selector,
+    &--attr,
+    &--string,
+    &--char,
+    &--builtin,
+    &--inserted { color: cb.$codeblock-token-okaidia-light-string; }
+    &--operator,
+    &--entity,
+    &--url,
+    &--variable { color: cb.$codeblock-token-okaidia-light-variable; }
+    &--atrule,
+    &--attr-value,
+    &--function,
+    &--class-name { color: cb.$codeblock-token-okaidia-light-function; }
+    &--keyword { color: cb.$codeblock-token-okaidia-light-keyword; }
+    &--regex,
+    &--important { color: cb.$codeblock-token-okaidia-light-regex; }
+  }
+
+  // Variante Okaidia — thème sombre (data-theme=dark)
+  html[data-theme='dark'] &--okaidia .codeblock__token {
+    &--comment,
+    &--prolog,
+    &--doctype,
+    &--cdata { color: cb.$codeblock-token-okaidia-comment; }
+    &--punctuation { color: cb.$codeblock-token-okaidia-punctuation; }
+    &--property,
+    &--tag,
+    &--constant,
+    &--symbol,
+    &--deleted { color: cb.$codeblock-token-okaidia-tag; }
+    &--boolean,
+    &--number { color: cb.$codeblock-token-okaidia-number; }
+    &--selector,
+    &--attr,
+    &--string,
+    &--char,
+    &--builtin,
+    &--inserted { color: cb.$codeblock-token-okaidia-string; }
+    &--operator,
+    &--entity,
+    &--url,
+    &--variable { color: cb.$codeblock-token-okaidia-variable; }
+    &--atrule,
+    &--attr-value,
+    &--function,
+    &--class-name { color: cb.$codeblock-token-okaidia-function; }
+    &--keyword { color: cb.$codeblock-token-okaidia-keyword; }
+    &--regex,
+    &--important { color: cb.$codeblock-token-okaidia-regex; }
+  }
+
+  // Variante Okaidia — thème sombre (préférence système)
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme='light']) &--okaidia .codeblock__token {
+      &--comment,
+      &--prolog,
+      &--doctype,
+      &--cdata { color: cb.$codeblock-token-okaidia-comment; }
+      &--punctuation { color: cb.$codeblock-token-okaidia-punctuation; }
+      &--property,
+      &--tag,
+      &--constant,
+      &--symbol,
+      &--deleted { color: cb.$codeblock-token-okaidia-tag; }
+      &--boolean,
+      &--number { color: cb.$codeblock-token-okaidia-number; }
+      &--selector,
+      &--attr,
+      &--string,
+      &--char,
+      &--builtin,
+      &--inserted { color: cb.$codeblock-token-okaidia-string; }
+      &--operator,
+      &--entity,
+      &--url,
+      &--variable { color: cb.$codeblock-token-okaidia-variable; }
+      &--atrule,
+      &--attr-value,
+      &--function,
+      &--class-name { color: cb.$codeblock-token-okaidia-function; }
+      &--keyword { color: cb.$codeblock-token-okaidia-keyword; }
+      &--regex,
+      &--important { color: cb.$codeblock-token-okaidia-regex; }
+    }
+  }
+}

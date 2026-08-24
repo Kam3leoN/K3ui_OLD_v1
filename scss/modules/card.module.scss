@@ -1,0 +1,321 @@
+/**
+ * @fileoverview Module Card Material You 3 Expressive
+ * @author Kam3leon
+ * @version 2.0.0
+ */
+
+@use '../tokens' as tokens;
+@use '../mixins/card.mixin' as card;
+
+// =============================================================================
+// MODULE CARD - MATERIAL YOU 3 EXPRESSIVE
+// =============================================================================
+
+.card {
+  @include card.card-base();
+
+  &.card--elevated {
+    @include card.card-elevated();
+    --k3ui-field-outlined-notch-bg: var(--md-sys-color-surface-container-low);
+    --k3ui-field-filled-bg: var(--md-sys-color-surface-container-high);
+  }
+
+  &.card--filled {
+    @include card.card-filled();
+    --k3ui-field-outlined-notch-bg: var(--md-sys-color-surface-container-highest);
+    --k3ui-field-filled-bg: var(--md-sys-color-surface-container-high);
+  }
+
+  &.card--outlined {
+    @include card.card-outlined();
+    --k3ui-field-outlined-notch-bg: var(--md-sys-color-surface);
+  }
+
+  &.card--elevated.card--interactive {
+    @include card.card-elevated-states();
+  }
+
+  &.card--filled.card--interactive,
+  &.card--outlined.card--interactive {
+    @include card.card-flat-states();
+  }
+
+  &.card--interactive {
+    @include card.card-interactive();
+    @include card.card-shape-morph-press();
+  }
+
+  &.card--disabled {
+    cursor: not-allowed;
+  }
+
+  &.card--checkable {
+    @include card.card-checked-icon();
+  }
+}
+
+.card__state-layer {
+  display: block;
+}
+
+.card__header {
+  @include card.card-header();
+}
+
+.card__title {
+  // Styles définis dans le mixin card-header
+}
+
+.card__subtitle {
+  // Styles définis dans le mixin card-header
+}
+
+.card__content {
+  @include card.card-content();
+}
+
+.card:not(:has(.card__header)):not(:has(.card__actions)):not(.notch) .card__content {
+  padding-top: tokens.$md-sys-card-padding;
+  padding-bottom: tokens.$md-sys-card-padding;
+}
+
+@supports not selector(:has(*)) {
+  .card:not(.notch) .card__content {
+    padding-top: tokens.$md-sys-card-padding;
+    padding-bottom: tokens.$md-sys-card-padding;
+  }
+
+  .card:has(.card__header) .card__content,
+  .card:has(.card__actions) .card__content {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+.card__text {
+  // Styles définis dans le mixin card-content
+}
+
+.card__image {
+  width: 100%;
+
+  &.card__image--inset {
+    padding: tokens.$md-sys-card-padding-small;
+
+    .card__media {
+      border-radius: tokens.$md-sys-card-shape-corner;
+    }
+  }
+}
+
+.card__media {
+  width: 100%;
+  height: tokens.$md-sys-card-media-height;
+  object-fit: cover;
+  display: block;
+}
+
+.card__avatar-container {
+  position: relative;
+  padding: tokens.$md-sys-card-padding;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: tokens.$md-sys-card-padding;
+
+  &:first-child {
+    border-radius: tokens.$md-sys-card-shape-corner tokens.$md-sys-card-shape-corner 0 0;
+    margin-bottom: -1px;
+  }
+
+  &:not(:first-child) {
+    border-radius: 0;
+    margin: 0;
+  }
+}
+
+.card__avatar {
+  flex-shrink: 0;
+
+  &[data-shape] {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.card__avatar-actions {
+  @include card.card-avatar-actions();
+}
+
+.card__actions {
+  @include card.card-actions();
+
+  &.card__actions--left {
+    @include card.card-actions-left();
+  }
+
+  &.card__actions--right {
+    @include card.card-actions-right();
+  }
+
+  &.card__actions--distributed {
+    @include card.card-actions-distributed();
+  }
+}
+
+.card__action {
+  // Styles définis dans le mixin card-actions
+}
+
+.card {
+  &:has(.card__media) {
+    @include card.card-with-image();
+  }
+
+  &.card--with-image {
+    @include card.card-with-image();
+  }
+}
+
+.card--actions-horizontal {
+  @include card.card-actions-horizontal();
+}
+
+.card--actions-vertical {
+  @include card.card-actions-vertical();
+}
+
+.card--elevation-1 {
+  @include card.card-elevation(1);
+}
+
+.card--elevation-2 {
+  @include card.card-elevation(2);
+}
+
+.card--elevation-3 {
+  @include card.card-elevation(3);
+}
+
+.card--elevation-4 {
+  @include card.card-elevation(4);
+}
+
+.card--elevation-5 {
+  @include card.card-elevation(5);
+}
+
+.card--radius-small {
+  @include card.card-radius('small');
+}
+
+.card--radius-medium {
+  @include card.card-radius('medium');
+}
+
+.card--radius-large {
+  @include card.card-radius('large');
+}
+
+.card--radius-extra-large {
+  @include card.card-radius('extra-large');
+}
+
+.card--radius-full {
+  @include card.card-radius('full');
+}
+
+.card--shape-medium {
+  @include card.card-shape('medium');
+}
+
+.card--shape-large-increased {
+  @include card.card-shape('large-increased');
+}
+
+.card--shape-extra-large-increased {
+  @include card.card-shape('extra-large-increased');
+}
+
+.card--padding-small {
+  @include card.card-padding('small');
+}
+
+.card--padding-medium {
+  @include card.card-padding('medium');
+}
+
+.card--padding-large {
+  @include card.card-padding('large');
+}
+
+.card--padding-legacy {
+  @include card.card-padding-legacy();
+}
+
+.card--full-width {
+  max-width: none;
+  width: 100%;
+}
+
+.card--compact {
+  max-width: 320px;
+}
+
+.card--wide {
+  max-width: 600px;
+}
+
+.card--tall {
+  min-height: 300px;
+}
+
+.card--short {
+  min-height: 60px;
+}
+
+@media (max-width: 768px) {
+  .card {
+    min-width: 100%;
+    max-width: none;
+    margin: tokens.$md-sys-card-mobile-margin 0;
+  }
+
+  .card__actions {
+    flex-direction: column;
+    align-items: stretch;
+
+    .card__action {
+      width: 100%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+
+    &.card--interactive.pressing,
+    &.card--interactive.card--pressed {
+      border-radius: inherit;
+    }
+  }
+}
+
+@media (prefers-contrast: high) {
+  .card {
+    border: 2px solid currentColor;
+  }
+
+  .card--outlined {
+    border-width: 3px;
+  }
+}

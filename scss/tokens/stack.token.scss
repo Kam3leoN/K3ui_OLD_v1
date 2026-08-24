@@ -1,0 +1,59 @@
+/**
+ * @file stack.token.scss
+ * @description Tokens Stack — style compact type shadcn / Base UI (pas de cascade d’ombres)
+ * @author K3UI Team
+ * @version 1.1.0
+ */
+
+// ============================================================================
+// OVERLAP (avatars, images en ligne)
+// ============================================================================
+
+/** Décalage négatif entre items empilés horizontalement */
+$stack-overlap-offset: 12px !default;
+
+/** Padding de fin pour laisser visible le dernier item overlap */
+$stack-overlap-end-padding: calc(#{$stack-overlap-offset} * 2) !default;
+
+// ============================================================================
+// DECK compact (shadcn / Base UI collapsed)
+// Peek discret, max ~3 couches, ombre uniquement sur le front
+// ============================================================================
+
+/** Offset de peek par couche (px) — compact, pas une colonne */
+$stack-deck-offset: 6px !default;
+
+/** Réduction d’échelle par couche (~ Base UI 0.05–0.1) */
+$stack-deck-scale-step: 0.05 !default;
+
+/** Opacité : quasi opaque (les couches arrière restent nettes) */
+$stack-deck-opacity-step: 0 !default;
+
+/** Opacité minimale des couches arrière */
+$stack-deck-opacity-min: 1 !default;
+
+/** Profondeur visuelle max (prévention ombres / bruit) */
+$stack-deck-depth-max: 3 !default;
+
+/** Ombre uniquement sur l’item frontal */
+$stack-deck-front-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.08) !default;
+
+// ============================================================================
+// REMAINING (+N)
+// ============================================================================
+
+$stack-remaining-size: 2.5rem !default;
+$stack-remaining-font-size: 0.875rem !default;
+$stack-remaining-bg: var(--md-sys-color-surface-container-highest) !default;
+$stack-remaining-color: var(--md-sys-color-on-surface-variant) !default;
+
+// ============================================================================
+// Z-INDEX / CSS VARS
+// ============================================================================
+
+$stack-z-index-base: 1 !default;
+
+$stack-offset-var: --k3ui-stack-offset !default;
+$stack-depth-var: --k3ui-stack-depth !default;
+$stack-scale-step-var: --k3ui-stack-scale-step !default;
+$stack-opacity-step-var: --k3ui-stack-opacity-step !default;

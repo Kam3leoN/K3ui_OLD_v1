@@ -1,0 +1,655 @@
+/**
+ * @file notch.mixin.scss
+ * @description Mixins encoche — géométrie qt-rounder (Material You SVG Rounder)
+ * Réf. : qt-rounder.scss — path unique, rotation sur .notch__rounder-inner
+ *
+ * Coins  : les 2 rounders partagent la même rotation
+ * Bords  : chaque rounder a sa propre rotation
+ *
+ *   Position      │ Rounder A        │ Rounder B
+ *   ──────────────┼──────────────────┼──────────────────
+ *   top-start TL  │ 270deg (right)   │ 270deg (bottom)
+ *   top-end TR    │ 0deg   (left)    │ 0deg   (bottom)
+ *   bottom-start  │ 180deg (right)   │ 180deg (top)
+ *   bottom-end BR │ 90deg  (left)    │ 90deg  (top)
+ *   top-center    │ 0deg   (left)    │ 270deg (right)
+ *   bottom-center │ 90deg  (left)    │ 180deg (right)
+ *   left-center   │ 180deg (top)     │ 270deg (bottom)
+ *   right-center  │ 90deg  (top)     │ 0deg   (bottom)
+ *
+ * @author K3UI Team
+ * @version 3.0.0
+ */
+
+@use '../tokens/notch.token' as notch;
+
+/// Path SVG du quart de cercle concave (réf. QT_ROUNDER_PATH)
+$notch-rounder-path: 'M30 0L0 0C16.5685 0 30 13.4315 30 30L30 0Z';
+
+/**
+ * Conteneur de base pour une surface avec encoche
+ */
+@mixin notch-base {
+  position: relative;
+  overflow: visible;
+  --notch-fill: var(--md-sys-color-background);
+  --notch-label-bg: var(--notch-fill);
+}
+
+/**
+ * Pastille (réf. .tab)
+ */
+@mixin notch-label {
+  background: notch.$notch-label-bg;
+  position: relative;
+  height: notch.$notch-label-height;
+  min-width: notch.$notch-label-height;
+  width: notch.$notch-label-height;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 0 notch.$notch-label-padding-x;
+  box-sizing: border-box;
+  color: notch.$notch-label-color;
+  border-radius: 0;
+  z-index: 2;
+  transition: width notch.$notch-label-width-duration notch.$notch-label-width-easing;
+  overflow: visible;
+
+  span {
+    display: inline-block;
+    padding: 0;
+  }
+}
+
+/**
+ * Wrapper pastille + rounders (réf. .tab-wrap)
+ */
+@mixin notch-label-wrapper-base {
+  position: absolute;
+  display: flex;
+  align-items: flex-end;
+  z-index: 3;
+  pointer-events: none;
+
+  .notch__label {
+    pointer-events: auto;
+  }
+}
+
+/**
+ * Boîte rounder (réf. .rounder) — JAMAIS de transform ici
+ * @param $size - Taille du quartier (coins 20px, bords 10px)
+ */
+@mixin notch-rounder-box($size: notch.$notch-rounder-size) {
+  position: absolute;
+  width: $size;
+  height: $size;
+  pointer-events: none;
+
+  .notch__rounder-inner {
+    display: block;
+  }
+
+  svg {
+    display: block;
+    /* +1px de chaque côté : scelle le joint concave AA (fil haut contraste alert) */
+    width: calc(#{$size} + 2px);
+    height: calc(#{$size} + 2px);
+    max-width: none;
+    margin: -1px;
+  }
+}
+
+/**
+ * Rotation sur l’inner (réf. .ri)
+ */
+@mixin notch-rounder-rotate($deg) {
+  .notch__rounder-inner {
+    transform: rotate($deg);
+  }
+
+  &:not(:has(> .notch__rounder-inner)) {
+    transform: rotate($deg);
+  }
+}
+
+// =============================================================================
+// TOP-START — TL · 270deg
+// =============================================================================
+
+@mixin notch-label-wrapper-top-start {
+  @include notch-label-wrapper-base;
+  top: 0;
+  left: 0;
+  align-items: flex-start;
+}
+
+@mixin notch-rounders-top-start {
+  .notch__rounder--a {
+    @include notch-rounder-box;
+    right: -(notch.$notch-rounder-size);
+    left: auto;
+    top: 0;
+    bottom: auto;
+    @include notch-rounder-rotate(270deg);
+  }
+
+  .notch__rounder--b {
+    @include notch-rounder-box;
+    left: 0;
+    right: auto;
+    bottom: -(notch.$notch-rounder-size);
+    top: auto;
+    @include notch-rounder-rotate(270deg);
+  }
+}
+
+@mixin notch-label-radii-top-start {
+  .notch__label {
+    /* Coin externe clipé par overflow:hidden hôte — évite le croissant AA (double rayon) */
+    border-bottom-right-radius: notch.$notch-corner-radius;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+@mixin notch-position-top-start {
+  .notch__label-wrapper {
+    @include notch-label-wrapper-top-start;
+  }
+
+  @include notch-label-radii-top-start;
+  @include notch-rounders-top-start;
+}
+
+// =============================================================================
+// TOP-END — TR · 0deg
+// =============================================================================
+
+@mixin notch-label-wrapper-top-end {
+  @include notch-label-wrapper-base;
+  top: 0;
+  right: 0;
+  left: auto;
+  align-items: flex-start;
+}
+
+@mixin notch-rounders-top-end {
+  .notch__rounder--a {
+    @include notch-rounder-box;
+    left: -(notch.$notch-rounder-size);
+    right: auto;
+    top: 0;
+    bottom: auto;
+    @include notch-rounder-rotate(0deg);
+  }
+
+  .notch__rounder--b {
+    @include notch-rounder-box;
+    right: 0;
+    left: auto;
+    bottom: -(notch.$notch-rounder-size);
+    top: auto;
+    @include notch-rounder-rotate(0deg);
+  }
+}
+
+@mixin notch-label-radii-top-end {
+  .notch__label {
+    /* Coin externe clipé par overflow:hidden hôte — évite le croissant AA */
+    border-bottom-left-radius: notch.$notch-corner-radius;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+@mixin notch-position-top-end {
+  .notch__label-wrapper {
+    @include notch-label-wrapper-top-end;
+  }
+
+  @include notch-label-radii-top-end;
+  @include notch-rounders-top-end;
+}
+
+// =============================================================================
+// BOTTOM-START — BL · 180deg
+// =============================================================================
+
+@mixin notch-label-wrapper-bottom-start {
+  @include notch-label-wrapper-base;
+  bottom: 0;
+  left: 0;
+  top: auto;
+  right: auto;
+}
+
+@mixin notch-rounders-bottom-start {
+  .notch__rounder--a {
+    @include notch-rounder-box;
+    right: -(notch.$notch-rounder-size);
+    left: auto;
+    bottom: 0;
+    top: auto;
+    @include notch-rounder-rotate(180deg);
+  }
+
+  .notch__rounder--b {
+    @include notch-rounder-box;
+    left: 0;
+    right: auto;
+    top: -(notch.$notch-rounder-size);
+    bottom: auto;
+    @include notch-rounder-rotate(180deg);
+  }
+}
+
+@mixin notch-label-radii-bottom-start {
+  .notch__label {
+    /* Coin externe clipé par overflow:hidden hôte — évite le croissant AA */
+    border-top-right-radius: notch.$notch-corner-radius;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+@mixin notch-position-bottom-start {
+  .notch__label-wrapper {
+    @include notch-label-wrapper-bottom-start;
+  }
+
+  @include notch-label-radii-bottom-start;
+  @include notch-rounders-bottom-start;
+}
+
+// =============================================================================
+// BOTTOM-END — BR · 90deg
+// =============================================================================
+
+@mixin notch-label-wrapper-bottom-end {
+  @include notch-label-wrapper-base;
+  bottom: 0;
+  right: 0;
+  top: auto;
+  left: auto;
+}
+
+@mixin notch-rounders-bottom-end {
+  .notch__rounder--a {
+    @include notch-rounder-box;
+    left: -(notch.$notch-rounder-size);
+    right: auto;
+    bottom: 0;
+    top: auto;
+    @include notch-rounder-rotate(90deg);
+  }
+
+  .notch__rounder--b {
+    @include notch-rounder-box;
+    right: 0;
+    left: auto;
+    top: -(notch.$notch-rounder-size);
+    bottom: auto;
+    @include notch-rounder-rotate(90deg);
+  }
+}
+
+@mixin notch-label-radii-bottom-end {
+  .notch__label {
+    /* Coin externe clipé par overflow:hidden hôte — évite le croissant AA */
+    border-top-left-radius: notch.$notch-corner-radius;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+@mixin notch-position-bottom-end {
+  .notch__label-wrapper {
+    @include notch-label-wrapper-bottom-end;
+  }
+
+  @include notch-label-radii-bottom-end;
+  @include notch-rounders-bottom-end;
+}
+
+// =============================================================================
+// TOP-CENTER — TC
+// =============================================================================
+
+@mixin notch-label-wrapper-top-center {
+  @include notch-label-wrapper-base;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: flex-start;
+}
+
+@mixin notch-rounders-top-center {
+  .notch__rounder--a {
+    @include notch-rounder-box(notch.$notch-rounder-size-edge);
+    left: -(notch.$notch-rounder-size-edge);
+    right: auto;
+    top: 0;
+    bottom: auto;
+    @include notch-rounder-rotate(0deg);
+  }
+
+  .notch__rounder--b {
+    @include notch-rounder-box(notch.$notch-rounder-size-edge);
+    right: -(notch.$notch-rounder-size-edge);
+    left: auto;
+    top: 0;
+    bottom: auto;
+    @include notch-rounder-rotate(270deg);
+  }
+}
+
+/// Haut/bas : réduire la hauteur (épaisseur verticale)
+@mixin notch-label-edge-size-y {
+  .notch__label {
+    height: notch.$notch-label-height-edge;
+    min-width: notch.$notch-label-height-edge;
+    width: notch.$notch-label-height-edge;
+    font-size: 0.6875rem;
+  }
+}
+
+/// Gauche/droite : réduire la largeur (profondeur horizontale), hauteur suit le texte
+@mixin notch-label-edge-size-x {
+  .notch__label {
+    width: notch.$notch-label-height-edge;
+    min-width: notch.$notch-label-height-edge;
+    height: auto;
+    min-height: notch.$notch-label-height-edge;
+    font-size: 0.6875rem;
+    padding: notch.$notch-label-padding-x 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@mixin notch-label-radii-top-center {
+  @include notch-label-edge-size-y;
+
+  .notch__label {
+    border-bottom-left-radius: notch.$notch-label-radius-edge;
+    border-bottom-right-radius: notch.$notch-label-radius-edge;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}
+
+@mixin notch-position-top-center {
+  .notch__label-wrapper {
+    @include notch-label-wrapper-top-center;
+  }
+
+  @include notch-label-radii-top-center;
+  @include notch-rounders-top-center;
+}
+
+// =============================================================================
+// BOTTOM-CENTER — BC
+// =============================================================================
+
+@mixin notch-label-wrapper-bottom-center {
+  @include notch-label-wrapper-base;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@mixin notch-rounders-bottom-center {
+  .notch__rounder--a {
+    @include notch-rounder-box(notch.$notch-rounder-size-edge);
+    left: -(notch.$notch-rounder-size-edge);
+    right: auto;
+    bottom: 0;
+    top: auto;
+    @include notch-rounder-rotate(90deg);
+  }
+
+  .notch__rounder--b {
+    @include notch-rounder-box(notch.$notch-rounder-size-edge);
+    right: -(notch.$notch-rounder-size-edge);
+    left: auto;
+    bottom: 0;
+    top: auto;
+    @include notch-rounder-rotate(180deg);
+  }
+}
+
+@mixin notch-label-radii-bottom-center {
+  @include notch-label-edge-size-y;
+
+  .notch__label {
+    border-top-left-radius: notch.$notch-label-radius-edge;
+    border-top-right-radius: notch.$notch-label-radius-edge;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+@mixin notch-position-bottom-center {
+  .notch__label-wrapper {
+    @include notch-label-wrapper-bottom-center;
+  }
+
+  @include notch-label-radii-bottom-center;
+  @include notch-rounders-bottom-center;
+}
+
+// =============================================================================
+// LEFT-CENTER — LC
+// =============================================================================
+
+@mixin notch-label-wrapper-left-center {
+  @include notch-label-wrapper-base;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@mixin notch-rounders-left-center {
+  .notch__rounder--a {
+    @include notch-rounder-box(notch.$notch-rounder-size-edge);
+    left: 0;
+    right: auto;
+    top: -(notch.$notch-rounder-size-edge);
+    bottom: auto;
+    @include notch-rounder-rotate(180deg);
+  }
+
+  .notch__rounder--b {
+    @include notch-rounder-box(notch.$notch-rounder-size-edge);
+    left: 0;
+    right: auto;
+    bottom: -(notch.$notch-rounder-size-edge);
+    top: auto;
+    @include notch-rounder-rotate(270deg);
+  }
+}
+
+@mixin notch-label-radii-left-center {
+  @include notch-label-edge-size-x;
+
+  .notch__label {
+    border-top-right-radius: notch.$notch-label-radius-edge;
+    border-bottom-right-radius: notch.$notch-label-radius-edge;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+
+    span {
+      display: inline-block;
+      transform: none;
+      white-space: nowrap;
+    }
+  }
+}
+
+@mixin notch-position-left-center {
+  .notch__label-wrapper {
+    @include notch-label-wrapper-left-center;
+  }
+
+  @include notch-label-radii-left-center;
+  @include notch-rounders-left-center;
+}
+
+// =============================================================================
+// RIGHT-CENTER — RC
+// =============================================================================
+
+@mixin notch-label-wrapper-right-center {
+  @include notch-label-wrapper-base;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@mixin notch-rounders-right-center {
+  .notch__rounder--a {
+    @include notch-rounder-box(notch.$notch-rounder-size-edge);
+    right: 0;
+    left: auto;
+    top: -(notch.$notch-rounder-size-edge);
+    bottom: auto;
+    @include notch-rounder-rotate(90deg);
+  }
+
+  .notch__rounder--b {
+    @include notch-rounder-box(notch.$notch-rounder-size-edge);
+    right: 0;
+    left: auto;
+    bottom: -(notch.$notch-rounder-size-edge);
+    top: auto;
+    @include notch-rounder-rotate(0deg);
+  }
+}
+
+@mixin notch-label-radii-right-center {
+  @include notch-label-edge-size-x;
+
+  .notch__label {
+    border-top-left-radius: notch.$notch-label-radius-edge;
+    border-bottom-left-radius: notch.$notch-label-radius-edge;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+
+    span {
+      display: inline-block;
+      transform: none;
+      white-space: nowrap;
+    }
+  }
+}
+
+@mixin notch-position-right-center {
+  .notch__label-wrapper {
+    @include notch-label-wrapper-right-center;
+  }
+
+  @include notch-label-radii-right-center;
+  @include notch-rounders-right-center;
+}
+
+// =============================================================================
+// SURFACES HÔTES
+// =============================================================================
+
+@mixin notch-host-surface {
+  min-height: notch.$notch-host-min-height;
+  padding: notch.$notch-host-padding;
+  padding-bottom: calc(#{notch.$notch-host-padding} + #{notch.$notch-host-author-reserve});
+  line-height: notch.$notch-host-line-height;
+  box-sizing: border-box;
+}
+
+@mixin notch-host-surface-top {
+  min-height: notch.$notch-host-min-height;
+  padding: notch.$notch-host-padding;
+  padding-top: calc(#{notch.$notch-host-padding} + #{notch.$notch-host-author-reserve});
+  line-height: notch.$notch-host-line-height;
+  box-sizing: border-box;
+}
+
+@mixin notch-host-surface-top-end {
+  @include notch-host-surface-top;
+}
+
+@mixin notch-host-surface-top-start {
+  @include notch-host-surface-top;
+}
+
+@mixin notch-host-surface-top-center {
+  min-height: notch.$notch-host-min-height;
+  padding: notch.$notch-host-padding;
+  padding-top: calc(#{notch.$notch-host-padding} + #{notch.$notch-edge-host-reserve-y});
+  line-height: notch.$notch-host-line-height;
+  box-sizing: border-box;
+}
+
+@mixin notch-host-surface-bottom-center {
+  min-height: notch.$notch-host-min-height;
+  padding: notch.$notch-host-padding;
+  padding-bottom: calc(#{notch.$notch-host-padding} + #{notch.$notch-edge-host-reserve-y});
+  line-height: notch.$notch-host-line-height;
+  box-sizing: border-box;
+}
+
+@mixin notch-host-surface-left-center {
+  min-height: notch.$notch-host-min-height;
+  padding: notch.$notch-host-padding;
+  padding-left: calc(#{notch.$notch-host-padding} + #{notch.$notch-edge-host-reserve-x});
+  line-height: notch.$notch-host-line-height;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+@mixin notch-host-surface-right-center {
+  min-height: notch.$notch-host-min-height;
+  padding: notch.$notch-host-padding;
+  padding-right: calc(#{notch.$notch-host-padding} + #{notch.$notch-edge-host-reserve-x});
+  line-height: notch.$notch-host-line-height;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+// Aliases legacy
+@mixin notch-label-wrapper {
+  @include notch-label-wrapper-bottom-end;
+}
+
+@mixin notch-rounder($variant: 'a') {
+  @if $variant == 'a' {
+    left: -(notch.$notch-rounder-size);
+    right: auto;
+    bottom: 0;
+    top: auto;
+  } @else {
+    left: auto;
+    right: 0;
+    top: -(notch.$notch-rounder-size);
+    bottom: auto;
+  }
+
+  .notch__rounder-inner {
+    transform: rotate(90deg);
+  }
+}

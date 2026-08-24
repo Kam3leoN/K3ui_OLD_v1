@@ -1,0 +1,84 @@
+/// @file color.mixin.scss
+/// @brief Mixins pour la gestion des couleurs Material Design 2
+@use 'sass:map';
+@use '../tokens/color.token' as color;
+
+/**
+ * Fonction pour récupérer une couleur depuis les tokens
+ * @param {string} $color - Nom de la couleur (ex: "red", "blue")
+ * @param {string} $type - Type de couleur (ex: "base", "lighten-1", "darken-2")
+ * @return {color} La couleur demandée
+ */
+@function color($color, $type) {
+  @if map.has-key(color.$colors, $color) {
+    $curr_color: map.get(color.$colors, $color);
+    @if map.has-key($curr_color, $type) {
+      @return map.get($curr_color, $type);
+    }
+  }
+  @warn "Unknown `#{$color}` - `#{$type}` in $colors.";
+  @return null;
+}
+
+/**
+ * Mixin pour appliquer une couleur de fond
+ * @param {string} $color - Nom de la couleur
+ * @param {string} $type - Type de couleur (défaut: "base")
+ */
+@mixin background-color($color, $type: "base") {
+  background-color: color($color, $type) !important;
+}
+
+/**
+ * Mixin pour appliquer une couleur de texte
+ * @param {string} $color - Nom de la couleur
+ * @param {string} $type - Type de couleur (défaut: "base")
+ */
+@mixin text-color($color, $type: "base") {
+  color: color($color, $type) !important;
+}
+
+/**
+ * Mixin pour appliquer une couleur de bordure
+ * @param {string} $color - Nom de la couleur
+ * @param {string} $type - Type de couleur (défaut: "base")
+ * @param {string} $width - Largeur de la bordure (défaut: "1px")
+ */
+@mixin border-color($color, $type: "base", $width: "1px") {
+  border: #{$width} solid color($color, $type) !important;
+}
+
+/**
+ * Mixin pour générer des classes de couleur pour une couleur donnée
+ * @param {string} $color-name - Nom de la couleur
+ * @param {map} $color-map - Map des variantes de la couleur
+ */
+@mixin color-classes($color-name, $color-map) {
+  @each $color-type, $color-value in $color-map {
+    @if $color-type == "base" {
+      .#{$color-name} {
+        @include background-color($color-name, $color-type);
+      }
+      .#{$color-name}-text {
+        @include text-color($color-name, $color-type);
+      }
+    }
+    @else if $color-name != "shades" {
+      .#{$color-name}.#{$color-type} {
+        @include background-color($color-name, $color-type);
+      }
+      .#{$color-name}-text.text-#{$color-type} {
+        @include text-color($color-name, $color-type);
+      }
+    }
+  }
+}
+
+/**
+ * Mixin pour générer toutes les classes de couleurs
+ */
+@mixin all-color-classes {
+  @each $color_name, $color in color.$colors {
+    @include color-classes($color_name, $color);
+  }
+}

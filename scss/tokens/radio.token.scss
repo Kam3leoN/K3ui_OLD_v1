@@ -1,0 +1,49 @@
+/// @file radio.token.scss
+/// @brief Tokens radio Material 3 Expressive
+/// Géométrie alignée M3E PseudoRadio : viewBox 20×20, anneau r=10/cutout r=8, point r=5
+
+@use './radius.token' as radius;
+@use './motion.token' as motion;
+@use './spacing.token' as spacing;
+@use './shape.token' as shape;
+
+// Anneau / icône — 20dp (M3E --m3e-radio-icon-size: 1.25rem)
+$md-sys-radio-container-size: 20px;
+
+// Container shape: full corner (circulaire)
+$md-sys-radio-container-shape: radius.$md-sys-shape-corner-full;
+
+// Point — diamètre 10 (M3E circle r=5), centre géométrique du viewBox
+$md-sys-radio-dot-size: 10px;
+
+// Dot shape: full corner (circulaire)
+$md-sys-radio-dot-shape: radius.$md-sys-shape-corner-full;
+
+// Target size (touch target): 48dp
+$md-sys-radio-target-size: 48px;
+
+// State-layer size: 48dp
+$md-sys-radio-state-layer-size: 48px;
+
+// State-layer shape: full corner (circulaire)
+$md-sys-radio-state-layer-shape: radius.$md-sys-shape-corner-full;
+
+// Outline width (dessiné en box-shadow inset — pas de border layout)
+$md-sys-radio-unselected-outline-width: 2px;
+
+// Selected outline width
+$md-sys-radio-selected-outline-width: 2px;
+
+// Disabled container opacity
+$md-sys-radio-disabled-container-opacity: 0.38;
+
+// Timings M3 Expressive
+$md-sys-radio-transition-duration: motion.spring-duration(effects, fast);
+$md-sys-radio-transition-easing: motion.spring-easing(effects, fast);
+$md-sys-radio-dot-duration: motion.spring-duration(spatial, fast);
+$md-sys-radio-dot-easing: motion.spring-easing(spatial, fast);
+
+// Opacités pour les états
+$md-sys-radio-state-layer-opacity-hover: 0.08;
+$md-sys-radio-state-layer-opacity-focus: 0.12;
+$md-sys-radio-state-layer-opacity-pressed: 0.12;

@@ -1,0 +1,223 @@
+/**
+ * @fileoverview Mixins Pricing
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/pricing.token' as pricing;
+@use '../tokens/spacing.token' as spacing;
+
+/**
+ * Conteneur principal de la section pricing
+ */
+@mixin pricing-root() {
+  display: flex;
+  flex-direction: column;
+  gap: pricing.$pricing-section-gap;
+  width: 100%;
+  color: pricing.$pricing-color-on-surface;
+  font-family: pricing.$pricing-font-family;
+  background: pricing.$pricing-color-bg;
+}
+
+/**
+ * En-tête centré (titre + toggle)
+ */
+@mixin pricing-header() {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: center;
+}
+
+/**
+ * Grille des plans tarifaires
+ */
+@mixin pricing-plans-grid() {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: auto 1fr auto;
+  gap: pricing.$pricing-plans-gap;
+  width: 100%;
+  align-items: stretch;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+  }
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/**
+ * Carte de plan tarifaire — tonal par défaut, filled si featured
+ */
+@mixin pricing-plan-card($featured: false) {
+  position: relative;
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
+  gap: pricing.$pricing-plan-section-gap;
+  padding: pricing.$pricing-plan-padding-lg pricing.$pricing-plan-padding;
+  border-radius: pricing.$pricing-plan-radius;
+  border: none;
+  min-height: 100%;
+  transition:
+    transform pricing.$pricing-transition-duration pricing.$pricing-transition-easing,
+    box-shadow pricing.$pricing-transition-duration pricing.$pricing-transition-easing;
+
+  @media (max-width: 1200px) {
+    display: flex;
+    flex-direction: column;
+    grid-row: auto;
+    gap: pricing.$pricing-plan-section-gap;
+  }
+
+  @if $featured {
+    background: pricing.$pricing-color-plan-filled-bg;
+    color: pricing.$pricing-color-plan-filled-fg;
+    box-shadow: var(--md-sys-elevation-level2);
+  } @else {
+    background: pricing.$pricing-color-plan-tonal-bg;
+    color: pricing.$pricing-color-plan-tonal-fg;
+    box-shadow: var(--md-sys-elevation-level0);
+  }
+}
+
+/**
+ * Badge « Popular » sur le plan mis en avant
+ */
+@mixin pricing-badge() {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: pricing.$pricing-badge-radius;
+  background: pricing.$pricing-color-plan-filled-badge;
+  color: pricing.$pricing-color-plan-filled-fg;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/**
+ * Prix avec suffixe /mo
+ */
+@mixin pricing-price-row() {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.25rem;
+  line-height: 1;
+}
+
+/**
+ * Liste de fonctionnalités avec k3ui-checkbox
+ */
+@mixin pricing-features() {
+  display: flex;
+  flex-direction: column;
+  gap: pricing.$pricing-feature-gap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  align-self: stretch;
+}
+
+@mixin pricing-feature-item() {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  min-height: 2rem;
+  font-size: pricing.$pricing-feature-size;
+  line-height: 1.35;
+
+  k3ui-checkbox,
+  .checkbox {
+    flex-shrink: 0;
+    pointer-events: none;
+    min-height: 2rem;
+    height: auto;
+    width: 100%;
+    align-items: center;
+
+    > div:first-child {
+      width: 2rem;
+      height: 2rem;
+      min-width: 2rem;
+      min-height: 2rem;
+    }
+
+    .checkbox__label {
+      line-height: 1.35;
+      font-size: pricing.$pricing-feature-size;
+    }
+  }
+}
+
+/**
+ * Zone CTA en bas de carte
+ */
+@mixin pricing-plan-actions() {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: spacing.$md-sys-spacing-sm;
+  align-self: stretch;
+  padding-top: spacing.$md-sys-spacing-xs;
+}
+
+/**
+ * Grille du tableau comparatif
+ */
+@mixin pricing-table-grid() {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1.4fr) repeat(4, minmax(pricing.$pricing-table-col-min, 1fr));
+  gap: pricing.$pricing-table-gap;
+  width: 100%;
+
+  @media (max-width: 960px) {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.25rem;
+  }
+}
+
+@mixin pricing-table-checkbox-compact() {
+  k3ui-checkbox,
+  .checkbox {
+    pointer-events: none;
+    min-height: 2rem;
+    height: auto;
+    align-items: center;
+
+    > div:first-child {
+      width: 2rem;
+      height: 2rem;
+      min-width: 2rem;
+      min-height: 2rem;
+    }
+  }
+}
+
+/**
+ * Cellule du tableau comparatif
+ */
+@mixin pricing-table-cell() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: pricing.$pricing-table-cell-min-height;
+  padding: spacing.$md-sys-spacing-xs spacing.$md-sys-spacing-sm;
+  border-radius: pricing.$pricing-table-cell-radius;
+  background: pricing.$pricing-color-table-cell;
+  color: pricing.$pricing-color-on-surface;
+  font-size: 0.875rem;
+  text-align: center;
+
+  @include pricing-table-checkbox-compact;
+}

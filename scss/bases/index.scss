@@ -1,0 +1,8 @@
+/** @forward './variables' — variables SCSS de base (typo, couleurs, etc.) */
+@forward './variables';
+
+/** @forward './global' — styles globaux du body et resets */
+@forward './global';
+
+/** @forward './footer' — footer + layout k3ui-footer (pied de page en bas) */
+@forward './footer';

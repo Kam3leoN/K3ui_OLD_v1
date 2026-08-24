@@ -1,0 +1,76 @@
+/**
+ * @fileoverview Module WheelPicker
+ * @description Sélecteur de caractères en colonnes rotatives (initiales arcade)
+ */
+
+@use '../mixins/wheel-picker.mixin' as wp-mixin;
+
+@include wp-mixin.wheel-picker-keyframes;
+
+.wheel-picker {
+  @include wp-mixin.wheel-picker-root;
+}
+
+.wheel-picker__preview {
+  @include wp-mixin.wheel-picker-preview;
+}
+
+.wheel-picker__preview-char {
+  @include wp-mixin.wheel-picker-preview-char;
+}
+
+.wheel-picker__wheels {
+  @include wp-mixin.wheel-picker-wheels;
+}
+
+.wheel-picker__column {
+  @include wp-mixin.wheel-picker-column;
+}
+
+.wheel-picker__btn {
+  @include wp-mixin.wheel-picker-btn;
+}
+
+.wheel-picker__display {
+  @include wp-mixin.wheel-picker-display;
+}
+
+.wheel-picker__letter {
+  @include wp-mixin.wheel-picker-letter;
+}
+
+.wheel-picker__shimmer {
+  @include wp-mixin.wheel-picker-shimmer;
+}
+
+.wheel-picker__submit {
+  @include wp-mixin.wheel-picker-submit;
+}
+
+.wheel-picker__ripple {
+  @include wp-mixin.wheel-picker-ripple;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wheel-picker__column {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .wheel-picker__letter--slide-out-up,
+  .wheel-picker__letter--slide-out-down,
+  .wheel-picker__letter--slide-in-up,
+  .wheel-picker__letter--slide-in-down {
+    animation: none !important;
+  }
+
+  .wheel-picker__display--animating {
+    will-change: auto;
+  }
+
+  .wheel-picker__preview,
+  .wheel-picker__submit {
+    animation: none;
+  }
+}

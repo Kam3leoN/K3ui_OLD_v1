@@ -1,0 +1,332 @@
+/**
+ * @fileoverview Tokens typography Material You 3
+ * @see https://m3.material.io/foundations/design-tokens/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use 'sass:map';
+@use 'fontface.token' as fontface;
+
+// =============================================================================
+// TOKENS TYPOGRAPHY - MATERIAL YOU 3
+// =============================================================================
+
+// Variables pour les polices (utilisent directement fontface.token)
+
+/**
+ * Map des styles typographiques Display
+ */
+$md-sys-typescale-display: (
+  large: (
+    font-family-name: fontface.$font-family-display,
+    font-size: 57px,
+    font-weight: 400,
+    line-height: 64px,
+    letter-spacing: -0.25px
+  ),
+  medium: (
+    font-family-name: fontface.$font-family-display,
+    font-size: 45px,
+    font-weight: 400,
+    line-height: 52px,
+    letter-spacing: 0px
+  ),
+  small: (
+    font-family-name: fontface.$font-family-display,
+    font-size: 36px,
+    font-weight: 400,
+    line-height: 44px,
+    letter-spacing: 0px
+  )
+) !default;
+
+/**
+ * Map des styles typographiques Headline
+ */
+$md-sys-typescale-headline: (
+  large: (
+    font-family-name: fontface.$font-family-main,
+    font-size: 32px,
+    font-weight: 400,
+    line-height: 40px,
+    letter-spacing: 0px
+  ),
+  medium: (
+    font-family-name: fontface.$font-family-main,
+    font-size: 28px,
+    font-weight: 400,
+    line-height: 36px,
+    letter-spacing: 0px
+  ),
+  small: (
+    font-family-name: fontface.$font-family-main,
+    font-size: 24px,
+    font-weight: 400,
+    line-height: 32px,
+    letter-spacing: 0px
+  )
+) !default;
+
+/**
+ * Map des styles typographiques Title
+ */
+$md-sys-typescale-title: (
+  large: (
+    font-family-name: fontface.$font-family-main,
+    font-size: 22px,
+    font-weight: 400,
+    line-height: 28px,
+    letter-spacing: 0px
+  ),
+  medium: (
+    font-family-name: fontface.$font-family-main,
+    font-size: 16px,
+    font-weight: 500,
+    line-height: 24px,
+    letter-spacing: 0.15px
+  ),
+  small: (
+    font-family-name: fontface.$font-family-main,
+    font-size: 14px,
+    font-weight: 500,
+    line-height: 20px,
+    letter-spacing: 0.10px
+  )
+) !default;
+
+/**
+ * Map des styles typographiques Body
+ */
+$md-sys-typescale-body: (
+  large: (
+    font-family-name: fontface.$font-family-text,
+    font-size: 16px,
+    font-weight: 400,
+    line-height: 24px,
+    letter-spacing: 0.50px
+  ),
+  medium: (
+    font-family-name: fontface.$font-family-text,
+    font-size: 14px,
+    font-weight: 400,
+    line-height: 20px,
+    letter-spacing: 0.25px
+  ),
+  small: (
+    font-family-name: fontface.$font-family-text,
+    font-size: 12px,
+    font-weight: 400,
+    line-height: 16px,
+    letter-spacing: 0.40px
+  )
+) !default;
+
+/**
+ * Map des styles typographiques Label
+ */
+$md-sys-typescale-label: (
+  large: (
+    font-family-name: fontface.$font-family-main,
+    font-size: 14px,
+    font-weight: 500,
+    line-height: 20px,
+    letter-spacing: 0.10px
+  ),
+  medium: (
+    font-family-name: fontface.$font-family-main,
+    font-size: 12px,
+    font-weight: 500,
+    line-height: 16px,
+    letter-spacing: 0.50px
+  ),
+  small: (
+    font-family-name: fontface.$font-family-main,
+    font-size: 11px,
+    font-weight: 500,
+    line-height: 16px,
+    letter-spacing: 0.50px
+  )
+) !default;
+
+// Variables individuelles pour compatibilité (dépréciées)
+$md-sys-typescale-display-large-font-family-name: map.get(map.get($md-sys-typescale-display, 'large'), 'font-family-name') !default;
+$md-sys-typescale-display-large-font-size: map.get(map.get($md-sys-typescale-display, 'large'), 'font-size') !default;
+$md-sys-typescale-display-large-font-weight: map.get(map.get($md-sys-typescale-display, 'large'), 'font-weight') !default;
+$md-sys-typescale-display-large-line-height: map.get(map.get($md-sys-typescale-display, 'large'), 'line-height') !default;
+$md-sys-typescale-display-large-letter-spacing: map.get(map.get($md-sys-typescale-display, 'large'), 'letter-spacing') !default;
+
+// Display Medium
+$md-sys-typescale-display-medium-font-family-name: map.get(map.get($md-sys-typescale-display, 'medium'), 'font-family-name') !default;
+$md-sys-typescale-display-medium-font-size: map.get(map.get($md-sys-typescale-display, 'medium'), 'font-size') !default;
+$md-sys-typescale-display-medium-font-weight: map.get(map.get($md-sys-typescale-display, 'medium'), 'font-weight') !default;
+$md-sys-typescale-display-medium-line-height: map.get(map.get($md-sys-typescale-display, 'medium'), 'line-height') !default;
+$md-sys-typescale-display-medium-letter-spacing: map.get(map.get($md-sys-typescale-display, 'medium'), 'letter-spacing') !default;
+
+// Display Small
+$md-sys-typescale-display-small-font-family-name: map.get(map.get($md-sys-typescale-display, 'small'), 'font-family-name') !default;
+$md-sys-typescale-display-small-font-size: map.get(map.get($md-sys-typescale-display, 'small'), 'font-size') !default;
+$md-sys-typescale-display-small-font-weight: map.get(map.get($md-sys-typescale-display, 'small'), 'font-weight') !default;
+$md-sys-typescale-display-small-line-height: map.get(map.get($md-sys-typescale-display, 'small'), 'line-height') !default;
+$md-sys-typescale-display-small-letter-spacing: map.get(map.get($md-sys-typescale-display, 'small'), 'letter-spacing') !default;
+
+// Headline Large
+$md-sys-typescale-headline-large-font-family-name: map.get(map.get($md-sys-typescale-headline, 'large'), 'font-family-name') !default;
+$md-sys-typescale-headline-large-font-size: map.get(map.get($md-sys-typescale-headline, 'large'), 'font-size') !default;
+$md-sys-typescale-headline-large-font-weight: map.get(map.get($md-sys-typescale-headline, 'large'), 'font-weight') !default;
+$md-sys-typescale-headline-large-line-height: map.get(map.get($md-sys-typescale-headline, 'large'), 'line-height') !default;
+$md-sys-typescale-headline-large-letter-spacing: map.get(map.get($md-sys-typescale-headline, 'large'), 'letter-spacing') !default;
+
+// Headline Medium
+$md-sys-typescale-headline-medium-font-family-name: map.get(map.get($md-sys-typescale-headline, 'medium'), 'font-family-name') !default;
+$md-sys-typescale-headline-medium-font-size: map.get(map.get($md-sys-typescale-headline, 'medium'), 'font-size') !default;
+$md-sys-typescale-headline-medium-font-weight: map.get(map.get($md-sys-typescale-headline, 'medium'), 'font-weight') !default;
+$md-sys-typescale-headline-medium-line-height: map.get(map.get($md-sys-typescale-headline, 'medium'), 'line-height') !default;
+$md-sys-typescale-headline-medium-letter-spacing: map.get(map.get($md-sys-typescale-headline, 'medium'), 'letter-spacing') !default;
+
+// Headline Small
+$md-sys-typescale-headline-small-font-family-name: map.get(map.get($md-sys-typescale-headline, 'small'), 'font-family-name') !default;
+$md-sys-typescale-headline-small-font-size: map.get(map.get($md-sys-typescale-headline, 'small'), 'font-size') !default;
+$md-sys-typescale-headline-small-font-weight: map.get(map.get($md-sys-typescale-headline, 'small'), 'font-weight') !default;
+$md-sys-typescale-headline-small-line-height: map.get(map.get($md-sys-typescale-headline, 'small'), 'line-height') !default;
+$md-sys-typescale-headline-small-letter-spacing: map.get(map.get($md-sys-typescale-headline, 'small'), 'letter-spacing') !default;
+
+// Title Large
+$md-sys-typescale-title-large-font-family-name: map.get(map.get($md-sys-typescale-title, 'large'), 'font-family-name') !default;
+$md-sys-typescale-title-large-font-size: map.get(map.get($md-sys-typescale-title, 'large'), 'font-size') !default;
+$md-sys-typescale-title-large-font-weight: map.get(map.get($md-sys-typescale-title, 'large'), 'font-weight') !default;
+$md-sys-typescale-title-large-line-height: map.get(map.get($md-sys-typescale-title, 'large'), 'line-height') !default;
+$md-sys-typescale-title-large-letter-spacing: map.get(map.get($md-sys-typescale-title, 'large'), 'letter-spacing') !default;
+
+// Title Medium
+$md-sys-typescale-title-medium-font-family-name: map.get(map.get($md-sys-typescale-title, 'medium'), 'font-family-name') !default;
+$md-sys-typescale-title-medium-font-size: map.get(map.get($md-sys-typescale-title, 'medium'), 'font-size') !default;
+$md-sys-typescale-title-medium-font-weight: map.get(map.get($md-sys-typescale-title, 'medium'), 'font-weight') !default;
+$md-sys-typescale-title-medium-line-height: map.get(map.get($md-sys-typescale-title, 'medium'), 'line-height') !default;
+$md-sys-typescale-title-medium-letter-spacing: map.get(map.get($md-sys-typescale-title, 'medium'), 'letter-spacing') !default;
+
+// Title Small
+$md-sys-typescale-title-small-font-family-name: map.get(map.get($md-sys-typescale-title, 'small'), 'font-family-name') !default;
+$md-sys-typescale-title-small-font-size: map.get(map.get($md-sys-typescale-title, 'small'), 'font-size') !default;
+$md-sys-typescale-title-small-font-weight: map.get(map.get($md-sys-typescale-title, 'small'), 'font-weight') !default;
+$md-sys-typescale-title-small-line-height: map.get(map.get($md-sys-typescale-title, 'small'), 'line-height') !default;
+$md-sys-typescale-title-small-letter-spacing: map.get(map.get($md-sys-typescale-title, 'small'), 'letter-spacing') !default;
+
+// Body Large
+$md-sys-typescale-body-large-font-family-name: map.get(map.get($md-sys-typescale-body, 'large'), 'font-family-name') !default;
+$md-sys-typescale-body-large-font-size: map.get(map.get($md-sys-typescale-body, 'large'), 'font-size') !default;
+$md-sys-typescale-body-large-font-weight: map.get(map.get($md-sys-typescale-body, 'large'), 'font-weight') !default;
+$md-sys-typescale-body-large-line-height: map.get(map.get($md-sys-typescale-body, 'large'), 'line-height') !default;
+$md-sys-typescale-body-large-letter-spacing: map.get(map.get($md-sys-typescale-body, 'large'), 'letter-spacing') !default;
+
+// Body Medium
+$md-sys-typescale-body-medium-font-family-name: map.get(map.get($md-sys-typescale-body, 'medium'), 'font-family-name') !default;
+$md-sys-typescale-body-medium-font-size: map.get(map.get($md-sys-typescale-body, 'medium'), 'font-size') !default;
+$md-sys-typescale-body-medium-font-weight: map.get(map.get($md-sys-typescale-body, 'medium'), 'font-weight') !default;
+$md-sys-typescale-body-medium-line-height: map.get(map.get($md-sys-typescale-body, 'medium'), 'line-height') !default;
+$md-sys-typescale-body-medium-letter-spacing: map.get(map.get($md-sys-typescale-body, 'medium'), 'letter-spacing') !default;
+
+// Body Small
+$md-sys-typescale-body-small-font-family-name: map.get(map.get($md-sys-typescale-body, 'small'), 'font-family-name') !default;
+$md-sys-typescale-body-small-font-size: map.get(map.get($md-sys-typescale-body, 'small'), 'font-size') !default;
+$md-sys-typescale-body-small-font-weight: map.get(map.get($md-sys-typescale-body, 'small'), 'font-weight') !default;
+$md-sys-typescale-body-small-line-height: map.get(map.get($md-sys-typescale-body, 'small'), 'line-height') !default;
+$md-sys-typescale-body-small-letter-spacing: map.get(map.get($md-sys-typescale-body, 'small'), 'letter-spacing') !default;
+
+// Label Large
+$md-sys-typescale-label-large-font-family-name: map.get(map.get($md-sys-typescale-label, 'large'), 'font-family-name') !default;
+$md-sys-typescale-label-large-font-size: map.get(map.get($md-sys-typescale-label, 'large'), 'font-size') !default;
+$md-sys-typescale-label-large-font-weight: map.get(map.get($md-sys-typescale-label, 'large'), 'font-weight') !default;
+$md-sys-typescale-label-large-line-height: map.get(map.get($md-sys-typescale-label, 'large'), 'line-height') !default;
+$md-sys-typescale-label-large-letter-spacing: map.get(map.get($md-sys-typescale-label, 'large'), 'letter-spacing') !default;
+
+// Label Medium
+$md-sys-typescale-label-medium-font-family-name: map.get(map.get($md-sys-typescale-label, 'medium'), 'font-family-name') !default;
+$md-sys-typescale-label-medium-font-size: map.get(map.get($md-sys-typescale-label, 'medium'), 'font-size') !default;
+$md-sys-typescale-label-medium-font-weight: map.get(map.get($md-sys-typescale-label, 'medium'), 'font-weight') !default;
+$md-sys-typescale-label-medium-line-height: map.get(map.get($md-sys-typescale-label, 'medium'), 'line-height') !default;
+$md-sys-typescale-label-medium-letter-spacing: map.get(map.get($md-sys-typescale-label, 'medium'), 'letter-spacing') !default;
+
+// Label Small
+$md-sys-typescale-label-small-font-family-name: map.get(map.get($md-sys-typescale-label, 'small'), 'font-family-name') !default;
+$md-sys-typescale-label-small-font-size: map.get(map.get($md-sys-typescale-label, 'small'), 'font-size') !default;
+$md-sys-typescale-label-small-font-weight: map.get(map.get($md-sys-typescale-label, 'small'), 'font-weight') !default;
+$md-sys-typescale-label-small-line-height: map.get(map.get($md-sys-typescale-label, 'small'), 'line-height') !default;
+$md-sys-typescale-label-small-letter-spacing: map.get(map.get($md-sys-typescale-label, 'small'), 'letter-spacing') !default;
+
+// =============================================================================
+// FONCTIONS UTILITAIRES
+// =============================================================================
+
+/**
+ * Fonction pour récupérer une propriété typographique Display
+ * @param {string} $size - Taille (large, medium, small)
+ * @param {string} $property - Propriété (font-family-name, font-size, font-weight, line-height, letter-spacing)
+ * @return {value} La valeur de la propriété
+ */
+@function typography-display($size, $property) {
+  @return map.get(map.get($md-sys-typescale-display, $size), $property);
+}
+
+/**
+ * Fonction pour récupérer une propriété typographique Headline
+ * @param {string} $size - Taille (large, medium, small)
+ * @param {string} $property - Propriété (font-family-name, font-size, font-weight, line-height, letter-spacing)
+ * @return {value} La valeur de la propriété
+ */
+@function typography-headline($size, $property) {
+  @return map.get(map.get($md-sys-typescale-headline, $size), $property);
+}
+
+/**
+ * Fonction pour récupérer une propriété typographique Title
+ * @param {string} $size - Taille (large, medium, small)
+ * @param {string} $property - Propriété (font-family-name, font-size, font-weight, line-height, letter-spacing)
+ * @return {value} La valeur de la propriété
+ */
+@function typography-title($size, $property) {
+  @return map.get(map.get($md-sys-typescale-title, $size), $property);
+}
+
+/**
+ * Fonction pour récupérer une propriété typographique Body
+ * @param {string} $size - Taille (large, medium, small)
+ * @param {string} $property - Propriété (font-family-name, font-size, font-weight, line-height, letter-spacing)
+ * @return {value} La valeur de la propriété
+ */
+@function typography-body($size, $property) {
+  @return map.get(map.get($md-sys-typescale-body, $size), $property);
+}
+
+/**
+ * Fonction pour récupérer une propriété typographique Label
+ * @param {string} $size - Taille (large, medium, small)
+ * @param {string} $property - Propriété (font-family-name, font-size, font-weight, line-height, letter-spacing)
+ * @return {value} La valeur de la propriété
+ */
+@function typography-label($size, $property) {
+  @return map.get(map.get($md-sys-typescale-label, $size), $property);
+}
+
+/**
+ * Fonction générique pour récupérer une propriété typographique
+ * @param {string} $category - Catégorie (display, headline, title, body, label)
+ * @param {string} $size - Taille (large, medium, small)
+ * @param {string} $property - Propriété (font-family-name, font-size, font-weight, line-height, letter-spacing)
+ * @return {value} La valeur de la propriété
+ */
+@function typography($category, $size, $property) {
+  @if $category == 'display' {
+    @return typography-display($size, $property);
+  } @else if $category == 'headline' {
+    @return typography-headline($size, $property);
+  } @else if $category == 'title' {
+    @return typography-title($size, $property);
+  } @else if $category == 'body' {
+    @return typography-body($size, $property);
+  } @else if $category == 'label' {
+    @return typography-label($size, $property);
+  }
+  @warn "Unknown typography category: #{$category}";
+  @return null;
+}

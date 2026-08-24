@@ -1,0 +1,105 @@
+/**
+ * @fileoverview Module SlideshowCaptions
+ */
+
+@use '../tokens/slideshow-captions.token' as cap-tok;
+@use '../mixins/slideshow-captions.mixin' as captions-mixin;
+
+.slideshow-captions {
+  @include captions-mixin.slideshow-captions-root;
+}
+
+/// Synergy : `inline-block` + enfants en `absolute` peut rétrécir / mal centrer ; `block` + 100 % assure la largeur utile.
+.slideshow-captions[data-k3-slideshow-captions-mode='synergy'] {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+/// Lignes synergy : sans largeur explicite, le shrink-to-fit absolu est **plafonné** par le conteneur (ex. ancre 280px) :
+/// `offsetWidth` devient la largeur du bloc au lieu du texte → le JS centre une boîte étroite alors que le texte déborde (effet « pas centré »).
+.slideshow-captions[data-k3-slideshow-captions-mode='synergy'] .slideshow-captions-text,
+.slideshow-captions[data-k3-slideshow-captions-mode='synergy'] .slideshow-captions__line {
+  width: max-content;
+  max-width: none;
+}
+
+/// Synergy + viewport fenêtre : les bandeaux peuvent dépasser du bloc (repère projeté sur le viewport).
+.slideshow-captions[data-k3-slideshow-captions-mode='synergy'][data-k3-slideshow-captions-viewport='window'] {
+  overflow-x: visible;
+  overflow-y: visible;
+}
+
+/// Synergy + viewport container : pas de `overflow-x: hidden` ici — le `translateX` + text-shadow dépassent la boîte et étaient rognés (effet « décalé »). Le parent page / wrap peut garder `overflow: hidden` si besoin.
+.slideshow-captions[data-k3-slideshow-captions-mode='synergy'][data-k3-slideshow-captions-viewport='container'] {
+  overflow-x: visible;
+  overflow-y: hidden;
+}
+
+.slideshow-captions__line,
+.slideshow-captions-text {
+  @include captions-mixin.slideshow-captions-line;
+  @include captions-mixin.slideshow-captions-text-3d;
+}
+
+.slideshow-captions__line p,
+.slideshow-captions-text p {
+  margin: 0;
+  font-size: cap-tok.$slideshow-captions-line-font-size;
+  font-weight: cap-tok.$slideshow-captions-line-font-weight;
+  letter-spacing: cap-tok.$slideshow-captions-line-letter-spacing;
+  line-height: cap-tok.$slideshow-captions-line-line-height;
+}
+
+/// Bandeaux empilés, axe vertical commun, défilement horizontal au centre du bloc
+.slideshow-captions[data-k3-slideshow-captions-mode='marquee'] {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: cap-tok.$slideshow-captions-line-gap;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.slideshow-captions[data-k3-slideshow-captions-mode='marquee'] .slideshow-captions__line {
+  position: relative;
+  left: auto;
+  top: auto;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  flex-shrink: 0;
+  margin: 0 auto;
+}
+
+.slideshow-captions__track {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  will-change: transform;
+}
+
+.slideshow-captions__segment {
+  display: inline-block;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: cap-tok.$slideshow-captions-line-padding-y cap-tok.$slideshow-captions-line-padding-x;
+  margin: 0;
+  border-radius: cap-tok.$slideshow-captions-line-radius;
+  background-color: cap-tok.$slideshow-captions-line-bg;
+  color: cap-tok.$slideshow-captions-line-color;
+  font-size: cap-tok.$slideshow-captions-line-font-size;
+  font-weight: cap-tok.$slideshow-captions-line-font-weight;
+  letter-spacing: cap-tok.$slideshow-captions-line-letter-spacing;
+  line-height: cap-tok.$slideshow-captions-line-line-height;
+  box-shadow: cap-tok.$slideshow-captions-line-shadow;
+  white-space: nowrap;
+  @include captions-mixin.slideshow-captions-text-3d;
+}
+
+.slideshow-captions__segment + .slideshow-captions__segment {
+  margin-left: cap-tok.$slideshow-captions-marquee-segment-gap;
+}

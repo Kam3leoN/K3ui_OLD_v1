@@ -1,0 +1,76 @@
+/**
+ * @fileoverview Mixins pour CodeBlock (Material Design 3 Expressive)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/codeblock.token' as cb;
+@use '../tokens/motion.token' as motion;
+
+/**
+ * Mixin carte du bloc de code (conteneur principal) — style Google/Gemini : wrapper avec gap, header et content avec même fond et coins séparés
+ */
+@mixin codeblock-card {
+  position: relative;
+  z-index: cb.$codeblock-z-index;
+  display: flex;
+  flex-direction: column;
+  gap: cb.$codeblock-card-gap;
+  overflow: visible;
+  outline: none;
+  box-shadow: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+/**
+ * Mixin toolbar du bloc de code (label/tabs + actions) — style Google : fond card-fill, coins arrondis en haut
+ */
+@mixin codeblock-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: cb.$codeblock-content-padding;
+  padding: 10px cb.$codeblock-content-padding;
+  background-color: cb.$codeblock-toolbar-surface;
+  color: cb.$codeblock-toolbar-on-surface;
+  font-size: cb.$codeblock-label-font-size;
+  min-height: 40px;
+  border-radius: cb.$codeblock-radius-large cb.$codeblock-radius-large cb.$codeblock-radius-small cb.$codeblock-radius-small;
+}
+
+/**
+ * Mixin zone de contenu (pre/code) — style Google : même fond card-fill, coins arrondis en bas.
+ */
+@mixin codeblock-content {
+  padding: 20px;
+  background-color: cb.$codeblock-card-fill;
+  border-radius: cb.$codeblock-radius-small cb.$codeblock-radius-small cb.$codeblock-radius-large cb.$codeblock-radius-large;
+  box-shadow: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+  font-family: cb.$codeblock-font-family;
+  font-size: cb.$codeblock-font-size;
+  font-weight: cb.$codeblock-font-weight;
+  line-height: cb.$codeblock-line-height;
+
+  pre {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    font: inherit;
+    white-space: pre;
+    tab-size: 2;
+  }
+
+  code {
+    font: inherit;
+    display: block;
+    white-space: inherit;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+}

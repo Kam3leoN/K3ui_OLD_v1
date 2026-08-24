@@ -1,0 +1,566 @@
+/**
+ * @fileoverview Styles pour le composant List (MD3 Expressive) et .list-item partagés (Menu, Select)
+ * @author K3UI Team
+ */
+
+@use '../tokens/list.token' as list;
+@use '../tokens/typography.token' as typography;
+@use '../mixins/list.mixin' as list-mixin;
+@use '../mixins/motion.mixin' as motion-mixin;
+@use '../mixins/state.mixin' as state;
+@use '../tokens/motion.token' as motion;
+
+// ============================================================================
+// COMPOSANT LIST (k3ui-list / .list)
+// ============================================================================
+
+.list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-family: var(--md-sys-typescale-body-large-font-family, 'Google Sans', Arial, sans-serif);
+  color: var(--md-sys-color-on-surface);
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  &--segmented &__container {
+    gap: list.$list-segmented-gap;
+  }
+
+  /* Segmented grouped : au repos, premier et dernier items ont des coins extérieurs
+     au rayon de groupe ($outer = 12dp) et des coins intérieurs réduits ($inner = 4dp).
+
+     Astuce « button-split » : au survol / focus / sélection, les deux bords opposés
+     d'un item doivent rester IDENTIQUES. On applique donc un rayon UNIFORME sur les
+     quatre coins, égal au rayon de groupe ($outer). Ainsi :
+       - le bord extérieur (haut du premier, bas du dernier) ne s'arrondit pas davantage
+         qu'au repos → pas d'effet « trop arrondi » sur un seul bord ;
+       - le bord intérieur passe de $inner à $outer pour égaler le bord extérieur ;
+       - tous les items (premier, milieu, dernier) partagent la même forme de survol.
+     Le rayon actif ($active = 16dp) reste réservé à la variante isolated. La forme est
+     posée sur chaque couche (le state-layer ne se repeint pas toujours via inherit). */
+  &--segmented:not(.list--segmented-isolated) {
+    $outer: list.$list-segmented-radius-outer;
+
+    .list__item-wrapper:hover,
+    .list__item-wrapper:focus-within,
+    .list__item-wrapper--selected {
+      @include list-mixin.list-item-active-shape($outer, $outer, $outer, $outer);
+    }
+  }
+
+  /* Isolated : chaque item est une surface séparée (16dp — radius active).
+     Forme posée sur le conteneur ; les couches internes héritent. */
+  &--segmented-isolated &__item-wrapper {
+    border-radius: list.$list-segmented-radius-active !important;
+  }
+
+  &__item-wrapper {
+    position: relative;
+  }
+
+  &__item-inner {
+    position: relative;
+  }
+
+  &__item {
+    &:focus-visible {
+      outline: 2px solid var(--md-sys-color-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  &__state-layer {
+    border-radius: inherit;
+  }
+
+  &__drop-indicator {
+    pointer-events: none;
+    box-shadow: 0 0 8px list.$list-item-placeholder-border;
+  }
+
+  &__drag-handle {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    color: var(--md-sys-color-on-surface-variant);
+    z-index: 2;
+    border-radius: inherit;
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  /* Cadre en pointillés sur le wrapper pendant le drag (comme ref React) */
+  &__item-wrapper--dragging {
+    outline: 2px dashed var(--md-sys-color-primary);
+    outline-offset: -3px;
+    z-index: 5;
+  }
+
+  &__item-wrapper--dragging &__item {
+    opacity: 0.35;
+  }
+
+  /* Swipe to dismiss */
+  &__item-inner:has(.list__swipe-slider) {
+    overflow: hidden;
+  }
+
+  &__swipe-reveal {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    pointer-events: none;
+    transition: background 200ms ease;
+  }
+
+  &__swipe-reveal-icon {
+    opacity: 0;
+    transition: opacity 200ms ease;
+    &--visible {
+      opacity: 1;
+    }
+    &--delete {
+      margin-left: auto;
+    }
+    &--archive {
+      margin-right: auto;
+    }
+  }
+
+  &__swipe-slider {
+    position: relative;
+    z-index: 1;
+    border-radius: inherit;
+    touch-action: pan-y;
+  }
+
+  &__item-wrapper--dismissing {
+    pointer-events: none;
+  }
+}
+
+// ============================================================================
+// ITEMS DE LISTE (partagés Menu, Select)
+// ============================================================================
+
+/**
+ * Classe pour les items de liste
+ */
+.list-item {
+  @include list-mixin.list-item-base();
+  // Permettre au ::before avec border-radius de s'afficher correctement
+  overflow: visible;
+
+  // Pseudo-élément ::before générique pour fond de survol et de sélection (radius 12dp hover, 16dp selected)
+  // État de base explicite + transition pour éviter le clignotement ; pointer-events: none pour ne pas capturer les events
+  &:not(.list-item--subheader):not(.subheader):not(.optgroup)::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-color: transparent;
+    border-radius: 0;
+    transition: background-color list.$list-selection-transition-duration list.$list-selection-transition-easing,
+      border-radius list.$list-selection-transition-duration list.$list-selection-transition-easing;
+  }
+
+  // Contenu (au-dessus du ::before pour clics et visibilité)
+  &__content {
+    @include list-mixin.list-item-content();
+    position: relative;
+    z-index: 1;
+  }
+
+  // Leading (icône ou image)
+  &__leading {
+    @include list-mixin.list-item-leading();
+    position: relative;
+    z-index: 1;
+  }
+
+  // Icône leading
+  &__leading-icon {
+    @include list-mixin.list-item-icon();
+  }
+
+  // Image leading (avatar)
+  &__leading-image {
+    @include list-mixin.list-item-image();
+  }
+
+  // Leading avec fond coloré type initial/avatar (rôles Primary container, On primary container)
+  &__leading-initials,
+  &__leading-avatar {
+    @include list-mixin.list-item-leading-container();
+  }
+
+  // Poignée de drag (drag handle only) — curseur grab
+  &__drag-handle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    flex-shrink: 0;
+    cursor: grab;
+    color: list.$list-item-icon-color;
+    margin-right: list.$list-item-leading-gap;
+
+    .list-item--dragging & {
+      cursor: grabbing;
+    }
+  }
+
+  // Badge trailing (pastille MD3)
+  &__trailing-badge {
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-size: list.$list-item-tertiary-font-size;
+    font-weight: 500;
+    line-height: list.$list-item-tertiary-line-height;
+  }
+
+  // Texte
+  &__text {
+    @include list-mixin.list-item-text();
+  }
+
+  // Texte principal
+  &__primary-text {
+    @include list-mixin.list-item-primary-text();
+  }
+
+  // Texte secondaire
+  &__secondary-text {
+    @include list-mixin.list-item-secondary-text();
+  }
+
+  // Alias MD3 (headline = primary-text, supporting-text = secondary-text)
+  &__headline {
+    @include list-mixin.list-item-primary-text();
+  }
+  &__supporting-text {
+    @include list-mixin.list-item-secondary-text();
+  }
+
+  // Overline (MD3 — au-dessus du headline)
+  &__overline {
+    @include list-mixin.list-item-overline();
+
+    &--selected {
+      color: var(--md-sys-color-on-secondary-container);
+    }
+  }
+
+  // One-line par défaut (56dp MD3) — dense = 40dp via .list--dense
+  &--one-line {
+    min-height: list.$list-item-min-height-one-line;
+  }
+
+  // Two-line (56dp / 72dp MD3)
+  &--two-line {
+    min-height: list.$list-item-min-height-two-line;
+
+    .list-item__content {
+      min-height: list.$list-item-min-height-two-line-supporting;
+      align-items: flex-start;
+      padding-top: list.$list-item-content-padding-vertical;
+      padding-bottom: list.$list-item-content-padding-vertical;
+    }
+  }
+
+  // Three-line (88dp MD3) - alignement top, padding 12dp
+  &--three-line {
+    min-height: list.$list-item-min-height-three-line;
+
+    .list-item__content {
+      min-height: list.$list-item-min-height-three-line;
+      align-items: flex-start;
+      padding-top: list.$list-item-content-padding-vertical-tall;
+      padding-bottom: list.$list-item-content-padding-vertical-tall;
+    }
+
+    .list-item__leading {
+      align-self: flex-start;
+      padding-top: list.$list-item-leading-icon-top-padding-tall;
+    }
+
+    .list-item__trailing {
+      align-self: flex-start;
+      padding-top: list.$list-item-content-padding-vertical-tall;
+    }
+  }
+
+  // Compatibilité : items avec secondary-text sans classe one/two/three-line
+  &:has(.list-item__secondary-text):not([class*='one-line']):not([class*='two-line']):not([class*='three-line']) {
+    min-height: list.$list-item-min-height-two-line-supporting;
+
+    .list-item__content {
+      min-height: list.$list-item-min-height-two-line-supporting;
+      align-items: flex-start;
+      padding-top: list.$list-item-content-padding-vertical;
+      padding-bottom: list.$list-item-content-padding-vertical;
+    }
+  }
+
+  // Texte tertiaire
+  &__tertiary-text {
+    @include list-mixin.list-item-tertiary-text();
+  }
+
+  // Trailing (icône)
+  &__trailing {
+    @include list-mixin.list-item-trailing();
+    position: relative;
+    z-index: 1;
+  }
+
+  // Trailing switch (MD3) — le slot ne force pas la forme : le composant .switch garde sa piste + curseur
+  &__trailing--switch {
+    .list-item__trailing-switch {
+      cursor: pointer;
+      border: none;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      flex-shrink: 0;
+      min-height: list.$list-target-min-size;
+      min-width: list.$list-target-min-size;
+      /* zone tactile 48dp, le visuel du switch (track/handle) n'est pas contraint */
+    }
+  }
+
+  // Icône trailing
+  &__trailing-icon {
+    @include list-mixin.list-item-icon();
+  }
+
+  // Texte trailing (pour les raccourcis clavier, etc.)
+  &__trailing-text {
+    font-size: typography.$md-sys-typescale-body-small-font-size;
+    font-weight: 500;
+    color: list.$list-item-secondary-color;
+    padding: 2px 6px;
+    background-color: var(--md-sys-color-surface-container-highest);
+    border-radius: 4px;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    user-select: none;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  // Meta (MD3 — heure, durée dans trailing)
+  &__meta {
+    @include list-mixin.list-item-meta();
+  }
+
+  // Séparateur
+  &__divider {
+    @include list-mixin.list-item-divider();
+  }
+
+  // Séparateur avec inset MD3 (16dp left, 24dp right)
+  &__divider--inset {
+    @include list-mixin.list-item-divider-inset();
+  }
+
+  // États
+  @include list-mixin.list-item-hover();
+  @include list-mixin.list-item-focus();
+
+  // État sélectionné
+  &--selected {
+    @include list-mixin.list-item-selected();
+  }
+
+  // État désactivé
+  &--disabled {
+    @include list-mixin.list-item-disabled();
+  }
+
+  // État dragging (en cours de drag)
+  &--dragging {
+    @include list-mixin.list-item-dragging();
+  }
+
+  // État drag-over (sur lequel on peut déposer)
+  &--drag-over {
+    @include list-mixin.list-item-drag-over();
+  }
+
+  // Placeholder pendant le drag
+  &--placeholder {
+    @include list-mixin.list-item-placeholder();
+  }
+
+  // Swipe to dismiss (MD3 Expressive)
+  &--swipeable {
+    position: relative;
+    overflow: hidden;
+    transition: transform motion.$md-sys-motion-expressive-effects-slow-duration motion.$md-sys-motion-expressive-effects-default-easing;
+  }
+  &__swipe-background {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
+    transition:
+      background-color motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+
+    .list-item__content {
+      z-index: 1;
+    }
+  }
+  &__swipe-background--delete {
+    background-color: var(--md-sys-color-error-container);
+    justify-content: flex-end;
+
+    .list-item__swipe-icon {
+      color: var(--md-sys-color-on-error-container);
+    }
+  }
+  &__swipe-background--archive {
+    background-color: var(--md-sys-color-tertiary-container);
+    justify-content: flex-start;
+
+    .list-item__swipe-icon {
+      color: var(--md-sys-color-on-tertiary-container);
+    }
+  }
+  &--swiping &__swipe-background {
+    opacity: 1;
+  }
+  &--dismissed {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  // État gap (alternative au divider) - Material Design 3 Expressive
+  // Créer un effet de container découpé avec background arrondi pour chaque groupe
+  &--gap {
+    @include list-mixin.list-item-gap();
+  }
+  
+  // Si l'item précédent a un gap, arrondir les bords supérieurs (contexte Standard / îlots)
+  .list-item--gap + & {
+    margin-top: list.$list-item-gap;
+
+    &::before {
+      border-top-left-radius: list.$list-item-gap-radius;
+      border-top-right-radius: list.$list-item-gap-radius;
+    }
+  }
+
+
+  // Subheader (32px de hauteur, non-interactif)
+  &--subheader,
+  &.subheader {
+    min-height: 32px;
+    padding: 0;
+    cursor: default;
+    pointer-events: none;
+    
+    .list-item__content {
+      padding: 8px 20px; // 20px au lieu de 16px pour les subheaders
+      font-size: typography.$md-sys-typescale-label-small-font-size;
+      font-weight: typography.$md-sys-typescale-label-small-font-weight;
+      color: list.$list-item-secondary-color;
+    }
+    
+    // Pas de hover ni selected pour les subheaders
+    &:hover::before,
+    &.list-item--selected::before {
+      display: none;
+    }
+  }
+
+  // Groupe (optgroup)
+  &[role="group"],
+  &.optgroup {
+    min-height: 32px;
+    padding: 0;
+    cursor: default;
+    pointer-events: none;
+    
+    .list-item__content {
+      padding: 8px 20px;
+      font-size: typography.$md-sys-typescale-label-small-font-size;
+      font-weight: typography.$md-sys-typescale-label-small-font-weight;
+      color: list.$list-item-secondary-color;
+    }
+    
+    // Pas de hover ni selected pour les groupes
+    &:hover::before,
+    &.list-item--selected::before {
+      display: none;
+    }
+  }
+}
+
+// ============================================================================
+// MODE DENSE
+// ============================================================================
+
+.list--dense {
+  .list-item {
+    &__leading-icon,
+    &__trailing-icon {
+      @include list-mixin.list-item-icon(true);
+    }
+
+    &__leading-image {
+      @include list-mixin.list-item-image(true);
+    }
+
+    &__leading-initials {
+      @include list-mixin.list-item-leading-container(true);
+    }
+  }
+}
+
+// ============================================================================
+// SURCHARGE LISTE STANDARD (après .list-item pour gagner en cascade)
+// ============================================================================
+// Répéter les règles standard en fin de module pour qu'elles l'emportent sur
+// toute règle .list-item (transition, etc.) et sur les feuilles externes.
+.list:not(.list--segmented) .list-item:not(.list-item--subheader):not(.subheader):not(.optgroup):not(.list-item--gap) {
+  transition: none !important;
+
+  &:hover:not(:disabled):not(.list-item--disabled) {
+    background-color: list.$list-item-hover-color !important;
+    border-radius: list.$list-standard-item-radius !important;
+  }
+  &.list-item--selected,
+  &.list-item--activated {
+    background-color: list.$list-item-selected-color !important;
+    border-radius: list.$list-segmented-radius-active !important;
+  }
+}
+

@@ -1,0 +1,137 @@
+/**
+ * @fileoverview Module Button Segmented Material Design 3 Expressive
+ * @description Conteneur outlineVariant×40, padding 4dp, gap 4dp — segment actif = pill primaryContainer
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/button-segmented.token' as seg;
+@use '../mixins/button-segmented.mixin' as mix;
+
+// ============================================================================
+// CONTAINER
+// ============================================================================
+
+.button-segmented,
+k3ui-button-segmented {
+  @include mix.button-segmented-container;
+  display: inline-flex !important;
+}
+
+.button-segmented--square,
+k3ui-button-segmented.button-segmented--square {
+  border-radius: seg.$button-segmented-wrap-radius-square;
+}
+
+// ============================================================================
+// SEGMENT BUTTON
+// ============================================================================
+
+.button-segmented__btn {
+  @include mix.button-segmented-btn-base;
+}
+
+.button-segmented--square .button-segmented__btn,
+k3ui-button-segmented.button-segmented--square .button-segmented__btn {
+  border-radius: seg.$button-segmented-segment-radius-square;
+}
+
+// Gap entre segments (margin pour être toujours présent — classe ou custom element)
+.button-segmented .button-segmented__btn + .button-segmented__btn,
+k3ui-button-segmented .button-segmented__btn + .button-segmented__btn {
+  margin-inline-start: seg.$button-segmented-segment-gap;
+}
+
+// Actif : texte on-primary-container
+.button-segmented__btn--active {
+  color: var(--md-sys-color-on-primary-container, #21005d);
+}
+
+// Pill (fond actif) — M3 Expressive style Navigation Rail : scaleX(0) -> scaleX(1)
+.button-segmented__pill {
+  position: absolute;
+  inset: 0;
+  background-color: var(--md-sys-color-primary-container, #eadfff);
+  border-radius: inherit;
+  transform-origin: center center;
+  transform: scaleX(0);
+  opacity: 0;
+  transition:
+    transform seg.$button-segmented-pill-duration seg.$button-segmented-pill-easing,
+    opacity seg.$button-segmented-effects-duration seg.$button-segmented-effects-easing;
+  pointer-events: none;
+}
+
+.button-segmented__btn--active .button-segmented__pill {
+  transform: scaleX(1);
+  opacity: 1;
+  transition:
+    transform seg.$button-segmented-pill-duration seg.$button-segmented-pill-easing,
+    opacity seg.$button-segmented-effects-duration seg.$button-segmented-effects-easing;
+}
+
+// Overlay hover/press (inactif uniquement)
+.button-segmented__overlay {
+  position: absolute;
+  inset: 0;
+  background-color: transparent;
+  border-radius: inherit;
+  transition: background-color seg.$button-segmented-press-duration seg.$button-segmented-press-easing;
+  pointer-events: none;
+}
+
+.button-segmented__btn:not(.button-segmented__btn--active):hover .button-segmented__overlay {
+  background-color: color-mix(in srgb, var(--md-sys-color-outline-variant, #cac4d0) 19%, transparent);
+}
+
+// Content (label + optional icon) au-dessus des calques
+.button-segmented__content {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.button-segmented__label {
+  // typo héritée du bouton
+}
+
+// Leading icon (check) — visible uniquement quand segment actif (show-check)
+.button-segmented__leading-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    width seg.$button-segmented-pill-duration seg.$button-segmented-pill-easing,
+    opacity seg.$button-segmented-pill-duration seg.$button-segmented-pill-easing;
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.button-segmented__btn--active .button-segmented__leading-icon {
+  width: 1.25rem;
+  min-width: 1.25rem;
+  opacity: 1;
+}
+
+.button-segmented__leading-icon .k3ui-icon {
+  font-size: 1.125rem;
+}
+
+.button-segmented__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+// Focus visible (accessibilité)
+.button-segmented__btn:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary, #6750a4);
+  outline-offset: 2px;
+}

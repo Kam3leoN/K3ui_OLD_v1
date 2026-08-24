@@ -1,0 +1,77 @@
+/**
+ * @file toolbar.token.scss
+ * @description Tokens Toolbar M3 Expressive (floating + docked)
+ * @see https://m3.material.io/components/toolbars/overview
+ */
+
+@use 'motion.token' as motion;
+@use 'elevation.token' as elevation;
+@use 'button.token' as button;
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+/**
+ * Hauteur du conteneur floating (= Button taille md).
+ * Les items internes restent en ButtonIcon sm — seule la barre suit md.
+ * Rayon d’extrémité = hauteur / 2 → demi-cercles (pas une ellipse 50%).
+ */
+$toolbar-min-height: button.$md-comp-button-md-height !default;
+/** Padding interne horizontal */
+$toolbar-padding-x: 8px !default;
+/** Padding interne vertical (0 : hauteur = items 48dp) */
+$toolbar-padding-y: 0 !default;
+/** Gap entre items */
+$toolbar-gap: 4px !default;
+/** Marge floating depuis le bord (16dp) */
+$toolbar-floating-margin: 16px !default;
+/** Rayon floating = moitié de la hauteur (md 56 → 28) */
+$toolbar-floating-radius: calc(#{$toolbar-min-height} / 2) !default;
+/** Rayon docked — 0% M3 */
+$toolbar-docked-radius: 0 !default;
+/** Gap entre items en mode bare (sans conteneur) */
+$toolbar-bare-gap: 8px !default;
+/** Fond item individuel en mode bare (style Google Meet) */
+$toolbar-bare-item-bg: var(--md-sys-color-surface-container-high) !default;
+/** Fond item compound (dual) */
+$toolbar-compound-bg: var(--md-sys-color-surface-container-high) !default;
+/** Meet / surface inverse — items sur fond sombre */
+$toolbar-inverse-item-bg: #3c4043 !default;
+$toolbar-inverse-item-on: #e8eaed !default;
+$toolbar-inverse-item-emphasized-bg: #a8c7fa !default;
+$toolbar-inverse-item-emphasized-on: #062e6f !default;
+$toolbar-inverse-item-destructive-bg: #ea4335 !default;
+$toolbar-inverse-item-destructive-on: #ffffff !default;
+$toolbar-inverse-divider: rgba(255, 255, 255, 0.12) !default;
+/** Gap toolbar + FAB associé */
+$toolbar-fab-gap: 8px !default;
+
+// ============================================================================
+// COULEURS — relief = buttons (elevated | filled | tonal)
+// ============================================================================
+
+$toolbar-color-filled-bg: var(--md-sys-color-primary) !default;
+$toolbar-color-filled-on: var(--md-sys-color-on-primary) !default;
+$toolbar-color-tonal-bg: var(--md-sys-color-secondary-container) !default;
+$toolbar-color-tonal-on: var(--md-sys-color-on-secondary-container) !default;
+$toolbar-color-elevated-bg: var(--md-sys-color-surface-container-low) !default;
+$toolbar-color-elevated-on: var(--md-sys-color-primary) !default;
+
+/** Indicateur item actif (pill interne) */
+$toolbar-item-active-bg: var(--md-sys-color-secondary-container) !default;
+$toolbar-item-active-on: var(--md-sys-color-on-secondary-container) !default;
+
+// ============================================================================
+// MOTION
+// ============================================================================
+
+$toolbar-transition-duration: motion.spring-duration(effects, fast) !default;
+$toolbar-transition-easing: motion.spring-easing(effects, fast) !default;
+
+// ============================================================================
+// ÉLÉVATION (variante elevated uniquement — comme buttons)
+// ============================================================================
+
+$toolbar-elevation-elevated: elevation.$md-sys-elevation-level1 !default;
+$toolbar-elevation-none: none !default;

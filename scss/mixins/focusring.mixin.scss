@@ -1,0 +1,119 @@
+/**
+ * @file focusring.mixin.scss
+ * @description Mixins pour le focus ring Material Design 3 Expressive
+ * @see https://m3.material.io/foundations/design-tokens/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use '../tokens/focusring.token' as tokens;
+
+// ============================================================================
+// MIXINS DE BASE
+// ============================================================================
+
+/**
+ * Mixin pour le focus ring de base
+ * @param {string} $color - Couleur du focus ring
+ */
+@mixin focus-ring-base($color: tokens.$md-focus-ring-color) {
+  animation-delay: 0s, tokens.$md-focus-ring-delay;
+  animation-duration: tokens.$md-focus-ring-delay, calc(tokens.$md-focus-ring-duration * 0.75);
+  animation-timing-function: tokens.$md-focus-ring-easing;
+  box-sizing: border-box;
+  color: $color;
+  display: none;
+  pointer-events: none;
+  position: absolute;
+}
+
+/**
+ * Mixin pour le focus ring visible
+ */
+@mixin focus-ring-visible {
+  display: flex;
+}
+
+/**
+ * Mixin pour le focus ring en mode outward
+ * @param {string} $offset - Offset vers l'extérieur
+ */
+@mixin focus-ring-outward($offset: tokens.$md-focus-ring-outward-offset) {
+  animation-name: focus-ring-outward-grow, focus-ring-outward-shrink;
+  border-end-end-radius: calc(tokens.$md-focus-ring-shape-end-end + $offset);
+  border-end-start-radius: calc(tokens.$md-focus-ring-shape-end-start + $offset);
+  border-start-end-radius: calc(tokens.$md-focus-ring-shape-start-end + $offset);
+  border-start-start-radius: calc(tokens.$md-focus-ring-shape-start-start + $offset);
+  inset: calc(-1 * $offset);
+  outline: tokens.$md-focus-ring-width solid currentColor;
+}
+
+/**
+ * Mixin pour le focus ring en mode inward
+ * @param {string} $offset - Offset vers l'intérieur
+ */
+@mixin focus-ring-inward($offset: tokens.$md-focus-ring-inward-offset) {
+  animation-name: focus-ring-inward-grow, focus-ring-inward-shrink;
+  border-end-end-radius: calc(tokens.$md-focus-ring-shape-end-end - $offset);
+  border-end-start-radius: calc(tokens.$md-focus-ring-shape-end-start - $offset);
+  border-start-end-radius: calc(tokens.$md-focus-ring-shape-start-end - $offset);
+  border-start-start-radius: calc(tokens.$md-focus-ring-shape-start-start - $offset);
+  border: tokens.$md-focus-ring-width solid currentColor;
+  inset: $offset;
+}
+
+/**
+ * Mixin pour respecter prefers-reduced-motion
+ */
+@mixin focus-ring-reduced-motion {
+  @media (prefers-reduced-motion) {
+    animation: none;
+  }
+}
+
+// ============================================================================
+// KEYFRAMES D'ANIMATION
+// ============================================================================
+
+/**
+ * Animation de croissance vers l'extérieur
+ */
+@keyframes focus-ring-outward-grow {
+  from {
+    outline-width: 0;
+  }
+  to {
+    outline-width: tokens.$md-focus-ring-active-width;
+  }
+}
+
+/**
+ * Animation de rétrécissement vers l'extérieur
+ */
+@keyframes focus-ring-outward-shrink {
+  from {
+    outline-width: tokens.$md-focus-ring-active-width;
+  }
+}
+
+/**
+ * Animation de croissance vers l'intérieur
+ */
+@keyframes focus-ring-inward-grow {
+  from {
+    border-width: 0;
+  }
+  to {
+    border-width: tokens.$md-focus-ring-active-width;
+  }
+}
+
+/**
+ * Animation de rétrécissement vers l'intérieur
+ */
+@keyframes focus-ring-inward-shrink {
+  from {
+    border-width: tokens.$md-focus-ring-active-width;
+  }
+}
+

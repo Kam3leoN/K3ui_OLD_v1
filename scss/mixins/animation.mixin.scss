@@ -1,0 +1,169 @@
+/**
+ * Animation Mixins
+ * Définit les mixins pour les animations du système de design
+ */
+
+@use '../tokens/animation.token' as animation;
+
+/**
+ * Mixin principal pour les animations
+ * @param {string} $name - Nom de l'animation
+ * @param {string} $duration - Durée de l'animation
+ * @param {string} $timing-function - Fonction d'accélération
+ * @param {string|number} $iteration-count - Nombre d'itérations
+ * @param {string} $direction - Direction de l'animation
+ * @param {string} $delay - Délai avant l'animation
+ * @param {string} $fill-mode - Mode de remplissage
+ */
+@mixin animation(
+  $name,
+  $duration: animation.$animation-duration-normal,
+  $timing-function: animation.$animation-easing-ease,
+  $iteration-count: animation.$animation-iteration-none,
+  $direction: animation.$animation-direction-normal,
+  $delay: animation.$animation-delay-none,
+  $fill-mode: animation.$animation-fill-mode-none
+) {
+  animation: $name $duration $timing-function $iteration-count $direction $delay $fill-mode;
+}
+
+/**
+ * Mixin pour les animations de rebond
+ */
+@mixin bounce-animation {
+  @include animation(bounce, animation.$animation-duration-slowest, animation.$animation-easing-ease-in-out, animation.$animation-iteration-infinite);
+}
+
+
+/**
+ * Mixin pour les animations de flottement
+ */
+@mixin float-animation {
+  @include animation(float, 2.8s, animation.$animation-easing-ease-in-out, animation.$animation-iteration-infinite);
+}
+
+/**
+ * Mixin pour les animations de vol
+ */
+@mixin fly-animation {
+  @include animation(fly, 6s, animation.$animation-easing-cubic-bezier-smooth, animation.$animation-iteration-infinite);
+}
+
+/**
+ * Mixin pour les effets de glitch
+ */
+@mixin glitch-animation {
+  @include animation(glitch, animation.$animation-duration-normal);
+}
+
+/**
+ * Mixin pour les animations de dégradé
+ */
+@mixin gradient-animation {
+  @include animation(gradient, 6s, animation.$animation-easing-linear, animation.$animation-iteration-infinite);
+}
+
+/**
+ * Mixin pour les animations de battement de cœur
+ */
+@mixin heartbeat-animation {
+  @include animation(heartbeat, animation.$animation-duration-slower, animation.$animation-easing-cubic-bezier-smooth);
+}
+
+/**
+ * Mixin pour les animations de ping
+ */
+@mixin ping-animation {
+  @include animation(ping, animation.$animation-duration-slower, animation.$animation-easing-cubic-bezier-ping);
+}
+
+/**
+ * Mixin pour les animations de popup
+ */
+@mixin popup-animation {
+  @include animation(popup, 0.4s, animation.$animation-easing-ease-in-out, animation.$animation-iteration-infinite, animation.$animation-direction-normal, 0.6s, animation.$animation-fill-mode-forwards);
+}
+
+/**
+ * Mixin pour les animations de pulsation
+ */
+@mixin pulse-animation {
+  @include animation(pulse, animation.$animation-duration-slowest, animation.$animation-easing-cubic-bezier);
+}
+
+/**
+ * Mixin pour les animations de tremblement
+ */
+@mixin rumble-animation {
+  @include animation(rumble, animation.$animation-duration-slow, animation.$animation-easing-ease-in-out, animation.$animation-iteration-infinite);
+}
+
+/**
+ * Mixin pour les animations de balayage
+ */
+@mixin scan-animation {
+  @include animation(scan, 665ms);
+}
+
+/**
+ * Mixin pour les animations de secousse
+ */
+@mixin shake-animation {
+  @include animation(shake, 600ms, animation.$animation-easing-ease-in-out, animation.$animation-iteration-infinite, animation.$animation-direction-alternate);
+}
+
+/**
+ * Mixin pour les animations de secoueur
+ */
+@mixin shaker-animation {
+  @include animation(shaker, animation.$animation-duration-slowest, animation.$animation-easing-ease-in-out, animation.$animation-iteration-infinite, animation.$animation-direction-alternate);
+}
+
+/**
+ * Mixin pour les animations de glissement vers le bas
+ */
+@mixin slide-down-animation {
+  @include animation(slideDown, 12s);
+}
+
+/**
+ * Mixin pour les animations de glissement vers le haut
+ */
+@mixin slide-up-animation {
+  @include animation(slideUp, 12s);
+}
+
+/**
+ * Mixin pour les animations de rotation continue
+ */
+@mixin spin-animation {
+  @include animation(spin, animation.$animation-duration-slower, animation.$animation-easing-linear, animation.$animation-iteration-infinite);
+}
+
+/**
+ * Mixin pour les animations de rotation ciblée vers la droite (lente)
+ */
+@mixin spin-to-right-slow-animation {
+  @include animation(spin-toright, 10s, animation.$animation-easing-linear, animation.$animation-iteration-infinite);
+}
+
+/**
+ * Mixin pour les animations de rotation ciblée vers la droite (rapide)
+ */
+@mixin spin-to-right-fast-animation {
+  @include animation(spin-toright, animation.$animation-duration-slowest, animation.$animation-easing-linear, animation.$animation-iteration-infinite);
+}
+
+/**
+ * Mixin pour les animations de rotation ciblée vers la gauche (lente)
+ */
+@mixin spin-to-left-slow-animation {
+  @include animation(spin-toleft, 10s, animation.$animation-easing-linear, animation.$animation-iteration-infinite);
+}
+
+/**
+ * Mixin pour les animations de rotation ciblée vers la gauche (rapide)
+ */
+@mixin spin-to-left-fast-animation {
+  @include animation(spin-toleft, animation.$animation-duration-slowest, animation.$animation-easing-linear, animation.$animation-iteration-infinite);
+} 

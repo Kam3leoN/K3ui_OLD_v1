@@ -1,0 +1,111 @@
+/**
+ * @fileoverview Module ButtonGrid Material Design 3 Expressive
+ * @description Grille 3×3 — FAB reveal / pad · filled / tonal / outlined
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../mixins/button-grid.mixin' as bg;
+
+// ============================================================================
+// BASE
+// ============================================================================
+
+.btn-grid,
+.button-grid {
+  @include bg.btn-grid-base;
+}
+
+.btn-grid__fab,
+.button-grid__fab {
+  @include bg.btn-grid-cell;
+  @include bg.btn-grid-fab;
+}
+
+.btn-grid[data-state='expanded'] .btn-grid__fab,
+.btn-grid[data-state='expanded'] .button-grid__fab,
+.button-grid[data-state='expanded'] .btn-grid__fab,
+.button-grid[data-state='expanded'] .button-grid__fab {
+  @include bg.btn-grid-fab-expanded;
+}
+
+.btn-grid__grid,
+.button-grid__grid {
+  @include bg.btn-grid-grid;
+}
+
+.btn-grid[data-state='expanded'] .btn-grid__grid,
+.btn-grid[data-state='expanded'] .button-grid__grid,
+.button-grid[data-state='expanded'] .btn-grid__grid,
+.button-grid[data-state='expanded'] .button-grid__grid {
+  @include bg.btn-grid-grid-expanded;
+}
+
+.btn-grid__cell,
+.button-grid__cell {
+  @include bg.btn-grid-cell;
+  @include bg.btn-grid-cell-anim;
+  @include bg.btn-grid-cell-origins;
+  @include bg.btn-grid-cell-radii;
+}
+
+.btn-grid[data-state='expanded'] .btn-grid__cell,
+.btn-grid[data-state='expanded'] .button-grid__cell,
+.button-grid[data-state='expanded'] .btn-grid__cell,
+.button-grid[data-state='expanded'] .button-grid__cell {
+  @include bg.btn-grid-cell-expanded;
+}
+
+.btn-grid[data-state='expanded'],
+.button-grid[data-state='expanded'] {
+  @include bg.btn-grid-stagger-open;
+}
+
+// ============================================================================
+// VARIANTES
+// ============================================================================
+
+.btn-grid[data-variant='tonal'],
+.btn-grid.btn-grid--tonal,
+.button-grid[data-variant='tonal'],
+.button-grid.button-grid--tonal {
+  @include bg.btn-grid-tonal;
+}
+
+.btn-grid[data-variant='outlined'],
+.btn-grid.btn-grid--outlined,
+.button-grid[data-variant='outlined'],
+.button-grid.button-grid--outlined {
+  @include bg.btn-grid-outlined;
+}
+
+// ============================================================================
+// PAD MODE (triggerFAB = false)
+// ============================================================================
+
+.btn-grid[data-trigger='pad'],
+.button-grid[data-trigger='pad'],
+.btn-grid.btn-grid--pad,
+.button-grid.button-grid--pad {
+  @include bg.btn-grid-pad;
+}
+
+// ============================================================================
+// REDUCED MOTION → force pad mode
+// ============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-grid,
+  .button-grid {
+    @include bg.btn-grid-pad;
+  }
+
+  .btn-grid__fab,
+  .button-grid__fab,
+  .btn-grid__cell,
+  .button-grid__cell,
+  .btn-grid__cell::before,
+  .button-grid__cell::before {
+    transition-duration: 0ms !important;
+  }
+}

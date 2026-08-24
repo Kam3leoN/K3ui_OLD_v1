@@ -1,0 +1,16 @@
+{
+  "preset": "mobile",
+  "scores": {
+    "performance": 73,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100
+  },
+  "metrics": {
+    "fcp": "2.0 s",
+    "lcp": "5.9 s",
+    "tbt": "230 ms",
+    "cls": "0.002"
+  },
+  "date": "2026-07-19T15:49:29.393Z"
+}

@@ -1,0 +1,131 @@
+/**
+ * @fileoverview Tokens de design pour Guideline (Do / Don't)
+ * @description Variables pour les cartes de bonnes pratiques inspirées Material Design 3
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'sass:math';
+@use 'sass:map';
+@use 'theme.token' as theme;
+@use 'color.token' as palette;
+@use 'radius.token' as radius;
+@use 'spacing.token' as spacing;
+@use 'typography.token' as typography;
+
+// ============================================================================
+// MISE EN PAGE
+// ============================================================================
+
+/// @type {Number} Espacement entre les cartes Do / Don't
+$guideline-grid-gap: spacing.$md-sys-spacing-lg !default;
+
+/// @type {Number} Espacement interne du bandeau label
+$guideline-label-padding-x: spacing.$md-sys-spacing-md !default;
+
+/// @type {Number} Espacement interne vertical du bandeau label
+$guideline-label-padding-y: spacing.$md-sys-spacing-sm !default;
+
+/// @type {Number} Espacement entre l'icône et le texte du label
+$guideline-label-icon-gap: spacing.$md-sys-spacing-sm !default;
+
+/// @type {Number} Marge au-dessus du texte explicatif (sous la carte)
+$guideline-text-margin-top: spacing.$md-sys-spacing-md !default;
+
+/// @type {Number} Séparation entre le bloc média (haut) et le bandeau label (bas) — pattern MD3 groupé (4px)
+$guideline-visual-gap: radius.$md-sys-shape-corner-extra-small !default;
+
+/// @type {Number} Rayon des coins de la carte visuelle
+$guideline-radius: radius.$md-sys-shape-corner-large !default;
+
+/// @type {Number} Rayon des coins externes (pattern MD3 groupé)
+$guideline-radius-outer: radius.$md-sys-shape-corner-large !default;
+
+/// @type {Number} Rayon des coins internes, face au gap (pattern MD3 groupé : 4px)
+$guideline-radius-inner: radius.$md-sys-shape-corner-extra-small !default;
+
+/// @type {Number} Épaisseur de bordure des blocs
+$guideline-border-width: 1px !default;
+
+/// @type {Number} Ratio d'aspect de la zone média
+$guideline-media-aspect-ratio: math.div(16, 10) !default;
+
+/// @type {Number} Padding interne de la zone média (contenu sans image)
+$guideline-media-padding: spacing.$md-sys-spacing-md !default;
+
+// ============================================================================
+// TYPOGRAPHIE
+// ============================================================================
+
+/// @type {String} Famille du label Do / Don't
+$guideline-label-font-family: typography.$md-sys-typescale-label-large-font-family-name !default;
+
+/// @type {Number} Taille du label
+$guideline-label-font-size: typography.$md-sys-typescale-label-large-font-size !default;
+
+/// @type {Number} Graisse du label
+$guideline-label-font-weight: typography.$md-sys-typescale-label-large-font-weight !default;
+
+/// @type {Number} Interlignage du label
+$guideline-label-line-height: typography.$md-sys-typescale-label-large-line-height !default;
+
+/// @type {Number} Espacement des lettres du label
+$guideline-label-letter-spacing: typography.$md-sys-typescale-label-large-letter-spacing !default;
+
+/// @type {Number} Taille de l'icône dans le bandeau
+$guideline-label-icon-size: 1.125rem !default;
+
+/// @type {Color} Fond tonal de la zone média (Secondary Container, commun aux variantes)
+$guideline-media-bg: theme.sys-color-var('secondary-container') !default;
+
+/// @type {Color} Texte des bandeaux (quasi-noir pour contraste AA sur fonds vifs)
+$guideline-label-fg: theme.$md-ref-palette-neutral10 !default;
+
+// ============================================================================
+// COULEURS — DO (vert vif)
+// ============================================================================
+
+/// @type {Color} Fond du bandeau Do
+$guideline-do-label-bg: map.get(palette.$green, 'base') !default;
+
+/// @type {Color} Texte du bandeau Do
+$guideline-do-label-fg: $guideline-label-fg !default;
+
+/// @type {Color} Fond tonal de la zone média Do
+$guideline-do-media-bg: $guideline-media-bg !default;
+
+// ============================================================================
+// COULEURS — DON'T (corail / orange-rouge vif)
+// ============================================================================
+
+/// @type {Color} Fond du bandeau Don't
+$guideline-dont-label-bg: map.get(palette.$deep-orange, 'lighten-1') !default;
+
+/// @type {Color} Texte du bandeau Don't
+$guideline-dont-label-fg: $guideline-label-fg !default;
+
+/// @type {Color} Fond tonal de la zone média Don't
+$guideline-dont-media-bg: $guideline-media-bg !default;
+
+// ============================================================================
+// COULEURS — CAUTION (amber vif)
+// ============================================================================
+
+/// @type {Color} Fond du bandeau Caution
+$guideline-caution-label-bg: map.get(palette.$amber, 'lighten-2') !default;
+
+/// @type {Color} Texte du bandeau Caution
+$guideline-caution-label-fg: $guideline-label-fg !default;
+
+/// @type {Color} Fond tonal de la zone média Caution
+$guideline-caution-media-bg: $guideline-media-bg !default;
+
+// ============================================================================
+// COULEURS — COMMUN
+// ============================================================================
+
+/// @type {Color} Couleur du texte explicatif
+$guideline-text-color: theme.sys-color-var('on-surface') !default;
+
+/// @type {Color} Bordure de la carte
+$guideline-border-color: theme.sys-color-var('outline-variant') !default;

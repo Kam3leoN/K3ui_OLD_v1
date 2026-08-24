@@ -1,0 +1,64 @@
+/**
+ * Fieldset Mixins
+ */
+
+@use '../tokens/fieldset.token' as tokens;
+
+@mixin fieldset-host {
+  --k3ui-fieldset-gap: #{tokens.$fieldset-gap};
+  --k3ui-fieldset-pad-inline: #{tokens.$fieldset-pad-inline};
+  --k3ui-fieldset-pad-block: #{tokens.$fieldset-pad-block};
+  --k3ui-fieldset-columns: 1;
+  --k3ui-fieldset-shape: #{tokens.$fieldset-shape};
+  --k3ui-fieldset-outline: var(--md-sys-color-outline-variant);
+  --k3ui-fieldset-headline: var(--md-sys-color-on-surface);
+  --k3ui-fieldset-notch-space: #{tokens.$fieldset-notch-space};
+  --k3ui-fieldset-outline-width: #{tokens.$fieldset-outline-width};
+
+  container-type: inline-size;
+  display: block;
+  color: var(--md-sys-color-on-surface);
+}
+
+@mixin fieldset-container {
+  min-inline-size: 0;
+  padding: 0;
+  position: relative;
+  border: var(--k3ui-fieldset-outline-width) solid var(--k3ui-fieldset-outline);
+  border-radius: var(--k3ui-fieldset-shape);
+  background: transparent;
+  margin: calc(2px - var(--k3ui-fieldset-outline-width));
+  transition:
+    border-radius 220ms ease,
+    border-color 210ms ease,
+    border-width 135ms ease;
+}
+
+@mixin fieldset-legend {
+  display: block;
+  inline-size: auto;
+  max-inline-size: calc(100% - var(--k3ui-fieldset-pad-inline));
+  padding-inline: var(--k3ui-fieldset-notch-space);
+  margin-inline-start: calc(
+    var(--k3ui-fieldset-pad-inline) - var(--k3ui-fieldset-notch-space) -
+      var(--k3ui-fieldset-outline-width)
+  );
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  color: var(--k3ui-fieldset-headline);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin fieldset-fields {
+  display: grid;
+  grid-template-columns: repeat(var(--k3ui-fieldset-columns, 1), minmax(0, 1fr));
+  gap: var(--k3ui-fieldset-gap);
+  padding: 0.75rem var(--k3ui-fieldset-pad-inline) var(--k3ui-fieldset-pad-block);
+
+  > [data-span='all'] {
+    grid-column: 1 / -1;
+  }
+}

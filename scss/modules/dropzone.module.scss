@@ -1,0 +1,199 @@
+/**
+ * @fileoverview Module DropZone pour K3UI
+ * @description Styles pour les zones de dépôt de fichiers
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/dropzone.token' as *;
+@use '../mixins/dropzone.mixin' as *;
+
+// ============================================================================
+// DROPZONE STYLES
+// ============================================================================
+
+// Inclure l'animation de secousse
+@include dropzone-shake-animation;
+
+// Zone de dépôt principale
+.dropzone {
+    @include dropzone-base;
+
+    // État actif (fichier survolé)
+    &--active {
+        @include dropzone-active;
+    }
+
+    // État invalide (fichier rejeté)
+    &--invalid {
+        @include dropzone-invalid;
+    }
+
+    // État désactivé
+    &--disabled {
+        @include dropzone-disabled;
+    }
+
+    // Icône
+    .icon {
+        @include dropzone-icon;
+    }
+
+    // Texte principal
+    p {
+        margin: 0;
+
+        // Texte secondaire
+        &.body-small {
+            @include dropzone-text-secondary;
+        }
+    }
+}
+
+// Conteneur de prévisualisations
+.dropzone-preview {
+    @include dropzone-preview-container;
+
+    // Item de preview
+    &__item {
+        @include dropzone-preview-item;
+    }
+
+    // Bouton de suppression
+    &__remove {
+        @include dropzone-preview-remove;
+
+        .icon {
+            font-size: 16px;
+        }
+    }
+
+    // Nom de fichier
+    &__filename {
+        @include dropzone-preview-filename;
+    }
+
+    // Overlay pour les fichiers non-image
+    &__file-icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        height: 100%;
+        padding: 0.5rem;
+
+        .icon {
+            font-size: 32px;
+            color: var(--md-sys-color-primary);
+        }
+
+        .file-ext {
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            color: var(--md-sys-color-on-surface-variant);
+        }
+    }
+}
+
+// États de statut des fichiers
+.dropzone-file-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--md-sys-shape-corner-small);
+    font-size: 0.75rem;
+    font-weight: 500;
+
+    &--pending {
+        background: var(--md-sys-color-secondary-container);
+        color: var(--md-sys-color-on-secondary-container);
+    }
+
+    &--ready {
+        background: var(--md-sys-color-tertiary-container);
+        color: var(--md-sys-color-on-tertiary-container);
+    }
+
+    &--uploading {
+        background: var(--md-sys-color-primary-container);
+        color: var(--md-sys-color-on-primary-container);
+    }
+
+    &--uploaded {
+        background: var(--md-sys-color-success-container, #d4edda);
+        color: var(--md-sys-color-on-success-container, #155724);
+    }
+
+    &--error {
+        background: var(--md-sys-color-error-container);
+        color: var(--md-sys-color-on-error-container);
+    }
+}
+
+// Liste de fichiers (pour affichage détaillé)
+.dropzone-file-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: $dropzone-gap;
+    width: 100%;
+
+    &__item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem 1rem;
+        border-radius: var(--md-sys-shape-corner-small);
+        background: var(--md-sys-color-surface-container);
+        transition: background $dropzone-transition-duration $dropzone-transition-timing;
+
+        &:hover {
+            background: var(--md-sys-color-surface-container-high);
+        }
+    }
+
+    &__icon {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--md-sys-shape-corner-small);
+        background: var(--md-sys-color-primary-container);
+        color: var(--md-sys-color-on-primary-container);
+
+        .icon {
+            font-size: 24px;
+        }
+    }
+
+    &__info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    &__name {
+        font-weight: 500;
+        color: var(--md-sys-color-on-surface);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__size {
+        font-size: 0.75rem;
+        color: var(--md-sys-color-on-surface-variant);
+        margin-top: 0.25rem;
+    }
+
+    &__actions {
+        flex-shrink: 0;
+        display: flex;
+        gap: 0.5rem;
+    }
+}

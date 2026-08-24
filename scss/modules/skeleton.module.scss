@@ -1,0 +1,52 @@
+/**
+ * @fileoverview Module Skeleton
+ * @description Classes CSS pour le composant Skeleton Material Design 3 Expressive
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/skeleton.token' as sk;
+@use '../mixins/skeleton.mixin' as skeleton-mixin;
+
+// ============================================================================
+// CLASSE PRINCIPALE
+// ============================================================================
+
+.skeleton {
+  @include skeleton-mixin.skeleton-base();
+
+  // Variants
+  &--text {
+    @include skeleton-mixin.skeleton-variant-text();
+  }
+
+  &--circular {
+    @include skeleton-mixin.skeleton-variant-circular();
+  }
+
+  &--rectangular {
+    @include skeleton-mixin.skeleton-variant-rectangular();
+  }
+
+  &--rounded {
+    @include skeleton-mixin.skeleton-variant-rounded();
+  }
+
+  // Animations – respect de prefers-reduced-motion géré côté JS (classe appliquée seulement si pas reduced)
+  &--pulse {
+    @include skeleton-mixin.skeleton-animation-pulse();
+  }
+
+  &--wave {
+    @include skeleton-mixin.skeleton-animation-wave();
+  }
+}
+
+// Réduire les animations si l'utilisateur le demande (fallback CSS)
+@media (prefers-reduced-motion: reduce) {
+  .skeleton--pulse::after,
+  .skeleton--wave::after {
+    animation: none;
+    opacity: sk.$skeleton-opacity-rest;
+  }
+}

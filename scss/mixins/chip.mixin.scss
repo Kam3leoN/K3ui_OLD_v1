@@ -1,0 +1,351 @@
+/// @file chip.mixin.scss
+/// @brief Mixins chips Material 3
+
+@use '../tokens/chip.token' as chip;
+@use '../tokens/theme.token' as theme;
+@use '../tokens/motion.token' as motion;
+@use '../mixins/elevation.mixin' as elevation;
+@use '../mixins/state.mixin' as state;
+@use '../mixins/motion.mixin' as motionmix;
+@use 'sass:map';
+
+/**
+ * Mixin de base pour tous les chips
+ */
+@mixin chip-base {
+  height: chip.$md-sys-chip-height;
+  min-width: chip.$md-sys-chip-min-width;
+  max-width: chip.$md-sys-chip-max-width;
+  // Utiliser les propriétés logiques CSS pour le support RTL
+  padding-block: 0;
+  padding-inline: chip.$md-sys-chip-padding-horizontal;
+  font-size: chip.$md-sys-chip-font-size;
+  font-weight: chip.$md-sys-chip-font-weight;
+  line-height: chip.$md-sys-chip-line-height;
+  letter-spacing: chip.$md-sys-chip-letter-spacing;
+  border-radius: chip.$md-sys-chip-border-radius;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: chip.$md-sys-chip-padding-between-elements;
+  text-decoration: none;
+  white-space: nowrap;
+  outline: none;
+  user-select: none;
+  @include motionmix.transition-surface(
+    chip.$md-sys-chip-transition-duration,
+    chip.$md-sys-chip-transition-easing
+  );
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  // Icônes héritent de la couleur du texte du chip par défaut
+  i[name] {
+    color: inherit;
+    width: chip.$md-sys-chip-icon-size;
+    height: chip.$md-sys-chip-icon-size;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    
+    svg {
+      fill: currentColor;
+      color: inherit;
+      width: 100%;
+      height: 100%;
+    }
+    
+    // Force l'héritage sur tous les éléments SVG internes
+    svg * {
+      fill: currentColor;
+      color: inherit;
+    }
+  }
+
+  // Focus visible pour l'accessibilité
+  &:focus-visible {
+    outline: 2px solid var(--md-sys-color-secondary);
+    outline-offset: 2px;
+  }
+
+  // Contenu du chip
+  .chip__content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: chip.$md-sys-chip-padding-between-elements;
+    width: 100%;
+  }
+}
+
+/**
+ * Mixin pour chip assist
+ */
+@mixin chip-assist {
+  @include chip-base;
+  
+  // Utilisation des nouvelles variables standardisées
+  // Le background-color est géré via ::before dans le module
+  color: chip.$md-sys-chip-type-assist-color;
+  @include elevation.elevation(chip.$md-sys-chip-type-assist-elevation);
+
+  // Le hover est géré dans le module pour fonctionner avec le wrapper
+  // &:hover est défini dans chip.module.scss
+
+  &:focus:not(:disabled):not(.disabled) {
+    @include state.state-focus;
+  }
+
+  &:disabled,
+  &.disabled {
+    @include state.state-disabled;
+    // Utilisation des nouvelles variables standardisées
+    color: chip.$md-sys-chip-state-disabled-color;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  // État élevé (avec ombre)
+  &.elevated {
+    @include elevation.elevation(chip.$md-sys-chip-state-elevated-elevation);
+  }
+}
+
+/**
+ * Mixin pour chip filter
+ */
+@mixin chip-filter {
+  @include chip-base;
+  
+  // Utilisation des nouvelles variables standardisées
+  // Le background-color est géré via ::before dans le module
+  color: chip.$md-sys-chip-type-filter-color;
+  @include elevation.elevation(chip.$md-sys-chip-type-filter-elevation);
+
+  // Le hover est géré dans le module pour fonctionner avec le wrapper
+  // &:hover est défini dans chip.module.scss
+
+  &:focus:not(:disabled):not(.disabled) {
+    @include state.state-focus;
+  }
+
+  &:disabled,
+  &.disabled {
+    @include state.state-disabled;
+    // Utilisation des nouvelles variables standardisées
+    color: chip.$md-sys-chip-state-disabled-color;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  // État sélectionné
+  &.selected {
+    // Utilisation des nouvelles variables standardisées
+    // Le background-color est géré via ::before dans le module
+    color: chip.$md-sys-chip-state-selected-color;
+    
+    // Le hover est géré dans le module pour fonctionner avec le wrapper
+    // &:hover est défini dans chip.module.scss
+  }
+
+  // État élevé (avec ombre)
+  &.elevated {
+    @include elevation.elevation(chip.$md-sys-chip-state-elevated-elevation);
+  }
+}
+
+/**
+ * Mixin pour chip input
+ */
+@mixin chip-input {
+  @include chip-base;
+  
+  // Utilisation des nouvelles variables standardisées
+  // Le background-color est géré via ::before dans le module
+  color: chip.$md-sys-chip-type-input-color;
+  @include elevation.elevation(chip.$md-sys-chip-type-input-elevation);
+
+  // Le hover est géré dans le module pour fonctionner avec le wrapper
+  // &:hover est défini dans chip.module.scss
+
+  &:focus:not(:disabled):not(.disabled) {
+    @include state.state-focus;
+  }
+
+  &:disabled,
+  &.disabled {
+    @include state.state-disabled;
+    // Utilisation des nouvelles variables standardisées
+    color: chip.$md-sys-chip-state-disabled-color;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  // État élevé (avec ombre)
+  &.elevated {
+    @include elevation.elevation(chip.$md-sys-chip-state-elevated-elevation);
+  }
+}
+
+/**
+ * Mixin pour chip suggestion
+ */
+@mixin chip-suggestion {
+  @include chip-base;
+  
+  // Utilisation des nouvelles variables standardisées
+  // Le background-color est géré via ::before dans le module
+  color: chip.$md-sys-chip-type-suggestion-color;
+  @include elevation.elevation(chip.$md-sys-chip-type-suggestion-elevation);
+
+  // Le hover est géré dans le module pour fonctionner avec le wrapper
+  // &:hover est défini dans chip.module.scss
+
+  &:focus:not(:disabled):not(.disabled) {
+    @include state.state-focus;
+  }
+
+  &:disabled,
+  &.disabled {
+    @include state.state-disabled;
+    // Utilisation des nouvelles variables standardisées
+    color: chip.$md-sys-chip-state-disabled-color;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  // État élevé (avec ombre)
+  &.elevated {
+    @include elevation.elevation(chip.$md-sys-chip-state-elevated-elevation);
+  }
+}
+
+/**
+ * Mixin pour chip avec icône
+ * Utilise les propriétés logiques CSS pour le support RTL
+ */
+@mixin chip-with-icon {
+  padding-inline-start: chip.$md-sys-chip-padding-horizontal-with-icon;
+  padding-inline-end: chip.$md-sys-chip-padding-horizontal-with-icon;
+}
+
+/**
+ * Mixin pour chip avec bouton de suppression
+ * Utilise les propriétés logiques CSS pour le support RTL
+ */
+@mixin chip-with-remove {
+  padding-inline-end: chip.$md-sys-chip-padding-horizontal-with-icon;
+}
+
+/**
+ * Mixin pour chip avec icône et bouton de suppression
+ * Utilise les propriétés logiques CSS pour le support RTL
+ */
+@mixin chip-with-icon-and-remove {
+  padding-inline-start: chip.$md-sys-chip-padding-horizontal-with-icon;
+  padding-inline-end: chip.$md-sys-chip-padding-horizontal-with-icon;
+}
+
+/**
+ * Mixin pour le bouton de suppression
+ */
+@mixin chip-remove-button {
+  width: chip.$md-sys-chip-icon-size;
+  height: chip.$md-sys-chip-icon-size;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  border-radius: 50%;
+  outline: none;
+  @include motionmix.transition-surface(
+    chip.$md-sys-chip-transition-duration,
+    chip.$md-sys-chip-transition-easing
+  );
+
+  &:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 80%);
+  }
+
+  &:focus:not(:disabled) {
+    background-color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 70%);
+  }
+
+  &:active:not(:disabled) {
+    background-color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 60%);
+  }
+
+  &:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+  }
+
+  i[name] {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/**
+ * Mixins pour les tailles de chips
+ */
+@mixin chip-size-small {
+  // Utilisation des nouvelles variables standardisées
+  height: chip.$md-sys-chip-size-small-height;
+  min-width: chip.$md-sys-chip-size-small-min-width;
+  padding-block: 0;
+  padding-inline: chip.$md-sys-chip-size-small-padding-horizontal;
+  font-size: chip.$md-sys-chip-size-small-font-size;
+  
+  i[name] {
+    width: chip.$md-sys-chip-size-small-icon-size;
+    height: chip.$md-sys-chip-size-small-icon-size;
+  }
+}
+
+@mixin chip-size-medium {
+  // Utilisation des nouvelles variables standardisées
+  height: chip.$md-sys-chip-size-medium-height;
+  min-width: chip.$md-sys-chip-size-medium-min-width;
+  padding-block: 0;
+  padding-inline: chip.$md-sys-chip-size-medium-padding-horizontal;
+  font-size: chip.$md-sys-chip-size-medium-font-size;
+  
+  i[name] {
+    width: chip.$md-sys-chip-size-medium-icon-size;
+    height: chip.$md-sys-chip-size-medium-icon-size;
+  }
+}
+
+@mixin chip-size-large {
+  // Utilisation des nouvelles variables standardisées
+  height: chip.$md-sys-chip-size-large-height;
+  min-width: chip.$md-sys-chip-size-large-min-width;
+  padding-block: 0;
+  padding-inline: chip.$md-sys-chip-size-large-padding-horizontal;
+  font-size: chip.$md-sys-chip-size-large-font-size;
+  
+  i[name] {
+    width: chip.$md-sys-chip-size-large-icon-size;
+    height: chip.$md-sys-chip-size-large-icon-size;
+  }
+}
+
+/**
+ * Mixin pour les couleurs personnalisées
+ */
+@mixin chip-custom-color($color) {
+  background-color: $color;
+  color: color-contrast($color);
+  border: 1px solid color-mix(in srgb, $color, transparent 50%);
+} 

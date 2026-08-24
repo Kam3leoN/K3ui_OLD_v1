@@ -1,0 +1,51 @@
+/**
+ * @fileoverview Module ListMaker
+ * @description Classes CSS — pill XS narrow + orientation par rotation
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../mixins/list-maker.mixin' as lm-mixin;
+
+/**
+ * Classe principale
+ */
+.list-maker {
+  @include lm-mixin.list-maker-root;
+  @include lm-mixin.list-maker-variant-filled;
+
+  &[data-variant='tonal'],
+  &.list-maker--tonal {
+    @include lm-mixin.list-maker-variant-tonal;
+  }
+
+  &[data-variant='filled'],
+  &.list-maker--filled {
+    @include lm-mixin.list-maker-variant-filled;
+  }
+}
+
+.list-maker__item {
+  @include lm-mixin.list-maker-item;
+}
+
+.list-maker__marker-wrap {
+  @include lm-mixin.list-maker-marker-wrap;
+}
+
+.list-maker__marker {
+  @include lm-mixin.list-maker-marker;
+}
+
+.list-maker__marker-label {
+  @include lm-mixin.list-maker-marker-label;
+}
+
+.list-maker__body {
+  @include lm-mixin.list-maker-body;
+}
+
+/** Liste imbriquée : même gap vertical que les lignes */
+.list-maker .list-maker {
+  margin-top: var(--list-maker-row, 4px);
+}

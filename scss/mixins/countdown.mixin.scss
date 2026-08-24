@@ -1,0 +1,27 @@
+/**
+ * @fileoverview Mixins pour Countdown
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/countdown.token' as t;
+
+/**
+ * Conteneur principal du countdown
+ */
+@mixin countdown-component {
+  display: inline-block;
+  color: t.$countdown-text-color;
+  font-size: t.$countdown-font-size;
+  font-weight: t.$countdown-font-weight;
+  line-height: t.$countdown-line-height;
+  transition: color t.$countdown-transition-duration t.$countdown-transition-easing;
+}
+
+/**
+ * Affichage du temps (chiffres)
+ */
+@mixin countdown-display {
+  font-variant-numeric: tabular-nums;
+  min-width: 1ch;
+}

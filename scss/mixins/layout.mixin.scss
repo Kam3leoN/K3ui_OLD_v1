@@ -1,0 +1,375 @@
+@use '../tokens' as tokens;
+
+@mixin media-query($breakpoint) {
+
+  // --- ... and down (max-width) ---
+  @if $breakpoint == 'extra-small-only' or $breakpoint == 'extra-small-and-down' {
+    @media only screen and (max-width: (#{tokens.$breakpoint-xs} - 0.02)) { @content; }
+  }
+  @else if $breakpoint == 'small-and-down' {
+    @media only screen and (max-width: (#{tokens.$breakpoint-s} - 0.02)) { @content; }
+  }
+  @else if $breakpoint == 'medium-and-down' {
+    @media only screen and (max-width: (#{tokens.$breakpoint-m} - 0.02)) { @content; }
+  }
+  @else if $breakpoint == 'large-and-down' {
+    @media only screen and (max-width: (#{tokens.$breakpoint-l} - 0.02)) { @content; }
+  }
+
+  // --- ... and up (min-width) ---
+  @else if $breakpoint == 'small-and-up' {
+    @media only screen and (min-width: #{tokens.$breakpoint-xs}) { @content; }
+  }
+  @else if $breakpoint == 'medium-and-up' {
+    @media only screen and (min-width: #{tokens.$breakpoint-s}) { @content; }
+  }
+  @else if $breakpoint == 'large-and-up' {
+    @media only screen and (min-width: #{tokens.$breakpoint-m}) { @content; }
+  }
+  @else if $breakpoint == 'extra-large-and-up' {
+    @media only screen and (min-width: #{tokens.$breakpoint-l}) { @content; }
+  }
+
+  // --- ... only (min-width and max-width) ---
+  @else if $breakpoint == 'small-only' {
+    @media only screen and (min-width: #{tokens.$breakpoint-xs}) and (max-width: (#{tokens.$breakpoint-s} - 0.02)) { @content; }
+  }
+  @else if $breakpoint == 'medium-only' {
+    @media only screen and (min-width: #{tokens.$breakpoint-s}) and (max-width: (#{tokens.$breakpoint-m} - 0.02)) { @content; }
+  }
+  @else if $breakpoint == 'large-only' {
+    @media only screen and (min-width: #{tokens.$breakpoint-m}) and (max-width: (#{tokens.$breakpoint-l} - 0.02)) { @content; }
+  }
+  @else if $breakpoint == 'extra-large-only' {
+    // Note: C'est identique à 'extra-large-and-up' car il n'y a pas de limite supérieure.
+    @media only screen and (min-width: #{tokens.$breakpoint-l}) { @content; }
+  }
+
+  // --- Erreur si le breakpoint n'est pas reconnu ---
+  @else {
+    @warn "Le breakpoint `#{$breakpoint}` n'est pas reconnu. Aucune media query ne sera générée.";
+  }
+}
+
+// Mixins to eliminate code repetition
+@mixin reset-offset {
+  margin-left: auto;
+  left: auto;
+  right: auto;
+}
+
+@mixin grid-classes($size, $i, $perc) {
+  &.offset-#{$size}#{$i} {
+    margin-left: $perc;
+  }
+  &.pull-#{$size}#{$i} {
+    right: $perc;
+  }
+  &.push-#{$size}#{$i} {
+    left: $perc;
+  }
+}
+
+/**
+ * Mixin pour générer les classes de grille
+ * @param {string} $prefix - Préfixe de la taille (s, m, l, xl)
+ * @param {string} $breakpoint - Breakpoint pour la media query
+ */
+@mixin grid-columns($prefix, $breakpoint: null) {
+  @if $breakpoint {
+    @include media-query($breakpoint) {
+      @for $i from 1 through 12 {
+        .#{$prefix}#{$i} {
+          grid-column: auto / span #{$i};
+        }
+      }
+      
+      @for $i from 1 through 11 {
+        .offset-#{$prefix}#{$i} {
+          grid-column-start: #{$i + 1};
+        }
+      }
+    }
+  } @else {
+    @for $i from 1 through 12 {
+      .#{$prefix}#{$i} {
+        grid-column: auto / span #{$i};
+      }
+    }
+    
+    @for $i from 1 through 11 {
+      .offset-#{$prefix}#{$i} {
+        grid-column-start: #{$i + 1};
+      }
+    }
+  }
+}
+
+/**
+ * Mixin pour générer les classes de grille 8 colonnes
+ * @param {string} $prefix - Préfixe de la taille (s, m, l, xl)
+ * @param {string} $breakpoint - Breakpoint pour la media query
+ */
+@mixin grid-columns-8col($prefix, $breakpoint: null) {
+  @if $breakpoint {
+    @include media-query($breakpoint) {
+      @for $i from 1 through 8 {
+        .#{$prefix}#{$i} {
+          grid-column: auto / span #{$i};
+        }
+      }
+      
+      @for $i from 1 through 7 {
+        .offset-#{$prefix}#{$i} {
+          grid-column-start: #{$i + 1};
+        }
+      }
+    }
+  } @else {
+    @for $i from 1 through 8 {
+      .#{$prefix}#{$i} {
+        grid-column: auto / span #{$i};
+      }
+    }
+    
+    @for $i from 1 through 7 {
+      .offset-#{$prefix}#{$i} {
+        grid-column-start: #{$i + 1};
+      }
+    }
+  }
+}
+
+/**
+ * Mixin pour générer les classes de grille 4 colonnes (opt-in M3 compact)
+ * @param {string} $prefix - Préfixe de la taille (s, m, l, xl)
+ * @param {string} $breakpoint - Breakpoint pour la media query
+ */
+@mixin grid-columns-4col($prefix, $breakpoint: null) {
+  @if $breakpoint {
+    @include media-query($breakpoint) {
+      @for $i from 1 through 4 {
+        .#{$prefix}#{$i} {
+          grid-column: auto / span #{$i};
+        }
+      }
+
+      @for $i from 1 through 3 {
+        .offset-#{$prefix}#{$i} {
+          grid-column-start: #{$i + 1};
+        }
+      }
+    }
+  } @else {
+    @for $i from 1 through 4 {
+      .#{$prefix}#{$i} {
+        grid-column: auto / span #{$i};
+      }
+    }
+
+    @for $i from 1 through 3 {
+      .offset-#{$prefix}#{$i} {
+        grid-column-start: #{$i + 1};
+      }
+    }
+  }
+}
+
+/**
+ * Variables CSS grille M3 (gutters / margins / columns documentées).
+ * N’altère pas le gap par défaut de `.row` — usage via `.row--gap-*`.
+ */
+@mixin grid-m3-css-vars {
+  :root {
+    --k3ui-grid-gutter: #{tokens.$grid-gutter-compact};
+    --k3ui-grid-margin: #{tokens.$grid-margin-compact};
+    --k3ui-grid-columns: #{tokens.$grid-columns-compact};
+    --k3ui-grid-gutter-dense: #{tokens.$grid-gutter-dense};
+  }
+
+  // medium (≥600) : 8 cols, gutter 16, margin 24
+  @include media-query('small-and-up') {
+    :root {
+      --k3ui-grid-gutter: #{tokens.$grid-gutter-medium};
+      --k3ui-grid-margin: #{tokens.$grid-margin-medium};
+      --k3ui-grid-columns: #{tokens.$grid-columns-medium};
+    }
+  }
+
+  // expanded (≥840) : 12 cols, gutter 16
+  @include media-query('medium-and-up') {
+    :root {
+      --k3ui-grid-columns: #{tokens.$grid-columns-expanded};
+    }
+  }
+
+  // large (≥1200) : gutter 24
+  @include media-query('large-and-up') {
+    :root {
+      --k3ui-grid-gutter: #{tokens.$grid-gutter-large};
+    }
+  }
+}
+
+/**
+ * Modificateurs de gap opt-in (M3) — ne touche pas `.row` par défaut.
+ */
+@mixin row-gap-modifiers {
+  .row--gap-adaptive {
+    gap: var(--k3ui-grid-gutter);
+    margin-bottom: var(--k3ui-grid-gutter);
+  }
+
+  .row--gap-dense {
+    gap: var(--k3ui-grid-gutter-dense, #{tokens.$grid-gutter-dense});
+    margin-bottom: var(--k3ui-grid-gutter-dense, #{tokens.$grid-gutter-dense});
+  }
+
+  .row--gap-8 {
+    gap: #{tokens.$grid-gutter-compact};
+    margin-bottom: #{tokens.$grid-gutter-compact};
+  }
+
+  .row--gap-16 {
+    gap: #{tokens.$grid-gutter-medium};
+    margin-bottom: #{tokens.$grid-gutter-medium};
+  }
+
+  .row--gap-24 {
+    gap: #{tokens.$grid-gutter-large};
+    margin-bottom: #{tokens.$grid-gutter-large};
+  }
+}
+
+/**
+ * Mixin pour le conteneur
+ */
+@mixin container {
+  margin: 0 auto;
+  max-width: 1280px;
+  width: 90%;
+  
+  @include media-query('medium-and-up') {
+    width: 85%;
+  }
+  
+  @include media-query('large-and-up') {
+    width: 70%;
+  }
+}
+
+/**
+ * Mixin pour la section
+ */
+@mixin section {
+  padding: 1rem 0;
+}
+
+/**
+ * Mixin pour la grille
+ */
+@mixin grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: tokens.$gap-size;
+  margin-bottom: tokens.$gap-size;
+}
+
+/**
+ * Mixin pour les classes de gap
+ */
+@mixin gap-classes {
+  .g-0 { gap: 0; }
+  .g-1 { gap: calc(0.25 * #{tokens.$gap-size}); }
+  .g-2 { gap: calc(0.5 * #{tokens.$gap-size}); }
+  .g-3 { gap: calc(1 * #{tokens.$gap-size}); }
+  .g-4 { gap: calc(1.5 * #{tokens.$gap-size}); }
+  .g-5 { gap: calc(3 * #{tokens.$gap-size}); }
+}
+
+// --- 3. Classes Utilitaires de Visibilité ---
+.hide-on-extra-small-only {
+  @include media-query('extra-small-only') { display: none !important; }
+}
+
+.hide-on-small-only {
+  @include media-query('small-only') { display: none !important; }
+}
+.hide-on-small-and-down {
+  @include media-query('small-and-down') { display: none !important; }
+}
+
+.hide-on-medium-only {
+  @include media-query('medium-only') { display: none !important; }
+}
+.hide-on-medium-and-down {
+  @include media-query('medium-and-down') { display: none !important; }
+}
+.hide-on-medium-and-up {
+  @include media-query('medium-and-up') { display: none !important; }
+}
+
+.hide-on-large-only {
+  @include media-query('large-only') { display: none !important; }
+}
+.hide-on-large-and-down {
+  @include media-query('large-and-down') { display: none !important; }
+}
+.hide-on-large-and-up {
+  @include media-query('large-and-up') { display: none !important; }
+}
+
+.hide-on-extra-large-only { // alias pour "hide-on-extra-large-and-up"
+  @include media-query('extra-large-and-up') { display: none !important; }
+}
+
+// Afficher sur... (souvent utilisé pour surcharger un `display: none` initial)
+.show-on-extra-small-only {
+  display: none !important;
+  @include media-query('extra-small-only') { display: block !important; }
+}
+
+.show-on-small-only {
+  display: none !important;
+  @include media-query('small-only') { display: block !important; }
+}
+.show-on-small-and-down {
+  display: none !important;
+  @include media-query('small-and-down') { display: block !important; }
+}
+
+.show-on-medium-only {
+  display: none !important;
+  @include media-query('medium-only') { display: block !important; }
+}
+.show-on-medium-and-down {
+  display: none !important;
+  @include media-query('medium-and-down') { display: block !important; }
+}
+.show-on-medium-and-up {
+  display: none !important;
+  @include media-query('medium-and-up') { display: block !important; }
+}
+
+.show-on-large-only {
+  display: none !important;
+  @include media-query('large-only') { display: block !important; }
+}
+.show-on-large-and-down {
+  display: none !important;
+  @include media-query('large-and-down') { display: block !important; }
+}
+.show-on-large-and-up {
+  display: none !important;
+  @include media-query('large-and-up') { display: block !important; }
+}
+
+.show-on-extra-large-only { // alias pour "show-on-extra-large-and-up"
+  display: none !important;
+  @include media-query('extra-large-and-up') { display: block !important; }
+}
+
+// Center text on mobile
+.center-on-small-only {
+  @include media-query('small-and-down') { text-align: center; }
+}

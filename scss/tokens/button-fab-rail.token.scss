@@ -1,0 +1,33 @@
+/**
+ * @fileoverview Tokens ButtonFabRail — FAB Speed Dial linéaire
+ */
+
+@use 'motion.token' as motion;
+
+$button-fab-rail-trigger-size: 64px !default;
+$button-fab-rail-action-size: 46px !default;
+$button-fab-rail-inset: 24px !default;
+$button-fab-rail-gap: 14px !default;
+
+$button-fab-rail-action-bg: var(--md-sys-color-surface-container-high) !default;
+$button-fab-rail-action-color: var(--md-sys-color-on-surface) !default;
+$button-fab-rail-scrim-bg: color-mix(in srgb, var(--md-sys-color-surface) 62%, transparent) !default;
+
+$button-fab-rail-action-shadow:
+  0 1px 3px rgb(0 0 0 / 0.16),
+  0 8px 24px rgb(0 0 0 / 0.12) !default;
+
+$button-fab-rail-stagger-enter-ms: 28 !default;
+$button-fab-rail-stagger-exit-ms: 18 !default;
+$button-fab-rail-spatial-duration: motion.spring-duration(spatial, fast) !default;
+$button-fab-rail-spatial-easing: motion.spring-easing(spatial, fast) !default;
+$button-fab-rail-spatial-duration-ms: 366 !default;
+$button-fab-rail-exit-duration: 200ms !default;
+$button-fab-rail-exit-easing: cubic-bezier(0.3, 0, 0.8, 0.15) !default;
+$button-fab-rail-effects-duration: motion.spring-duration(effects, fast) !default;
+$button-fab-rail-effects-easing: motion.spring-easing(effects, fast) !default;
+$button-fab-rail-effects-duration-ms: 150 !default;
+$button-fab-rail-press-radius: 34% !default;
+
+$button-fab-rail-z-index: 1050 !default;
+$button-fab-rail-scrim-z: -1 !default;

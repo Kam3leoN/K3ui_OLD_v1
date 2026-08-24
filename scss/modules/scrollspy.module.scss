@@ -1,0 +1,235 @@
+/**
+ * @fileoverview Module ScrollSpy (ScrollSpy)
+ * @description Sommaire « On this page » Material Design 3
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/scrollspy.token' as scrollspy;
+@use '../mixins/scrollspy.mixin' as scrollspy-mixin;
+
+.scrollspy,
+k3ui-scrollspy {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  --scrollspy-sticky-top: #{scrollspy.$scrollspy-offset-default}px;
+  position: relative;
+  align-self: start;
+  height: 100%;
+  min-height: 100%;
+
+  @media (min-width: #{scrollspy.$scrollspy-mobile-breakpoint}) {
+    &:not(.scrollspy--mobile) {
+      min-height: 1px;
+    }
+  }
+
+  &__desktop {
+    @media (min-width: #{scrollspy.$scrollspy-mobile-breakpoint}) {
+      .scrollspy:not(.scrollspy--mobile) &,
+      k3ui-scrollspy:not(.scrollspy--mobile) & {
+        max-height: calc(100dvh - var(--scrollspy-sticky-top) - 16px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+      }
+    }
+  }
+
+  &--pinned .scrollspy__desktop {
+    max-height: calc(100dvh - var(--scrollspy-sticky-top) - 16px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  &--pinned-end {
+    .scrollspy__desktop {
+      max-height: none;
+      overflow-y: visible;
+    }
+  }
+
+  &--sticky-native {
+    min-height: 1px;
+
+    .scrollspy__desktop {
+      position: sticky;
+      top: var(--scrollspy-sticky-top);
+      max-height: calc(100dvh - var(--scrollspy-sticky-top) - 16px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+  }
+
+  &__header {
+    margin-bottom: 8px;
+  }
+
+  &__overline {
+    @include scrollspy-mixin.scrollspy-overline;
+  }
+
+  &__title {
+    @include scrollspy-mixin.scrollspy-title;
+  }
+
+  &__body {
+    position: relative;
+  }
+
+  &__progress {
+    @include scrollspy-mixin.scrollspy-progress-track;
+
+    &-fill {
+      @include scrollspy-mixin.scrollspy-progress-fill;
+    }
+  }
+
+  &__list-wrap {
+    position: relative;
+  }
+
+  &__pill {
+    @include scrollspy-mixin.scrollspy-pill;
+
+    &--static {
+      transition: none;
+    }
+  }
+
+  &__list {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    z-index: 1;
+
+    .scrollspy__list {
+      margin: 0;
+      padding-left: scrollspy.$scrollspy-level3-indent;
+    }
+  }
+
+  &__item {
+    margin: 0;
+    padding: 0;
+  }
+
+  &__link {
+    @include scrollspy-mixin.scrollspy-link;
+  }
+
+  &__mobile-trigger {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: scrollspy.$scrollspy-touch-target-min;
+    padding: 12px 16px;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: 12px;
+    background: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface);
+    font-size: scrollspy.$scrollspy-item-font-size;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+
+    &:focus-visible {
+      outline: 2px solid scrollspy.$scrollspy-color-focus;
+      outline-offset: 2px;
+    }
+  }
+
+  &__mobile-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__mobile-active {
+    color: var(--md-sys-color-primary);
+    font-weight: 600;
+    margin-left: 4px;
+  }
+
+  &__drawer-overlay {
+    @include scrollspy-mixin.scrollspy-drawer-overlay;
+  }
+
+  &__drawer-panel {
+    @include scrollspy-mixin.scrollspy-drawer-panel;
+  }
+
+  &--drawer-open {
+    .scrollspy__drawer-overlay {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .scrollspy__drawer-panel {
+      transform: translateY(0);
+    }
+  }
+
+  &--mobile {
+    max-width: none;
+    position: relative;
+    top: auto;
+
+    .scrollspy__desktop {
+      display: none;
+      position: static !important;
+      top: auto !important;
+      left: auto !important;
+      width: auto !important;
+      bottom: auto !important;
+      max-height: none !important;
+      overflow: visible !important;
+    }
+
+    .scrollspy__mobile-trigger {
+      display: flex;
+    }
+  }
+
+  &--progress {
+    .scrollspy__body {
+      padding-left: 12px;
+    }
+
+    .scrollspy__progress {
+      display: block;
+    }
+  }
+
+  &:not(.scrollspy--progress) .scrollspy__progress {
+    display: none;
+  }
+}
+
+@media (max-width: #{scrollspy.$scrollspy-mobile-breakpoint - 1px}) {
+  .scrollspy:not(.scrollspy--force-desktop),
+  k3ui-scrollspy:not(.scrollspy--force-desktop) {
+    max-width: none;
+    position: relative;
+    top: auto;
+
+    .scrollspy__desktop {
+      display: none;
+    }
+
+    .scrollspy__mobile-trigger {
+      display: flex;
+    }
+  }
+}
+
+@media (min-width: #{scrollspy.$scrollspy-mobile-breakpoint}) {
+  .scrollspy__drawer-overlay,
+  .scrollspy__drawer-panel {
+    display: none !important;
+  }
+}

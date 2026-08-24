@@ -1,0 +1,62 @@
+/**
+ * @file bubble.token.scss
+ * @description Tokens pour le composant Bubble (bulles de conversation)
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use 'radius.token' as radius;
+
+// ============================================================================
+// LAYOUT
+// ============================================================================
+
+/** Espacement horizontal entre avatar et contenu */
+$bubble-gap-x: 0.75rem !default;
+
+/** Padding vertical du conteneur */
+$bubble-padding-y: 0.25rem !default;
+
+/** Taille de l’avatar auteur */
+$bubble-image-size: 2.5rem !default;
+
+// ============================================================================
+// BODY (bulle)
+// ============================================================================
+
+/** Rayon de la bulle (équivalent field / medium) */
+$bubble-body-radius: radius.$md-sys-shape-corner-input !default;
+
+/** Padding horizontal / vertical du message */
+$bubble-body-padding-x: 1rem !default;
+$bubble-body-padding-y: 0.5rem !default;
+
+/** Dimensions minimales / maximales */
+$bubble-body-min-height: 2rem !default;
+$bubble-body-min-width: 2.5rem !default;
+$bubble-body-max-width: 90% !default;
+
+/** Queue (tail) de la bulle */
+$bubble-tail-size: 0.75rem !default;
+$bubble-tail-mask-size: 0.8125rem !default;
+$bubble-tail-offset-inline: -0.75rem !default;
+
+/**
+ * Masque SVG de la queue (13×13)
+ */
+$bubble-tail-mask: url("data:image/svg+xml,%3csvg width='13' height='13' xmlns='http://www.w3.org/2000/svg'%3e%3cpath fill='black' d='M0 11.5004C0 13.0004 2 13.0004 2 13.0004H12H13V0.00036329L12.5 0C12.5 0 11.977 2.09572 11.8581 2.50033C11.6075 3.35237 10.9149 4.22374 9 5.50036C6 7.50036 0 10.0004 0 11.5004Z'/%3e%3c/svg%3e") !default;
+
+// ============================================================================
+// HEADER / FOOTER
+// ============================================================================
+
+$bubble-meta-font-size: 0.6875rem !default;
+$bubble-meta-gap: 0.25rem !default;
+$bubble-meta-opacity: 0.5 !default;
+
+// ============================================================================
+// COULEURS (références CSS variables M3)
+// ============================================================================
+
+$bubble-body-bg-default: var(--md-sys-color-surface-container-highest) !default;
+$bubble-body-fg-default: var(--md-sys-color-on-surface) !default;

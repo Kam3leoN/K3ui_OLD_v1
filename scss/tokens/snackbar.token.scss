@@ -1,0 +1,234 @@
+/**
+ * @file snackbar.token.scss
+ * @description Tokens pour le composant Snackbar Material Design 3 Expressive
+ * @see https://m3.material.io/components/snackbar/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use 'sass:map';
+@use 'theme.token' as theme;
+@use 'animation.token' as animation;
+@use 'elevation.token' as elevation;
+
+// ============================================================================
+// HAUTEURS
+// ============================================================================
+
+/**
+ * Hauteurs du snackbar selon les variantes
+ */
+$md-sys-snackbar-height-single: 48px !default;
+$md-sys-snackbar-height-double: 68px !default;
+$md-sys-snackbar-height-action-long: 44px !default;
+
+// ============================================================================
+// ESPACEMENTS
+// ============================================================================
+
+/**
+ * Espacements du snackbar
+ */
+$md-sys-snackbar-padding-horizontal: 16px !default;
+$md-sys-snackbar-padding-vertical: 12px !default;
+$md-sys-snackbar-text-action-gap: 12px !default;
+$md-sys-snackbar-actions-gap: 8px !default;
+
+// ============================================================================
+// TYPOGRAPHIE
+// ============================================================================
+
+/**
+ * Typographie du snackbar
+ */
+$md-sys-snackbar-font-size: 14px !default;
+$md-sys-snackbar-line-height: 1.4 !default;
+$md-sys-snackbar-font-weight: 400 !default;
+$md-sys-snackbar-action-font-weight: 500 !default;
+
+// ============================================================================
+// COULEURS
+// ============================================================================
+
+/**
+ * Couleurs du snackbar Material Design 3
+ */
+$md-sys-snackbar-background: theme.$md-ref-palette-neutral10 !default;
+$md-sys-snackbar-text-color: theme.$md-ref-palette-neutral90 !default;
+$md-sys-snackbar-action-color: theme.$md-ref-palette-primary80 !default;
+$md-sys-snackbar-action-hover-color: theme.$md-ref-palette-primary70 !default;
+$md-sys-snackbar-close-color: theme.$md-ref-palette-neutral90 !default;
+$md-sys-snackbar-close-hover-color: theme.$md-ref-palette-neutral80 !default;
+$md-sys-snackbar-border-color: theme.$md-ref-palette-neutral20 !default;
+
+// ============================================================================
+// BORDURES ET OMBRES
+// ============================================================================
+
+/**
+ * Border radius du snackbar
+ */
+$md-sys-snackbar-border-radius: 8px !default;
+
+/**
+ * Ombre du snackbar
+ */
+$md-sys-snackbar-shadow: elevation.$md-sys-elevation-level2 !default;
+
+// ============================================================================
+// POSITIONNEMENT
+// ============================================================================
+
+/**
+ * Positionnement du snackbar
+ */
+$md-sys-snackbar-bottom-offset: 16px !default;
+$md-sys-snackbar-side-offset: 16px !default;
+$md-sys-snackbar-max-width: 448px !default; // 28rem
+
+// ============================================================================
+// TRANSITIONS ET ANIMATIONS
+// ============================================================================
+
+/**
+ * Transitions du snackbar
+ */
+$md-sys-snackbar-transition-duration: animation.$animation-duration-fast !default;
+$md-sys-snackbar-transition-easing: animation.$animation-easing-cubic-bezier !default;
+
+// ============================================================================
+// CONTRAINTES DE TEXTE
+// ============================================================================
+
+/**
+ * Contraintes de texte
+ */
+$md-sys-snackbar-text-max-chars-per-line: 60 !default;
+
+// ============================================================================
+// Z-INDEX
+// ============================================================================
+
+/**
+ * Z-index du snackbar
+ */
+$md-sys-snackbar-z-index: 2100 !default;
+
+// ============================================================================
+// MAPS ET COLLECTIONS
+// ============================================================================
+
+/**
+ * Map des hauteurs
+ */
+$md-sys-snackbar-heights: (
+  single: $md-sys-snackbar-height-single,
+  double: $md-sys-snackbar-height-double,
+  action-long: $md-sys-snackbar-height-action-long
+) !default;
+
+/**
+ * Map des espacements
+ */
+$md-sys-snackbar-spacings: (
+  padding-horizontal: $md-sys-snackbar-padding-horizontal,
+  padding-vertical: $md-sys-snackbar-padding-vertical,
+  text-action-gap: $md-sys-snackbar-text-action-gap,
+  actions-gap: $md-sys-snackbar-actions-gap
+) !default;
+
+/**
+ * Map des tailles de police
+ */
+$md-sys-snackbar-font-sizes: (
+  base: $md-sys-snackbar-font-size,
+  action: $md-sys-snackbar-font-size
+) !default;
+
+/**
+ * Map des poids de police
+ */
+$md-sys-snackbar-font-weights: (
+  base: $md-sys-snackbar-font-weight,
+  action: $md-sys-snackbar-action-font-weight
+) !default;
+
+/**
+ * Map des couleurs
+ */
+$md-sys-snackbar-colors: (
+  background: $md-sys-snackbar-background,
+  text: $md-sys-snackbar-text-color,
+  action: $md-sys-snackbar-action-color,
+  action-hover: $md-sys-snackbar-action-hover-color,
+  close: $md-sys-snackbar-close-color,
+  close-hover: $md-sys-snackbar-close-hover-color,
+  border: $md-sys-snackbar-border-color
+) !default;
+
+/**
+ * Map des positionnements
+ */
+$md-sys-snackbar-positions: (
+  bottom-offset: $md-sys-snackbar-bottom-offset,
+  side-offset: $md-sys-snackbar-side-offset,
+  max-width: $md-sys-snackbar-max-width
+) !default;
+
+// ============================================================================
+// FONCTIONS UTILITAIRES
+// ============================================================================
+
+/**
+ * Fonction pour récupérer une hauteur de snackbar
+ * @param {string} $height - Type de hauteur (single, double, action-long)
+ * @return {string} Valeur de hauteur
+ */
+@function snackbar-height($height) {
+  @return map.get($md-sys-snackbar-heights, $height);
+}
+
+/**
+ * Fonction pour récupérer un espacement
+ * @param {string} $spacing - Type d'espacement (padding-horizontal, padding-vertical, text-action-gap, actions-gap)
+ * @return {string} Valeur d'espacement
+ */
+@function snackbar-spacing($spacing) {
+  @return map.get($md-sys-snackbar-spacings, $spacing);
+}
+
+/**
+ * Fonction pour récupérer une taille de police
+ * @param {string} $size - Type de taille (base, action)
+ * @return {string} Valeur de taille
+ */
+@function snackbar-font-size($size) {
+  @return map.get($md-sys-snackbar-font-sizes, $size);
+}
+
+/**
+ * Fonction pour récupérer un poids de police
+ * @param {string} $weight - Type de poids (base, action)
+ * @return {string} Valeur de poids
+ */
+@function snackbar-font-weight($weight) {
+  @return map.get($md-sys-snackbar-font-weights, $weight);
+}
+
+/**
+ * Fonction pour récupérer une couleur
+ * @param {string} $color - Type de couleur (background, text, action, action-hover, close, close-hover, border)
+ * @return {string} Valeur de couleur
+ */
+@function snackbar-color($color) {
+  @return map.get($md-sys-snackbar-colors, $color);
+}
+
+/**
+ * Fonction pour récupérer une position
+ * @param {string} $position - Type de position (bottom-offset, side-offset, max-width)
+ * @return {string} Valeur de position
+ */
+@function snackbar-position($position) {
+  @return map.get($md-sys-snackbar-positions, $position);
+}

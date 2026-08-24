@@ -1,0 +1,76 @@
+/**
+ * @fileoverview Mixins Upload pour K3UI
+ * @description Mixins réutilisables pour les lignes de progression d'upload
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/upload.token' as *;
+
+// ============================================================================
+// UPLOAD PROGRESS MIXINS
+// ============================================================================
+
+/**
+ * Mixin de base pour une ligne de progression upload
+ */
+@mixin upload-progress-base {
+    display: flex;
+    flex-direction: column;
+    gap: $upload-progress-gap;
+    width: 100%;
+}
+
+/**
+ * Mixin pour le label fichier
+ */
+@mixin upload-progress-label {
+    color: $upload-progress-label-color;
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+/**
+ * Mixin pour le conteneur ProgressIndicator MD3
+ */
+@mixin upload-progress-indicator {
+    width: 100%;
+    max-width: 100%;
+}
+
+/**
+ * Mixin pour les stats octets
+ */
+@mixin upload-progress-stats {
+    color: $upload-progress-stats-color;
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+
+/**
+ * Mixin pour barre épaisse (ProgressIndicator thick)
+ */
+@mixin upload-progress-large {
+    .progress-indicator {
+        min-height: $upload-progress-bar-height-large;
+    }
+}
+
+/**
+ * Mixin pour état success (palette tertiary sur l'indicateur)
+ */
+@mixin upload-progress-success {
+    .progress-indicator {
+        color: $upload-progress-fill-success;
+    }
+}
+
+/**
+ * Mixin pour état error (palette error sur l'indicateur)
+ */
+@mixin upload-progress-error {
+    .progress-indicator {
+        color: $upload-progress-fill-error;
+    }
+}

@@ -1,0 +1,122 @@
+{
+  "name": "k3ui",
+  "version": "0.1.0",
+  "description": "Librairie UI forkée de material-web, Material You 3, SCSS+TS.",
+  "main": "dist/js/k3ui.js",
+  "unpkg": "dist/js/k3ui.min.js",
+  "jsdelivr": "dist/js/k3ui.min.js",
+  "types": "src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./dist/js/k3ui.js",
+      "default": "./dist/js/k3ui.js"
+    },
+    "./full": {
+      "types": "./src/index.ts",
+      "import": "./dist/js/k3ui.js",
+      "default": "./dist/js/k3ui.js"
+    },
+    "./min": {
+      "types": "./src/index.ts",
+      "import": "./dist/js/k3ui.min.js",
+      "default": "./dist/js/k3ui.min.js"
+    },
+    "./core": {
+      "types": "./src/core/index.ts",
+      "import": "./src/core/index.ts",
+      "default": "./src/core/index.ts"
+    },
+    "./components/*": {
+      "types": "./src/components/*.ts",
+      "import": "./src/components/*.ts",
+      "default": "./src/components/*.ts"
+    },
+    "./dist/css/k3ui.css": "./dist/css/k3ui.css",
+    "./dist/css/k3ui.min.css": "./dist/css/k3ui.min.css"
+  },
+  "files": [
+    "dist",
+    "scss",
+    "src"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "dev:scss:expanded": "sass --watch scss/index.scss:dist/css/k3ui.css --style=expanded --load-path=scss",
+    "dev:scss:min": "sass --watch scss/index.scss:dist/css/k3ui.min.css --style=compressed --load-path=scss",
+    "dev:scss": "concurrently -n \"expanded,min\" -c \"cyan,magenta\" \"npm run dev:scss:expanded\" \"npm run dev:scss:min\"",
+    "dev:copy": "node scripts/watch-copy.js",
+    "dev:full": "concurrently -n \"vite,scss,copy\" -c \"blue,green,yellow\" \"npm run dev\" \"npm run dev:scss\" \"npm run dev:copy\"",
+    "clean:dist:js": "node scripts/clean-dist.mjs js",
+    "clean:dist:css": "node scripts/clean-dist.mjs css",
+    "clean:dist:final": "node scripts/clean-dist.mjs final",
+    "build": "npm run clean:dist:js && vite build && npm run minify:dist:js && npm run build:scss && npm run clean:dist:css && npm run copy:docs && npm run purge:css && npm run copy:start && npm run clean:dist:final",
+    "build:prod": "npm run clean:dist:js && vite build --mode production && npm run minify:dist:js && npm run build:scss && npm run clean:dist:css && npm run copy:docs && npm run purge:css && npm run copy:start && npm run clean:dist:final",
+    "build:scss": "sass scss/index.scss:dist/css/k3ui.css --style=expanded --no-source-map --load-path=scss && sass scss/index.scss:dist/css/k3ui.min.css --style=compressed --no-source-map --load-path=scss && sass scss/index-core.scss:dist/css/k3ui-core.css --style=expanded --no-source-map --load-path=scss && sass scss/index-core.scss:dist/css/k3ui-core.min.css --style=compressed --no-source-map --load-path=scss",
+    "minify:dist:js": "node scripts/minify-dist-js.mjs",
+    "purge:css": "node scripts/purge-css.mjs",
+    "strip:console:php": "node scripts/strip-console-php.mjs",
+    "budget:bundle": "node scripts/bundle-budget.mjs",
+    "lighthouse:docs": "node scripts/lighthouse-docs.mjs",
+    "lighthouse:docs:mobile": "node scripts/lighthouse-docs.mjs --mobile",
+    "lighthouse:docs:all": "node scripts/lighthouse-docs.mjs && node scripts/lighthouse-docs.mjs --mobile",
+    "lighthouse:update-json": "node scripts/lighthouse-docs.mjs --update-json && node scripts/lighthouse-docs.mjs --mobile --update-json",
+    "css:baseline": "node scripts/css-regression-harness.mjs baseline",
+    "css:compare": "node scripts/css-regression-harness.mjs compare dist/css/k3ui.css",
+    "css:audit": "node scripts/css-regression-harness.mjs audit build/baseline.css",
+    "build:ci": "npm run clean:dist:js && vite build && npm run minify:dist:js && npm run build:scss && npm run clean:dist:css && npm run budget:bundle && npm run clean:dist:final",
+    "copy:docs": "npm run copy:css && npm run copy:js && npm run copy:assets",
+    "copy:start": "node scripts/copy-start.mjs",
+    "copy:css": "node scripts/copy-docs.mjs css",
+    "copy:js": "node scripts/copy-docs.mjs js",
+    "build:analyze": "vite build --mode analyze && npm run minify:dist:js && npm run build:scss",
+    "copy:assets": "node scripts/copy-docs.mjs assets",
+    "lint": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:ci": "jest --ci --coverage --watchAll=false",
+    "test:debug": "jest --detectOpenHandles --forceExit",
+    "docs:generate": "node generate-docs.js",
+    "docs:update": "npm run test && npm run docs:generate",
+    "docs:serve": "cd ../k3ui-docs && php -S localhost:8000",
+    "extract:shape-paths": "node scripts/extract-morph-shape-paths.mjs",
+    "generate:qr-shapes": "node scripts/generate-qr-shape-catalog.mjs",
+    "dev:all": "powershell -ExecutionPolicy Bypass -File ./start-dev.ps1",
+    "dev:wamp": "powershell -ExecutionPolicy Bypass -File ./start-dev.ps1"
+  },
+  "author": "Kam3leoN",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@lhci/cli": "^0.14.0",
+    "@rollup/plugin-terser": "^1.0.0",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@types/jest": "^30.0.0",
+    "@types/jsbarcode": "^3.11.4",
+    "esbuild": "^0.25.8",
+    "fs-extra": "^11.3.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^27.0.0",
+    "jsdom": "^27.0.1",
+    "lighthouse": "^12.6.1",
+    "rollup-plugin-visualizer": "^7.0.1",
+    "sass": "^1.99.0",
+    "serve": "^14.2.6",
+    "terser": "^5.39.0",
+    "ts-jest": "^29.4.5",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.5",
+    "vite-plugin-purgecss": "^0.2.13"
+  },
+  "dependencies": {
+    "@material/material-color-utilities": "0.4.0",
+    "echarts": "^6.1.0",
+    "gsap": "^3.15.0",
+    "jsbarcode": "^3.12.3",
+    "jspdf": "^4.2.1",
+    "qr-code-styling": "^1.9.2",
+    "qrcode-generator": "^2.0.4",
+    "simple-parallax-js": "^7.0.0"
+  }
+}

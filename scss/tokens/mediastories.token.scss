@@ -1,0 +1,67 @@
+/**
+ * @fileoverview Tokens de design pour MediaStories
+ * @description Variables de design pour le viewer de stories
+ * @author K3UI Team
+ * @version 1.1.0
+ */
+
+@use 'sass:map';
+@use 'zindex.token' as zindex;
+
+// ============================================================================
+// Z-INDEX
+// ============================================================================
+
+/** Z-index fullscreen (au-dessus dialog / drawer) */
+$mediastories-z-index-fullscreen: map.get(zindex.$md-sys-zindex-layers, max);
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+$mediastories-radius: 16px;
+$mediastories-tap-split: 35%;
+$mediastories-header-pad: 14px;
+$mediastories-bar-height: 3px;
+$mediastories-bar-gap: 4px;
+$mediastories-arrow-size: 40px;
+$mediastories-avatar-size: 30px;
+
+/** Galerie type dartegnian.com — portrait 3:5 */
+$mediastories-cover-width: 240px;
+$mediastories-cover-height: 400px;
+$mediastories-gallery-gap: 32px;
+$mediastories-intro-width: 240px;
+
+/**
+ * Bandes empilées derrière la cover (hover only) :
+ * largeur 10px, gutter 2px → décalages 12px / 24px
+ */
+$mediastories-cover-band-width: 10px;
+$mediastories-cover-band-gap: 2px;
+$mediastories-cover-band-shift-near: $mediastories-cover-band-gap + $mediastories-cover-band-width;
+$mediastories-cover-band-shift-far: (
+  2 * $mediastories-cover-band-gap + 2 * $mediastories-cover-band-width
+);
+$mediastories-cover-band-height-near: 90%;
+$mediastories-cover-band-height-far: 85%;
+
+// ============================================================================
+// COULEURS
+// ============================================================================
+
+$mediastories-bg: #000;
+$mediastories-progress-track: rgba(255, 255, 255, 0.35);
+$mediastories-progress-fill: #fff;
+$mediastories-text: #fff;
+$mediastories-text-dim: rgba(255, 255, 255, 0.75);
+$mediastories-avatar-ring: rgba(255, 255, 255, 0.6);
+$mediastories-arrow-bg: rgba(255, 255, 255, 0.14);
+$mediastories-arrow-bg-hover: rgba(255, 255, 255, 0.26);
+
+// ============================================================================
+// MOTION
+// ============================================================================
+
+$mediastories-transition-fast: 120ms ease;
+$mediastories-backdrop-fade: 500ms ease;

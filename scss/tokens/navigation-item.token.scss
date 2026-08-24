@@ -1,0 +1,57 @@
+/**
+ * @fileoverview Tokens partagés indicateur nav item (Bar + Rail) — M3E Expressive
+ * @see https://m3.material.io/styles/motion/overview/specs — spatial-fast + effects-fast
+ */
+
+@use './motion.token' as motion;
+
+/** Vertical (bar + rail compact) — Flutter / M3E */
+$nav-item-indicator-height-vertical: 32px !default;
+$nav-item-indicator-radius-vertical: 16px !default;
+$nav-item-indicator-width-bar: 64px !default;
+$nav-item-indicator-width-rail: 56px !default;
+
+/** Horizontal (rail expanded) — M3E expanded item height 56 */
+$nav-item-indicator-height-horizontal: 56px !default;
+$nav-item-indicator-radius-horizontal: 28px !default;
+
+/**
+ * Sélection — M3 Expressive spatial-fast (scale) + effects-fast (fade)
+ * Plus Flutter 500ms emphasized-interpolate (trop lent / « une seule fois » ressenti).
+ */
+$nav-item-indicator-duration: var(
+  --md-sys-motion-spatial-fast-duration,
+  #{motion.$md-sys-motion-expressive-spatial-fast-duration}
+) !default;
+$nav-item-indicator-fade-duration: var(
+  --md-sys-motion-effects-fast-duration,
+  #{motion.$md-sys-motion-expressive-effects-fast-duration}
+) !default;
+$nav-item-indicator-scale-from: 0.4 !default;
+$nav-item-indicator-easing: var(
+  --md-sys-motion-spatial-fast-easing,
+  #{motion.$md-sys-motion-expressive-spatial-fast-easing}
+) !default;
+/** Variables locales (PurgeCSS-safe ; pas de linear() inline dans animation) */
+$nav-item-indicator-easing-var: --nav-item-indicator-easing !default;
+$nav-item-indicator-duration-var: --nav-item-indicator-duration !default;
+$nav-item-indicator-fade-duration-var: --nav-item-indicator-fade-duration !default;
+/** Délai navigation data-href (ms) — laisse démarrer l’entrée spatial-fast */
+$nav-item-indicator-nav-delay-ms: 140 !default;
+/** Durée JS cleanup / specs (ms) — alignée spatial-fast */
+$nav-item-indicator-duration-ms: 350 !default;
+
+/** Morph orientation : désactivé pendant --animating (snap) ; sinon spatial-fast court */
+$nav-item-indicator-morph-duration: var(
+  --md-sys-motion-spatial-fast-duration,
+  #{motion.$md-sys-motion-expressive-spatial-fast-duration}
+) !default;
+$nav-item-indicator-morph-easing: var(
+  --md-sys-motion-spatial-fast-easing,
+  #{motion.$md-sys-motion-expressive-spatial-fast-easing}
+) !default;
+
+$nav-item-indicator-bg: var(--md-sys-color-secondary-container, #e8def8) !default;
+$nav-item-hover-bg: rgba(73, 69, 79, 0.08) !default;
+$nav-item-hover-bg-dark: rgba(255, 255, 255, 0.08) !default;
+$nav-item-hover-duration: 200ms !default;

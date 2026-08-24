@@ -1,0 +1,263 @@
+/// @file motion.token.scss
+/// @brief Tokens motion Material Design 3 — 12 springs Web (Expressive + Standard)
+/// @see https://m3.material.io/styles/motion/overview/specs — « Web: Convert springs to curves »
+///
+/// Schéma produit : `expressive` (défaut) ou `standard` via `html[data-motion-scheme="standard"]`.
+/// Consommation composants : `--md-sys-motion-{spatial|effects}-{fast|default|slow}-{duration|easing}`
+/// (alias actifs du schéma courant). Micro-interactions M3 : effects-fast + spatial-fast.
+
+// ============================================================================
+// SPRING → WEB (M3 specs) — 12 paires durée + cubic-bezier
+// ============================================================================
+
+// --- Expressive — spatial ---
+$md-sys-motion-expressive-spatial-fast-duration: 350ms !default;
+$md-sys-motion-expressive-spatial-fast-easing: cubic-bezier(0.42, 1.67, 0.21, 0.9) !default;
+
+$md-sys-motion-expressive-spatial-default-duration: 500ms !default;
+$md-sys-motion-expressive-spatial-default-easing: cubic-bezier(0.38, 1.21, 0.22, 1) !default;
+
+$md-sys-motion-expressive-spatial-slow-duration: 650ms !default;
+$md-sys-motion-expressive-spatial-slow-easing: cubic-bezier(0.39, 1.29, 0.35, 0.98) !default;
+
+// --- Expressive — effects ---
+$md-sys-motion-expressive-effects-fast-duration: 150ms !default;
+$md-sys-motion-expressive-effects-fast-easing: cubic-bezier(0.31, 0.94, 0.34, 1) !default;
+
+$md-sys-motion-expressive-effects-default-duration: 200ms !default;
+$md-sys-motion-expressive-effects-default-easing: cubic-bezier(0.34, 0.8, 0.34, 1) !default;
+
+$md-sys-motion-expressive-effects-slow-duration: 300ms !default;
+$md-sys-motion-expressive-effects-slow-easing: cubic-bezier(0.34, 0.88, 0.34, 1) !default;
+
+/**
+ * Flutter Curves.easeInOutCubicEmphasized (ThreePointCubic) — échantillon CSS `linear()`.
+ * Utilisé par NavigationIndicator (navigation_bar.dart / navigation_rail.dart).
+ * Ne pas substituer par spatial-fast spring (overshoot) ni cubic-bezier(0.2,0,0,1)
+ * (Emphasized simple ≠ ThreePointCubic → « retard » en fin d’anim).
+ * @see https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/animation/curves.dart
+ */
+$md-sys-motion-easing-emphasized-interpolate: linear(
+  0% 0%,
+  2.06% 5%,
+  9.35% 10%,
+  27.33% 15%,
+  63.57% 20%,
+  77.28% 25%,
+  84.05% 30%,
+  88.29% 35%,
+  91.25% 40%,
+  93.42% 45%,
+  95.06% 50%,
+  96.33% 55%,
+  97.32% 60%,
+  98.09% 65%,
+  98.68% 70%,
+  99.14% 75%,
+  99.48% 80%,
+  99.72% 85%,
+  99.88% 90%,
+  99.97% 95%,
+  100% 100%
+) !default;
+
+// --- Standard — spatial ---
+$md-sys-motion-standard-spatial-fast-duration: 350ms !default;
+$md-sys-motion-standard-spatial-fast-easing: cubic-bezier(0.27, 1.06, 0.18, 1) !default;
+
+$md-sys-motion-standard-spatial-default-duration: 500ms !default;
+$md-sys-motion-standard-spatial-default-easing: cubic-bezier(0.27, 1.06, 0.18, 1) !default;
+
+$md-sys-motion-standard-spatial-slow-duration: 750ms !default;
+$md-sys-motion-standard-spatial-slow-easing: cubic-bezier(0.27, 1.06, 0.18, 1) !default;
+
+// --- Standard — effects ---
+$md-sys-motion-standard-effects-fast-duration: 150ms !default;
+$md-sys-motion-standard-effects-fast-easing: cubic-bezier(0.31, 0.94, 0.34, 1) !default;
+
+$md-sys-motion-standard-effects-default-duration: 200ms !default;
+$md-sys-motion-standard-effects-default-easing: cubic-bezier(0.34, 0.8, 0.34, 1) !default;
+
+$md-sys-motion-standard-effects-slow-duration: 300ms !default;
+$md-sys-motion-standard-effects-slow-easing: cubic-bezier(0.34, 0.88, 0.34, 1) !default;
+
+// ============================================================================
+// Schéma produit par défaut : Expressive (Material You)
+// ============================================================================
+
+$md-sys-motion-scheme: 'expressive' !default;
+
+// ============================================================================
+// API SCSS — springs actifs (var CSS, suivent data-motion-scheme)
+// ============================================================================
+
+/// Durée spring active : `$type` spatial | effects ; `$speed` fast | default | slow
+@function spring-duration($type, $speed) {
+  @return var(--md-sys-motion-#{$type}-#{$speed}-duration);
+}
+
+/// Easing spring actif
+@function spring-easing($type, $speed) {
+  @return var(--md-sys-motion-#{$type}-#{$speed}-easing);
+}
+
+/// @deprecated Utiliser `spring-easing($type, $speed)` — ex. `spring-easing(effects, fast)`
+@function easing-var($name) {
+  @if $name == 'spatial-fast' {
+    @return spring-easing(spatial, fast);
+  }
+  @if $name == 'spatial-default' {
+    @return spring-easing(spatial, default);
+  }
+  @if $name == 'spatial-slow' {
+    @return spring-easing(spatial, slow);
+  }
+  @if $name == 'effects-fast' {
+    @return spring-easing(effects, fast);
+  }
+  @if $name == 'effects-default' {
+    @return spring-easing(effects, default);
+  }
+  @if $name == 'effects-slow' {
+    @return spring-easing(effects, slow);
+  }
+  // Legacy → springs M3 (déprécié, supprimé en v1)
+  @if $name == 'linear-standard' or $name == 'md2-standard' or $name == 'tooltip' or $name == 'protocol-accelerate' or $name == 'fab-close' {
+    @return spring-easing(effects, fast);
+  }
+  @if $name == 'protocol-decelerate' or $name == 'md2-decelerate' {
+    @return spring-easing(effects, default);
+  }
+  @if $name == 'emphasized-overshoot' or $name == 'fab-overshoot' or $name == 'shape-bounce' or $name == 'shape-elastic' or $name == 'smooth-drag' {
+    @return spring-easing(spatial, default);
+  }
+  @warn "motion.easing-var(#{$name}) est déprécié — utiliser spring-easing(spatial|effects, fast|default|slow)";
+  @return spring-easing(effects, fast);
+}
+
+// Alias sémantiques SCSS → springs actifs (M3 : fast effects + fast spatial pour l’UI courante)
+$md-sys-motion-duration-short: spring-duration(effects, fast) !default;
+$md-sys-motion-duration-medium: spring-duration(effects, default) !default;
+$md-sys-motion-duration-standard: spring-duration(effects, fast) !default;
+$md-sys-motion-duration-long: spring-duration(effects, slow) !default;
+$md-sys-motion-duration-emphasized: spring-duration(spatial, default) !default;
+$md-sys-motion-duration-expand: spring-duration(spatial, default) !default;
+
+$md-sys-motion-easing-standard: spring-easing(effects, fast) !default;
+$md-sys-motion-easing-standard-accelerate: spring-easing(effects, fast) !default;
+$md-sys-motion-easing-standard-decelerate: spring-easing(effects, default) !default;
+
+$md-sys-motion-easing-emphasized: spring-easing(spatial, default) !default;
+$md-sys-motion-easing-emphasized-accelerate: spring-easing(spatial, fast) !default;
+$md-sys-motion-easing-emphasized-decelerate: spring-easing(spatial, default) !default;
+
+$md-sys-motion-easing-spring: spring-easing(spatial, fast) !default;
+$md-sys-motion-easing-spring-subtle: spring-easing(spatial, default) !default;
+
+$md-sys-motion-duration-entering: spring-duration(effects, default) !default;
+$md-sys-motion-duration-exiting: spring-duration(effects, fast) !default;
+$md-sys-motion-easing-entering: spring-easing(effects, default) !default;
+$md-sys-motion-easing-exiting: spring-easing(effects, fast) !default;
+
+// ============================================================================
+// Émission : springs bruts + alias actifs (schéma courant)
+// ============================================================================
+
+@mixin _emit-motion-spring-raw-expressive() {
+  --md-sys-motion-expressive-spatial-fast-duration: #{$md-sys-motion-expressive-spatial-fast-duration};
+  --md-sys-motion-expressive-spatial-fast-easing: #{$md-sys-motion-expressive-spatial-fast-easing};
+  --md-sys-motion-expressive-spatial-default-duration: #{$md-sys-motion-expressive-spatial-default-duration};
+  --md-sys-motion-expressive-spatial-default-easing: #{$md-sys-motion-expressive-spatial-default-easing};
+  --md-sys-motion-expressive-spatial-slow-duration: #{$md-sys-motion-expressive-spatial-slow-duration};
+  --md-sys-motion-expressive-spatial-slow-easing: #{$md-sys-motion-expressive-spatial-slow-easing};
+
+  --md-sys-motion-expressive-effects-fast-duration: #{$md-sys-motion-expressive-effects-fast-duration};
+  --md-sys-motion-expressive-effects-fast-easing: #{$md-sys-motion-expressive-effects-fast-easing};
+  --md-sys-motion-expressive-effects-default-duration: #{$md-sys-motion-expressive-effects-default-duration};
+  --md-sys-motion-expressive-effects-default-easing: #{$md-sys-motion-expressive-effects-default-easing};
+  --md-sys-motion-expressive-effects-slow-duration: #{$md-sys-motion-expressive-effects-slow-duration};
+  --md-sys-motion-expressive-effects-slow-easing: #{$md-sys-motion-expressive-effects-slow-easing};
+}
+
+@mixin _emit-motion-spring-raw-standard() {
+  --md-sys-motion-standard-spatial-fast-duration: #{$md-sys-motion-standard-spatial-fast-duration};
+  --md-sys-motion-standard-spatial-fast-easing: #{$md-sys-motion-standard-spatial-fast-easing};
+  --md-sys-motion-standard-spatial-default-duration: #{$md-sys-motion-standard-spatial-default-duration};
+  --md-sys-motion-standard-spatial-default-easing: #{$md-sys-motion-standard-spatial-default-easing};
+  --md-sys-motion-standard-spatial-slow-duration: #{$md-sys-motion-standard-spatial-slow-duration};
+  --md-sys-motion-standard-spatial-slow-easing: #{$md-sys-motion-standard-spatial-slow-easing};
+
+  --md-sys-motion-standard-effects-fast-duration: #{$md-sys-motion-standard-effects-fast-duration};
+  --md-sys-motion-standard-effects-fast-easing: #{$md-sys-motion-standard-effects-fast-easing};
+  --md-sys-motion-standard-effects-default-duration: #{$md-sys-motion-standard-effects-default-duration};
+  --md-sys-motion-standard-effects-default-easing: #{$md-sys-motion-standard-effects-default-easing};
+  --md-sys-motion-standard-effects-slow-duration: #{$md-sys-motion-standard-effects-slow-duration};
+  --md-sys-motion-standard-effects-slow-easing: #{$md-sys-motion-standard-effects-slow-easing};
+}
+
+/// Alias actifs pointant vers le schéma Expressive (défaut)
+@mixin _emit-motion-scheme-active-expressive() {
+  --md-sys-motion-spatial-fast-duration: var(--md-sys-motion-expressive-spatial-fast-duration);
+  --md-sys-motion-spatial-fast-easing: var(--md-sys-motion-expressive-spatial-fast-easing);
+  --md-sys-motion-spatial-default-duration: var(--md-sys-motion-expressive-spatial-default-duration);
+  --md-sys-motion-spatial-default-easing: var(--md-sys-motion-expressive-spatial-default-easing);
+  --md-sys-motion-spatial-slow-duration: var(--md-sys-motion-expressive-spatial-slow-duration);
+  --md-sys-motion-spatial-slow-easing: var(--md-sys-motion-expressive-spatial-slow-easing);
+
+  --md-sys-motion-effects-fast-duration: var(--md-sys-motion-expressive-effects-fast-duration);
+  --md-sys-motion-effects-fast-easing: var(--md-sys-motion-expressive-effects-fast-easing);
+  --md-sys-motion-effects-default-duration: var(--md-sys-motion-expressive-effects-default-duration);
+  --md-sys-motion-effects-default-easing: var(--md-sys-motion-expressive-effects-default-easing);
+  --md-sys-motion-effects-slow-duration: var(--md-sys-motion-expressive-effects-slow-duration);
+  --md-sys-motion-effects-slow-easing: var(--md-sys-motion-expressive-effects-slow-easing);
+}
+
+/// Alias actifs — schéma Standard (utilitaire produit)
+@mixin emit-motion-scheme-standard() {
+  --md-sys-motion-spatial-fast-duration: var(--md-sys-motion-standard-spatial-fast-duration);
+  --md-sys-motion-spatial-fast-easing: var(--md-sys-motion-standard-spatial-fast-easing);
+  --md-sys-motion-spatial-default-duration: var(--md-sys-motion-standard-spatial-default-duration);
+  --md-sys-motion-spatial-default-easing: var(--md-sys-motion-standard-spatial-default-easing);
+  --md-sys-motion-spatial-slow-duration: var(--md-sys-motion-standard-spatial-slow-duration);
+  --md-sys-motion-spatial-slow-easing: var(--md-sys-motion-standard-spatial-slow-easing);
+
+  --md-sys-motion-effects-fast-duration: var(--md-sys-motion-standard-effects-fast-duration);
+  --md-sys-motion-effects-fast-easing: var(--md-sys-motion-standard-effects-fast-easing);
+  --md-sys-motion-effects-default-duration: var(--md-sys-motion-standard-effects-default-duration);
+  --md-sys-motion-effects-default-easing: var(--md-sys-motion-standard-effects-default-easing);
+  --md-sys-motion-effects-slow-duration: var(--md-sys-motion-standard-effects-slow-duration);
+  --md-sys-motion-effects-slow-easing: var(--md-sys-motion-standard-effects-slow-easing);
+}
+
+@mixin emit-motion-css-properties() {
+  --md-sys-motion-scheme: #{$md-sys-motion-scheme};
+
+  @include _emit-motion-spring-raw-expressive();
+  @include _emit-motion-spring-raw-standard();
+  @include _emit-motion-scheme-active-expressive();
+
+  // Alias sémantiques (mixins motion(), composants legacy)
+  --md-sys-motion-duration-short: var(--md-sys-motion-effects-fast-duration);
+  --md-sys-motion-duration-medium: var(--md-sys-motion-effects-default-duration);
+  --md-sys-motion-duration-standard: var(--md-sys-motion-effects-fast-duration);
+  --md-sys-motion-duration-long: var(--md-sys-motion-effects-slow-duration);
+  --md-sys-motion-duration-emphasized: var(--md-sys-motion-spatial-default-duration);
+  --md-sys-motion-duration-expand: var(--md-sys-motion-spatial-default-duration);
+  --md-sys-motion-duration-entering: var(--md-sys-motion-effects-default-duration);
+  --md-sys-motion-duration-exiting: var(--md-sys-motion-effects-fast-duration);
+
+  --md-sys-motion-easing-standard: var(--md-sys-motion-effects-fast-easing);
+  --md-sys-motion-easing-standard-accelerate: var(--md-sys-motion-effects-fast-easing);
+  --md-sys-motion-easing-standard-decelerate: var(--md-sys-motion-effects-default-easing);
+  --md-sys-motion-easing-emphasized: var(--md-sys-motion-spatial-default-easing);
+  --md-sys-motion-easing-emphasized-accelerate: var(--md-sys-motion-spatial-fast-easing);
+  --md-sys-motion-easing-emphasized-decelerate: var(--md-sys-motion-spatial-default-easing);
+  --md-sys-motion-easing-spring: var(--md-sys-motion-spatial-fast-easing);
+  --md-sys-motion-easing-spring-subtle: var(--md-sys-motion-spatial-default-easing);
+  --md-sys-motion-easing-entering: var(--md-sys-motion-effects-default-easing);
+  --md-sys-motion-easing-exiting: var(--md-sys-motion-effects-fast-easing);
+
+  // Compat Android-style
+  --md-sys-motion-duration-short4: var(--md-sys-motion-effects-default-duration);
+  --md-sys-motion-duration-medium2: var(--md-sys-motion-effects-slow-duration);
+}

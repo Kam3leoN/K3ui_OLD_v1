@@ -1,0 +1,30 @@
+/**
+ * @fileoverview Module MenuContext
+ * @description Classes CSS pour le menu contextuel
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../mixins/menu-context.mixin' as mix;
+
+.menu-context,
+k3ui-menu-context {
+  @include mix.menu-context-host;
+}
+
+.menu-context__anchor {
+  @include mix.menu-context-anchor;
+}
+
+.menu-context--demo {
+  @include mix.menu-context-demo-surface;
+}
+
+.menu-context__menu {
+  /* Hôte Menu interne — hors flux visuel tant que fermé */
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: visible;
+  pointer-events: none;
+}

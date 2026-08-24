@@ -1,0 +1,1493 @@
+/// @file chip.module.scss
+/// @brief Module chips Material 3
+/// @description Styles pour les chips inspirés de Material Web avec support RTL et forced-colors
+
+@use '../mixins/chip.mixin' as chip;
+@use '../tokens/chip.token' as chip-tokens;
+@use '../mixins/elevation.mixin' as elevation;
+@use '../mixins/state.mixin' as state;
+@use '../mixins/rtl.mixin' as rtl;
+@use 'sass:list';
+@use 'sass:map';
+@use '../tokens/motion.token' as motion;
+
+/**
+ * Custom Element k3ui-chip (conteneur de chips)
+ * Le composant Chip ajoute la classe 'chips' à cet élément lors de l'initialisation
+ */
+k3ui-chip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  
+  // Les styles pour .chips s'appliquent automatiquement quand la classe est ajoutée
+}
+
+/**
+ * Classes de base pour les chips
+ */
+.chip {
+  @include chip.chip-assist;
+
+  // Contenu du chip
+  .chip__content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    width: 100%;
+  }
+}
+
+.chip--assist {
+  @include chip.chip-assist;
+}
+
+.chip--filter {
+  @include chip.chip-filter;
+}
+
+.chip--input {
+  @include chip.chip-input;
+}
+
+.chip--suggestion {
+  @include chip.chip-suggestion;
+}
+
+/**
+ * Classes pour les chips avec icônes
+ */
+.chip--with-icon {
+  @include chip.chip-with-icon;
+}
+
+.chip--assist.chip--with-icon {
+  @include chip.chip-assist;
+  @include chip.chip-with-icon;
+}
+
+.chip--filter.chip--with-icon {
+  @include chip.chip-filter;
+  @include chip.chip-with-icon;
+}
+
+.chip--input.chip--with-icon {
+  @include chip.chip-input;
+  @include chip.chip-with-icon;
+}
+
+.chip--suggestion.chip--with-icon {
+  @include chip.chip-suggestion;
+  @include chip.chip-with-icon;
+}
+
+/**
+ * Classes pour les chips avec bouton de suppression
+ */
+.chip--with-remove {
+  @include chip.chip-with-remove;
+}
+
+.chip--assist.chip--with-remove {
+  @include chip.chip-assist;
+  @include chip.chip-with-remove;
+}
+
+.chip--filter.chip--with-remove {
+  @include chip.chip-filter;
+  @include chip.chip-with-remove;
+}
+
+.chip--input.chip--with-remove {
+  @include chip.chip-input;
+  @include chip.chip-with-remove;
+}
+
+.chip--suggestion.chip--with-remove {
+  @include chip.chip-suggestion;
+  @include chip.chip-with-remove;
+}
+
+/**
+ * Classes pour les chips avec icône et bouton de suppression
+ */
+.chip--with-icon-and-remove {
+  @include chip.chip-with-icon-and-remove;
+}
+
+.chip--assist.chip--with-icon-and-remove {
+  @include chip.chip-assist;
+  @include chip.chip-with-icon-and-remove;
+}
+
+.chip--filter.chip--with-icon-and-remove {
+  @include chip.chip-filter;
+  @include chip.chip-with-icon-and-remove;
+}
+
+.chip--input.chip--with-icon-and-remove {
+  @include chip.chip-input;
+  @include chip.chip-with-icon-and-remove;
+}
+
+.chip--suggestion.chip--with-icon-and-remove {
+  @include chip.chip-suggestion;
+  @include chip.chip-with-icon-and-remove;
+}
+
+/**
+ * Classes pour les états
+ */
+.chip--selected {
+  &.chip--filter {
+    @include chip.chip-filter;
+    
+    // Appliquer les styles sélectionnés
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    border: 1px solid var(--md-sys-color-primary);
+  }
+}
+
+.chip--disabled,
+.chip.disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.38;
+  background-color: var(--md-sys-color-surface-disabled);
+  color: var(--md-sys-color-on-surface-disabled);
+  border: 1px solid var(--md-sys-color-outline-disabled);
+}
+
+.chip--elevated {
+  // Appliquer l'élévation pour tous les types
+  &.chip--assist,
+  &.chip--filter,
+  &.chip--input,
+  &.chip--suggestion {
+    box-shadow: var(--md-sys-elevation-level1);
+  }
+}
+
+/**
+ * Classes pour les éléments internes
+ */
+.chip__icon {
+  flex-shrink: 0;
+}
+
+.chip__text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chip__remove {
+  @include chip.chip-remove-button;
+  flex-shrink: 0;
+}
+
+/**
+ * Classes utilitaires pour l'accessibilité
+ */
+.chip[role="button"] {
+  cursor: pointer;
+}
+
+.chip[role="button"]:focus-visible {
+  outline: 2px solid var(--md-sys-color-secondary);
+  outline-offset: 2px;
+}
+
+/**
+ * Classes pour les animations
+ */
+.chip--animated {
+  transition:
+    transform motion.$md-sys-motion-expressive-spatial-default-duration motion.$md-sys-motion-expressive-spatial-default-easing,
+    box-shadow motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+    background-color motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing,
+    color motion.$md-sys-motion-expressive-effects-default-duration motion.$md-sys-motion-expressive-effects-default-easing;
+}
+
+.chip--animated:hover {
+  transform: translateY(-1px);
+}
+
+.chip--animated:active {
+  transform: translateY(0);
+}
+
+// Variantes de taille supprimées selon les spécifications Material Design 3
+
+/**
+ * Classes pour les couleurs personnalisées
+ */
+.chip[style*="--chip-color"] {
+  @include chip.chip-custom-color(var(--chip-color));
+}
+
+/**
+ * Support des structures internes du composant Chip
+ * Styles inspirés de Material Web
+ */
+
+// ============================================================================
+// Chip Set Styles
+// ============================================================================
+.chips,
+k3ui-chip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+// Taille small (MD3 — 24dp height)
+.chips--small .chip-wrapper {
+  --_container-height: #{chip-tokens.$md-sys-chip-size-small-height};
+  height: chip-tokens.$md-sys-chip-size-small-height;
+
+  .label-text {
+    font-size: chip-tokens.$md-sys-chip-size-small-font-size;
+  }
+
+  .leading.icon i[name],
+  .trailing.icon i[name],
+  .trailing.action i[name] {
+    width: chip-tokens.$md-sys-chip-size-small-icon-size;
+    height: chip-tokens.$md-sys-chip-size-small-icon-size;
+  }
+
+  .primary.action,
+  .primary.action.link {
+    padding-inline: chip-tokens.$md-sys-chip-size-small-padding-horizontal;
+  }
+}
+
+// Input chips — k3ui-field compact (variant outlined, hauteur alignée sur les chips)
+.chips__input-wrapper {
+  display: inline-flex;
+  align-items: center;
+  min-width: 60px;
+  width: auto;
+  flex: 1 1 auto;
+  position: relative;
+
+  k3ui-field.chips__input-field {
+    --k3ui-field-outlined-notch-bg: var(--md-sys-color-surface);
+    display: inline-flex;
+    width: auto;
+    min-width: 60px;
+    max-width: 200px;
+    flex: 1 1 auto;
+
+    .input-field {
+      height: chip-tokens.$md-sys-chip-height;
+      min-height: chip-tokens.$md-sys-chip-height;
+      padding-block: 0;
+      padding-inline: 8px;
+    }
+
+    &[variant='outlined'] .input-field {
+      height: chip-tokens.$md-sys-chip-height;
+      min-height: chip-tokens.$md-sys-chip-height;
+    }
+
+    .text-wrapper {
+      min-width: 0;
+    }
+
+    .input {
+      font-size: chip-tokens.$md-sys-chip-font-size;
+      line-height: chip-tokens.$md-sys-chip-line-height;
+      min-width: 44px;
+    }
+
+    .field-bottom {
+      display: none;
+    }
+  }
+}
+
+// ============================================================================
+// Shared Styles (appliqués à tous les chips)
+// ============================================================================
+// Wrapper (équivalent à :host dans Material Web)
+.chip-wrapper {
+  // Utiliser les propriétés logiques pour le support RTL
+  border-start-start-radius: var(--_container-shape-start-start, chip-tokens.$md-sys-chip-border-radius);
+  border-start-end-radius: var(--_container-shape-start-end, chip-tokens.$md-sys-chip-border-radius);
+  border-end-start-radius: var(--_container-shape-end-start, chip-tokens.$md-sys-chip-border-radius);
+  border-end-end-radius: var(--_container-shape-end-end, chip-tokens.$md-sys-chip-border-radius);
+  // Rayon shorthand pour héritage fiable (::before, ripple, focus ring)
+  border-radius: var(--_container-shape-start-start, chip-tokens.$md-sys-chip-border-radius);
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  height: var(--_container-height, chip-tokens.$md-sys-chip-height);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  // Touch target mode
+  &[touch-target='wrapper'] {
+    margin: max(0px, (48px - var(--_container-height, chip-tokens.$md-sys-chip-height)) / 2) 0;
+  }
+
+  // Disabled et soft-disabled
+  &:is([disabled], [soft-disabled]) {
+    pointer-events: none;
+  }
+}
+
+// Variante pill / full rounded (MD3 shape corner full)
+.chip-wrapper--rounded {
+  --_container-shape-start-start: #{chip-tokens.$md-sys-chip-border-radius-rounded};
+  --_container-shape-start-end: #{chip-tokens.$md-sys-chip-border-radius-rounded};
+  --_container-shape-end-start: #{chip-tokens.$md-sys-chip-border-radius-rounded};
+  --_container-shape-end-end: #{chip-tokens.$md-sys-chip-border-radius-rounded};
+  border-radius: #{chip-tokens.$md-sys-chip-border-radius-rounded};
+}
+
+// Container (équivalent à .container dans Material Web)
+// IMPORTANT: Utiliser uniquement .chip-container pour éviter le conflit avec .container de layout
+.chip-container {
+  border-radius: inherit;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  min-height: unset;
+  max-height: 100%;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  // Le container ne doit PAS avoir de padding (le padding est géré par primary.action)
+  padding: 0 !important;
+  padding-inline-start: 0 !important;
+  padding-inline-end: 0 !important;
+  // Pas de gap par défaut (le gap crée un espace supplémentaire entre primary.action et trailing.action)
+  gap: 0 !important;
+
+  // Container color, separate node for disabled opacity changes
+  &::before {
+    border-radius: inherit;
+    content: '';
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+    background: var(--_container-color, var(--md-sys-color-surface-container));
+    z-index: 0; // Derrière le contenu
+    transition:
+      background-color chip-tokens.$md-sys-chip-transition-duration chip-tokens.$md-sys-chip-transition-easing;
+  }
+
+  // State layer MD3 (hover / focus / pressed) — teinte via currentColor
+  &::after {
+    border-radius: inherit;
+    content: '';
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: 1;
+    background-color: currentColor;
+    opacity: 0;
+    transition:
+      opacity chip-tokens.$md-sys-chip-transition-duration chip-tokens.$md-sys-chip-transition-easing;
+  }
+}
+
+// Interactions — state layer unifié (remplace color-mix sur ::before + ripple hover rectangulaire)
+.chip-wrapper:hover:not([disabled]):not(.chip-wrapper--disabled) .chip-container::after,
+.chip-wrapper:has(.primary.action:hover):not([disabled]):not(.chip-wrapper--disabled) .chip-container::after {
+  opacity: chip-tokens.$md-sys-chip-state-layer-opacity-hover;
+}
+
+.chip-wrapper:focus-within:not([disabled]):not(.chip-wrapper--disabled) .chip-container::after {
+  opacity: chip-tokens.$md-sys-chip-state-layer-opacity-focus;
+}
+
+.chip-wrapper:active:not([disabled]):not(.chip-wrapper--disabled) .chip-container::after {
+  opacity: chip-tokens.$md-sys-chip-state-layer-opacity-pressed;
+}
+
+// Désactiver le hover ripple rectangulaire sur le bouton (state layer sur ::after suffit)
+.chip-wrapper .primary.action .ripple-hover-layer {
+  display: none;
+}
+
+// Focus ring — épouse la forme du chip (pas le pill par défaut)
+.chip-wrapper k3ui-focus-ring[part='focus-ring'] {
+  $focus-offset: 2px;
+  border-start-start-radius: calc(var(--_container-shape-start-start, #{chip-tokens.$md-sys-chip-border-radius}) + #{$focus-offset});
+  border-start-end-radius: calc(var(--_container-shape-start-end, #{chip-tokens.$md-sys-chip-border-radius}) + #{$focus-offset});
+  border-end-start-radius: calc(var(--_container-shape-end-start, #{chip-tokens.$md-sys-chip-border-radius}) + #{$focus-offset});
+  border-end-end-radius: calc(var(--_container-shape-end-end, #{chip-tokens.$md-sys-chip-border-radius}) + #{$focus-offset});
+  color: var(--md-sys-color-secondary);
+}
+
+.chip-wrapper .primary.action,
+.chip-wrapper .primary.action.link {
+  outline: none;
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.chip-container:not(.disabled) {
+  cursor: pointer;
+}
+
+.chip-container.disabled {
+  pointer-events: none;
+}
+
+// Alias pour compatibilité (scopé aux chips uniquement)
+.chip-wrapper .container {
+  border-radius: inherit;
+  box-sizing: border-box;
+  display: flex;
+  height: 100%;
+  min-height: unset;
+  max-height: 100%;
+  position: relative;
+  width: 100%;
+
+  &::before {
+    border-radius: inherit;
+    content: '';
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+    background: var(--_container-color, var(--md-sys-color-surface-container));
+    z-index: 0;
+  }
+}
+
+.chip-wrapper .container:not(.disabled) {
+  cursor: pointer;
+}
+
+.chip-wrapper .container.disabled {
+  pointer-events: none;
+}
+
+// Cell (pour les icônes)
+// IMPORTANT: Scopé aux chips uniquement
+.chip-wrapper .cell {
+  display: flex;
+}
+
+// Primary action (peut être un button, link ou span)
+// IMPORTANT: Scopé aux chips uniquement
+.chip-wrapper .primary.action,
+.chip-wrapper .primary.action.link {
+  // Set a min-width on the primary action so that trailing actions remain
+  // inside the chip as the chip is resized.
+  min-width: 0;
+  // Par défaut : 16dp avant et après le texte (sans icônes)
+  // NOTE: padding-inline-end sera surchargé par les règles has-trailing
+  padding-inline-start: 16px !important;
+  padding-inline-end: 16px !important;
+  display: flex;
+  align-items: center;
+  // NOTE: flex sera surchargé par les règles has-trailing
+  flex: 1;
+  position: relative;
+  z-index: 2; // Au-dessus du state layer (::before / ::after)
+  background: none;
+  border: none;
+  text-decoration: none;
+  color: inherit;
+  overflow: visible !important; // Permettre au texte d'être visible
+}
+
+// Avec leading icon : 8dp avant l'icône, 0dp pour le texte (l'icône a sa marge)
+.chip-wrapper .has-icon .primary.action,
+.chip-wrapper .has-icon .primary.action.link {
+  padding-inline-start: 8px !important; // 8dp à gauche (avant l'icône leading)
+  padding-inline-end: 0 !important; // 0dp pour le texte (l'icône leading a sa marge de 8dp)
+}
+
+// Avec leading icon ET sans trailing : 8dp avant l'icône, 0dp pour le texte, 16dp après le texte
+.chip-wrapper .has-icon:not(.has-trailing) .primary.action,
+.chip-wrapper .has-icon:not(.has-trailing) .primary.action.link {
+  padding-inline-end: 16px !important; // 16dp après le texte si pas de trailing
+}
+
+// Avec leading icon ET trailing : 8dp avant l'icône, 0dp pour le texte (le trailing gère son padding)
+// IMPORTANT: Cette règle doit être plus spécifique que la règle de base pour surcharger le padding-inline-end et flex
+.chip-wrapper.has-icon.has-trailing .primary.action,
+.chip-wrapper.has-icon.has-trailing .primary.action.link {
+  padding-inline-end: 0 !important; // Le trailing.action gère son propre padding
+  flex: 0 1 auto !important; // Ne pas s'étendre quand il y a un trailing
+}
+
+// Avec trailing mais sans leading : 16dp avant le texte, 0dp après le texte (le trailing gère son padding)
+// IMPORTANT: Cette règle doit être plus spécifique que la règle de base pour surcharger le padding-inline-end et flex
+.chip-wrapper.has-trailing:not(.has-icon) .primary.action,
+.chip-wrapper.has-trailing:not(.has-icon) .primary.action.link {
+  padding-inline-start: 16px !important; // 16dp avant le texte
+  padding-inline-end: 0 !important; // 0dp après le texte (le trailing gère son padding)
+  flex: 0 1 auto !important; // Ne pas s'étendre quand il y a un trailing
+}
+
+// Touch target
+// IMPORTANT: Scopé aux chips uniquement
+.chip-wrapper .touch {
+  height: 48px;
+  inset: 50% 0 0;
+  position: absolute;
+  transform: translateY(-50%);
+  width: 100%;
+}
+
+.chip-wrapper[touch-target='none'] .touch {
+  display: none;
+}
+
+// Retirer la zone de touch target pour les trailing actions (elles ont déjà leur propre zone de clic)
+.chip-wrapper .trailing.action ~ .touch,
+.chip-wrapper.has-trailing .touch {
+  display: none !important;
+}
+
+// Outline (équivalent à .outline dans Material Web)
+// IMPORTANT: Scopé aux chips uniquement pour éviter le conflit avec .outline de outline.module
+.chip-wrapper .outline {
+  border: var(--_outline-width, 1px) solid var(--_outline-color, chip-tokens.$md-sys-chip-type-assist-border);
+  border-radius: inherit;
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0; // Au même niveau que ::before
+}
+
+.chip-wrapper:where(:focus) .outline {
+  border-color: var(--_focus-outline-color, var(--md-sys-color-primary));
+}
+
+.chip-wrapper:where(.disabled) .outline,
+.chip-wrapper[disabled] .outline {
+  border-color: var(--_disabled-outline-color, chip-tokens.$md-sys-chip-state-disabled-border);
+  opacity: var(--_disabled-outline-opacity, 0.38);
+}
+
+// Label (équivalent à .label dans Material Web)
+// IMPORTANT: Scopé aux chips uniquement pour éviter le conflit avec les labels de field/textarea
+.chip-wrapper .label {
+  align-items: center;
+  color: var(--_label-text-color, chip-tokens.$md-sys-chip-type-assist-color);
+  display: flex;
+  font-family: var(--_label-text-font, inherit);
+  font-size: var(--_label-text-size, chip-tokens.$md-sys-chip-font-size);
+  font-weight: var(--_label-text-weight, chip-tokens.$md-sys-chip-font-weight);
+  height: 100%;
+  line-height: var(--_label-text-line-height, chip-tokens.$md-sys-chip-line-height);
+  overflow: visible !important; // Permettre au texte d'être visible
+  user-select: none;
+  flex: 1; // Par défaut, prend l'espace disponible
+  min-width: 0; // Permet au label de se rétrécir et prendre l'espace disponible
+  position: relative;
+  z-index: 1; // Au-dessus du ::before
+  width: 100%; // Prend toute la largeur disponible
+}
+
+// Quand le primary.action a flex: 0 1 auto (avec trailing), le label ne doit pas s'étendre
+.chip-wrapper.has-trailing .primary.action .label,
+.chip-wrapper.has-trailing .primary.action.link .label {
+  flex: 0 1 auto !important; // Ne pas s'étendre, s'adapter au contenu
+  width: auto !important; // Largeur automatique au lieu de 100%
+  padding-inline-end: 0 !important; // Pas de padding à droite pour éviter l'espace supplémentaire
+  margin-inline-end: 0 !important; // Pas de marge à droite
+}
+
+// An inner span is needed to truncate the label, since elements with a flex
+// display do not support the text-overflow property. The outer wrapper .label
+// needs to be a flex display to correctly set the element's baseline,
+// supporting external elements aligning to the baseline of the chip's text
+// instead of its edges or icons.
+.chip-wrapper .label-text {
+  overflow: visible !important; // Permettre au texte d'être visible
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1; // Par défaut, prend l'espace disponible
+  min-width: 0; // Permet au texte de se rétrécir
+  color: inherit !important; // Hérite de la couleur du .label
+  position: relative;
+  z-index: 1; // Au-dessus du ::before
+  // Le label-text est un span dans un flex container, donc pas besoin de display
+  // Assurer que le texte est visible
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+// Quand le primary.action a flex: 0 1 auto (avec trailing), le label-text ne doit pas s'étendre
+.chip-wrapper.has-trailing .primary.action .label-text,
+.chip-wrapper.has-trailing .primary.action.link .label-text {
+  flex: 0 1 auto !important; // Ne pas s'étendre, s'adapter au contenu
+  padding-inline-end: 0 !important; // Pas de padding à droite pour éviter l'espace supplémentaire
+  margin-inline-end: 0 !important; // Pas de marge à droite
+}
+
+// Pour les chips avec select, permettre l'extension sans contrainte de largeur
+.chip-wrapper.has-select {
+  max-width: none !important; // Pas de contrainte de largeur pour permettre l'affichage du texte sélectionné
+  width: auto !important;
+}
+
+.chip-wrapper.has-select .primary.action,
+.chip-wrapper.has-select .primary.action.link {
+  flex: 0 1 auto !important; // S'adapter au contenu
+  min-width: 0 !important; // Permettre la réduction si nécessaire
+}
+
+.chip-wrapper.has-select .label,
+.chip-wrapper.has-select .label-text {
+  flex: 0 1 auto !important; // S'adapter au contenu
+  width: auto !important; // Largeur automatique
+  max-width: none !important; // Pas de contrainte de largeur
+  white-space: nowrap !important; // Empêcher le retour à la ligne
+}
+
+.chip-wrapper:where(:hover) .label {
+  color: var(--_hover-label-text-color, chip-tokens.$md-sys-chip-type-assist-color);
+}
+
+.chip-wrapper:where(:focus) .label {
+  color: var(--_focus-label-text-color, chip-tokens.$md-sys-chip-type-assist-color);
+}
+
+.chip-wrapper:where(:active) .label {
+  color: var(--_pressed-label-text-color, chip-tokens.$md-sys-chip-type-assist-color);
+}
+
+.chip-wrapper:where(.disabled) .label,
+.chip-wrapper[disabled] .label {
+  color: var(--_disabled-label-text-color, chip-tokens.$md-sys-chip-state-disabled-color);
+  opacity: var(--_disabled-label-text-opacity, 0.38);
+}
+
+// Icon (équivalent à .icon dans Material Web)
+// IMPORTANT: Scopé aux chips uniquement pour éviter le conflit avec .icon de icon.module
+.chip-wrapper .icon {
+  align-self: center;
+  display: flex;
+  fill: currentColor;
+  position: relative;
+}
+
+.chip-wrapper .icon ::slotted(:first-child),
+.chip-wrapper .icon i[name],
+.chip-wrapper .icon svg {
+  font-size: 18px !important;
+  height: 18px !important;
+  width: 18px !important;
+  max-width: 18px !important;
+  max-height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+}
+
+// Leading icon
+.chip-wrapper .leading.icon {
+  color: var(--_leading-icon-color, chip-tokens.$md-sys-chip-type-assist-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  
+  // Par défaut, les icônes font 18x18px (Material Design 3)
+  &.has-icon {
+    height: 18px !important;
+    width: 18px !important;
+    
+    // Styles pour les icônes i[name] à l'intérieur
+    i[name] {
+      color: inherit;
+      width: 18px !important;
+      height: 18px !important;
+      max-width: 18px !important;
+      max-height: 18px !important;
+      min-width: 18px !important;
+      min-height: 18px !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px !important;
+      
+      svg {
+        fill: currentColor;
+        color: inherit;
+        width: 18px !important;
+        height: 18px !important;
+        max-width: 18px !important;
+        max-height: 18px !important;
+        min-width: 18px !important;
+        min-height: 18px !important;
+      }
+      
+      svg * {
+        fill: currentColor;
+        color: inherit;
+      }
+    }
+  }
+  
+  // Les images font 24x24px et sont full rounded (Material Design 3)
+  &.has-image {
+    height: 24px !important;
+    width: 24px !important;
+    
+    .chip-leading-image {
+      width: 24px !important;
+      height: 24px !important;
+      min-width: 24px !important;
+      min-height: 24px !important;
+      max-width: 24px !important;
+      max-height: 24px !important;
+      border-radius: 50%; // Full rounded selon Material Design 3
+      object-fit: cover;
+    }
+  }
+}
+
+// Leading icon : 8dp de marge à droite pour créer l'espacement avec le texte
+.chip-wrapper .leading.icon {
+  margin-inline-start: 0; // Pas de marge à gauche, le padding du primary.action gère ça (8dp)
+  margin-inline-end: 8px !important; // 8dp entre l'icône leading et le texte
+}
+
+.chip-wrapper .leading.icon ::slotted(*),
+.chip-wrapper .leading.icon svg,
+.chip-wrapper .leading.icon i[name],
+.chip-wrapper .leading.icon img {
+  margin-inline-end: 0; // Pas de marge sur l'icône/avatar elle-même, c'est le .leading.icon qui a la marge
+}
+
+.chip-wrapper:where(:hover) .leading.icon {
+  color: var(--_hover-leading-icon-color, chip-tokens.$md-sys-chip-type-assist-color);
+}
+
+.chip-wrapper:where(:focus) .leading.icon {
+  color: var(--_focus-leading-icon-color, chip-tokens.$md-sys-chip-type-assist-color);
+}
+
+.chip-wrapper:where(:active) .leading.icon {
+  color: var(--_pressed-leading-icon-color, chip-tokens.$md-sys-chip-type-assist-color);
+}
+
+.chip-wrapper:where(.disabled) .leading.icon,
+.chip-wrapper[disabled] .leading.icon {
+  color: var(--_disabled-leading-icon-color, chip-tokens.$md-sys-chip-state-disabled-color);
+  opacity: var(--_disabled-leading-icon-opacity, 0.38);
+}
+
+// Label, icon, touch - Place content above background elements
+// IMPORTANT: Scopé aux chips uniquement
+.chip-wrapper .label,
+.chip-wrapper .label-text,
+.chip-wrapper .icon,
+.chip-wrapper .leading.icon,
+.chip-wrapper .trailing.icon,
+.chip-wrapper .touch {
+  position: relative;
+  z-index: 2; // Au-dessus du state layer (::after)
+}
+
+// Override user-agent styles for buttons and links
+// IMPORTANT: Scopé aux chips uniquement pour éviter d'affecter tous les boutons/liens de la page
+.chip-wrapper a,
+.chip-wrapper button {
+  // Override the user-agent text-transform: none of <button> and <a>
+  text-transform: inherit;
+}
+
+.chip-wrapper a,
+.chip-wrapper button:not(:disabled, [aria-disabled='true']) {
+  cursor: inherit;
+}
+
+// Forced colors support (High Contrast Mode)
+@media (forced-colors: active) {
+  .chip-wrapper:where(.disabled) :is(.label, .outline, .leading.icon),
+  .chip-wrapper[disabled] :is(.label, .outline, .leading.icon) {
+    color: GrayText;
+    opacity: 1;
+  }
+}
+
+// ============================================================================
+// Elevated Styles
+// ============================================================================
+// IMPORTANT: Scopé aux chips uniquement
+.chip-container.elevated,
+.chip-wrapper .chip-container.elevated {
+  @include elevation.elevation(var(--_elevated-container-elevation, 1));
+  transition:
+    box-shadow chip-tokens.$md-sys-chip-transition-duration chip-tokens.$md-sys-chip-transition-easing;
+}
+
+.chip-container.elevated::before,
+.chip-wrapper .chip-container.elevated::before {
+  background: var(--_elevated-container-color, var(--md-sys-color-surface-container));
+}
+
+.chip-container.elevated:hover,
+.chip-wrapper .chip-container.elevated:hover {
+  @include elevation.elevation(var(--_elevated-hover-container-elevation, 2));
+}
+
+.chip-container.elevated:focus-within,
+.chip-wrapper .chip-container.elevated:focus-within {
+  @include elevation.elevation(var(--_elevated-focus-container-elevation, 2));
+}
+
+.chip-container.elevated:active,
+.chip-wrapper .chip-container.elevated:active {
+  @include elevation.elevation(var(--_elevated-pressed-container-elevation, 1));
+}
+
+.chip-container.elevated.disabled,
+.chip-wrapper .chip-container.elevated.disabled {
+  @include elevation.elevation(var(--_elevated-disabled-container-elevation, 0));
+}
+
+.chip-container.elevated.disabled::before,
+.chip-wrapper .chip-container.elevated.disabled::before {
+  background: var(--_elevated-disabled-container-color, var(--md-sys-color-surface-disabled));
+  opacity: var(--_elevated-disabled-container-opacity, 0.38);
+}
+
+// Forced colors support
+@media (forced-colors: active) {
+  .chip-wrapper .elevated .outline {
+    border: 1px solid CanvasText;
+  }
+
+  .chip-wrapper .elevated.disabled .outline {
+    border-color: GrayText;
+  }
+}
+
+// ============================================================================
+// Selectable Styles (pour filter chips)
+// ============================================================================
+// IMPORTANT: Scopé aux chips uniquement
+.chip-container.selected,
+.chip-wrapper .chip-container.selected {
+  // Ripple theme pour les chips sélectionnés
+  // Note: Le ripple est géré par le composant TypeScript
+  display: inherit;
+}
+
+.chip-container.selected::before,
+.chip-wrapper .chip-container.selected::before {
+  background: var(--_selected-container-color, var(--md-sys-color-primary));
+}
+
+.chip-wrapper .chip-container.selected .outline {
+  border-width: var(--_selected-outline-width, 1px);
+}
+
+.chip-container.selected.disabled::before,
+.chip-wrapper .chip-container.selected.disabled::before {
+  background: var(--_disabled-selected-container-color, var(--md-sys-color-surface-disabled));
+  opacity: var(--_disabled-selected-container-opacity, 0.38);
+}
+
+.chip-wrapper .chip-container.selected .label {
+  color: var(--_selected-label-text-color, var(--md-sys-color-on-primary));
+}
+
+.chip-wrapper .chip-container.selected:hover .label {
+  color: var(--_selected-hover-label-text-color, var(--md-sys-color-on-primary));
+}
+
+.chip-wrapper .chip-container.selected:focus .label {
+  color: var(--_selected-focus-label-text-color, var(--md-sys-color-on-primary));
+}
+
+.chip-wrapper .chip-container.selected:active .label {
+  color: var(--_selected-pressed-label-text-color, var(--md-sys-color-on-primary));
+}
+
+.chip-wrapper .chip-container.selected .leading.icon {
+  color: var(--_selected-leading-icon-color, var(--md-sys-color-on-primary));
+}
+
+.chip-wrapper .chip-container.selected:hover .leading.icon {
+  color: var(--_selected-hover-leading-icon-color, var(--md-sys-color-on-primary));
+}
+
+.chip-wrapper .chip-container.selected:focus .leading.icon {
+  color: var(--_selected-focus-leading-icon-color, var(--md-sys-color-on-primary));
+}
+
+.chip-wrapper .chip-container.selected:active .leading.icon {
+  color: var(--_selected-pressed-leading-icon-color, var(--md-sys-color-on-primary));
+}
+
+// Forced colors support
+@media (forced-colors: active) {
+  .chip-wrapper .chip-container.selected:not(.elevated)::before {
+    // for forced-colors. Don't add it to elevated containers since elevation
+    // already have a border added.
+    border: 1px solid CanvasText;
+  }
+
+  .chip-wrapper .chip-container.selected .outline {
+    border-width: 1px;
+  }
+}
+
+// ============================================================================
+// Trailing Icon Styles
+// ============================================================================
+// IMPORTANT: Scopé aux chips uniquement
+.chip-wrapper .trailing.action {
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+  flex-shrink: 0;
+  // Marge à gauche pour créer l'espacement entre le texte et l'icône trailing
+  margin-inline-start: 8px !important; // 8dp entre le texte et l'icône trailing (par défaut)
+  // Padding interne pour centrer l'icône dans la zone de clic
+  padding-inline-start: 0 !important; // Pas de padding interne, l'icône est centrée
+  // Padding à droite pour créer l'espacement après l'icône jusqu'au bord du chip
+  padding-inline-end: 8px !important; // 8dp à droite de l'icône trailing (par défaut)
+  // Zone de clic agrandie à 24dp pour le caret (menu)
+  min-width: 24px !important;
+  min-height: 24px !important;
+  width: 24px !important;
+  height: 24px !important;
+  // Pas de background visible par défaut
+  background: transparent !important;
+  border: none !important;
+}
+
+.chip-wrapper .trailing.action :is(.ripple-surface, k3ui-focus-ring) {
+  border-radius: 50%;
+  height: calc(4 / 3 * var(--_icon-size, chip-tokens.$md-sys-chip-icon-size)); // 24px default
+  width: calc(4 / 3 * var(--_icon-size, chip-tokens.$md-sys-chip-icon-size)); // 24px default
+}
+
+// S'assurer que le ripple-surface n'a pas de background visible par défaut
+.chip-wrapper .trailing.action .ripple-surface {
+  background: transparent !important;
+}
+
+.chip-wrapper .trailing.action k3ui-focus-ring {
+  inset: unset;
+}
+
+// Avec trailing icon : padding-inline-end du primary.action à 0 (le trailing.action gère son propre padding)
+// IMPORTANT: Utiliser .chip-wrapper.has-trailing (sans espace) pour une spécificité plus élevée
+.chip-wrapper.has-trailing .primary.action,
+.chip-wrapper.has-trailing .primary.action.link {
+  padding-inline-end: 0 !important; // Le trailing.action gère son propre padding
+  flex: 0 1 auto !important; // Ne pas s'étendre quand il y a un trailing
+}
+
+// Avec trailing icon mais sans leading : 16dp avant le texte, 0dp après le texte
+.chip-wrapper.has-trailing:not(.has-icon) .primary.action,
+.chip-wrapper.has-trailing:not(.has-icon) .primary.action.link {
+  padding-inline-start: 16px !important; // 16dp avant le texte
+  padding-inline-end: 0 !important; // 0dp après le texte (le trailing gère son padding)
+  flex: 0 1 auto !important; // Ne pas s'étendre quand il y a un trailing
+}
+
+.chip-wrapper .trailing.action > .trailing.icon {
+  width: 18px !important;
+  height: 18px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.chip-wrapper .trailing.icon {
+  color: var(--_trailing-icon-color, chip-tokens.$md-sys-chip-type-assist-color);
+  height: 18px !important;
+  width: 18px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  // Pour les filter chips avec menu, l'icône doit être cliquable
+  // pointer-events sera géré par le JavaScript (auto pour menu, none pour autres)
+  
+  // Styles pour les icônes i[name] à l'intérieur
+  i[name] {
+    color: inherit;
+    width: 18px !important;
+    height: 18px !important;
+    max-width: 18px !important;
+    max-height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px !important;
+    
+    svg {
+      fill: currentColor;
+      color: inherit;
+      width: 18px !important;
+      height: 18px !important;
+      max-width: 18px !important;
+      max-height: 18px !important;
+      min-width: 18px !important;
+      min-height: 18px !important;
+    }
+    
+    svg * {
+      fill: currentColor;
+      color: inherit;
+    }
+  }
+}
+
+.chip-wrapper:where(:hover) .trailing.icon {
+  color: var(--_hover-trailing-icon-color, chip-tokens.$md-sys-chip-type-assist-color);
+}
+
+.chip-wrapper:where(:focus) .trailing.icon {
+  color: var(--_focus-trailing-icon-color, chip-tokens.$md-sys-chip-type-assist-color);
+}
+
+.chip-wrapper:where(:active) .trailing.icon {
+  color: var(--_pressed-trailing-icon-color, chip-tokens.$md-sys-chip-type-assist-color);
+}
+
+.chip-wrapper:where(.disabled) .trailing.icon,
+.chip-wrapper[disabled] .trailing.icon {
+  color: var(--_disabled-trailing-icon-color, chip-tokens.$md-sys-chip-state-disabled-color);
+  opacity: var(--_disabled-trailing-icon-opacity, 0.38);
+}
+
+.chip-wrapper:where(.selected) .trailing.icon,
+.chip-wrapper .chip-container.selected .trailing.icon {
+  color: var(--_selected-trailing-icon-color, var(--md-sys-color-on-primary));
+}
+
+.chip-wrapper:where(.selected:hover) .trailing.icon,
+.chip-wrapper .chip-container.selected:hover .trailing.icon {
+  color: var(--_selected-hover-trailing-icon-color, var(--md-sys-color-on-primary));
+}
+
+.chip-wrapper:where(.selected:focus) .trailing.icon,
+.chip-wrapper .chip-container.selected:focus .trailing.icon {
+  color: var(--_selected-focus-trailing-icon-color, var(--md-sys-color-on-primary));
+}
+
+.chip-wrapper:where(.selected:active) .trailing.icon,
+.chip-wrapper .chip-container.selected:active .trailing.icon {
+  color: var(--_selected-pressed-trailing-icon-color, var(--md-sys-color-on-primary));
+}
+
+// Forced colors support
+@media (forced-colors: active) {
+  .chip-wrapper .trailing.icon {
+    color: ButtonText;
+  }
+
+  .chip-wrapper:where(.disabled) .trailing.icon,
+  .chip-wrapper[disabled] .trailing.icon {
+    color: GrayText;
+    opacity: 1;
+  }
+}
+
+// ============================================================================
+// Assist Chip Styles
+// ============================================================================
+.chip-wrapper--assist,
+.chip-wrapper[type='assist'] {
+  // Les tokens sont appliqués via les variables CSS custom properties
+  // --_container-height, --_label-text-color, etc.
+  display: inherit;
+}
+
+// Link chips (assist chips avec href)
+.chip-wrapper--assist.link .outline,
+.chip-wrapper[type='assist'].link .outline {
+  // Styles spécifiques pour les liens
+  display: inherit;
+}
+
+// Forced colors support
+@media (forced-colors: active) {
+  .chip-wrapper--assist.link .outline,
+  .chip-wrapper[type='assist'].link .outline {
+    border-color: ActiveText;
+  }
+}
+
+// ============================================================================
+// Filter Chip Styles
+// ============================================================================
+.chip-wrapper--filter,
+.chip-wrapper[type='filter'] {
+  // Les tokens sont appliqués via les variables CSS custom properties
+  display: inherit;
+}
+
+.selected.elevated::before {
+  background: var(--_elevated-selected-container-color, var(--md-sys-color-primary));
+}
+
+.checkmark {
+  height: var(--_icon-size, chip-tokens.$md-sys-chip-icon-size);
+  width: var(--_icon-size, chip-tokens.$md-sys-chip-icon-size);
+}
+
+.disabled .checkmark {
+  opacity: var(--_disabled-leading-icon-opacity, 0.38);
+}
+
+// Forced colors support
+@media (forced-colors: active) {
+  .disabled .checkmark {
+    opacity: 1;
+  }
+}
+
+// ============================================================================
+// Input Chip Styles
+// ============================================================================
+.chip-wrapper--input,
+.chip-wrapper[type='input'] {
+  // Les tokens sont appliqués via les variables CSS custom properties
+  display: inherit;
+}
+
+// Avatar chips
+.chip-wrapper--input[avatar],
+.chip-wrapper[type='input'][avatar] {
+  // Use a rounded border by default for avatar chips
+  --_container-shape-start-start: var(
+    --md-input-chip-container-shape-start-start,
+    var(--md-input-chip-container-shape, calc(var(--_container-height, #{chip-tokens.$md-sys-chip-height}) / 2))
+  );
+  --_container-shape-start-end: var(
+    --md-input-chip-container-shape-start-end,
+    var(--md-input-chip-container-shape, calc(var(--_container-height, #{chip-tokens.$md-sys-chip-height}) / 2))
+  );
+  --_container-shape-end-end: var(
+    --md-input-chip-container-shape-end-end,
+    var(--md-input-chip-container-shape, calc(var(--_container-height, #{chip-tokens.$md-sys-chip-height}) / 2))
+  );
+  --_container-shape-end-start: var(
+    --md-input-chip-container-shape-end-start,
+    var(--md-input-chip-container-shape, calc(var(--_container-height, #{chip-tokens.$md-sys-chip-height}) / 2))
+  );
+}
+
+// Les avatars utilisent le même espacement que les leading icons (8dp avant et après)
+// L'espacement est géré par les règles générales pour .has-icon .primary.action
+// Pas besoin de règle spécifique ici
+
+.avatar .leading.icon ::slotted(:first-child),
+.avatar .leading.icon img,
+.avatar .leading.icon .chip-avatar {
+  border-radius: var(--_avatar-shape, 50%);
+  height: 24px !important;
+  width: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  max-width: 24px !important;
+  max-height: 24px !important;
+}
+
+.disabled.avatar .leading.icon {
+  opacity: var(--_disabled-avatar-opacity, 0.38);
+}
+
+// Forced colors support
+@media (forced-colors: active) {
+  .link .outline {
+    border-color: ActiveText;
+  }
+
+  .disabled.avatar .leading.icon {
+    opacity: 1;
+  }
+}
+
+// ============================================================================
+// Suggestion Chip Styles
+// ============================================================================
+.chip-wrapper--suggestion,
+.chip-wrapper[type='suggestion'] {
+  // Les tokens sont appliqués via les variables CSS custom properties
+  display: inherit;
+}
+
+// Forced colors support
+@media (forced-colors: active) {
+  .chip-wrapper--suggestion.link .outline,
+  .chip-wrapper[type='suggestion'].link .outline {
+    border-color: ActiveText;
+  }
+}
+
+// ============================================================================
+// Wrapper Type-Specific Styles (appliqués selon le type du wrapper parent)
+// ============================================================================
+.chip-wrapper--assist {
+  .chip-container {
+    &::before {
+      background: chip-tokens.$md-sys-chip-type-assist-background;
+    }
+  }
+
+  &.chip-wrapper--elevated {
+    --_elevated-container-color: #{chip-tokens.$md-sys-chip-type-assist-elevated-background};
+    --_elevated-disabled-container-color: #{chip-tokens.$md-sys-chip-type-assist-elevated-background};
+
+    .chip-container::before {
+      background: chip-tokens.$md-sys-chip-type-assist-elevated-background;
+    }
+  }
+  
+  // Couleur du texte
+  .chip-container,
+  .label,
+  .label-text {
+    color: chip-tokens.$md-sys-chip-type-assist-color;
+  }
+}
+
+.chip-wrapper--filter {
+  .chip-container {
+    &::before {
+      background: chip-tokens.$md-sys-chip-type-filter-background;
+    }
+  }
+  
+  // Couleur du texte
+  .chip-container,
+  .label,
+  .label-text {
+    color: chip-tokens.$md-sys-chip-type-filter-color;
+  }
+  
+  // Hover sur chip sélectionné
+  &.chip-wrapper--selected .chip-container::before {
+    background: chip-tokens.$md-sys-chip-state-selected-background;
+    border: none !important;
+  }
+  
+  &.chip-wrapper--selected .chip-container {
+    border: none !important;
+  }
+  
+  &.chip-wrapper--selected .outline {
+    border: none !important;
+  }
+  
+  &.chip-wrapper--selected .chip-container,
+  &.chip-wrapper--selected .label,
+  &.chip-wrapper--selected .label-text {
+    color: chip-tokens.$md-sys-chip-state-selected-color;
+  }
+}
+
+.chip-wrapper--input {
+  .chip-container {
+    &::before {
+      background: chip-tokens.$md-sys-chip-type-input-background;
+    }
+  }
+  
+  // Couleur du texte
+  .chip-container,
+  .label,
+  .label-text {
+    color: chip-tokens.$md-sys-chip-type-input-color;
+  }
+}
+
+.chip-wrapper--suggestion {
+  .chip-container {
+    &::before {
+      background: chip-tokens.$md-sys-chip-type-suggestion-background;
+    }
+  }
+  
+  // Couleur du texte
+  .chip-container,
+  .label,
+  .label-text {
+    color: chip-tokens.$md-sys-chip-type-suggestion-color;
+  }
+}
+
+// État désactivé
+.chip-wrapper[disabled] .chip-container::before,
+.chip-wrapper--disabled .chip-container::before {
+  background: chip-tokens.$md-sys-chip-state-disabled-background;
+  opacity: 0.38;
+}
+
+.chip-wrapper[disabled] .chip-container,
+.chip-wrapper--disabled .chip-container {
+  cursor: not-allowed;
+  pointer-events: none;
+  color: chip-tokens.$md-sys-chip-state-disabled-color;
+}
+
+// État élevé
+.chip-wrapper--elevated .chip-container {
+  box-shadow: var(--md-sys-elevation-level1);
+}
+
+.chip-primary-action {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+  
+  &:focus-visible {
+    outline: 2px solid var(--md-sys-color-secondary);
+    outline-offset: 2px;
+  }
+}
+
+.chip-trailing-action,
+.chip-wrapper .trailing.action {
+  @include chip.chip-remove-button;
+  & {
+    margin-inline-start: 8px;
+    display: flex;
+    align-items: center;
+    align-self: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1; // Au-dessus du ::before
+  }
+}
+
+.chip-trailing-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: inherit;
+  
+  i[name] {
+    color: inherit !important;
+    width: chip-tokens.$md-sys-chip-icon-size !important;
+    height: chip-tokens.$md-sys-chip-icon-size !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0;
+    
+    svg {
+      fill: currentColor !important;
+      color: inherit !important;
+      width: 100% !important;
+      height: 100% !important;
+    }
+    
+    // Force l'héritage sur tous les éléments SVG internes
+    svg * {
+      fill: currentColor !important;
+      color: inherit !important;
+    }
+  }
+}
+
+/**
+ * Avatar dans les chips
+ */
+.chip-avatar {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  max-width: 24px !important;
+  max-height: 24px !important;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+  background-color: var(--md-sys-color-surface-variant);
+}
+
+/**
+ * Icônes leading et selected dans les chips
+ * Inspiré de la gestion des icônes dans les boutons
+ */
+.chip-leading-icon,
+.chip-selected-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: inherit;
+  
+  i[name] {
+    color: inherit !important;
+    width: chip-tokens.$md-sys-chip-icon-size !important;
+    height: chip-tokens.$md-sys-chip-icon-size !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0;
+    
+    svg {
+      fill: currentColor !important;
+      color: inherit !important;
+      width: 100% !important;
+      height: 100% !important;
+    }
+    
+    // Force l'héritage sur tous les éléments SVG internes
+    svg * {
+      fill: currentColor !important;
+      color: inherit !important;
+    }
+  }
+  
+  // SVG checkmark pour les chips sélectionnés
+  svg.chip-checkmark {
+    width: chip-tokens.$md-sys-chip-icon-size !important;
+    height: chip-tokens.$md-sys-chip-icon-size !important;
+    fill: currentColor !important;
+    color: inherit !important;
+  }
+}
+
+/**
+ * Contenu principal du chip
+ */
+.chip-primary-content {
+  display: flex;
+  align-items: center;
+  gap: chip-tokens.$md-sys-chip-padding-between-elements;
+  width: 100%;
+}
+
+.chip-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

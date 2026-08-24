@@ -1,0 +1,202 @@
+/**
+ * @fileoverview Mixins pour ButtonPad Material Design 3 Expressive
+ * @description Fidèle au prototype M3 Button4 / Button4D (lavande, ombres, rayons asymétriques)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/button-pad.token' as tokens;
+
+/// Conteneur grille 2×2
+@mixin btn-pad-base {
+  display: grid;
+  grid-template-columns: tokens.$btn-pad-cell tokens.$btn-pad-cell;
+  grid-template-rows: tokens.$btn-pad-cell tokens.$btn-pad-cell;
+  gap: tokens.$btn-pad-gap;
+  isolation: isolate;
+  outline: none;
+}
+
+/// Mode cardinal — grille rotée 45°
+@mixin btn-pad-cardinal {
+  transform: rotate(45deg);
+}
+
+/// Cellule 48×48 — filled Expressif (lavande)
+@mixin btn-pad-cell {
+  appearance: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  width: tokens.$btn-pad-cell;
+  height: tokens.$btn-pad-cell;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+
+  background: tokens.$btn-pad-filled-bg;
+  color: tokens.$btn-pad-filled-fg;
+  box-shadow: tokens.$btn-pad-shadow;
+  transition: box-shadow tokens.$btn-pad-duration tokens.$btn-pad-ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    background: tokens.$btn-pad-filled-fg;
+    transition: opacity tokens.$btn-pad-duration tokens.$btn-pad-ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  &:hover::before {
+    opacity: 0.08;
+  }
+
+  &:focus-visible {
+    outline: 2px solid tokens.$btn-pad-focus-ring;
+    outline-offset: 2px;
+  }
+
+  &:focus-visible::before,
+  &:active::before {
+    opacity: 0.12;
+  }
+
+  &:hover {
+    box-shadow: tokens.$btn-pad-shadow-hover;
+  }
+
+  svg {
+    width: tokens.$btn-pad-icon-size;
+    height: tokens.$btn-pad-icon-size;
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+    fill: currentColor;
+    transform: rotate(var(--btn-pad-icon-rot, 0deg));
+    transition: transform tokens.$btn-pad-icon-duration tokens.$btn-pad-ease;
+  }
+}
+
+/// Rayons asymétriques — seul le coin externe est à 24px
+@mixin btn-pad-cell-radii {
+  &--tl {
+    border-radius: tokens.$btn-pad-outer-radius tokens.$btn-pad-inner-radius tokens.$btn-pad-inner-radius tokens.$btn-pad-inner-radius;
+  }
+
+  &--tr {
+    border-radius: tokens.$btn-pad-inner-radius tokens.$btn-pad-outer-radius tokens.$btn-pad-inner-radius tokens.$btn-pad-inner-radius;
+  }
+
+  &--bl {
+    border-radius: tokens.$btn-pad-inner-radius tokens.$btn-pad-inner-radius tokens.$btn-pad-inner-radius tokens.$btn-pad-outer-radius;
+  }
+
+  &--br {
+    border-radius: tokens.$btn-pad-inner-radius tokens.$btn-pad-inner-radius tokens.$btn-pad-outer-radius tokens.$btn-pad-inner-radius;
+  }
+}
+
+/// Mode diagonal (0°) — nudge en espace écran (translate après rotate dans la liste = avant en application)
+/// Ordre CSS : `translate(…) rotate(…)` → rotation d’abord, puis déplacement diagonal visible
+@mixin btn-pad-hover-diagonal {
+  .btn-pad__btn--tl:hover svg,
+  .button-pad__btn--tl:hover svg {
+    transform: translate(-#{tokens.$btn-pad-icon-hover-offset}, -#{tokens.$btn-pad-icon-hover-offset})
+      rotate(-45deg);
+  }
+
+  .btn-pad__btn--tr:hover svg,
+  .button-pad__btn--tr:hover svg {
+    transform: translate(#{tokens.$btn-pad-icon-hover-offset}, -#{tokens.$btn-pad-icon-hover-offset})
+      rotate(45deg);
+  }
+
+  .btn-pad__btn--bl:hover svg,
+  .button-pad__btn--bl:hover svg {
+    transform: translate(-#{tokens.$btn-pad-icon-hover-offset}, #{tokens.$btn-pad-icon-hover-offset})
+      rotate(45deg);
+  }
+
+  .btn-pad__btn--br:hover svg,
+  .button-pad__btn--br:hover svg {
+    transform: translate(#{tokens.$btn-pad-icon-hover-offset}, #{tokens.$btn-pad-icon-hover-offset})
+      rotate(-45deg);
+  }
+}
+
+/// Mode cardinal (45°) — contre-rotation des icônes pour rester droites
+@mixin btn-pad-icons-cardinal {
+  .btn-pad__btn svg,
+  .button-pad__btn svg {
+    transform: rotate(-45deg);
+  }
+
+  .btn-pad__btn--tl:hover svg,
+  .button-pad__btn--tl:hover svg {
+    transform: rotate(-45deg) translateY(-#{tokens.$btn-pad-icon-hover-offset});
+  }
+
+  .btn-pad__btn--tr:hover svg,
+  .button-pad__btn--tr:hover svg {
+    transform: rotate(-45deg) translateX(#{tokens.$btn-pad-icon-hover-offset});
+  }
+
+  .btn-pad__btn--bl:hover svg,
+  .button-pad__btn--bl:hover svg {
+    transform: rotate(-45deg) translateX(-#{tokens.$btn-pad-icon-hover-offset});
+  }
+
+  .btn-pad__btn--br:hover svg,
+  .button-pad__btn--br:hover svg {
+    transform: rotate(-45deg) translateY(#{tokens.$btn-pad-icon-hover-offset});
+  }
+}
+
+/// Variante tonal — secondary-container (thème courant)
+@mixin btn-pad-tonal {
+  .btn-pad__btn,
+  .button-pad__btn {
+    background: tokens.$btn-pad-tonal-bg;
+    color: tokens.$btn-pad-tonal-fg;
+    box-shadow: none;
+
+    &::before {
+      background: tokens.$btn-pad-tonal-fg;
+    }
+
+    &:hover {
+      box-shadow: none;
+    }
+  }
+}
+
+/// Variante outlined
+@mixin btn-pad-outlined {
+  .btn-pad__btn,
+  .button-pad__btn {
+    background: transparent;
+    color: tokens.$btn-pad-outlined-fg;
+    border: 1px solid tokens.$btn-pad-outline;
+    box-shadow: none;
+
+    &::before {
+      background: tokens.$btn-pad-outlined-fg;
+    }
+
+    &:hover {
+      border-color: tokens.$btn-pad-outline-hover;
+      box-shadow: none;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+/// @file drag.module.scss
+/// @brief Classes utilitaires pour le drag
+/// @description Classes CSS pour activer le drag sur des éléments
+
+@use '../mixins/drag.mixin' as drag;
+
+/**
+ * Classe de base pour un élément draggable
+ */
+.drag {
+  @include drag.drag-base();
+}
+
+/**
+ * Classe pour activer les transitions de drag
+ */
+.drag--transition {
+  @include drag.drag-transition();
+}
+
+/**
+ * Classe pour désactiver les transitions de drag
+ */
+.drag--no-transition {
+  @include drag.drag-no-transition();
+}
+
+
+
+

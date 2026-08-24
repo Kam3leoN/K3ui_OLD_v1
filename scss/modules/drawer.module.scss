@@ -1,0 +1,456 @@
+/**
+ * @file scss/modules/drawer.module.scss
+ * @description Module SCSS Material Design 3 Expressive pour le composant Drawer K3UI
+ * @see https://m3.material.io/components/navigation-drawer/overview
+ */
+
+@use '../tokens/drawer.token' as tokens;
+@use '../mixins/drawer.mixin' as drawer;
+@use '../mixins/state.mixin' as state;
+
+// ============================================================================
+// COMPOSANT DRAWER PRINCIPAL
+// ============================================================================
+
+/**
+ * Drawer principal - Navigation drawer Material Design 3
+ * Scrollbar : rendu natif du navigateur
+ */
+.drawer {
+  @include drawer.drawer-base('standard');
+  
+  /**
+   * Alignement à droite - Logique Material Design 3
+   */
+  &.drawer--right {
+    @include drawer.drawer--right;
+  }
+  
+  /**
+   * État ouvert
+   */
+  &.is-open {
+    @include drawer.drawer-open;
+    
+    &.drawer--right {
+      @include drawer.drawer-open;
+      right: 0;
+    }
+  }
+  
+  /**
+   * État de glissement (pas de transition)
+   */
+  &.is-dragging {
+    @include drawer.drawer-dragging;
+  }
+  
+  /**
+   * Variantes de taille
+   */
+  &.drawer--compact {
+    @include drawer.drawer-base('compact');
+    
+    &.drawer--right {
+      @include drawer.drawer--right;
+    }
+    
+    &.is-open {
+      @include drawer.drawer-open;
+    }
+  }
+  
+  &.drawer--modal {
+    @include drawer.drawer-base('modal');
+    
+    &.drawer--right {
+      @include drawer.drawer--right;
+    }
+    
+    &.is-open {
+      @include drawer.drawer-open;
+    }
+  }
+  
+  // Responsive
+  @include drawer.drawer-responsive;
+}
+
+// ============================================================================
+// STRUCTURE INTERNE DU DRAWER
+// ============================================================================
+
+/**
+ * Wrapper du contenu
+ */
+.drawer-wrapper {
+  @include drawer.drawer-wrapper;
+}
+
+/**
+ * Contenu du drawer
+ */
+.drawer-content {
+  @include drawer.drawer-content();
+}
+
+/**
+ * En-tête du drawer
+ */
+.drawer-header {
+  @include drawer.drawer-header();
+}
+
+/**
+ * Corps du drawer
+ */
+.drawer-body {
+  @include drawer.drawer-body();
+}
+
+/**
+ * Pied du drawer
+ */
+.drawer-footer {
+  @include drawer.drawer-footer();
+}
+
+/**
+ * Bouton de fermeture
+ */
+.drawer-close {
+  @include drawer.drawer-close();
+
+  /* Même design que les boutons icône de l'appbar : 48dp, survol/focus gris, clic tonal */
+  &.btn-icon {
+    flex-shrink: 0;
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px;
+    min-height: 48px;
+    padding: 0 !important;
+    color: var(--md-sys-color-on-surface-variant) !important;
+    .btn-icon__icon,
+    .button-icon__icon,
+    i,
+    svg {
+      color: inherit !important;
+      fill: currentColor !important;
+    }
+    svg * {
+      fill: currentColor !important;
+    }
+    /* États identiques à l'appbar : hover gris, focus gris (pas de filled primary), active tonal */
+    &:hover:not(:disabled) {
+      background-color: rgba(var(--md-sys-color-on-surface-rgb), 0.12) !important;
+      color: var(--md-sys-color-on-surface-variant) !important;
+    }
+    &:focus:not(:disabled),
+    &:focus-visible:not(:disabled) {
+      background-color: rgba(var(--md-sys-color-on-surface-rgb), 0.12) !important;
+      color: var(--md-sys-color-on-surface-variant) !important;
+      outline: none !important;
+    }
+    &:active:not(:disabled) {
+      background-color: var(--md-sys-color-secondary-container) !important;
+      color: var(--md-sys-color-on-secondary-container) !important;
+    }
+  }
+}
+
+/**
+ * Surcharge active (tonal) pour battre button-icon.module (.btn-icon:not(...) &:active en gris)
+ * Spécificité .drawer .drawer-wrapper .drawer-close.btn-icon > .btn-icon:not(...)
+ */
+.drawer .drawer-wrapper .drawer-close.btn-icon:active:not(:disabled) {
+  background-color: var(--md-sys-color-secondary-container) !important;
+  color: var(--md-sys-color-on-secondary-container) !important;
+}
+
+// ============================================================================
+// NAVIGATION ET LIENS
+// ============================================================================
+
+/**
+ * Navigation et liens
+ */
+.drawer-nav {
+  @include drawer.drawer-navigation();
+}
+
+/**
+ * Séparateurs
+ */
+.drawer-divider {
+  @include drawer.drawer-divider();
+}
+
+/**
+ * Sous-titres
+ */
+.drawer-subheader {
+  @include drawer.drawer-subheader();
+}
+
+// ============================================================================
+// VUE UTILISATEUR (PROFIL)
+// ============================================================================
+
+/**
+ * Vue utilisateur (profil)
+ */
+.drawer-user-view {
+  @include drawer.drawer-user-view();
+  
+  // Variante compacte
+  &.drawer-user-view--compact {
+    @include drawer.drawer-user-view(
+      tokens.$md-sys-drawer-user-padding-compact,
+      tokens.$md-sys-drawer-user-avatar-size-compact
+    );
+  }
+}
+
+// ============================================================================
+// ACCESSIBILITÉ ET INTERACTION
+// ============================================================================
+
+/**
+ * Zone de glissement tactile
+ */
+.drag-target {
+  @include drawer.drawer-drag-target();
+}
+
+/**
+ * Overlay de fond
+ */
+.drawer-overlay {
+  @include drawer.drawer-overlay();
+  
+  /**
+   * État visible
+   */
+  &.is-visible {
+    opacity: 1;
+    display: block;
+  }
+}
+
+// ============================================================================
+// ÉTATS ET INTERACTIONS
+// ============================================================================
+
+/**
+ * États d'interaction pour les éléments du drawer
+ */
+.drawer-nav a {
+  /**
+   * État focus pour l'accessibilité
+   */
+  @include state.state-focus-visible(
+    var(--md-sys-color-surface-container-highest),
+    null,
+    var(--md-sys-color-on-secondary-container)
+  );
+
+  /**
+   * État actif (pressed)
+   */
+  @include state.state-active(
+    var(--md-sys-color-secondary-container),
+    var(--md-sys-color-on-secondary-container)
+  );
+}
+
+/**
+ * Bouton de fermeture avec états (hors .btn-icon : états par défaut)
+ * .drawer-close.btn-icon a ses états dans le bloc ci-dessus (alignés appbar)
+ */
+.drawer-close:not(.btn-icon) {
+  @include state.state-focus-visible(
+    var(--md-sys-color-surface-container-highest),
+    var(--md-sys-color-on-surface),
+    var(--md-sys-color-on-secondary-container)
+  );
+  @include state.state-active(
+    var(--md-sys-color-secondary-container),
+    var(--md-sys-color-on-secondary-container)
+  );
+}
+
+// ============================================================================
+// ANIMATIONS ET TRANSITIONS
+// ============================================================================
+
+/**
+ * Animations d'entrée et de sortie
+ */
+.drawer {
+  /**
+   * Animation d'entrée
+   */
+  &.drawer--animate-in {
+    animation: drawer-slide-in tokens.$md-sys-drawer-transition-duration tokens.$md-sys-drawer-transition-easing forwards;
+  }
+  
+  /**
+   * Animation de sortie
+   */
+  &.drawer--animate-out {
+    animation: drawer-slide-out tokens.$md-sys-drawer-transition-duration tokens.$md-sys-drawer-transition-easing forwards;
+  }
+}
+
+/**
+ * Keyframes pour les animations
+ */
+@keyframes drawer-slide-in {
+  from {
+    transform: tokens.$md-sys-drawer-transform-left;
+  }
+  to {
+    transform: tokens.$md-sys-drawer-transform-open;
+  }
+}
+
+@keyframes drawer-slide-out {
+  from {
+    transform: tokens.$md-sys-drawer-transform-open;
+  }
+  to {
+    transform: tokens.$md-sys-drawer-transform-left;
+  }
+}
+
+/**
+ * Keyframes pour les animations à droite
+ */
+@keyframes drawer-slide-in-right {
+  from {
+    transform: tokens.$md-sys-drawer-transform-right;
+  }
+  to {
+    transform: tokens.$md-sys-drawer-transform-open;
+  }
+}
+
+@keyframes drawer-slide-out-right {
+  from {
+    transform: tokens.$md-sys-drawer-transform-open;
+  }
+  to {
+    transform: tokens.$md-sys-drawer-transform-right;
+  }
+}
+
+// ============================================================================
+// SUPPORT DES THÈMES
+// ============================================================================
+
+/**
+ * Support des thèmes sombres (déjà géré dans les mixins)
+ * Les couleurs et états sont automatiquement adaptés via les media queries
+ * dans les tokens et mixins
+ */
+
+// ============================================================================
+// RESPONSIVE ET ADAPTATIONS
+// ============================================================================
+
+/**
+ * Adaptations pour les écrans tactiles
+ */
+@media (hover: none) and (pointer: coarse) {
+  .drawer {
+    /**
+     * Augmenter la zone de glissement sur mobile
+     */
+    .drag-target {
+      width: 20px;
+    }
+    
+    /**
+     * Ajuster les tailles de touch target
+     */
+    .drawer-nav a {
+      min-height: 48px; // Touch target minimum
+    }
+    
+    .drawer-close {
+      min-width: 48px;
+      min-height: 48px;
+    }
+  }
+}
+
+/**
+ * Support des préférences de réduction de mouvement
+ */
+@media (prefers-reduced-motion: reduce) {
+  .drawer {
+    transition: none;
+    animation: none;
+  }
+  
+  .drawer-overlay {
+    transition: none;
+  }
+}
+
+// ============================================================================
+// UTILITAIRES ET MODIFICATEURS
+// ============================================================================
+
+/**
+ * Modificateurs de position
+ */
+.drawer--left {
+  left: 0;
+  right: auto;
+  transform: tokens.$md-sys-drawer-transform-left;
+  
+  &.is-open {
+    transform: tokens.$md-sys-drawer-transform-open;
+  }
+}
+
+.drawer--right {
+  left: auto;
+  right: 0;
+  transform: tokens.$md-sys-drawer-transform-right;
+  
+  &.is-open {
+    transform: tokens.$md-sys-drawer-transform-open;
+  }
+}
+
+/**
+ * Modificateurs de comportement
+ */
+.drawer--persistent {
+  position: relative;
+  transform: none;
+  
+  &.is-open {
+    transform: none;
+  }
+}
+
+.drawer--temporary {
+  position: fixed;
+  
+  &.is-open {
+    transform: tokens.$md-sys-drawer-transform-open;
+  }
+}
+
+.drawer--outlined {
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.drawer--elevated {
+  box-shadow: tokens.$md-sys-drawer-elevation-hover;
+}
+
+

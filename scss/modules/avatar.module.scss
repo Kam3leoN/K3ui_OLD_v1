@@ -1,0 +1,397 @@
+/**
+ * @fileoverview Module Avatar
+ * @description Classes CSS pour le composant Avatar Material Design 3
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/avatar.token' as avatar;
+@use '../mixins/avatar.mixin' as avatar-mixin;
+@use '../mixins/state.mixin' as state;
+
+// ============================================================================
+// CLASSE PRINCIPALE
+// ============================================================================
+
+/**
+ * Classe principale du composant Avatar
+ */
+.avatar {
+  @include avatar-mixin.avatar-base();
+  
+  // Variables CSS par défaut pour les badges de statut (doivent être définies sur l'avatar)
+  --status-size: #{avatar.$avatar-status-size};
+  --status-gap: #{avatar.$avatar-status-gap};
+  --status-offset: #{avatar.$avatar-status-offset};
+  --status-angle: #{avatar.$avatar-status-angle};
+
+  // Image
+  &__image {
+    @include avatar-mixin.avatar-image();
+  }
+
+  // Initiales
+  &__initials {
+    @include avatar-mixin.avatar-initials();
+    // S'assurer que les initiales sont au-dessus du gap mais en dessous du badge
+    position: relative;
+    z-index: 2;
+  }
+
+  // Icône générique
+  &__icon {
+    width: 50%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: inherit;
+  }
+
+  // Badge
+  // Badge de statut (nouveau système avec CSS mask)
+  &--badge-online,
+  &--badge-offline,
+  &--badge-idle,
+  &--badge-dnd,
+  &--badge-busy,
+  &--badge-away {
+    @include avatar-mixin.avatar-badge();
+    // Déclarations avant règles imbriquées (conformité Sass mixed-decls)
+    & {
+      overflow: visible;
+      --status-gap-background: var(--md-sys-color-surface, #ffffff);
+    }
+    // Mais garder overflow hidden pour les enfants (image, initiales)
+    & > * {
+      overflow: hidden;
+    }
+  }
+  
+  // Élément réel pour le gap (contour transparent)
+  // Cet élément remplit le trou créé par le mask avec la couleur de fond
+  // IMPORTANT: z-index doit être inférieur aux initiales (z-index: 2) mais supérieur à l'image
+  &__gap {
+    position: absolute;
+    width: var(--d);
+    height: var(--d);
+    border-radius: 50%;
+    background-color: var(--status-gap-background);
+    top: calc(var(--y) - (var(--d) / 2));
+    left: calc(var(--x) - (var(--d) / 2));
+    z-index: 1;
+    pointer-events: none;
+  }
+  
+  // Classes utilitaires pour surcharger la couleur du gap selon le contexte
+  // Utiliser ces classes sur le parent ou l'avatar lui-même
+  &--gap-surface {
+    --status-gap-background: var(--md-sys-color-surface);
+  }
+  
+  &--gap-surface-dim {
+    --status-gap-background: var(--md-sys-color-surface-dim);
+  }
+  
+  &--gap-surface-container {
+    --status-gap-background: var(--md-sys-color-surface-container);
+  }
+  
+  &--gap-background {
+    --status-gap-background: var(--md-sys-color-background);
+  }
+  
+  // Appliquer les couleurs selon le statut
+  &--badge-online {
+    &::after {
+      background-color: var(--color-online);
+    }
+  }
+  
+  &--badge-offline {
+    &::after {
+      background-color: var(--color-offline);
+    }
+  }
+  
+  &--badge-idle {
+    &::after {
+      background-color: var(--color-idle);
+      // Extra mask for idle 'moon' effect
+      mask-image: radial-gradient(
+        90% 100% at 90% 30%,
+        transparent calc(50% - 0.5px),
+        black calc(50% + 0.5px)
+      );
+      -webkit-mask-image: radial-gradient(
+        90% 100% at 90% 30%,
+        transparent calc(50% - 0.5px),
+        black calc(50% + 0.5px)
+      );
+    }
+  }
+  
+  &--badge-dnd {
+    &::after {
+      background-color: var(--color-dnd);
+    }
+    // Extra style for 'dnd' - horizontal line
+    // Utilise un élément réel (.avatar__dnd-line) au lieu de ::before
+    // pour éviter les conflits avec le gap
+  }
+  
+  // Élément réel pour la ligne horizontale du badge dnd
+  &__dnd-line {
+    position: absolute;
+    top: calc(var(--y));
+    left: calc(var(--x));
+    width: calc(var(--status-size) * 0.8);
+    translate: -50% -50%;
+    rotate: -9deg;
+    aspect-ratio: 4/1;
+    border-radius: 100vmax;
+    background: color-mix(in oklch, var(--color-dnd), white 50%);
+    z-index: 11;
+    pointer-events: none;
+  }
+  
+  &--badge-busy {
+    &::after {
+      background-color: var(--color-busy);
+    }
+  }
+  
+  &--badge-away {
+    &::after {
+      background-color: var(--color-away);
+    }
+  }
+
+  // États
+  @include avatar-mixin.avatar-hover();
+  @include avatar-mixin.avatar-focus();
+  @include avatar-mixin.avatar-disabled();
+  
+  // Effet hover de grossissement
+  &--hover-grow {
+    @include avatar-mixin.avatar-hover-grow();
+  }
+
+  // Permettre les événements de souris pour les tooltips
+  &.tooltipped {
+    pointer-events: auto !important;
+  }
+}
+
+// ============================================================================
+// TAILLES
+// ============================================================================
+
+@each $size, $size-value in avatar.$avatar-sizes {
+  .avatar--#{$size} {
+    width: avatar.avatar-size($size);
+    height: avatar.avatar-size($size);
+
+    .avatar__initials {
+      font-size: avatar.avatar-font-size($size);
+    }
+
+    .avatar__badge {
+      width: avatar.avatar-badge-size($size);
+      height: avatar.avatar-badge-size($size);
+    }
+  }
+}
+
+// ============================================================================
+// FORMES
+// ============================================================================
+
+.avatar--circle {
+  @include avatar-mixin.avatar-shape('circle');
+}
+
+.avatar--rounded {
+  @include avatar-mixin.avatar-shape('rounded');
+}
+
+.avatar--square {
+  @include avatar-mixin.avatar-shape('square');
+}
+
+// ============================================================================
+// VARIANTS
+// ============================================================================
+
+.avatar--filled {
+  @include avatar-mixin.avatar-variant('filled');
+}
+
+.avatar--outlined {
+  @include avatar-mixin.avatar-variant('outlined');
+}
+
+.avatar--elevated {
+  @include avatar-mixin.avatar-variant('elevated');
+}
+
+// ============================================================================
+// PALETTES DE COULEURS
+// ============================================================================
+
+.avatar--blue {
+  &.avatar--filled {
+    background-color: avatar.$avatar-color-blue;
+    color: avatar.$avatar-text-color;
+  }
+
+  &.avatar--outlined {
+    background-color: transparent !important;
+    border-color: avatar.$avatar-color-blue;
+    color: avatar.$avatar-color-blue;
+  }
+}
+
+.avatar--red {
+  &.avatar--filled {
+    background-color: avatar.$avatar-color-red;
+    color: avatar.$avatar-text-color;
+  }
+
+  &.avatar--outlined {
+    background-color: transparent !important;
+    border-color: avatar.$avatar-color-red;
+    color: avatar.$avatar-color-red;
+  }
+}
+
+.avatar--green {
+  &.avatar--filled {
+    background-color: avatar.$avatar-color-green;
+    color: avatar.$avatar-text-color;
+  }
+
+  &.avatar--outlined {
+    background-color: transparent !important;
+    border-color: avatar.$avatar-color-green;
+    color: avatar.$avatar-color-green;
+  }
+}
+
+.avatar--purple {
+  &.avatar--filled {
+    background-color: avatar.$avatar-color-purple;
+    color: avatar.$avatar-text-color;
+  }
+
+  &.avatar--outlined {
+    background-color: transparent !important;
+    border-color: avatar.$avatar-color-purple;
+    color: avatar.$avatar-color-purple;
+  }
+}
+
+.avatar--orange {
+  &.avatar--filled {
+    background-color: avatar.$avatar-color-orange;
+    color: avatar.$avatar-text-color;
+  }
+
+  &.avatar--outlined {
+    background-color: transparent !important;
+    border-color: avatar.$avatar-color-orange;
+    color: avatar.$avatar-color-orange;
+  }
+}
+
+.avatar--gray {
+  &.avatar--filled {
+    background-color: avatar.$avatar-color-gray;
+    color: avatar.$avatar-text-color;
+  }
+
+  &.avatar--outlined {
+    background-color: transparent !important;
+    border-color: avatar.$avatar-color-gray;
+    color: avatar.$avatar-color-gray;
+  }
+}
+
+// ============================================================================
+// GROUPES D'AVATARS (overlap via Stack ; grid reste spécifique)
+// ============================================================================
+
+.avatar-group {
+  @include avatar-mixin.avatar-group();
+
+  &__remaining,
+  .stack__remaining {
+    @include avatar-mixin.avatar-group-remaining();
+  }
+
+  // Évite le double overlap si Stack a déjà appliqué les classes
+  &.stack.stack--overlap {
+    // Stack gère direction / scroll ; on ne réapplique pas un second offset
+  }
+}
+
+// Mode stacked (empilé avec scroll horizontal) — BC + composition Stack
+.avatar-stacked {
+  &--left {
+    @include avatar-mixin.avatar-group('left');
+    @include avatar-mixin.avatar-group-stacked();
+  }
+
+  &--right {
+    @include avatar-mixin.avatar-group('right');
+    @include avatar-mixin.avatar-group-stacked();
+    justify-content: center;
+  }
+}
+
+// Mode grid (grille responsive)
+.avatar-grid {
+  @include avatar-mixin.avatar-group-grid('lg');
+  
+  // Variantes de taille pour grid
+  @each $size, $size-value in avatar.$avatar-sizes {
+    &--#{$size} {
+      @include avatar-mixin.avatar-group-grid($size);
+    }
+  }
+}
+
+// Mode limited (peut être combiné avec stacked ou grid)
+.avatar-limited {
+  // Le comportement est géré par JavaScript
+}
+
+// Alignement horizontal du groupe (peut être appliqué sur avatar-group)
+.avatar-group.avatar-align--left {
+  justify-content: flex-start;
+}
+
+.avatar-group.avatar-align--right {
+  justify-content: flex-end;
+}
+
+.avatar-group.avatar-align--center {
+  justify-content: center;
+}
+
+// S'assurer que les groupes avec alignement ont aussi le padding pour le dernier avatar
+// Le padding est déjà géré par avatar-group(), mais on le force avec !important pour être sûr
+.avatar-group.avatar-align--left,
+.avatar-group.avatar-align--center,
+.avatar-group.avatar-align--right {
+  &.avatar-stacked--left {
+    padding-right: (avatar.$avatar-group-offset * 2) !important;
+  }
+  
+  &.avatar-stacked--right {
+    padding-left: (avatar.$avatar-group-offset * 2) !important;
+  }
+}
+
+
+

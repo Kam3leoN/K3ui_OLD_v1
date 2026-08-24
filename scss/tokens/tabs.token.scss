@@ -1,0 +1,62 @@
+/**
+ * @fileoverview Tokens de design pour Tabs (Material Design 3 Expressive)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use './color.token' as color;
+@use './motion.token' as motion;
+@use './radius.token' as radius;
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+/** Hauteur d'un onglet horizontal (Material Design 3) - Secondary */
+$tabs-item-height-horizontal: 48px;
+/** Hauteur d'un onglet Primary (icône + label) - MD3 You Expressive */
+$tabs-item-height-primary: 64px;
+/** Taille d'icône Primary tabs (MD3) */
+$tabs-icon-size-primary: 24px;
+/** Espacement entre icône et libellé (Primary, MD3 8dp) */
+$tabs-primary-icon-label-gap: 8px;
+/** Hauteur d'un onglet vertical */
+$tabs-item-height-vertical: 72px;
+/** Rayon des bords de la barre */
+$tabs-radius: 0;
+/** Padding horizontal du scroller */
+$tabs-padding: 12px;
+/** Épaisseur de l'indicateur (Secondary tabs) */
+$tabs-indicator-size: 2px;
+/** Rayon de l'indicateur */
+$tabs-indicator-border-radius: 0;
+/** Primary tabs : hauteur de l'indicateur (MD3 You Expressive) */
+$tabs-indicator-primary-height: 3px;
+/** Primary tabs : largeur min de l'indicateur (24dp) */
+$tabs-indicator-primary-min-width: 24px;
+/** Primary tabs : shape de l'indicateur (3, 3, 0, 0 = coins supérieurs arrondis) */
+$tabs-indicator-primary-border-radius: 3px 3px 0 0;
+
+// ============================================================================
+// COULEURS
+// ============================================================================
+
+/** Fond de la barre d'onglets */
+$tabs-background: var(--md-sys-color-surface, #fff);
+/** Couleur de l'indicateur / onglet actif */
+$tabs-indicator-background: var(--md-sys-color-primary, var(--k3ui-color-primary));
+/** Couleur du texte onglet actif */
+$tabs-active-color: var(--md-sys-color-primary, var(--k3ui-color-primary));
+/** Couleur du texte onglet inactif */
+$tabs-inactive-color: var(--md-sys-color-on-surface-variant, rgba(0, 0, 0, 0.6));
+/** Couleur du texte onglet désactivé */
+$tabs-disabled-color: var(--md-sys-color-on-surface, rgba(0, 0, 0, 0.38));
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+/** Durée de transition de l'indicateur */
+$tabs-indicator-transition-duration: motion.$md-sys-motion-duration-long;
+/** Easing de l'indicateur */
+$tabs-indicator-transition-easing: motion.$md-sys-motion-easing-standard;

@@ -1,0 +1,44 @@
+/**
+ * @fileoverview Tokens de design pour Autocomplete
+ * @description Variables Material Design 3 Expressive
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'spacing.token' as spacing;
+@use 'radius.token' as radius;
+@use 'motion.token' as motion;
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+$autocomplete-panel-max-height: 16rem !default;
+$autocomplete-panel-min-width: 10rem !default;
+$autocomplete-option-min-height: 3rem !default;
+$autocomplete-option-padding-x: spacing.$md-sys-spacing-md !default;
+$autocomplete-option-padding-y: spacing.$md-sys-spacing-sm !default;
+$autocomplete-panel-radius: radius.$md-sys-shape-corner-extra-small !default;
+$autocomplete-panel-gap: spacing.$md-sys-spacing-xs !default;
+$autocomplete-z-index: 1100 !default;
+
+// ============================================================================
+// COULEURS
+// ============================================================================
+
+$autocomplete-panel-bg: var(--md-sys-color-surface-container) !default;
+$autocomplete-option-color: var(--md-sys-color-on-surface) !default;
+$autocomplete-option-hover-bg: var(--md-sys-color-surface-container-highest) !default;
+$autocomplete-option-active-bg: var(--md-sys-color-secondary-container) !default;
+$autocomplete-option-active-color: var(--md-sys-color-on-secondary-container) !default;
+$autocomplete-option-disabled-color: var(--md-sys-color-on-surface) !default;
+$autocomplete-option-disabled-opacity: 0.38 !default;
+$autocomplete-highlight-color: var(--md-sys-color-primary) !default;
+$autocomplete-meta-color: var(--md-sys-color-on-surface-variant) !default;
+
+// ============================================================================
+// MOTION
+// ============================================================================
+
+$autocomplete-transition-duration: 0.2s !default;
+$autocomplete-transition-timing: motion.spring-easing(effects, fast) !default;

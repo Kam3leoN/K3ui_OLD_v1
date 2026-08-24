@@ -1,0 +1,144 @@
+/**
+ * @file bubble.mixin.scss
+ * @description Mixins pour le composant Bubble
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use '../tokens/bubble.token' as bubble;
+
+/// Conteneur grille d’une ligne de conversation
+@mixin bubble-base {
+  display: grid;
+  grid-auto-rows: min-content;
+  column-gap: bubble.$bubble-gap-x;
+  padding-block: bubble.$bubble-padding-y;
+  --bubble-tail-mask: #{bubble.$bubble-tail-mask};
+}
+
+/// Corps de la bulle (message)
+@mixin bubble-body {
+  position: relative;
+  display: block;
+  width: fit-content;
+  max-width: bubble.$bubble-body-max-width;
+  min-width: bubble.$bubble-body-min-width;
+  min-height: bubble.$bubble-body-min-height;
+  padding: bubble.$bubble-body-padding-y bubble.$bubble-body-padding-x;
+  border-radius: bubble.$bubble-body-radius;
+  background-color: bubble.$bubble-body-bg-default;
+  color: bubble.$bubble-body-fg-default;
+  grid-row-end: 3;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: bubble.$bubble-tail-size;
+    height: bubble.$bubble-tail-size;
+    background-color: inherit;
+    mask-repeat: no-repeat;
+    mask-image: var(--bubble-tail-mask);
+    mask-position: 0 -1px;
+    mask-size: bubble.$bubble-tail-mask-size;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-image: var(--bubble-tail-mask);
+    -webkit-mask-position: 0 -1px;
+    -webkit-mask-size: bubble.$bubble-tail-mask-size;
+  }
+}
+
+/// Placement start (début / gauche en LTR)
+@mixin bubble-start {
+  place-items: start;
+  grid-template-columns: auto 1fr;
+
+  .bubble__header,
+  .bubble__footer,
+  .bubble__body {
+    grid-column-start: 2;
+  }
+
+  .bubble__image {
+    grid-column-start: 1;
+  }
+
+  .bubble__body {
+    border-end-start-radius: 0;
+
+    &::before {
+      transform: rotateY(0deg);
+      inset-inline-start: bubble.$bubble-tail-offset-inline;
+    }
+
+    [dir='rtl'] &::before {
+      transform: rotateY(180deg);
+    }
+  }
+}
+
+/// Placement end (fin / droite en LTR)
+@mixin bubble-end {
+  place-items: end;
+  grid-template-columns: 1fr auto;
+
+  .bubble__header,
+  .bubble__footer,
+  .bubble__body {
+    grid-column-start: 1;
+  }
+
+  .bubble__image {
+    grid-column-start: 2;
+  }
+
+  .bubble__body {
+    border-end-end-radius: 0;
+
+    &::before {
+      transform: rotateY(180deg);
+      inset-inline-start: 100%;
+    }
+
+    [dir='rtl'] &::before {
+      transform: rotateY(0deg);
+    }
+  }
+}
+
+/// Variante de couleur du corps
+@mixin bubble-body-color($bg, $fg) {
+  background-color: $bg;
+  color: $fg;
+}
+
+/// Meta (header / footer)
+@mixin bubble-meta {
+  display: flex;
+  gap: bubble.$bubble-meta-gap;
+  align-items: center;
+  font-size: bubble.$bubble-meta-font-size;
+}
+
+@mixin bubble-image {
+  grid-row: span 2;
+  align-self: end;
+
+  > .avatar,
+  > img {
+    width: bubble.$bubble-image-size;
+    height: bubble.$bubble-image-size;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .avatar__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}

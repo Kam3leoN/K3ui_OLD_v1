@@ -1,0 +1,74 @@
+/**
+ * @fileoverview Mixins pour Signature
+ * @description Mixins réutilisables pour le composant Signature
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use "./signature.token" as signature;
+@use "../../../tokens/motion.token" as motion;
+@use "../../../tokens/spacing.token" as spacing;
+@use "../../../mixins/state.mixin" as state;
+@use "../../../mixins/motion.mixin" as motionmix;
+
+/**
+ * Mixin pour le composant Signature
+ * @param {string} $pen-color - Couleur du stylo
+ * @param {string} $background-color - Couleur de fond
+ * @param {number} $border-radius - Rayon de bordure
+ */
+@mixin signature-component(
+  $pen-color: signature.$signature-pen-color,
+  $background-color: signature.$signature-background-color,
+  $border-radius: signature.$signature-border-radius
+) {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: $border-radius;
+    border: signature.$signature-border-width solid signature.$signature-border-color;
+    box-shadow: signature.$signature-box-shadow;
+    background-color: $background-color;
+    @include motionmix.transition-form(200ms, ease);
+    cursor: crosshair;
+    touch-action: none;
+
+    &:focus {
+      outline: 2px solid signature.$signature-border-color;
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+}
+
+/**
+ * Mixin pour le conteneur de signature
+ */
+@mixin signature-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$md-sys-spacing-sm;
+}
+
+/**
+ * Mixin pour les boutons d'action
+ */
+@mixin signature-actions {
+  display: flex;
+  gap: spacing.$md-sys-spacing-sm;
+  justify-content: flex-end;
+  margin-top: spacing.$md-sys-spacing-md;
+}
+

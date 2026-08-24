@@ -1,0 +1,291 @@
+/**
+ * @file state.token.scss
+ * @description Tokens pour les états d'interaction Material Design 3 Expressive
+ * @see https://m3.material.io/foundations/interaction/states/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use 'sass:map';
+@use 'theme.token' as theme;
+@use 'opacity.token' as opacity;
+
+// ============================================================================
+// OPACITÉS D'ÉTATS D'INTERACTION MATERIAL DESIGN 3
+// ============================================================================
+
+/**
+ * Opacité pour l'état hover
+ * Utilisé pour les effets de survol
+ */
+$md-sys-state-hover-opacity: opacity.$md-sys-opacity-hover !default;
+
+/**
+ * Opacité pour l'état focus
+ * Utilisé pour les effets de focus
+ */
+$md-sys-state-focus-opacity: opacity.$md-sys-opacity-focus !default;
+
+/**
+ * Opacité pour l'état pressed
+ * Utilisé pour les effets de pression
+ */
+$md-sys-state-pressed-opacity: opacity.$md-sys-opacity-pressed !default;
+
+/**
+ * Opacité pour l'état selected
+ * Utilisé pour les éléments sélectionnés
+ */
+$md-sys-state-selected-opacity: opacity.$md-sys-opacity-selected !default;
+
+/**
+ * Opacité pour l'état activated
+ * Utilisé pour les éléments activés
+ */
+$md-sys-state-activated-opacity: opacity.$md-sys-opacity-activated !default;
+
+/**
+ * Opacité pour l'état dragged
+ * Utilisé pour les éléments en cours de glissement
+ */
+$md-sys-state-dragged-opacity: opacity.$md-sys-opacity-dragged !default;
+
+/**
+ * Opacité pour l'état disabled
+ * Utilisé pour les éléments désactivés
+ */
+$md-sys-state-disabled-opacity: opacity.$md-sys-opacity-disabled !default;
+
+// ============================================================================
+// COULEURS D'ÉTATS
+// ============================================================================
+
+/**
+ * Couleur de base pour les state layers
+ */
+$md-sys-state-layer-color: theme.$md-ref-palette-neutral90 !default;
+
+/**
+ * Couleur de base pour les state layers en mode sombre
+ */
+$md-sys-state-layer-color-dark: theme.$md-ref-palette-neutral10 !default;
+
+/**
+ * Couleur pour les états d'erreur
+ */
+$md-sys-state-error-color: theme.$md-ref-palette-error80 !default;
+
+/**
+ * Couleur pour les états de succès
+ */
+$md-sys-state-success-color: theme.$md-ref-palette-tertiary80 !default;
+
+/**
+ * Couleur pour les états d'avertissement
+ */
+$md-sys-state-warning-color: theme.$md-ref-palette-tertiary80 !default;
+
+/**
+ * Couleur pour les états d'information
+ */
+$md-sys-state-info-color: theme.$md-ref-palette-primary80 !default;
+
+// ============================================================================
+// TRANSITIONS ET ANIMATIONS
+// ============================================================================
+
+/**
+ * Durée de transition pour les états
+ */
+$md-sys-state-transition-duration: 0.2s !default;
+
+/**
+ * Fonction d'accélération pour les états
+ */
+$md-sys-state-transition-easing: ease-in-out !default;
+
+/**
+ * Transition complète pour les états (sans `all`)
+ */
+$md-sys-state-transition:
+  opacity $md-sys-state-transition-duration $md-sys-state-transition-easing,
+  color $md-sys-state-transition-duration $md-sys-state-transition-easing,
+  background-color $md-sys-state-transition-duration $md-sys-state-transition-easing,
+  border-color $md-sys-state-transition-duration $md-sys-state-transition-easing,
+  box-shadow $md-sys-state-transition-duration $md-sys-state-transition-easing,
+  transform $md-sys-state-transition-duration $md-sys-state-transition-easing,
+  outline $md-sys-state-transition-duration $md-sys-state-transition-easing,
+  outline-offset $md-sys-state-transition-duration $md-sys-state-transition-easing !default;
+
+// ============================================================================
+// CURSORS
+// ============================================================================
+
+/**
+ * Curseur pour les éléments interactifs
+ */
+$md-sys-state-cursor-pointer: pointer !default;
+
+/**
+ * Curseur pour les éléments désactivés
+ */
+$md-sys-state-cursor-disabled: not-allowed !default;
+
+/**
+ * Curseur pour les éléments en chargement
+ */
+$md-sys-state-cursor-loading: wait !default;
+
+/**
+ * Curseur pour les éléments en lecture seule
+ */
+$md-sys-state-cursor-readonly: default !default;
+
+// ============================================================================
+// OUTLINES
+// ============================================================================
+
+/**
+ * Largeur de l'outline pour le focus
+ */
+$md-sys-state-focus-outline-width: 2px !default;
+
+/**
+ * Offset de l'outline pour le focus
+ */
+$md-sys-state-focus-outline-offset: 2px !default;
+
+/**
+ * Style de l'outline pour le focus
+ */
+$md-sys-state-focus-outline-style: solid !default;
+
+// ============================================================================
+// MAPS ET COLLECTIONS
+// ============================================================================
+
+/**
+ * Map des opacités d'états
+ */
+$md-sys-state-opacities: (
+  hover: $md-sys-state-hover-opacity,
+  focus: $md-sys-state-focus-opacity,
+  pressed: $md-sys-state-pressed-opacity,
+  selected: $md-sys-state-selected-opacity,
+  activated: $md-sys-state-activated-opacity,
+  dragged: $md-sys-state-dragged-opacity,
+  disabled: $md-sys-state-disabled-opacity
+) !default;
+
+/**
+ * Map des couleurs d'états (legacy compile-time — préférer `state-color-token`)
+ */
+$md-sys-state-colors: (
+  layer: $md-sys-state-layer-color,
+  layer-dark: $md-sys-state-layer-color-dark,
+  error: $md-sys-state-error-color,
+  success: $md-sys-state-success-color,
+  warning: $md-sys-state-warning-color,
+  info: $md-sys-state-info-color
+) !default;
+
+/// Rôles MD3 pour les state layers (suit html[data-theme] via -rgb)
+$md-sys-state-color-tokens: (
+  layer: 'on-surface',
+  layer-dark: 'on-surface',
+  error: 'error',
+  success: 'tertiary',
+  warning: 'tertiary',
+  info: 'primary'
+) !default;
+
+/**
+ * Map des curseurs
+ */
+$md-sys-state-cursors: (
+  pointer: $md-sys-state-cursor-pointer,
+  disabled: $md-sys-state-cursor-disabled,
+  loading: $md-sys-state-cursor-loading,
+  readonly: $md-sys-state-cursor-readonly
+) !default;
+
+/**
+ * Map des transitions
+ */
+$md-sys-state-transitions: (
+  duration: $md-sys-state-transition-duration,
+  easing: $md-sys-state-transition-easing,
+  full: $md-sys-state-transition
+) !default;
+
+// ============================================================================
+// FONCTIONS UTILITAIRES
+// ============================================================================
+
+/**
+ * Fonction pour récupérer une opacité d'état
+ * @param {string} $state - Type d'état (hover, focus, pressed, selected, activated, dragged, disabled)
+ * @return {string} Valeur d'opacité
+ */
+@function state-opacity($state) {
+  @return map.get($md-sys-state-opacities, $state);
+}
+
+/**
+ * Fonction pour récupérer une couleur d'état
+ * @param {string} $color - Type de couleur (layer, layer-dark, error, success, warning, info)
+ * @return {string} Valeur de couleur
+ */
+@function state-color($color) {
+  @return map.get($md-sys-state-colors, $color);
+}
+
+/**
+ * Token MD3 (-rgb) pour un alias state layer
+ * @param {string} $color layer | layer-dark | error | success | warning | info
+ */
+@function state-color-token($color: 'layer') {
+  @return map.get($md-sys-state-color-tokens, $color);
+}
+
+/**
+ * Fonction pour récupérer un curseur
+ * @param {string} $cursor - Type de curseur (pointer, disabled, loading, readonly)
+ * @return {string} Valeur de curseur
+ */
+@function state-cursor($cursor) {
+  @return map.get($md-sys-state-cursors, $cursor);
+}
+
+/**
+ * Fonction pour récupérer une transition
+ * @param {string} $transition - Type de transition (duration, easing, full)
+ * @return {string} Valeur de transition
+ */
+@function state-transition($transition) {
+  @return map.get($md-sys-state-transitions, $transition);
+}
+
+/**
+ * Fonction pour créer une couleur de state layer avec opacité
+ * @param {string} $state - Type d'état (hover, focus, pressed, selected, activated, dragged)
+ * @param {string} $color - Couleur de base (défaut: layer)
+ * @return {string} Couleur avec opacité
+ */
+@function state-layer-color($state, $color: 'layer') {
+  @return state-layer-rgba($state, $color);
+}
+
+/**
+ * State layer via `--md-sys-color-*-rgb` (bascule light/dark)
+ */
+@function state-layer-rgba($state, $color: 'layer') {
+  $token: state-color-token($color);
+  $opacity: state-opacity($state);
+  @return rgba(var(--md-sys-color-#{$token}-rgb), $opacity);
+}
+
+/// @deprecated Alias de `state-layer-rgba`
+@function state-layer-color-with-fallback($state, $color: 'layer') {
+  @return state-layer-rgba($state, $color);
+} 

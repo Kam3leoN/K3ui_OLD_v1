@@ -1,0 +1,362 @@
+/**
+ * @file sheet.mixin.scss
+ * @description Mixins Material Design 3 Expressive pour le composant Sheet (bottom / top).
+ * Pour left / right, utiliser le composant Drawer.
+ * @see https://m3.material.io/components/bottom-sheets/overview
+ */
+
+@use '../tokens/sheet.token' as tokens;
+@use '../mixins/state.mixin' as state;
+@use '../mixins/motion.mixin' as motionmix;
+
+// ============================================================================
+// MIXINS DE COMPOSANTS INTERNES
+// ============================================================================
+
+/**
+ * Mixin pour le wrapper du sheet
+ */
+@mixin sheet-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/**
+ * Mixin pour le conteneur du sheet
+ * @description Le conteneur s'adapte au type de sheet (side ou bottom)
+ */
+@mixin sheet-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/**
+ * Mixin pour le contenu du sheet
+ * @param {string} $padding - Padding du contenu
+ */
+@mixin sheet-content($padding: tokens.$md-sys-sheet-content-padding) {
+  padding: $padding;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+}
+
+/**
+ * Mixin pour l'en-tête du sheet (M3 Side Sheet header)
+ * @param {string} $padding - Padding de l'en-tête
+ * @description Rangée flex : headline (start) + close icon button (end).
+ *   Bordure bas opt-in via `.sheet--border` (défaut : false).
+ * @see https://m3.material.io/components/side-sheets/specs
+ */
+@mixin sheet-header($padding: tokens.$md-sys-sheet-header-padding) {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: tokens.$md-sys-sheet-header-gap;
+  box-sizing: border-box;
+  min-height: tokens.$md-sys-sheet-header-min-height;
+  padding: $padding;
+  border-bottom: none;
+  margin: 0;
+  flex: 0 0 auto;
+
+  .sheet--border &,
+  .sheet.sheet--border & {
+    border-bottom: tokens.$md-sys-sheet-header-border tokens.$md-sys-sheet-divider;
+  }
+
+  .sheet-header__title,
+  > h1,
+  > h2,
+  > h3,
+  > h4,
+  > h5,
+  > h6 {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    color: tokens.$md-sys-sheet-on-surface;
+    font-weight: tokens.$md-sys-sheet-font-weight-medium;
+    font-size: tokens.$md-sys-sheet-font-size-title;
+    line-height: tokens.$md-sys-sheet-line-height;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    border-bottom-color: tokens.$md-sys-sheet-divider-dark;
+
+    .sheet-header__title,
+    > h1,
+    > h2,
+    > h3,
+    > h4,
+    > h5,
+    > h6 {
+      color: tokens.$md-sys-sheet-on-surface-dark;
+    }
+  }
+}
+
+/**
+ * Mixin pour le pied du sheet
+ * @param {string} $padding - Padding du pied
+ */
+@mixin sheet-footer($padding: tokens.$md-sys-sheet-footer-padding) {
+  padding: $padding;
+  border-top: tokens.$md-sys-sheet-footer-border tokens.$md-sys-sheet-divider;
+  margin-top: auto;
+  
+  // Support des thèmes sombres
+  @media (prefers-color-scheme: dark) {
+    border-top-color: tokens.$md-sys-sheet-divider-dark;
+  }
+}
+
+/**
+ * Close affordance — Icon button *standard* M3 (pas absolute).
+ * Place dans `.sheet-header` en trailing ; 48×48, icône 24, on-surface-variant.
+ * @see https://m3.material.io/components/icon-buttons/specs
+ * @see https://m3.material.io/components/side-sheets/specs
+ */
+@mixin sheet-close {
+  position: static;
+  flex: 0 0 auto;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: tokens.$md-sys-sheet-close-size;
+  height: tokens.$md-sys-sheet-close-size;
+  min-width: tokens.$md-sys-sheet-close-size;
+  min-height: tokens.$md-sys-sheet-close-size;
+  margin: 0;
+  /* Trailing M3 : pousse le close en fin de rangée si le titre n’est pas flex:1 */
+  margin-inline-start: auto;
+  margin-inline-end: tokens.$md-sys-sheet-close-inline-offset;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: transparent;
+  color: tokens.$md-sys-sheet-on-surface-variant;
+  cursor: pointer;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  @include motionmix.transition-surface(
+    tokens.$md-sys-sheet-transition-duration-fast,
+    tokens.$md-sys-sheet-transition-easing
+  );
+
+  /* Reset si des classes `.btn` / `.btn--icon` sont encore présentes */
+  &.btn,
+  &.btn--icon,
+  &.btn--sm {
+    width: tokens.$md-sys-sheet-close-size;
+    height: tokens.$md-sys-sheet-close-size;
+    min-width: tokens.$md-sys-sheet-close-size;
+    min-height: tokens.$md-sys-sheet-close-size;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  i,
+  .icon,
+  svg {
+    display: block;
+    width: tokens.$md-sys-sheet-close-icon-size;
+    height: tokens.$md-sys-sheet-close-icon-size;
+    font-size: tokens.$md-sys-sheet-close-icon-size;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  @include state.state-hover(
+    tokens.$md-sys-sheet-state-hover,
+    tokens.$md-sys-sheet-on-surface
+  );
+
+  @include state.state-focus(
+    tokens.$md-sys-sheet-state-hover,
+    tokens.$md-sys-sheet-on-surface
+  );
+
+  @media (prefers-color-scheme: dark) {
+    color: tokens.$md-sys-sheet-on-surface-variant-dark;
+
+    @include state.state-hover(
+      tokens.$md-sys-sheet-state-hover-dark,
+      tokens.$md-sys-sheet-on-surface-dark
+    );
+  }
+}
+
+// ============================================================================
+// MIXINS D'ACCESSIBILITÉ
+// ============================================================================
+
+/**
+ * Mixin pour l'overlay de fond
+ */
+@mixin sheet-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  height: 120vh;
+  background-color: rgba(0, 0, 0, tokens.$md-sys-sheet-overlay-opacity);
+  z-index: tokens.$md-sys-sheet-z-index-overlay;
+  display: none;
+  transition: opacity tokens.$md-sys-sheet-transition-duration-fast tokens.$md-sys-sheet-transition-easing;
+  
+  // Support des thèmes sombres
+  @media (prefers-color-scheme: dark) {
+    background-color: rgba(0, 0, 0, tokens.$md-sys-sheet-overlay-opacity-dark);
+  }
+}
+
+// ============================================================================
+// MIXINS RESPONSIVES
+// ============================================================================
+
+/**
+ * Mixin pour la responsivité du sheet vertical (top / bottom)
+ */
+@mixin sheet-responsive {
+  @media (max-width: #{tokens.$md-sys-sheet-breakpoint-compact - 1px}) {
+    &.sheet--bottom,
+    &.sheet--top {
+      .sheet-content {
+        padding: tokens.$md-sys-sheet-content-padding-compact;
+      }
+
+      .sheet-header {
+        padding: tokens.$md-sys-sheet-header-padding-compact;
+      }
+
+      .sheet-footer {
+        padding: tokens.$md-sys-sheet-footer-padding-compact;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// BOTTOM / TOP SHEET — ModalBottomSheet Android M3
+// ============================================================================
+
+/**
+ * Panneau vertical type ModalBottomSheet Android M3.
+ * Centrage : left/right 0 + max-width + margin auto (pas de translateX).
+ */
+@mixin sheet-vertical($edge: 'bottom') {
+  position: fixed;
+  z-index: tokens.$md-sys-sheet-z-index;
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-width: tokens.$md-sys-sheet-bottom-max-width;
+  margin-inline: auto;
+  height: auto;
+  min-height: 0;
+  max-height: tokens.$md-sys-sheet-bottom-max-height;
+  display: none;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  border: 0;
+  outline: none;
+  box-shadow: tokens.$md-sys-sheet-elevation;
+  background-color: var(--md-sys-color-surface-container-low, var(--md-sys-color-surface));
+  color: var(--md-sys-color-on-surface);
+  --k3ui-field-outlined-notch-bg: var(--md-sys-color-surface-container-low, var(--md-sys-color-surface));
+
+  @if $edge == 'bottom' {
+    top: auto;
+    bottom: 0;
+    border-radius: tokens.$md-sys-sheet-border-radius-bottom;
+    transform: tokens.$md-sys-sheet-transform-bottom;
+  } @else {
+    top: 0;
+    bottom: auto;
+    border-radius: tokens.$md-sys-sheet-border-radius-top;
+    transform: tokens.$md-sys-sheet-transform-top;
+  }
+
+  &.is-open {
+    display: flex;
+    transform: tokens.$md-sys-sheet-transform-open;
+  }
+
+  &.sheet--dragging {
+    transition: none !important;
+  }
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+@mixin sheet-drag-handle {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: tokens.$md-sys-sheet-drag-handle-region;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 tokens.$md-sys-sheet-drag-handle-region;
+  -webkit-tap-highlight-color: transparent;
+
+  &::before {
+    content: '';
+    width: tokens.$md-sys-sheet-drag-handle-width;
+    height: tokens.$md-sys-sheet-drag-handle-height;
+    background-color: var(--md-sys-color-on-surface-variant);
+    opacity: tokens.$md-sys-sheet-drag-handle-opacity;
+    border-radius: tokens.$md-sys-sheet-drag-handle-border-radius;
+    display: block;
+    pointer-events: none;
+    transition:
+      width 200ms ease,
+      opacity 200ms ease;
+  }
+
+  &:hover::before,
+  .sheet--dragging &::before {
+    width: 48px;
+    opacity: 0.7;
+  }
+
+  .sheet--dragging & {
+    cursor: grabbing;
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--md-sys-color-primary);
+    outline-offset: -6px;
+
+    &::before {
+      opacity: 1;
+    }
+  }
+}
+

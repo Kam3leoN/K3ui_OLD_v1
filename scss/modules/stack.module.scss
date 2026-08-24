@@ -1,0 +1,83 @@
+/**
+ * @file stack.module.scss
+ * @description Module Stack — overlap + deck compact (top/bottom/left/right)
+ * @author K3UI Team
+ * @version 1.1.0
+ */
+
+@use '../mixins/stack.mixin' as stack;
+
+.stack {
+  @include stack.stack-base;
+
+  &--overlap,
+  &:not(.stack--deck) {
+    @include stack.stack-overlap('start');
+  }
+
+  &--deck {
+    @include stack.stack-deck;
+  }
+
+  // Overlap BC
+  &--direction-start:not(.stack--deck),
+  &--direction-left:not(.stack--deck) {
+    @include stack.stack-overlap('start');
+  }
+
+  &--direction-end:not(.stack--deck),
+  &--direction-right:not(.stack--deck) {
+    @include stack.stack-overlap('end');
+  }
+
+  // Deck peeks (collapsed — jamais une colonne espacée)
+  &--deck.stack--direction-top {
+    @include stack.stack-deck-peek('top');
+  }
+
+  &--deck.stack--direction-bottom {
+    @include stack.stack-deck-peek('bottom');
+  }
+
+  &--deck.stack--direction-left,
+  &--deck.stack--direction-start {
+    @include stack.stack-deck-peek('left');
+  }
+
+  &--deck.stack--direction-right,
+  &--deck.stack--direction-end {
+    @include stack.stack-deck-peek('right');
+  }
+
+  &--scroll:not(.stack--deck) {
+    @include stack.stack-scroll;
+  }
+
+  &--align-start {
+    @include stack.stack-align('start');
+  }
+
+  &--align-center {
+    @include stack.stack-align('center');
+  }
+
+  &--align-end {
+    @include stack.stack-align('end');
+  }
+
+  &__item {
+    position: relative;
+  }
+
+  &--deck &__item {
+    position: absolute;
+  }
+
+  &__remaining {
+    @include stack.stack-remaining;
+  }
+
+  &--limited {
+    // Visibilité / +N gérés par le composant JS
+  }
+}

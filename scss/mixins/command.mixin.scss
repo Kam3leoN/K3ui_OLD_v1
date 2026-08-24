@@ -1,0 +1,99 @@
+/**
+ * @fileoverview Mixins pour le composant Command (palette de commandes)
+ * @description Mixins MD3 You Expressive
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use "../tokens/command.token" as cmd;
+@use "../tokens/motion.token" as motion;
+
+/**
+ * Scrim de la palette (fond semi-transparent)
+ */
+@mixin command-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  z-index: cmd.$command-scrim-z-index;
+  pointer-events: none;
+  transition: background cmd.$command-scrim-duration motion.$md-sys-motion-easing-standard;
+
+  &.command__scrim--visible {
+    background: cmd.$command-scrim-bg;
+    pointer-events: all;
+  }
+}
+
+/**
+ * Container principal (position + animation d'entrée)
+ */
+@mixin command-container {
+  position: fixed;
+  z-index: cmd.$command-container-z-index;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(-16px) scale(0.97);
+  width: cmd.$command-width-default;
+  max-height: cmd.$command-max-height;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity cmd.$command-open-duration cmd.$command-easing-emphasized-decelerate,
+    transform cmd.$command-open-duration cmd.$command-easing-emphasized-decelerate;
+
+  &.command__container--compact {
+    width: cmd.$command-width-compact;
+  }
+
+  &.command__container--expanded {
+    width: cmd.$command-width-expanded;
+  }
+
+  &.command__container--open {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(-50%) translateY(64px) scale(1);
+  }
+}
+
+/**
+ * Surface (carte MD3 avec élévation)
+ */
+@mixin command-surface {
+  background: cmd.$command-surface-bg;
+  background-image: linear-gradient(
+    color-mix(in srgb, var(--md-sys-color-primary) 11%, transparent),
+    color-mix(in srgb, var(--md-sys-color-primary) 11%, transparent)
+  );
+  border-radius: cmd.$command-surface-radius;
+  box-shadow: cmd.$command-surface-shadow;
+  outline: 1px solid cmd.$command-surface-outline;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/**
+ * Item de commande (état actif / hover)
+ */
+@mixin command-item-state {
+  .command__item:hover::before {
+    opacity: cmd.$command-state-hover-opacity;
+  }
+
+  .command__item--active {
+    background: cmd.$command-state-active-bg;
+
+    .command__item-icon {
+      background: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+    }
+
+    .command__item-name {
+      color: var(--md-sys-color-primary);
+    }
+  }
+}

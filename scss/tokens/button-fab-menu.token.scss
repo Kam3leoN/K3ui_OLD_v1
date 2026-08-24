@@ -1,0 +1,119 @@
+/**
+ * @fileoverview Tokens pour ButtonFabMenu Material Design 3 Expressive
+ * @description FAB Menu — motion aligné androidx/compose/material3 FloatingActionButtonMenu
+ * @see https://github.com/androidx/androidx/blob/androidx-main/compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/FloatingActionButtonMenu.kt
+ *   StaggerEnterDelayMillis = 35, StaggerExitDelayMillis = 25
+ *   FastSpatial (expand) + FastEffects (fade) via MotionSchemeKeyTokens
+ */
+
+@use 'motion.token' as motion;
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+/** Hauteur des pills (actions) en px — M3 56dp */
+$button-fab-menu-pill-height: 56px !default;
+/** Espace entre FAB et pills, et entre pills (px) */
+$button-fab-menu-gap: 4px !default;
+/** Marge du conteneur au bord (px) — aligné layer inset 16px */
+$button-fab-menu-edge: 16px !default;
+/** Taille du FAB (px) — M3 large FAB 56dp */
+$button-fab-menu-fab-size: 56px !default;
+/** Border radius FAB fermé (px) — M3 Expressive 16–18dp */
+$button-fab-menu-fab-radius-closed: 18px !default;
+
+// ============================================================================
+// COULEURS — M3 (secondary / surface)
+// ============================================================================
+
+$button-fab-menu-fab-bg: var(--md-sys-color-secondary) !default;
+$button-fab-menu-fab-color: var(--md-sys-color-on-secondary) !default;
+$button-fab-menu-pill-bg: var(--md-sys-color-secondary-container) !default;
+$button-fab-menu-pill-color: var(--md-sys-color-on-secondary-container) !default;
+$button-fab-menu-pill-icon-color: var(--md-sys-color-on-secondary-container) !default;
+$button-fab-menu-scrim-bg: color-mix(in srgb, var(--md-sys-color-secondary-container) 60%, transparent) !default;
+
+// ============================================================================
+// ELEVATION / OMBRE
+// ============================================================================
+
+$button-fab-menu-fab-shadow:
+  0 6px 20px color-mix(in srgb, var(--md-sys-color-secondary) 35%, transparent),
+  0 2px 6px rgba(0, 0, 0, 0.14) !default;
+$button-fab-menu-pill-shadow: 0 2px 10px color-mix(in srgb, var(--md-sys-color-secondary) 18%, transparent) !default;
+
+// ============================================================================
+// MOTION M3 — FAB Menu (Compose Material3)
+// ============================================================================
+
+/** Décalage spatial initial des items (approx. expandHorizontally côté FAB) */
+$button-fab-menu-translate-x: 80px !default;
+
+/** Stagger entrée / sortie (ms) — StaggerEnterDelayMillis / StaggerExitDelayMillis */
+$button-fab-menu-stagger-enter-ms: 35 !default;
+$button-fab-menu-stagger-exit-ms: 25 !default;
+
+/** Spatial : glissement / expansion (FastSpatial → 350ms expressive) */
+$button-fab-menu-item-spatial-duration: motion.spring-duration(spatial, fast) !default;
+$button-fab-menu-item-spatial-easing: motion.spring-easing(spatial, fast) !default;
+
+/** Effects : opacité (FastEffects → 150ms expressive) */
+$button-fab-menu-item-effects-duration: motion.spring-duration(effects, fast) !default;
+$button-fab-menu-item-effects-easing: motion.spring-easing(effects, fast) !default;
+
+/** Durées numériques pour timeouts JS (spring-duration = var CSS) */
+$button-fab-menu-item-spatial-duration-ms: 350 !default;
+$button-fab-menu-item-effects-duration-ms: 150 !default;
+
+/** FAB morph (rayon) — spatial fast */
+$button-fab-menu-fab-morph-duration: motion.spring-duration(spatial, fast) !default;
+$button-fab-menu-fab-easing: motion.spring-easing(spatial, fast) !default;
+
+/** Rotation icône trigger — spatial fast (aligné morph FAB + items) */
+$button-fab-menu-icon-rotate-duration: motion.spring-duration(spatial, fast) !default;
+$button-fab-menu-icon-rotate-easing: motion.spring-easing(spatial, fast) !default;
+
+/** Crossfade + / × — effects fast, décalé pendant la rotation */
+$button-fab-menu-icon-fade-duration: motion.spring-duration(effects, fast) !default;
+$button-fab-menu-icon-fade-easing: motion.spring-easing(effects, fast) !default;
+$button-fab-menu-icon-fade-delay-open: 120ms !default;
+
+/** @deprecated Alias — utiliser $button-fab-menu-icon-fade-duration */
+$button-fab-menu-icon-duration: $button-fab-menu-icon-fade-duration !default;
+/** @deprecated Alias — utiliser $button-fab-menu-icon-fade-easing */
+$button-fab-menu-icon-easing: $button-fab-menu-icon-fade-easing !default;
+
+/** Rotation icône trigger ouvert (LTR = horaire) */
+$button-fab-menu-icon-rotation-open-ltr: 45deg !default;
+/** Rotation icône trigger ouvert (RTL = anti-horaire) */
+$button-fab-menu-icon-rotation-open-rtl: -45deg !default;
+
+/** Animation rebondissante + ↔ × (style « overshoot/wiggle » façon CodePen JjoamZx) */
+$button-fab-menu-icon-plus-duration: 500ms !default;
+$button-fab-menu-icon-plus-easing: ease-out !default;
+
+/** Scrim — effects default */
+$button-fab-menu-scrim-duration: motion.spring-duration(effects, default) !default;
+$button-fab-menu-scrim-easing: motion.spring-easing(effects, default) !default;
+
+// ============================================================================
+// Z-INDEX
+// ============================================================================
+
+$button-fab-menu-scrim-z: 10 !default;
+$button-fab-menu-fab-z: 20 !default;
+
+// ============================================================================
+// LAYER (couche globale plein écran)
+// ============================================================================
+
+/** Au-dessus du navigation-rail (1000) pour rester accessible pendant expand */
+$button-fab-menu-layer-z-index: 1100 !default;
+$button-fab-menu-layer-inset: 16px !default;
+/** @deprecated Utiliser $button-fab-menu-layer-inset */
+$button-fab-menu-layer-slot-edge: $button-fab-menu-layer-inset !default;
+/** @deprecated Utiliser $button-fab-menu-layer-inset */
+$button-fab-menu-layer-slot-inset: $button-fab-menu-layer-inset !default;
+$button-fab-menu-layer-slot-width: 80px !default;
+$button-fab-menu-layer-slot-min-height: 420px !default;

@@ -1,0 +1,27 @@
+/**
+ * Tokens pour le composant Hero
+ * Définit les variables de design pour les sections d'en-tête
+ */
+
+// Espacement du hero
+$k3ui-hero-padding-top: 4rem !default;
+$k3ui-hero-padding-bottom: 4rem !default;
+$k3ui-hero-padding-left: 2rem !default;
+$k3ui-hero-padding-right: 2rem !default;
+
+// Espacement mobile
+$k3ui-hero-padding-top-mobile: 2rem !default;
+$k3ui-hero-padding-bottom-mobile: 2rem !default;
+
+// Couleurs du hero - Style cadre bleu
+$k3ui-hero-background: var(--md-sys-color-primary) !default;
+$k3ui-hero-text-color: var(--md-sys-color-on-primary) !default;
+$k3ui-hero-border-radius: 1rem !default;
+$k3ui-hero-elevation: 2 !default;
+
+// Typographie gérée par le système typography.module.scss existant
+
+// Espacement géré par le système spacing.mixin.scss existant
+
+// Responsive breakpoints
+$k3ui-hero-mobile-breakpoint: 768px !default;

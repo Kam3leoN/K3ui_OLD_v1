@@ -1,0 +1,167 @@
+/**
+ * @file radius.module.scss
+ * @description Module utilitaire générant les classes de radius à partir des mixins.
+ * @use '../mixins/radius.mixin.scss' pour accéder aux mixins de radius.
+ */
+
+@use '../tokens/radius.token' as tokens;
+@use '../mixins/radius.mixin' as radius;
+
+// ============================================================================
+// CLASSES UTILITAIRES DE RADIUS
+// ============================================================================
+
+/**
+ * Classes pour les radius de base
+ */
+.radius-extra-small {
+  @include radius.radius-extra-small;
+}
+
+.radius-small {
+  @include radius.radius-small;
+}
+
+.radius-medium {
+  @include radius.radius-medium;
+}
+
+.radius-large {
+  @include radius.radius-large;
+}
+
+.radius-extra-large {
+  @include radius.radius-extra-large;
+}
+
+.radius-full {
+  @include radius.radius-full;
+}
+
+.radius-none {
+  @include radius.radius-none;
+}
+
+// ============================================================================
+// CLASSES POUR LES TYPES DE COMPOSANTS
+// ============================================================================
+
+/**
+ * Classes pour les types de composants
+ */
+.radius-button {
+  @include radius.radius-button;
+}
+
+.radius-input {
+  @include radius.radius-input;
+}
+
+.radius-card {
+  @include radius.radius-card;
+}
+
+.radius-modal {
+  @include radius.radius-modal;
+}
+
+.radius-tooltip {
+  @include radius.radius-tooltip;
+}
+
+.radius-menu {
+  @include radius.radius-menu;
+}
+
+.radius-avatar {
+  @include radius.radius-avatar;
+}
+
+.radius-badge {
+  @include radius.radius-badge;
+}
+
+// ============================================================================
+// CLASSES POUR LES COINS SPÉCIFIQUES
+// ============================================================================
+
+/**
+ * Classes pour les coins spécifiques
+ */
+.radius-top-left {
+  @include radius.radius-top-left;
+}
+
+.radius-top-right {
+  @include radius.radius-top-right;
+}
+
+.radius-bottom-left {
+  @include radius.radius-bottom-left;
+}
+
+.radius-bottom-right {
+  @include radius.radius-bottom-right;
+}
+
+// ============================================================================
+// CLASSES POUR LES COMBINAISONS DE COINS
+// ============================================================================
+
+/**
+ * Classes pour les combinaisons de coins
+ */
+.radius-top {
+  @include radius.radius-top;
+}
+
+.radius-bottom {
+  @include radius.radius-bottom;
+}
+
+.radius-left {
+  @include radius.radius-left;
+}
+
+.radius-right {
+  @include radius.radius-right;
+}
+
+// ============================================================================
+// CLASSES COMBINÉES
+// ============================================================================
+
+/**
+ * Classes combinées pour des cas d'usage spécifiques
+ */
+.radius-top-left-small {
+  @include radius.radius-top-left('small');
+}
+
+.radius-top-right-large {
+  @include radius.radius-top-right('large');
+}
+
+.radius-bottom-left-medium {
+  @include radius.radius-bottom-left('medium');
+}
+
+.radius-bottom-right-extra-large {
+  @include radius.radius-bottom-right('extra-large');
+}
+
+.radius-top-small {
+  @include radius.radius-top('small');
+}
+
+.radius-bottom-large {
+  @include radius.radius-bottom('large');
+}
+
+.radius-left-medium {
+  @include radius.radius-left('medium');
+}
+
+.radius-right-extra-large {
+  @include radius.radius-right('extra-large');
+} 

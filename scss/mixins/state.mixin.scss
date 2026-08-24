@@ -1,0 +1,452 @@
+/**
+ * @file state.mixin.scss
+ * @description Mixins pour la gestion des états d'interaction Material Design 3 Expressive
+ * @see https://m3.material.io/foundations/interaction/states/overview
+ * @author Kam3leon
+ * @version 1.0.0
+ */
+
+@use '../tokens/state.token' as tokens;
+@use '../tokens/theme.token' as theme;
+@use '../tokens/opacity.token' as opacity;
+
+/**
+ * Mixin pour l'état disabled
+ * @param {string} $opacity - Opacité pour l'état disabled (défaut: 38%)
+ */
+@mixin state-disabled($opacity: tokens.state-opacity('disabled')) {
+  opacity: $opacity;
+  cursor: tokens.state-cursor('disabled');
+  pointer-events: none;
+  user-select: none;
+}
+
+/**
+ * Mixin pour l'état hover
+ * @param {string} $background-color - Couleur de fond au hover
+ * @param {string} $color - Couleur du texte au hover
+ */
+@mixin state-hover($background-color: null, $color: null) {
+  &:hover:not(:disabled) {
+    @if $background-color {
+      background-color: $background-color;
+    }
+    @if $color {
+      color: $color;
+    }
+  }
+}
+
+/**
+ * Mixin pour l'état focus
+ * @param {string} $background-color - Couleur de fond au focus
+ * @param {string} $color - Couleur du texte au focus
+ * @param {string} $outline-color - Couleur de l'outline
+ */
+@mixin state-focus($background-color: null, $color: null, $outline-color: var(--md-sys-color-secondary)) {
+  &:focus:not(:disabled) {
+    @if $background-color {
+      background-color: $background-color;
+    }
+    @if $color {
+      color: $color;
+    }
+    outline: tokens.$md-sys-state-focus-outline-width tokens.$md-sys-state-focus-outline-style $outline-color;
+    outline-offset: tokens.$md-sys-state-focus-outline-offset;
+  }
+}
+
+/**
+ * Mixin pour l'état focus-visible (accessibilité)
+ * @param {string} $background-color - Couleur de fond au focus-visible
+ * @param {string} $color - Couleur du texte au focus-visible
+ * @param {string} $outline-color - Couleur de l'outline
+ */
+@mixin state-focus-visible($background-color: null, $color: null, $outline-color: var(--md-sys-color-primary)) {
+  &:focus-visible:not(:disabled) {
+    @if $background-color {
+      background-color: $background-color;
+    }
+    @if $color {
+      color: $color;
+    }
+    outline: tokens.$md-sys-state-focus-outline-width tokens.$md-sys-state-focus-outline-style $outline-color;
+    outline-offset: tokens.$md-sys-state-focus-outline-offset;
+  }
+}
+
+/**
+ * Mixin pour l'état active
+ * @param {string} $background-color - Couleur de fond à l'état actif
+ * @param {string} $color - Couleur du texte à l'état actif
+ */
+@mixin state-active($background-color: null, $color: null) {
+  &:active:not(:disabled) {
+    @if $background-color {
+      background-color: $background-color;
+    }
+    @if $color {
+      color: $color;
+    }
+  }
+}
+
+/**
+ * Mixin pour l'état pressed (équivalent à active)
+ * @param {string} $background-color - Couleur de fond à l'état pressé
+ * @param {string} $color - Couleur du texte à l'état pressé
+ */
+@mixin state-pressed($background-color: null, $color: null) {
+  @include state-active($background-color, $color);
+}
+
+/**
+ * Mixin pour l'état selected
+ * @param {string} $background-color - Couleur de fond à l'état sélectionné
+ * @param {string} $color - Couleur du texte à l'état sélectionné
+ */
+@mixin state-selected($background-color: null, $color: null) {
+  &.selected,
+  &[aria-selected="true"] {
+    @if $background-color {
+      background-color: $background-color;
+    }
+    @if $color {
+      color: $color;
+    }
+  }
+}
+
+/**
+ * Mixin pour l'état checked
+ * @param {string} $background-color - Couleur de fond à l'état coché
+ * @param {string} $color - Couleur du texte à l'état coché
+ */
+@mixin state-checked($background-color: null, $color: null) {
+  &:checked,
+  &[aria-checked="true"] {
+    @if $background-color {
+      background-color: $background-color;
+    }
+    @if $color {
+      color: $color;
+    }
+  }
+}
+
+/**
+ * Mixin pour l'état expanded
+ * @param {string} $background-color - Couleur de fond à l'état étendu
+ * @param {string} $color - Couleur du texte à l'état étendu
+ */
+@mixin state-expanded($background-color: null, $color: null) {
+  &[aria-expanded="true"] {
+    @if $background-color {
+      background-color: $background-color;
+    }
+    @if $color {
+      color: $color;
+    }
+  }
+}
+
+/**
+ * Mixin pour l'état invalid/error
+ * @param {string} $background-color - Couleur de fond à l'état d'erreur
+ * @param {string} $color - Couleur du texte à l'état d'erreur
+ * @param {string} $border-color - Couleur de la bordure à l'état d'erreur
+ */
+@mixin state-error($background-color: null, $color: null, $border-color: var(--md-sys-color-error)) {
+  &.error,
+  &.invalid,
+  &[aria-invalid="true"] {
+    @if $background-color {
+      background-color: $background-color;
+    }
+    @if $color {
+      color: $color;
+    }
+    @if $border-color {
+      border-color: $border-color;
+    }
+  }
+}
+
+/**
+ * Mixin pour l'état loading
+ * @param {string} $opacity - Opacité pendant le chargement
+ */
+@mixin state-loading($opacity: tokens.state-opacity('disabled')) {
+  &.loading,
+  &[aria-busy="true"] {
+    opacity: $opacity;
+    cursor: tokens.state-cursor('loading');
+    pointer-events: none;
+  }
+}
+
+/**
+ * Mixin pour l'état readonly
+ */
+@mixin state-readonly {
+  &.readonly,
+  &[readonly] {
+    cursor: tokens.state-cursor('readonly');
+    user-select: text;
+  }
+}
+
+/**
+ * Mixin pour l'état required
+ * @param {string} $color - Couleur pour indiquer le champ requis
+ */
+@mixin state-required($color: var(--md-sys-color-error)) {
+  &.required,
+  &[required] {
+    &::after {
+      content: " *";
+      color: $color;
+    }
+  }
+}
+
+/**
+ * Mixin pour les éléments interactifs
+ * Combine hover, focus et active states
+ */
+@mixin state-interactive {
+  @include state-hover;
+  @include state-focus;
+  @include state-active;
+  @include state-focus-visible;
+}
+
+// ============================================================================
+// MIXINS POUR LES STATE LAYERS
+// ============================================================================
+
+/**
+ * Calque d'état M3 (pseudo ::before) — suit le thème via tokens `-rgb`
+ * @param {string} $color-token rôle MD3 ou alias layer → on-surface
+ * @param {string|number} $radius border-radius du calque
+ */
+@mixin k3-state-layer($color-token: 'layer', $radius: inherit) {
+  $token: $color-token;
+  @if $color-token == 'layer' or $color-token == 'layer-dark' {
+    $token: tokens.state-color-token($color-token);
+  }
+
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: $radius;
+    background-color: rgba(var(--md-sys-color-#{$token}-rgb), 0);
+    pointer-events: none;
+    transition: background-color tokens.$md-sys-state-transition-duration tokens.$md-sys-state-transition-easing;
+    z-index: 0;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  &:hover:not(:disabled)::before {
+    background-color: rgba(var(--md-sys-color-#{$token}-rgb), tokens.state-opacity('hover'));
+  }
+
+  &:focus:not(:disabled)::before {
+    background-color: rgba(var(--md-sys-color-#{$token}-rgb), tokens.state-opacity('focus'));
+  }
+
+  &:active:not(:disabled)::before {
+    background-color: rgba(var(--md-sys-color-#{$token}-rgb), tokens.state-opacity('pressed'));
+  }
+}
+
+/**
+ * Mixin pour créer un state layer avec opacité
+ * @param {string} $state - Type d'état (hover, focus, pressed, selected, activated, dragged)
+ * @param {string} $color - Alias layer ou rôle MD3 (on-primary, …)
+ */
+@mixin state-layer-color($state: 'hover', $color: 'layer') {
+  background-color: tokens.state-layer-rgba($state, $color);
+}
+
+/**
+ * Mixin pour l'état hover avec state layer
+ * @param {string} $color - Couleur de base (défaut: layer)
+ */
+@mixin state-layer-hover($color: 'layer') {
+  &:hover:not(:disabled) {
+    @include state-layer-color('hover', $color);
+  }
+}
+
+/**
+ * Mixin pour l'état focus avec state layer
+ * @param {string} $color - Couleur de base (défaut: layer)
+ */
+@mixin state-layer-focus($color: 'layer') {
+  &:focus:not(:disabled) {
+    @include state-layer-color('focus', $color);
+  }
+}
+
+/**
+ * Mixin pour l'état pressed avec state layer
+ * @param {string} $color - Couleur de base (défaut: layer)
+ */
+@mixin state-layer-pressed($color: 'layer') {
+  &:active:not(:disabled) {
+    @include state-layer-color('pressed', $color);
+  }
+}
+
+/**
+ * Mixin pour l'état selected avec state layer
+ * @param {string} $color - Couleur de base (défaut: layer)
+ */
+@mixin state-layer-selected($color: 'layer') {
+  &.selected,
+  &[aria-selected="true"] {
+    @include state-layer-color('selected', $color);
+  }
+}
+
+/**
+ * Mixin pour l'état activated avec state layer
+ * @param {string} $color - Couleur de base (défaut: layer)
+ */
+@mixin state-layer-activated($color: 'layer') {
+  &.activated,
+  &[aria-expanded="true"] {
+    @include state-layer-color('activated', $color);
+  }
+}
+
+/**
+ * Mixin pour l'état dragged avec state layer
+ * @param {string} $color - Couleur de base (défaut: layer)
+ */
+@mixin state-layer-dragged($color: 'layer') {
+  &.dragged,
+  &[aria-grabbed="true"] {
+    @include state-layer-color('dragged', $color);
+  }
+}
+
+/**
+ * Mixin pour les state layers interactifs
+ * Combine hover, focus et pressed states
+ * @param {string} $color - Couleur de base (défaut: layer)
+ */
+@mixin state-layer-interactive($color: 'layer') {
+  @include state-layer-hover($color);
+  @include state-layer-focus($color);
+  @include state-layer-pressed($color);
+}
+
+// ============================================================================
+// MIXINS POUR LES ÉTATS SPÉCIALISÉS
+// ============================================================================
+
+/**
+ * Mixin pour l'état activated (équivalent à selected)
+ * @param {string} $background-color - Couleur de fond à l'état activé
+ * @param {string} $color - Couleur du texte à l'état activé
+ */
+@mixin state-activated($background-color: null, $color: null) {
+  &.activated,
+  &[aria-expanded="true"] {
+    @if $background-color {
+      background-color: $background-color;
+    }
+    @if $color {
+      color: $color;
+    }
+  }
+}
+
+/**
+ * Mixin pour l'état dragged
+ * @param {string} $background-color - Couleur de fond à l'état glissé
+ * @param {string} $color - Couleur du texte à l'état glissé
+ */
+@mixin state-dragged($background-color: null, $color: null) {
+  &.dragged,
+  &[aria-grabbed="true"] {
+    @if $background-color {
+      background-color: $background-color;
+    }
+    @if $color {
+      color: $color;
+    }
+  }
+}
+
+/**
+ * Mixin pour l'état success
+ * @param {string} $background-color - Couleur de fond à l'état de succès
+ * @param {string} $color - Couleur du texte à l'état de succès
+ * @param {string} $border-color - Couleur de la bordure à l'état de succès
+ */
+@mixin state-success($background-color: null, $color: null, $border-color: tokens.state-color('success')) {
+  &.success,
+  &[aria-invalid="false"] {
+    @if $background-color {
+      background-color: $background-color;
+    }
+    @if $color {
+      color: $color;
+    }
+    @if $border-color {
+      border-color: $border-color;
+    }
+  }
+}
+
+/**
+ * Mixin pour l'état warning
+ * @param {string} $background-color - Couleur de fond à l'état d'avertissement
+ * @param {string} $color - Couleur du texte à l'état d'avertissement
+ * @param {string} $border-color - Couleur de la bordure à l'état d'avertissement
+ */
+@mixin state-warning($background-color: null, $color: null, $border-color: tokens.state-color('warning')) {
+  &.warning {
+    @if $background-color {
+      background-color: $background-color;
+    }
+    @if $color {
+      color: $color;
+    }
+    @if $border-color {
+      border-color: $border-color;
+    }
+  }
+}
+
+/**
+ * Mixin pour l'état info
+ * @param {string} $background-color - Couleur de fond à l'état d'information
+ * @param {string} $color - Couleur du texte à l'état d'information
+ * @param {string} $border-color - Couleur de la bordure à l'état d'information
+ */
+@mixin state-info($background-color: null, $color: null, $border-color: tokens.state-color('info')) {
+  &.info {
+    @if $background-color {
+      background-color: $background-color;
+    }
+    @if $color {
+      color: $color;
+    }
+    @if $border-color {
+      border-color: $border-color;
+    }
+  }
+} 

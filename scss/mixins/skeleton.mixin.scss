@@ -1,0 +1,109 @@
+/**
+ * @fileoverview Mixins pour Skeleton
+ * @description Material Design 3 Expressive – placeholder de chargement
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/skeleton.token' as sk;
+@use '../tokens/motion.token' as motion;
+
+/**
+ * Mixin de base pour le bloc skeleton (fond + forme)
+ */
+@mixin skeleton-base() {
+  display: block;
+  background-color: sk.$skeleton-color-bg;
+  overflow: hidden;
+}
+
+/**
+ * Mixin variant text – ligne de texte
+ */
+@mixin skeleton-variant-text() {
+  min-height: sk.$skeleton-text-height;
+  height: sk.$skeleton-text-height;
+  border-radius: sk.$skeleton-radius-rounded;
+}
+
+/**
+ * Mixin variant circular – cercle (avatar, icône)
+ */
+@mixin skeleton-variant-circular() {
+  border-radius: sk.$skeleton-radius-circular;
+  aspect-ratio: 1;
+}
+
+/**
+ * Mixin variant rectangular – rectangle plat
+ */
+@mixin skeleton-variant-rectangular() {
+  border-radius: sk.$skeleton-radius-rectangular;
+}
+
+/**
+ * Mixin variant rounded – rectangle aux bords arrondis
+ */
+@mixin skeleton-variant-rounded() {
+  border-radius: sk.$skeleton-radius-rounded;
+}
+
+/**
+ * Animation pulse – M3 standard (opacité oscillante)
+ */
+@mixin skeleton-animation-pulse() {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: sk.$skeleton-color-shimmer;
+    opacity: sk.$skeleton-opacity-rest;
+    border-radius: inherit;
+    animation: skeleton-pulse sk.$skeleton-animation-duration sk.$skeleton-animation-easing infinite;
+  }
+}
+
+/**
+ * Animation wave – M3 Expressive (gradient en défilement)
+ */
+@mixin skeleton-animation-wave() {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -50% 0;
+    width: 50%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      sk.$skeleton-color-shimmer,
+      transparent
+    );
+    opacity: 0.4;
+    animation: skeleton-wave sk.$skeleton-wave-duration sk.$skeleton-animation-easing infinite;
+  }
+}
+
+// Keyframes (déclarés au niveau global pour être réutilisables)
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: sk.$skeleton-opacity-rest;
+  }
+  50% {
+    opacity: sk.$skeleton-opacity-peak;
+  }
+}
+
+@keyframes skeleton-wave {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}

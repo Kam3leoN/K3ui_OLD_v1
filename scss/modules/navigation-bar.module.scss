@@ -1,0 +1,145 @@
+/**
+ * @fileoverview Module NavigationBar (Material Design 3 - Bottom Navigation)
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/navigation-bar.token' as tokens;
+@use '../mixins/navigation-bar.mixin' as bar;
+
+.navigation-bar {
+  @include bar.navigation-bar-container;
+
+  &[data-display-mode='portable'] {
+    @media (min-width: 769px) {
+      display: none !important;
+    }
+  }
+
+  &[data-display-mode='desktop'] {
+    @media (max-width: 768px) {
+      display: none !important;
+    }
+  }
+
+  &.no-autoinit {
+    position: relative;
+    inset: auto;
+    left: auto;
+    right: auto;
+    width: 100%;
+    z-index: 1;
+    box-shadow: none;
+  }
+
+  &:not(.no-autoinit) {
+    left: calc(
+      var(--k3ui-rail-inset-left, var(--k3ui-rail-inset-left-default, 0px)) + env(safe-area-inset-left, 0px)
+    ) !important;
+    right: calc(var(--k3ui-rail-inset-right, 0px) + env(safe-area-inset-right, 0px)) !important;
+    width: auto !important;
+    transform: none !important;
+  }
+
+  &__item {
+    @include bar.navigation-bar-item;
+
+    html[data-theme='dark'] &:hover:not(.navigation-bar__item--active) .navigation-bar__pill {
+      background-color: tokens.$navigation-bar-hover-bg-dark;
+    }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme='light']) &:hover:not(.navigation-bar__item--active) .navigation-bar__pill {
+        background-color: tokens.$navigation-bar-hover-bg-dark;
+      }
+    }
+
+    &--active {
+      .navigation-bar__pill {
+        @include bar.navigation-bar-pill--active;
+      }
+      .navigation-bar__label {
+        color: tokens.$navigation-bar-label-active;
+      }
+      .navigation-bar__icon-outlined {
+        display: none;
+      }
+      .navigation-bar__icon-filled {
+        display: block;
+        color: tokens.$navigation-bar-label-active;
+      }
+      .navigation-bar__icon-classic {
+        color: tokens.$navigation-bar-label-active;
+      }
+    }
+
+    &--active.navigation-bar__item--pill-anim .navigation-bar__pill {
+      @include bar.navigation-bar-pill--anim-enter;
+    }
+  }
+
+  &__icon {
+    @include bar.navigation-bar-icon-wrapper;
+  }
+
+  &__pill {
+    @include bar.navigation-bar-pill;
+  }
+
+  &__icon-outlined,
+  &__icon-filled {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: tokens.$navigation-bar-icon-size;
+    height: tokens.$navigation-bar-icon-size;
+    transition: opacity 400ms tokens.$navigation-bar-pill-easing;
+    z-index: 1;
+  }
+
+  &__icon-outlined {
+    display: block;
+    fill: none;
+    stroke: tokens.$navigation-bar-label-inactive;
+    stroke-width: 2;
+  }
+
+  &__icon-filled {
+    display: none;
+    fill: tokens.$navigation-bar-label-active;
+    stroke: none;
+  }
+
+  &__icon-classic {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: tokens.$navigation-bar-icon-size;
+    height: tokens.$navigation-bar-icon-size;
+    color: tokens.$navigation-bar-label-inactive;
+    transition: color 400ms tokens.$navigation-bar-pill-easing;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  &__label {
+    @include bar.navigation-bar-label;
+  }
+}
+
+.navigation-bar-panel,
+.active-page {
+  display: none;
+
+  &.navigation-bar-panel--active,
+  &.show {
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .navigation-bar__label {
+    font-size: 11px;
+  }
+}

@@ -1,0 +1,40 @@
+/**
+ * @fileoverview Tokens Upload pour K3UI
+ * @description Variables de design pour les barres de progression d'upload
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'motion.token' as motion;
+
+// ============================================================================
+// UPLOAD PROGRESS TOKENS
+// ============================================================================
+
+// Hauteurs
+$upload-progress-bar-height: 4px !default;
+$upload-progress-bar-height-large: 8px !default;
+
+// Arrondis
+$upload-progress-bar-radius: var(--md-sys-shape-corner-full) !default;
+
+// Couleurs
+$upload-progress-bg: var(--md-sys-color-surface-container-highest) !default;
+$upload-progress-fill: var(--md-sys-color-primary) !default;
+$upload-progress-fill-success: var(--md-sys-color-tertiary) !default;
+$upload-progress-fill-error: var(--md-sys-color-error) !default;
+
+// Couleurs de texte
+$upload-progress-label-color: var(--md-sys-color-on-surface) !default;
+$upload-progress-stats-color: var(--md-sys-color-on-surface-variant) !default;
+
+// Espacements
+$upload-progress-gap: 0.5rem !default;
+$upload-progress-padding: 1rem !default;
+
+// Transitions
+$upload-progress-transition-duration: 300ms !default;
+$upload-progress-transition-timing: motion.spring-easing(effects, fast) !default;
+
+// Animation
+$upload-progress-animation-duration: 2s !default;

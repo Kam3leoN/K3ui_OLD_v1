@@ -1,0 +1,27 @@
+/// @file button-smart.mixin.scss
+/// @brief Mixins ButtonSmart
+
+@use '../tokens/button-smart.token' as tokens;
+
+/// Applique les tokens CSS custom properties sur l'hôte
+@mixin btn-smart-tokens {
+  --btn-smart-off-bg: #{tokens.$btn-smart-off-bg};
+  --btn-smart-off-icon-bg: #{tokens.$btn-smart-off-icon-bg};
+  --btn-smart-off-fg: #{tokens.$btn-smart-off-fg};
+  --btn-smart-on-bg: #{tokens.$btn-smart-on-bg};
+  --btn-smart-on-icon-bg: #{tokens.$btn-smart-on-icon-bg};
+  --btn-smart-on-icon-fg: #{tokens.$btn-smart-on-icon-fg};
+  --btn-smart-on-fg: #{tokens.$btn-smart-on-fg};
+  --btn-smart-height: #{tokens.$btn-smart-height};
+  --btn-smart-inset: #{tokens.$btn-smart-inset};
+  --btn-smart-icon-size: calc(var(--btn-smart-height) - 2 * var(--btn-smart-inset));
+  --btn-smart-glyph-size: #{tokens.$btn-smart-glyph-size};
+  --btn-smart-radius-off: calc(var(--btn-smart-height) / 2);
+  --btn-smart-radius-on: #{tokens.$btn-smart-radius-on};
+  --btn-smart-fade: #{tokens.$btn-smart-fade};
+  --btn-smart-padding-inline-end: #{tokens.$btn-smart-padding-inline-end};
+  --btn-smart-label-size: #{tokens.$btn-smart-label-size};
+  --btn-smart-subtitle-size: #{tokens.$btn-smart-subtitle-size};
+  --btn-smart-ease: #{tokens.$btn-smart-ease};
+  --btn-smart-duration: #{tokens.$btn-smart-duration};
+}
