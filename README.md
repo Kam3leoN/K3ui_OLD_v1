@@ -109,7 +109,9 @@ Pour utiliser les sources SCSS dans votre build :
 
 ## Documentation
 
-Documentation complète, exemples et API : voir le site de documentation du projet (ou `k3ui-docs` en local).
+Site de documentation (exemples et API) : [https://k3ui-docs.vercel.app](https://k3ui-docs.vercel.app)
+
+En local : dossier `k3ui-docs`.
 
 ## Vie privée / RGPD
 

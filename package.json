@@ -2,6 +2,7 @@
   "name": "k3ui",
   "version": "0.1.0",
   "description": "Librairie UI forkée de material-web, Material You 3, SCSS+TS.",
+  "homepage": "https://k3ui-docs.vercel.app",
   "main": "dist/js/k3ui.js",
   "unpkg": "dist/js/k3ui.min.js",
   "jsdelivr": "dist/js/k3ui.min.js",
