@@ -15,6 +15,11 @@ import { setAriaAttribute } from "../utils/dom/aria";
 import { getDrawerDefaults } from '../specs/components/drawer.specs';
 import { MotionPresets } from '../specs/common/motion-presets.specs';
 import { readMotionSpring } from '../utils/motion/motionSpring';
+import {
+    FLING_THRESHOLD,
+    VelocityTracker,
+    projectFling,
+} from '../utils/motion/gesture-physics';
 
 /**
  * Aligné sur `scss/tokens/drawer.token.scss`.
@@ -83,6 +88,8 @@ export class Drawer extends OpenableComponent<DrawerOptions> {
     private _overlayHideTimer: ReturnType<typeof setTimeout> | null = null;
     /** Timeout démarrage transition opacity overlay */
     private _overlayShowTimer: ReturnType<typeof setTimeout> | null = null;
+    /** Tracker de vitesse du geste (px/s) — seuil fling M3 = 500 */
+    private _velocityTracker = new VelocityTracker();
 
     constructor(el: HTMLElement, options: Partial<DrawerOptions> = {}) {
         super(el, options, toComponentClassDef(Drawer));
@@ -267,6 +274,8 @@ export class Drawer extends OpenableComponent<DrawerOptions> {
         this._overlay.style.display = 'block';
         this._initialScrollTop = this.isOpen ? this.el.scrollTop : mouseUtils.getDocumentScrollTop();
         this._verticallyScrolling = false;
+        this._velocityTracker.reset();
+        this._velocityTracker.add(clientX, e.timeStamp || performance.now());
     }
 
     private _dragMoveUpdate(e: TouchEvent): void {
@@ -274,12 +283,21 @@ export class Drawer extends OpenableComponent<DrawerOptions> {
         const currentScrollTop = this.isOpen ? this.el.scrollTop : mouseUtils.getDocumentScrollTop();
         this.deltaX = Math.abs(this._xPos - clientX);
         this._xPos = clientX;
-        this.velocityX = this.deltaX / (Date.now() - this._time);
+        this._velocityTracker.add(clientX, e.timeStamp || performance.now());
+        // Conservé pour compat : px/ms approximatif ; le fling utilise le tracker (px/s).
+        this.velocityX = this.deltaX / Math.max(1, Date.now() - this._time);
         this._time = Date.now();
 
         if (this._initialScrollTop !== currentScrollTop) {
             this._verticallyScrolling = true;
         }
+    }
+
+    /**
+     * Sens de sortie hors écran (left = -1, right = +1) pour normaliser le fling.
+     */
+    private _dirX(): 1 | -1 {
+        return this.options.edge === 'right' ? 1 : -1;
     }
 
     private _handleDragTargetDrag = (e: TouchEvent): void => {
@@ -307,7 +325,9 @@ export class Drawer extends OpenableComponent<DrawerOptions> {
 
     private _handleDragTargetRelease = (): void => {
         if (this.isDragged) {
-            if (this.percentOpen > 0.2) {
+            // Fling d'ouverture : vitesse vers l'intérieur OU position > 20 %.
+            const openVelocity = -this._velocityTracker.velocity * this._dirX();
+            if (openVelocity > FLING_THRESHOLD || this.percentOpen > 0.2) {
                 this.open();
             } else {
                 this._animateDrawerOut();
@@ -350,10 +370,19 @@ export class Drawer extends OpenableComponent<DrawerOptions> {
 
     private _handleCloseRelease = (): void => {
         if (this.isOpen && this.isDragged) {
-            if (this.percentOpen > 0.8) {
-                this._animateDrawerIn();
-            } else {
+            // Fling M3 (> 500 px/s) ou projection > 40 % de largeur, sinon seuil 0.8 historique.
+            const closeVelocity = this._velocityTracker.velocity * this._dirX();
+            const offsetClosed = (1 - this.percentOpen) * this._width;
+            const projected = projectFling(offsetClosed, closeVelocity);
+
+            if (
+                closeVelocity > FLING_THRESHOLD ||
+                projected > this._width * 0.4 ||
+                this.percentOpen <= 0.8
+            ) {
                 this.close();
+            } else {
+                this._animateDrawerIn();
             }
             this.isDragged = false;
             this._verticallyScrolling = false;

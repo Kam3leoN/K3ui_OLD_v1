@@ -1,0 +1,85 @@
+/**
+ * @fileoverview Module IndexList
+ * @description Annuaire avec en-têtes sticky push et rail de navigation
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/index-list.token' as il;
+@use '../mixins/index-list.mixin' as il-mixin;
+
+.index-list,
+k3ui-index-list {
+  display: flex;
+  position: relative;
+  width: 100%;
+  gap: 8px;
+
+  &__content {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-height: il.$index-list-content-max-height;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    background: var(--md-sys-color-surface);
+    --k3ui-field-outlined-notch-bg: var(--md-sys-color-surface);
+    border-radius: var(--md-sys-shape-corner-medium, 12px);
+  }
+
+  &__section {
+    margin: 0;
+  }
+
+  &__header {
+    @include il-mixin.index-list-header;
+  }
+
+  &--sticky &__header {
+    z-index: il.$index-list-header-z-base;
+  }
+
+  &__items {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    @include il-mixin.index-list-item;
+  }
+
+  &__rail {
+    flex: 0 0 il.$index-list-rail-width;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    padding: 8px 0;
+    z-index: il.$index-list-rail-z;
+    user-select: none;
+    touch-action: none;
+  }
+
+  &__rail-item {
+    @include il-mixin.index-list-rail-item;
+  }
+
+  &--rail-open &__rail {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: var(--md-sys-color-surface-container-high);
+    --k3ui-field-outlined-notch-bg: var(--md-sys-color-surface-container-high);
+    border-radius: var(--md-sys-shape-corner-medium, 12px) 0 0 var(--md-sys-shape-corner-medium, 12px);
+    box-shadow: var(--md-sys-elevation-level2, 0 2px 6px rgba(0, 0, 0, 0.15));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__rail-item {
+      transition: none;
+    }
+  }
+}

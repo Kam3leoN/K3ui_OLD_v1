@@ -65,6 +65,12 @@ export const enUS: Translations = {
     openDrawer: 'Open table of contents',
     closeDrawer: 'Close table of contents',
   },
+  indexList: {
+    railAriaLabel: 'Alphabetical index',
+    sectionJump: 'Go to section {key}',
+    sectionActive: 'Active section',
+    sectionEmpty: 'Empty section',
+  },
   pagination: {
     firstPage: 'First page',
     lastPage: 'Last page',

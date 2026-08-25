@@ -216,6 +216,14 @@
   }
 }
 
+/**
+ * Largeur pleine : outrepassé le plafond M3 640 dp (opt-in développeur).
+ */
+.sheet.sheet--full-width.sheet--bottom,
+.sheet.sheet--full-width.sheet--top {
+  max-width: 100%;
+}
+
 .sheet--elevated {
   box-shadow: tokens.$md-sys-sheet-elevation-hover;
 }

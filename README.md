@@ -4,16 +4,16 @@ Librairie UI basée sur Material You 3 (Material Design 3), SCSS + TypeScript. C
 
 ## Installation
 
-```bash
-npm install k3ui
-```
+Le paquet n’est **pas encore** publié sur npm : `npm install k3ui` et les CDN jsDelivr / unpkg échouent (404) tant qu’il n’y a pas de `npm publish`.
 
-Ou chargement direct du script (CDN) :
+Pour l’instant, copiez `dist/css/` et `dist/js/` (le `.min.js` est un module ES, avec ses chunks) :
 
 ```html
-<link rel="stylesheet" href="https://unpkg.com/k3ui/dist/css/k3ui.min.css" />
-<script src="https://unpkg.com/k3ui/dist/js/k3ui.min.js"></script>
+<link rel="stylesheet" href="css/k3ui.min.css" />
+<script type="module" src="js/k3ui.min.js"></script>
 ```
+
+Documentation : [k3ui-docs.vercel.app](https://k3ui-docs.vercel.app/getting-started.php)
 
 ## Usage minimal
 

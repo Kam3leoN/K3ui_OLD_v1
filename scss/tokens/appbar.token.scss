@@ -85,5 +85,29 @@ $appbar-hide-duration: var(--md-sys-motion-spatial-fast-duration, #{motion.sprin
 $appbar-hide-easing: var(--md-sys-motion-spatial-fast-easing, #{motion.spring-easing(spatial, fast)}) !default;
 
 $appbar-elevation-rest: var(--md-sys-elevation-level0, none) !default;
-$appbar-elevation-scrolled: var(--md-sys-elevation-level1, 0 1px 2px rgba(0, 0, 0, 0.3)) !default;
+$appbar-elevation-scrolled: var(--md-sys-elevation-level0, none) !default;
+
+// ============================================================================
+// GLASS — barre sticky translucide + blur (pattern next-gen)
+// ============================================================================
+
+$appbar-glass-blur: 20px !default;
+$appbar-glass-saturate: 1.65 !default;
+$appbar-glass-bg: color-mix(
+  in srgb,
+  var(--md-sys-color-surface, var(--k3ui-color-surface, #fffbfe)) 68%,
+  transparent
+) !default;
+$appbar-glass-bg-scrolled: color-mix(
+  in srgb,
+  var(--md-sys-color-surface, var(--k3ui-color-surface, #fffbfe)) 82%,
+  transparent
+) !default;
+$appbar-glass-border: color-mix(
+  in srgb,
+  var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.14)) 55%,
+  transparent
+) !default;
+/* Encoche Field : opaque (le glass ne peut pas masquer proprement) */
+$appbar-glass-notch-bg: var(--md-sys-color-surface, var(--k3ui-color-surface, #fffbfe)) !default;
 

@@ -47,6 +47,7 @@ import { Quote } from '../../components/Quote';
 import { Radio } from '../../components/Radio';
 import { Tile } from '../../components/Tile';
 import { ScrollSpy } from '../../components/ScrollSpy';
+import { IndexList } from '../../components/IndexList';
 import { ScrollToTop } from '../../components/ScrollToTop';
 import { Select } from '../../components/Select';
 import { Shape } from '../../components/Shape';
@@ -127,6 +128,7 @@ const INIT_FN_BY_NAME: Record<string, ComponentInitFn> = {
     Radio: toComponentInitFn(Radio),
     Tile: toComponentInitFn(Tile),
     ScrollSpy: toComponentInitFn(ScrollSpy),
+    IndexList: toComponentInitFn(IndexList),
     ScrollToTop: toComponentInitFn(ScrollToTop),
     Select: toComponentInitFn(Select),
     Shape: toComponentInitFn(Shape),

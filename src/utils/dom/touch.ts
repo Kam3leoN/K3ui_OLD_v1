@@ -54,12 +54,14 @@ interface SwipeData {
 // ============================================================================
 
 /**
- * Gestionnaire d'événements tactiles unifié
+ * Gestionnaire d'événements tactiles unifié.
+ * Ne bloque jamais le scroll/taps par défaut (preventDefault opt-in).
  */
 export class Touch {
     private _target: HTMLElement | Document;
     private _enabled: boolean;
     private _capture: boolean;
+    private _preventDefault: boolean;
     private _swipeThreshold: number;
     private _swipeTimeout: number;
     private _longTapDelay: number;
@@ -77,10 +79,17 @@ export class Touch {
 
     private _callbacks: TouchCallbacks;
 
+    private readonly _boundStart: (event: TouchEvent) => void;
+    private readonly _boundMove: (event: TouchEvent) => void;
+    private readonly _boundEnd: (event: TouchEvent) => void;
+    private readonly _boundCancel: (event: TouchEvent) => void;
+
     constructor(options: TouchOptions & TouchCallbacks = {}) {
         this._target = options.target || document;
-        this._enabled = options.enabled ?? true;
+        // Désactivé par défaut : une instance document + enabled:true figeait tout le tactile mobile
+        this._enabled = options.enabled ?? false;
         this._capture = options.capture ?? false;
+        this._preventDefault = options.preventDefault ?? false;
         this._swipeThreshold = options.swipeThreshold ?? 50;
         this._swipeTimeout = options.swipeTimeout ?? 500;
         this._longTapDelay = options.longTapDelay ?? 500;
@@ -95,6 +104,11 @@ export class Touch {
             onRotate: options.onRotate || null
         };
 
+        this._boundStart = this.handleTouchStart.bind(this);
+        this._boundMove = this.handleTouchMove.bind(this);
+        this._boundEnd = this.handleTouchEnd.bind(this);
+        this._boundCancel = this.handleTouchCancel.bind(this);
+
         if (this._enabled) {
             this.attachEvents();
         }
@@ -104,42 +118,51 @@ export class Touch {
      * Attache les événements tactiles
      */
     private attachEvents(): void {
-        // Ne pas attacher les événements tactiles si l'appareil ne les supporte pas
         if (!isTouchDevice()) {
             return;
         }
 
-        this._target.addEventListener('touchstart', this.handleTouchStart.bind(this) as EventListener, { capture: this._capture, passive: false });
-        this._target.addEventListener('touchmove', this.handleTouchMove.bind(this) as EventListener, { capture: this._capture, passive: false });
-        this._target.addEventListener('touchend', this.handleTouchEnd.bind(this) as EventListener, { capture: this._capture, passive: false });
-        this._target.addEventListener('touchcancel', this.handleTouchCancel.bind(this) as EventListener, { capture: this._capture, passive: false });
+        const opts: AddEventListenerOptions = {
+            capture: this._capture,
+            // passive tant qu'on ne preventDefault pas — sinon Chrome Android bloque le scroll
+            passive: !this._preventDefault,
+        };
+
+        this._target.addEventListener('touchstart', this._boundStart as EventListener, opts);
+        this._target.addEventListener('touchmove', this._boundMove as EventListener, opts);
+        this._target.addEventListener('touchend', this._boundEnd as EventListener, opts);
+        this._target.addEventListener('touchcancel', this._boundCancel as EventListener, opts);
     }
 
     /**
      * Détache les événements tactiles
      */
     private detachEvents(): void {
-        // Ne pas détacher les événements tactiles si l'appareil ne les supporte pas
         if (!isTouchDevice()) {
             return;
         }
 
-        this._target.removeEventListener('touchstart', this.handleTouchStart.bind(this) as EventListener, this._capture);
-        this._target.removeEventListener('touchmove', this.handleTouchMove.bind(this) as EventListener, this._capture);
-        this._target.removeEventListener('touchend', this.handleTouchEnd.bind(this) as EventListener, this._capture);
-        this._target.removeEventListener('touchcancel', this.handleTouchCancel.bind(this) as EventListener, this._capture);
+        this._target.removeEventListener('touchstart', this._boundStart as EventListener, this._capture);
+        this._target.removeEventListener('touchmove', this._boundMove as EventListener, this._capture);
+        this._target.removeEventListener('touchend', this._boundEnd as EventListener, this._capture);
+        this._target.removeEventListener('touchcancel', this._boundCancel as EventListener, this._capture);
+    }
+
+    private maybePreventDefault(event: TouchEvent): void {
+        if (this._preventDefault) {
+            event.preventDefault();
+        }
     }
 
     /**
      * Gère l'événement touchstart
      */
     private handleTouchStart(event: TouchEvent): void {
-        event.preventDefault();
+        this.maybePreventDefault(event);
 
         const currentTime = Date.now();
         this._state.isMultiTouch = event.touches.length > 1;
 
-        // Traiter chaque nouveau point tactile
         for (let i = 0; i < event.touches.length; i++) {
             const touch = event.touches[i];
 
@@ -157,15 +180,13 @@ export class Touch {
             }
         }
 
-        // Gestion du swipe (premier touch seulement)
         if (event.touches.length === 1) {
             const touch = event.touches[0];
             this._state.swipeStartTime = currentTime;
             this._state.swipeStartX = touch.clientX;
             this._state.swipeStartY = touch.clientY;
 
-            // Démarrer le timer de tap long
-            this._state.longTapTimer = setTimeout(() => {
+            this._state.longTapTimer = window.setTimeout(() => {
                 const touchPoint = this._state.touches.get(touch.identifier);
                 if (touchPoint && !this._state.isMultiTouch) {
                     this._callbacks.onLongTap?.(event, touchPoint.currentX, touchPoint.currentY, this._longTapDelay);
@@ -173,7 +194,6 @@ export class Touch {
             }, this._longTapDelay);
         }
 
-        // Gestion multi-touch (pinch/rotate)
         if (this._state.isMultiTouch && event.touches.length === 2) {
             this.handleMultiTouchStart(event);
         }
@@ -183,9 +203,8 @@ export class Touch {
      * Gère l'événement touchmove
      */
     private handleTouchMove(event: TouchEvent): void {
-        event.preventDefault();
+        this.maybePreventDefault(event);
 
-        // Mettre à jour les positions des touches
         for (let i = 0; i < event.touches.length; i++) {
             const touch = event.touches[i];
             const touchPoint = this._state.touches.get(touch.identifier);
@@ -196,7 +215,6 @@ export class Touch {
             }
         }
 
-        // Gestion multi-touch
         if (this._state.isMultiTouch && event.touches.length === 2) {
             this.handleMultiTouchMove(event);
         }
@@ -206,42 +224,35 @@ export class Touch {
      * Gère l'événement touchend
      */
     private handleTouchEnd(event: TouchEvent): void {
-        event.preventDefault();
+        this.maybePreventDefault(event);
 
         const currentTime = Date.now();
 
-        // Nettoyer le timer de tap long
         if (this._state.longTapTimer) {
             clearTimeout(this._state.longTapTimer);
             this._state.longTapTimer = undefined;
         }
 
-        // Traiter les touches terminées
         for (let i = 0; i < event.changedTouches.length; i++) {
             const touch = event.changedTouches[i];
             const touchPoint = this._state.touches.get(touch.identifier);
 
             if (touchPoint) {
-                // Calculer la distance parcourue
                 const deltaX = touchPoint.currentX - touchPoint.startX;
                 const deltaY = touchPoint.currentY - touchPoint.startY;
                 const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
                 const duration = currentTime - touchPoint.startTime;
 
-                // Déterminer si c'est un swipe
                 if (distance > this._swipeThreshold && duration < this._swipeTimeout && !this._state.isMultiTouch) {
                     const swipeData = this.calculateSwipeData(deltaX, deltaY, distance, duration);
                     this._callbacks.onSwipe?.(event, swipeData.direction, swipeData.distance, swipeData.velocity);
                 } else if (distance < this._tapThreshold && duration < this._swipeTimeout && !this._state.isMultiTouch) {
-                    // C'est un tap
                     const timeSinceLastTap = currentTime - this._state.lastTapTime;
 
                     if (timeSinceLastTap < 300 && this._state.tapCount === 1) {
-                        // Double tap
                         this._callbacks.onDoubleTap?.(event, touchPoint.currentX, touchPoint.currentY);
                         this._state.tapCount = 0;
                     } else {
-                        // Tap simple
                         this._callbacks.onTap?.(event, touchPoint.currentX, touchPoint.currentY);
                         this._state.tapCount = 1;
                     }
@@ -249,12 +260,10 @@ export class Touch {
                     this._state.lastTapTime = currentTime;
                 }
 
-                // Supprimer la touche
                 this._state.touches.delete(touch.identifier);
             }
         }
 
-        // Réinitialiser l'état multi-touch si plus de touches
         if (event.touches.length === 0) {
             this._state.isMultiTouch = false;
         }
@@ -264,19 +273,16 @@ export class Touch {
      * Gère l'événement touchcancel
      */
     private handleTouchCancel(event: TouchEvent): void {
-        // Nettoyer le timer de tap long
         if (this._state.longTapTimer) {
             clearTimeout(this._state.longTapTimer);
             this._state.longTapTimer = undefined;
         }
 
-        // Supprimer toutes les touches annulées
         for (let i = 0; i < event.changedTouches.length; i++) {
             const touch = event.changedTouches[i];
             this._state.touches.delete(touch.identifier);
         }
 
-        // Réinitialiser l'état multi-touch si plus de touches
         if (event.touches.length === 0) {
             this._state.isMultiTouch = false;
         }
@@ -285,9 +291,8 @@ export class Touch {
     /**
      * Gère le début du multi-touch
      */
-    private handleMultiTouchStart(event: TouchEvent): void {
-        // Initialiser les données de pinch/rotate si nécessaire
-        // Cette fonction peut être étendue pour gérer des gestes plus complexes
+    private handleMultiTouchStart(_event: TouchEvent): void {
+        // Réservé pinch/rotate avancés
     }
 
     /**
@@ -298,23 +303,19 @@ export class Touch {
             const touch1 = event.touches[0];
             const touch2 = event.touches[1];
 
-            // Calculer la distance entre les deux touches
             const distance = Math.sqrt(
                 Math.pow(touch2.clientX - touch1.clientX, 2) +
                 Math.pow(touch2.clientY - touch1.clientY, 2)
             );
 
-            // Calculer le centre
             const centerX = (touch1.clientX + touch2.clientX) / 2;
             const centerY = (touch1.clientY + touch2.clientY) / 2;
 
-            // Calculer l'angle
             const angle = Math.atan2(
                 touch2.clientY - touch1.clientY,
                 touch2.clientX - touch1.clientX
             );
 
-            // Appeler les callbacks appropriés
             this._callbacks.onPinch?.(event, distance, centerX, centerY);
             this._callbacks.onRotate?.(event, angle, centerX, centerY);
         }
@@ -361,14 +362,19 @@ export class Touch {
      * Met à jour les options
      */
     updateOptions(options: Partial<TouchOptions & TouchCallbacks>): void {
+        const wasEnabled = this._enabled;
+        if (wasEnabled) {
+            this.detachEvents();
+        }
+
         if (options.target !== undefined) {
             this._target = options.target;
         }
-        if (options.enabled !== undefined) {
-            this.setEnabled(options.enabled);
-        }
         if (options.capture !== undefined) {
             this._capture = options.capture;
+        }
+        if (options.preventDefault !== undefined) {
+            this._preventDefault = options.preventDefault;
         }
         if (options.swipeThreshold !== undefined) {
             this._swipeThreshold = options.swipeThreshold;
@@ -383,8 +389,17 @@ export class Touch {
             this._tapThreshold = options.tapThreshold;
         }
 
-        // Mettre à jour les callbacks
         Object.assign(this._callbacks, options);
+
+        if (options.enabled !== undefined) {
+            this._enabled = options.enabled;
+        }
+
+        if (this._enabled) {
+            this.attachEvents();
+        } else if (wasEnabled) {
+            this.resetState();
+        }
     }
 
     /**
@@ -458,9 +473,11 @@ export class Touch {
 // ============================================================================
 
 /**
- * Instance globale du gestionnaire tactile
+ * Instance globale désactivée : ne jamais écouter document au chargement du bundle
+ * (sinon preventDefault touch bloque scroll/FAB/nav sur Android).
+ * Activer explicitement : `touch.setEnabled(true)` + target dédié via `updateOptions`.
  */
-export const touch = new Touch();
+export const touch = new Touch({ enabled: false, preventDefault: false });
 
 /**
  * Fonctions utilitaires pour compatibilité avec utils.ts

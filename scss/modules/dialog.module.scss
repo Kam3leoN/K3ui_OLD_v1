@@ -42,6 +42,8 @@ k3ui-dialog {
   --dialog-scrollbar-gutter: #{dialog.$dialog-scrollbar-gutter};
   --dialog-spatial: 1;
   --dialog-effects: 1;
+  /* Fallback CSS si le JS n’a pas encore posé le z-index inline — au-dessus du rail */
+  z-index: dialog.$dialog-z-index;
 
   // --------------------------------------------------------------------------
   // Animation M3 — option composant `animation: expressive | spatial`
@@ -553,12 +555,12 @@ k3ui-dialog {
 // ÉTATS SPÉCIAUX
 // ============================================================================
 
-// État de scroll lock
+// État de scroll lock — AppBar reste sous le scrim Dialog (2000)
 .noscroll {
   .appbar--top,
   .appbar--bottom {
     position: fixed !important;
-    z-index: 1000 !important;
+    z-index: var(--md-sys-zindex-appbar, 500) !important;
   }
 }
 

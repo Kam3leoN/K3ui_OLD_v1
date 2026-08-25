@@ -12,7 +12,7 @@ import type { NavigationRailOptions } from '../types/components';
 import { PriorityLevel } from '../types/base';
 import { setAriaAttributes, setAriaAttribute, removeAriaAttribute } from '../utils/dom/aria';
 import { generateGuid } from '../utils/helpers/guid';
-import { LoggerManager, LocaleManager, IconManager, ScrollbarManager } from '../core/managers';
+import { LoggerManager, LocaleManager, IconManager, ScrollbarManager, Keyboard } from '../core/managers';
 import type { ScrollbarHandle } from '../core/managers/ScrollbarManager';
 import { ManagerFactory } from '../core/factories/ManagerFactory';
 import { getNavigationRailDefaults } from '../specs/components/navigation-rail.specs';
@@ -20,6 +20,10 @@ import { NavigationRailSpecs } from '../specs/components/navigation-rail.specs';
 import { requestFloatingChromeSync } from '../utils/fab';
 
 const _defaults: NavigationRailOptions = getNavigationRailDefaults();
+const BODY_MODAL_OPEN_CLASS = 'navigation-rail-modal-open';
+const OVERLAY_CLASS = 'navigation-rail-overlay';
+const EXPAND_MODAL_CLASS = 'navigation-rail--expand-modal';
+const EXPAND_PUSH_CLASS = 'navigation-rail--expand-push';
 
 /**
  * Classe NavigationRail — MD3 Expressive Wide Navigation Rail
@@ -44,6 +48,9 @@ export class NavigationRail extends Component<NavigationRailOptions> {
     private footerEl: HTMLElement | null = null;
     private mainEl: HTMLElement | null = null;
     private scrollbarHandle: ScrollbarHandle | null = null;
+    private overlayEl: HTMLElement | null = null;
+    private overlayCleanup: (() => void) | null = null;
+    private modalKeyboard: Keyboard | null = null;
 
     static get defaults(): NavigationRailOptions {
         return { ..._defaults };
@@ -73,6 +80,12 @@ export class NavigationRail extends Component<NavigationRailOptions> {
         if (el.hasAttribute('data-expanded')) {
             this.options.expanded = el.getAttribute('data-expanded') !== 'false' && el.getAttribute('data-expanded') !== '0';
         }
+        if (el.hasAttribute('data-expand-mode')) {
+            const mode = el.getAttribute('data-expand-mode');
+            if (mode === 'modal' || mode === 'push') {
+                this.options.expandMode = mode;
+            }
+        }
 
         if (!this.options.id) this.options.id = generateGuid();
         el.id = el.id || this.options.id;
@@ -81,12 +94,19 @@ export class NavigationRail extends Component<NavigationRailOptions> {
         this.init();
     }
 
+    private isModalExpand(): boolean {
+        return this.options.expandMode === 'modal';
+    }
+
     private init(): void {
         this.resolveStructure();
         this.ensureFooterStructure();
         this.ensureMainGroupStructure();
         this.resolveStructure();
         this.el.classList.toggle('navigation-rail--border', this.options.border === true);
+        this.el.classList.toggle(EXPAND_MODAL_CLASS, this.isModalExpand());
+        this.el.classList.toggle(EXPAND_PUSH_CLASS, !this.isModalExpand());
+        this.el.setAttribute('data-expand-mode', this.isModalExpand() ? 'modal' : 'push');
         if (this.items.length === 0) {
             this.logger.warn('NavigationRail: aucun .navigation-rail__item trouvé');
             return;
@@ -107,33 +127,37 @@ export class NavigationRail extends Component<NavigationRailOptions> {
      * M3 WideNavigationRail : le mode layout change immédiatement ; la largeur
      * morph avec spatial-default. Les items (icône top→start, pill 56×32→capsule)
      * suivent la même courbe — pas de snap en fin d’anim.
+     * Mode `modal` : pas de push (padding reste collapsed) + scrim.
      */
     private applyExpanded(animate = true): void {
         const expanding = this.options.expanded;
+        const modal = this.isModalExpand();
         const widthCollapsed = `${NavigationRailSpecs.dimensions.widthCollapsed}px`;
         const widthExpanded = `${NavigationRailSpecs.dimensions.widthExpanded}px`;
         const targetWidth = expanding ? widthExpanded : widthCollapsed;
+        /* En modal, le flux garde toujours la largeur collapsed (pas de push). */
+        const flowWidth = modal ? widthCollapsed : targetWidth;
         const durationMs = expanding
             ? NavigationRailSpecs.dimensions.expandDurationMs
             : NavigationRailSpecs.dimensions.collapseDurationMs;
 
-        const syncRailWidthVars = (): void => {
-            this.el.style.setProperty('--k3-navigation-rail-width', targetWidth);
+        const syncRailWidthVars = (widthForRail: string, widthForFlow: string): void => {
+            this.el.style.setProperty('--k3-navigation-rail-width', widthForRail);
             const container = this.el.closest('.navigation-rail-container');
             if (container instanceof HTMLElement) {
-                container.style.setProperty('--k3-navigation-rail-width', targetWidth);
+                container.style.setProperty('--k3-navigation-rail-width', widthForFlow);
                 /* Padding explicite : évite le bug Chrome où transition sur
                  * padding-inline-start: var(--x) reste bloqué à l’ancienne valeur. */
-                container.style.paddingInlineStart = targetWidth;
+                container.style.paddingInlineStart = widthForFlow;
             }
             const leadingPane = this.el.closest(
                 '.leading-pane, k3ui-panel-content.panel-content--leading, k3ui-content-pane.content-pane--leading'
             );
             if (leadingPane instanceof HTMLElement) {
-                leadingPane.style.setProperty('--k3-navigation-rail-width', targetWidth);
-                leadingPane.style.setProperty('--docs-leading-width', targetWidth);
-                leadingPane.classList.toggle('leading-pane--rail-collapsing', !expanding);
-                leadingPane.classList.toggle('leading-pane--rail-expanding', expanding);
+                leadingPane.style.setProperty('--k3-navigation-rail-width', widthForFlow);
+                leadingPane.style.setProperty('--docs-leading-width', widthForFlow);
+                leadingPane.classList.toggle('leading-pane--rail-collapsing', !expanding && !modal);
+                leadingPane.classList.toggle('leading-pane--rail-expanding', expanding && !modal);
             }
         };
 
@@ -149,19 +173,16 @@ export class NavigationRail extends Component<NavigationRailOptions> {
 
         this.el.classList.remove('navigation-rail--expanding', 'navigation-rail--collapsing');
         this.el.setAttribute('data-expanded', String(expanding));
-        /* Layout immédiat (icon ahead of label / stacked) — morph CSS en parallèle de la largeur */
         this.el.classList.toggle('navigation-rail--expanded', expanding);
         syncToggleAria();
+        this.syncModalChrome(expanding, animate);
+        /* Flux (push/modal) immédiat — le morph largeur du rail peut suivre au frame suivant */
+        syncRailWidthVars(targetWidth, flowWidth);
 
         if (!animate) {
             this.el.classList.add('navigation-rail--no-motion');
             this.el.classList.remove('navigation-rail--animating');
-            syncRailWidthVars();
             requestFloatingChromeSync();
-            /*
-             * Un seul rAF : retirer no-motion après paint sans double frame
-             * (évite un flash de transitions icônes / layout au changement de page).
-             */
             requestAnimationFrame(() => {
                 this.el.classList.remove('navigation-rail--no-motion');
                 this.scrollbarHandle?.refresh();
@@ -175,16 +196,15 @@ export class NavigationRail extends Component<NavigationRailOptions> {
             'navigation-rail--animating'
         );
 
-        /* Double rAF : peindre le layout cible avant de lancer la transition de largeur */
+        requestAnimationFrame(() => {
+            if (seq !== this.expandSeq) return;
             requestAnimationFrame(() => {
                 if (seq !== this.expandSeq) return;
-                requestAnimationFrame(() => {
-                    if (seq !== this.expandSeq) return;
-                    syncRailWidthVars();
-                    requestFloatingChromeSync();
-                    this.startChromeSyncLoop(durationMs);
-                });
+                syncRailWidthVars(targetWidth, flowWidth);
+                requestFloatingChromeSync();
+                this.startChromeSyncLoop(durationMs);
             });
+        });
 
         this.expandAnimTimer = setTimeout(() => {
             if (seq !== this.expandSeq) return;
@@ -209,6 +229,108 @@ export class NavigationRail extends Component<NavigationRailOptions> {
                 this.options.onCloseEnd?.(this.el);
             }
         }, durationMs);
+    }
+
+    /**
+     * Scrim + scroll-lock + Escape — uniquement en expandMode modal.
+     */
+    private syncModalChrome(expanded: boolean, animate: boolean): void {
+        if (!this.isModalExpand()) {
+            this.teardownModalChrome();
+            return;
+        }
+
+        if (expanded) {
+            this.ensureOverlay();
+            this.showOverlay(animate);
+            if (this.options.preventScrolling) {
+                document.body.classList.add(BODY_MODAL_OPEN_CLASS);
+            }
+            this.bindModalEscape();
+        } else {
+            this.hideOverlay(animate);
+            document.body.classList.remove(BODY_MODAL_OPEN_CLASS);
+            this.unbindModalEscape();
+        }
+    }
+
+    private ensureOverlay(): void {
+        if (this.overlayEl) return;
+        const overlay = document.createElement('div');
+        overlay.className = OVERLAY_CLASS;
+        overlay.setAttribute('aria-hidden', 'true');
+        const opacity = Math.min(1, Math.max(0, Number(this.options.overlayOpacity) || 0.32));
+        overlay.style.setProperty('--navigation-rail-overlay-opacity', String(opacity));
+        document.body.appendChild(overlay);
+        this.overlayEl = overlay;
+
+        if (this.options.dismissible !== false) {
+            this.overlayCleanup = this.registerEvent(overlay, 'click', () => {
+                this.setExpanded(false);
+            });
+        }
+    }
+
+    private showOverlay(animate: boolean): void {
+        if (!this.overlayEl) return;
+        this.overlayEl.style.display = 'block';
+        if (!animate) {
+            this.overlayEl.classList.add('is-visible');
+            return;
+        }
+        this.overlayEl.classList.remove('is-visible');
+        void this.overlayEl.offsetWidth;
+        requestAnimationFrame(() => {
+            this.overlayEl?.classList.add('is-visible');
+        });
+    }
+
+    private hideOverlay(animate: boolean): void {
+        if (!this.overlayEl) return;
+        const overlay = this.overlayEl;
+        overlay.classList.remove('is-visible');
+        if (!animate) {
+            overlay.style.display = 'none';
+            return;
+        }
+        window.setTimeout(() => {
+            if (!this.options.expanded && this.overlayEl === overlay) {
+                overlay.style.display = 'none';
+            }
+        }, NavigationRailSpecs.dimensions.collapseDurationMs);
+    }
+
+    private bindModalEscape(): void {
+        if (this.modalKeyboard || this.options.dismissible === false) return;
+        this.modalKeyboard = new Keyboard({
+            target: document,
+            enabled: true,
+            ignoreSystemKeys: false,
+            onKeyDown: (_event: KeyboardEvent, key: string) => {
+                if (key !== 'Escape') return;
+                if (!this.options.expanded || !this.isModalExpand()) return;
+                this.setExpanded(false);
+            },
+        });
+    }
+
+    private unbindModalEscape(): void {
+        if (!this.modalKeyboard) return;
+        this.modalKeyboard.destroy?.();
+        this.modalKeyboard = null;
+    }
+
+    private teardownModalChrome(): void {
+        this.unbindModalEscape();
+        document.body.classList.remove(BODY_MODAL_OPEN_CLASS);
+        if (this.overlayCleanup) {
+            this.overlayCleanup();
+            this.overlayCleanup = null;
+        }
+        if (this.overlayEl) {
+            this.overlayEl.remove();
+            this.overlayEl = null;
+        }
     }
 
     private clearExpandTimers(): void {
@@ -633,14 +755,23 @@ export class NavigationRail extends Component<NavigationRailOptions> {
 
         this.options.expanded = expanded;
         this.applyExpanded();
+        this.options.onToggleExpand?.(expanded, this);
     }
 
     getExpanded(): boolean {
         return this.options.expanded;
     }
 
+    /**
+     * Mode d’expansion actuel (`push` | `modal`).
+     */
+    getExpandMode(): 'push' | 'modal' {
+        return this.isModalExpand() ? 'modal' : 'push';
+    }
+
     public override destroy(): void {
         this.clearExpandTimers();
+        this.teardownModalChrome();
         this.teardownItemsScrollbar();
         if (this.pillAnimTimer !== null) {
             clearTimeout(this.pillAnimTimer);

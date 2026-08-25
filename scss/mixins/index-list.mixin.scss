@@ -1,0 +1,82 @@
+/**
+ * @fileoverview Mixins pour IndexList
+ * @description Mixins Material Design 3 pour l'annuaire
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use '../tokens/index-list.token' as il;
+
+/**
+ * En-tête sticky de section
+ */
+@mixin index-list-header {
+  position: sticky;
+  top: var(--k3ui-index-list-sticky-offset, #{il.$index-list-sticky-offset-default}px);
+  display: flex;
+  align-items: center;
+  min-height: il.$index-list-header-height;
+  padding: 0 il.$index-list-header-padding-x;
+  margin: 0;
+  font-size: il.$index-list-header-font-size;
+  line-height: il.$index-list-header-line-height;
+  font-weight: il.$index-list-header-weight;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: il.$index-list-header-color;
+  background: il.$index-list-header-bg;
+  --k3ui-field-outlined-notch-bg: #{il.$index-list-header-bg};
+  border-bottom: 1px solid il.$index-list-divider;
+}
+
+/**
+ * Item de liste annuaire
+ */
+@mixin index-list-item {
+  display: flex;
+  align-items: center;
+  min-height: il.$index-list-item-min-height;
+  padding: il.$index-list-item-padding-y il.$index-list-item-padding-x;
+  font-size: il.$index-list-item-font-size;
+  line-height: il.$index-list-item-line-height;
+  color: il.$index-list-item-color;
+  border-bottom: 1px solid il.$index-list-divider;
+}
+
+/**
+ * Lien du rail latéral
+ */
+@mixin index-list-rail-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: il.$index-list-rail-width;
+  min-height: il.$index-list-rail-item-size;
+  padding: 2px 0;
+  font-size: il.$index-list-rail-font-size;
+  font-weight: il.$index-list-rail-weight;
+  line-height: 1;
+  text-decoration: none;
+  color: il.$index-list-rail-color;
+  border-radius: 9999px;
+  transition:
+    color il.$index-list-rail-transition-duration il.$index-list-rail-transition-easing,
+    transform il.$index-list-rail-transition-duration il.$index-list-rail-transition-easing;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+
+  &:hover:not(&--empty) {
+    transform: scale(1.15);
+  }
+
+  &--active {
+    color: il.$index-list-rail-color-active;
+    transform: scale(1.25);
+  }
+
+  &--empty {
+    color: il.$index-list-rail-color-empty;
+    pointer-events: none;
+    opacity: 0.45;
+  }
+}

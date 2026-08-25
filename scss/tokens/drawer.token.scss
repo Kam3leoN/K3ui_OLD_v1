@@ -76,7 +76,7 @@ $md-sys-drawer-elevation: elevation.$md-sys-elevation-level1;
 $md-sys-drawer-elevation-hover: elevation.$md-sys-elevation-level2;
 $md-sys-drawer-elevation-focus: elevation.$md-sys-elevation-level3;
 
-// Z-index — drawer temporaire (modal) au-dessus du navigation-rail docs (1200)
+// Z-index — drawer temporaire (modal) au-dessus du navigation-rail stack docs (1200), sous Dialog (2000)
 $md-sys-drawer-z-index: 1300;
 $md-sys-drawer-z-index-overlay: 1299;
 

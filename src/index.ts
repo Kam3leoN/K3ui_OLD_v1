@@ -124,6 +124,7 @@ import { Quote } from './components/Quote';
 import { Radio } from './components/Radio';
 import { Tile } from './components/Tile';
 import { ScrollSpy } from './components/ScrollSpy';
+import { IndexList } from './components/IndexList';
 import { ScrollToTop } from './components/ScrollToTop';
 import { PanelContent } from './components/PanelContent';
 import { PanelSplit } from './components/PanelSplit';
@@ -244,6 +245,7 @@ export * from './components/Radio';
 export * from './components/Tile';
 export * from './components/Tilt';
 export * from './components/ScrollSpy';
+export * from './components/IndexList';
 export * from './components/ScrollToTop';
 export * from './components/PanelContent';
 export * from './components/PanelSplit';
@@ -387,6 +389,7 @@ const K = {
     registry: {} as Record<string, HTMLElement[]>,
     ripple,
     ScrollSpy,
+    IndexList,
     ScrollToTop,
     PanelContent,
     PanelSplit,

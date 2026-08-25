@@ -297,8 +297,8 @@ export const DrawerSpecs = {
     overlay: {
         /** Si l'overlay est activé */
         enabled: true,
-        /** Couleur de l'overlay */
-        color: 'rgba(0, 0, 0, 0.5)',
+        /** Couleur de l'overlay — scrim M3 32 % */
+        color: 'rgba(0, 0, 0, 0.32)',
         /** Si l'overlay est cliquable */
         clickable: true,
         /** Si l'overlay ferme le drawer */
@@ -402,7 +402,7 @@ export function getDrawerDefaults(): DrawerOptions {
         open: false,
         width: '280px',
         modal: true,
-        overlayOpacity: 0.5,
+        overlayOpacity: 0.32,
         preventScrolling: true,
         onOpenStart: null,
         onOpenEnd: null,

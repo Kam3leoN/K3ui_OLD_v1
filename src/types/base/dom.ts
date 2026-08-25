@@ -135,6 +135,11 @@ export interface TouchOptions {
     enabled?: boolean;
     /** Capturer les événements même si l'élément n'a pas le focus */
     capture?: boolean;
+    /**
+     * Appeler preventDefault sur touchstart/move/end.
+     * Défaut false : true sur document bloque scroll + taps (Chrome Android / Safari).
+     */
+    preventDefault?: boolean;
     /** Seuil de mouvement en pixels pour détecter un swipe */
     swipeThreshold?: number;
     /** Délai maximum en millisecondes pour détecter un swipe */

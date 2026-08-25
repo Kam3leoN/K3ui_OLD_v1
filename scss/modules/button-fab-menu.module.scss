@@ -63,6 +63,26 @@ k3ui-button-fab-menu {
   }
 }
 
+/*
+ * Fermé : ne laisser aucune boîte géométrique (pills ~200px hors viewport).
+ * Sur Android Chrome, ce débordement + overflow-x body = scroll/touch qui se rebloque.
+ */
+.button-fab-menu__item:not(.button-fab-menu__item--open):not(
+    .button-fab-menu__item--opening
+  ):not(.button-fab-menu__item--closing) {
+  visibility: hidden;
+  pointer-events: none;
+  width: 0 !important;
+  height: 0 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  opacity: 0;
+  transform: none;
+}
+
 /* Ouverture M3 : FastEffects (opacité) + FastSpatial (translation), stagger 35ms */
 .button-fab-menu__item--opening {
   pointer-events: auto;
@@ -322,9 +342,19 @@ k3ui-button-fab-menu {
 // LAYER (couche globale — pas de CSS dans la page, tout ici)
 // ============================================================================
 
+/*
+ * Conteneur ancre 0×0 (pas inset:0) : un fixed plein viewport + pointer-events:none
+ * bloque encore le scroll / les taps sous iOS Safari (hit-testing WebKit).
+ * Les slots sont en position:fixed pour rester calés au viewport.
+ */
 .fab-menu-layer {
   position: fixed !important;
-  inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: 0 !important;
+  height: 0 !important;
   pointer-events: none;
   z-index: bfm.$button-fab-menu-layer-z-index;
   overflow: visible !important;
@@ -333,7 +363,7 @@ k3ui-button-fab-menu {
 }
 
 .fab-menu-layer__slot {
-  position: absolute;
+  position: fixed;
   pointer-events: none;
   overflow: visible;
   width: bfm.$button-fab-menu-layer-slot-width;
@@ -346,10 +376,25 @@ k3ui-button-fab-menu {
   .button-fab-menu {
     position: absolute;
     overflow: visible !important;
+    /* Ne pas laisser pe:none sur le host bloquer le FAB sous iOS (chaîne pe:none trop profonde) */
+    pointer-events: none;
   }
 
-  /* Seuls le FAB et les pills captent les clics — le reste laisse passer */
-  .button-fab-menu__fab .button-fab {
+  /*
+   * pe:auto sur le wrap FAB (pas seulement le bouton) : Android ignore parfois
+   * les taps sur un enfant pe:auto si tous les ancêtres sont pe:none.
+   */
+  .button-fab-menu__fab {
+    pointer-events: auto;
+  }
+
+  .button-fab-menu__fab .button-fab,
+  .button-fab-menu__fab .button-fab__btn {
+    pointer-events: auto !important;
+  }
+
+  .button-fab-menu__item--open,
+  .button-fab-menu__item--opening {
     pointer-events: auto;
   }
 }
@@ -371,7 +416,7 @@ k3ui-button-fab-menu {
     env(safe-area-inset-bottom, 0px)
   ) !important;
   width: max-content !important;
-  min-width: bfm.$button-fab-menu-layer-slot-width;
+  min-width: 0 !important;
   height: auto !important;
   min-height: 0 !important;
   padding: 0 !important; /* aucun padding : FAB touche les bords du slot */
@@ -388,16 +433,36 @@ k3ui-button-fab-menu {
     display: flex !important;
     flex-direction: column !important;
     width: max-content !important;
-    min-width: bfm.$button-fab-menu-layer-slot-width;
+    min-width: 0 !important;
     line-height: 0 !important;
   }
 
-  /* Dans la layer le slot donne déjà l’inset 16px : __fab sans offset pour ne pas doubler */
+  /*
+   * Liste en absolute au-dessus du FAB : fermée, elle ne grossit plus le slot
+   * (sinon zone pe:none ~176px qui mangait scroll/taps iOS au-dessus de la nav).
+   */
+  .button-fab-menu__list {
+    position: absolute !important;
+    bottom: calc(100% + #{bfm.$button-fab-menu-gap}) !important;
+    top: auto !important;
+    width: max-content !important;
+    height: auto !important;
+    z-index: 1;
+  }
+
   .button-fab-menu__fab {
     position: relative !important;
     top: auto !important;
     bottom: 0 !important;
     margin: 0 !important; /* touche le bas du slot */
+    width: max-content !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  /* Dans la layer le slot donne déjà l’inset 16px : __fab sans offset pour ne pas doubler */
+  .button-fab-menu__fab .button-fab {
+    position: relative !important;
   }
 }
 
@@ -418,6 +483,8 @@ k3ui-button-fab-menu {
   }
   .button-fab-menu__list {
     align-items: flex-start !important;
+    left: 0 !important;
+    right: auto !important;
   }
 }
 
@@ -440,6 +507,8 @@ k3ui-button-fab-menu {
   }
   .button-fab-menu__list {
     align-items: flex-end !important;
+    left: auto !important;
+    right: 0 !important;
   }
 }
 
@@ -513,8 +582,9 @@ k3ui-button-fab-menu {
 .fab-menu-layer .button-fab-menu__scrim--on {
   position: fixed !important;
   inset: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
+  /* inset suffit — éviter 100vw (déborde sous Chrome Android / barres système) */
+  width: auto !important;
+  height: auto !important;
   max-width: none !important;
   max-height: none !important;
   border: none !important;

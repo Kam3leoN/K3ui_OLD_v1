@@ -1,0 +1,60 @@
+/**
+ * @fileoverview Tokens de design pour IndexList
+ * @description Variables pour l'annuaire sticky + rail
+ * @author K3UI Team
+ * @version 1.0.0
+ */
+
+@use 'motion.token' as motion;
+
+// ============================================================================
+// DIMENSIONS
+// ============================================================================
+
+$index-list-sticky-offset-default: 0 !default;
+$index-list-header-height: 48px !default;
+$index-list-header-padding-x: 16px !default;
+$index-list-item-padding-x: 16px !default;
+$index-list-item-padding-y: 12px !default;
+$index-list-item-min-height: 48px !default;
+$index-list-rail-width: 28px !default;
+$index-list-rail-item-size: 18px !default;
+$index-list-content-max-height: 70dvh !default;
+
+// ============================================================================
+// TYPOGRAPHIE
+// ============================================================================
+
+$index-list-header-font-size: 0.875rem !default;
+$index-list-header-line-height: 1.25rem !default;
+$index-list-header-weight: 600 !default;
+$index-list-item-font-size: 1rem !default;
+$index-list-item-line-height: 1.5rem !default;
+$index-list-rail-font-size: 0.6875rem !default;
+$index-list-rail-weight: 600 !default;
+
+// ============================================================================
+// COULEURS
+// ============================================================================
+
+$index-list-header-bg: var(--md-sys-color-surface-container) !default;
+$index-list-header-color: var(--md-sys-color-on-surface) !default;
+$index-list-item-color: var(--md-sys-color-on-surface) !default;
+$index-list-rail-color: var(--md-sys-color-primary) !default;
+$index-list-rail-color-active: var(--md-sys-color-primary) !default;
+$index-list-rail-color-empty: var(--md-sys-color-outline-variant) !default;
+$index-list-divider: var(--md-sys-color-outline-variant) !default;
+
+// ============================================================================
+// MOTION
+// ============================================================================
+
+$index-list-rail-transition-duration: motion.spring-duration(effects, default) !default;
+$index-list-rail-transition-easing: motion.spring-easing(effects, default) !default;
+
+// ============================================================================
+// Z-INDEX
+// ============================================================================
+
+$index-list-header-z-base: 1 !default;
+$index-list-rail-z: 2 !default;

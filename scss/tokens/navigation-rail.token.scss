@@ -8,7 +8,20 @@
 @use './motion.token' as motion;
 @use './navigation-item.token' as navitem;
 
-$navigation-rail-z-index: 1000;
+/**
+ * Z-index — chrome persistant (sous Dialog 2000 / Sheet 1600 / Menu 1100).
+ * Ne jamais monter au-dessus des overlays modaux.
+ */
+$navigation-rail-z-index: 500;
+/**
+ * Stack fixed (docs shell) : au-dessus du header docs (~1100), sous Dialog (2000).
+ */
+$navigation-rail-stack-z-index: 1200;
+/**
+ * Scrim expand modal — sous le stack rail (1200), au-dessus du contenu.
+ */
+$navigation-rail-overlay-z-index: 1190;
+$navigation-rail-overlay-opacity: 0.32;
 /** Largeur rail compact (M3 nav rail) */
 $navigation-rail-width-collapsed: 96px;
 /** Largeur rail étendu (M3 nav drawer rail : 220–360dp) */
@@ -94,6 +107,7 @@ $navigation-rail-effects-duration: var(--md-sys-motion-effects-default-duration,
 $navigation-rail-effects-easing: var(--md-sys-motion-effects-default-easing, #{motion.$md-sys-motion-expressive-effects-default-easing});
 $navigation-rail-effects-fast-duration: var(--md-sys-motion-effects-fast-duration, #{motion.$md-sys-motion-expressive-effects-fast-duration});
 $navigation-rail-effects-fast-easing: var(--md-sys-motion-effects-fast-easing, #{motion.$md-sys-motion-expressive-effects-fast-easing});
+$navigation-rail-overlay-transition: opacity #{$navigation-rail-expand-fast-duration} #{$navigation-rail-effects-fast-easing};
 $navigation-rail-color-duration: var(--md-sys-motion-effects-slow-duration, #{motion.$md-sys-motion-expressive-effects-slow-duration});
 /** Décalage chorégraphie label après le rail / icône (ms) — M3 stagger léger */
 $navigation-rail-expand-label-delay: 80ms;

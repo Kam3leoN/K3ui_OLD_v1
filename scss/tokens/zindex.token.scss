@@ -17,10 +17,13 @@
 $md-sys-zindex-layers: (
   base: 1,
   appbar: 500,
+  /** Navigation rail / chrome persistant — même couche que appbar, sous les modales */
+  navigation: 500,
   drawer: 999,
   /** Sheet : au-dessus navbar/menu (1100+), sous Dialog (2000) / Snackbar / Toast */
   sheet: 1600,
-  dialog: 1000,
+  /** Dialog + scrim — au-dessus rail (500/1200), appbar, drawer, menus */
+  dialog: 2000,
   menu: 1100,
   select: 1200,
   snackbar: 1300,

@@ -34,6 +34,16 @@ import {
     startPointerDragSession,
     type PointerLikeEvent,
 } from '../utils/dom/pointer';
+import {
+    DISMISS_RATIO,
+    FLING_THRESHOLD,
+    VelocityTracker,
+    animateSpring,
+    nearestDetentIndex,
+    projectFling,
+    rubberBand,
+    springSpecForVelocity,
+} from '../utils/motion/gesture-physics';
 
 /**
  * Options par défaut du composant Sheet
@@ -108,6 +118,8 @@ export class Sheet extends OpenableComponent<SheetOptions> {
     private _dragSessionCleanup: (() => void) | null = null;
     private _handleKeyboard: Keyboard | null = null;
     private _detentIndex: number = 1;
+    private _velocityTracker = new VelocityTracker();
+    private _cancelSpring: (() => void) | null = null;
 
     constructor(el: HTMLElement, options: Partial<SheetOptions> = {}) {
         const explicitSize = isSheetSize(options.size) ? options.size : null;
@@ -272,6 +284,7 @@ export class Sheet extends OpenableComponent<SheetOptions> {
         this.el.classList.add(`sheet--${position}`);
         this._applySizeClass();
         this.el.classList.toggle('sheet--border', this.options.border === true);
+        this._applyFullWidth();
 
         let container = this.el.querySelector('.sheet-container');
         if (!container) {
@@ -313,6 +326,35 @@ export class Sheet extends OpenableComponent<SheetOptions> {
         this.options.size = size;
         this._explicitSize = size;
         this._applySizeClass();
+    }
+
+    /**
+     * Active ou désactive la largeur pleine (ignore le plafond M3 640 dp).
+     * @param fullWidth - true = max-width 100 %
+     */
+    setFullWidth(fullWidth: boolean): void {
+        this.options.fullWidth = fullWidth === true;
+        this.el.classList.toggle('sheet--full-width', this.options.fullWidth);
+        if (this.options.fullWidth) {
+            this.el.setAttribute('full-width', '');
+        } else {
+            this.el.removeAttribute('full-width');
+        }
+    }
+
+    /**
+     * Applique `sheet--full-width` depuis l'option ou le markup (classe / attribut).
+     */
+    private _applyFullWidth(): void {
+        if (!this.options.fullWidth) {
+            const fromAttr =
+                this.el.hasAttribute('full-width') &&
+                this.el.getAttribute('full-width') !== 'false';
+            if (fromAttr || this.el.classList.contains('sheet--full-width')) {
+                this.options.fullWidth = true;
+            }
+        }
+        this.setFullWidth(this.options.fullWidth === true);
     }
 
     /**
@@ -452,10 +494,6 @@ export class Sheet extends OpenableComponent<SheetOptions> {
 
         this._dragHandle = document.createElement('div');
         this._dragHandle.className = 'sheet-drag-handle';
-        setAriaAttributes(this._dragHandle, {
-            role: 'button',
-            label: 'Drag handle',
-        });
         this._dragHandle.tabIndex = 0;
 
         if (this.options.position === 'bottom') {
@@ -463,6 +501,8 @@ export class Sheet extends OpenableComponent<SheetOptions> {
         } else {
             this.el.appendChild(this._dragHandle);
         }
+
+        this._syncHandleAria();
 
         this._unbindDragPointer?.();
         this._unbindDragPointer = bindPointerDown(this._dragHandle, (e) => this._handleDragStart(e));
@@ -474,23 +514,117 @@ export class Sheet extends OpenableComponent<SheetOptions> {
             onKeyDown: (event: KeyboardEvent, key: string) => {
                 if (key === ' ' || key === 'Enter') {
                     event.preventDefault();
-                    this._cycleDetent();
+                    this._toggleDetentExtremes();
+                    return;
                 }
+                this._handleDetentKey(event, key);
             }
         });
     }
 
-    private _cycleDetent(): void {
+    /**
+     * Sens d'ancrage : un multiplicateur retourne geste, vitesse et flèches.
+     */
+    private _dirY(): 1 | -1 {
+        return this.options.position === 'top' ? -1 : 1;
+    }
+
+    /** Hauteurs des trois détentes (peek / half / full). */
+    private _detentHeights(): [number, number, number] {
         this._computeVerticalLimits();
         const peek = this._minHeight;
         const full = this._maxHeight;
         const half = Math.round(peek + (full - peek) * 0.5);
-        const detents = [peek, half, full];
-        this._detentIndex = (this._detentIndex + 1) % detents.length;
-        const nextHeight = detents[this._detentIndex];
-        this.el.style.transition = 'height 300ms cubic-bezier(0.38, 1.21, 0.22, 1)';
-        this.el.style.setProperty('height', `${nextHeight}px`);
-        this.el.style.setProperty('max-height', `${nextHeight}px`);
+        return [peek, half, full];
+    }
+
+    private _syncHandleAria(): void {
+        if (!this._dragHandle) return;
+        const detents = this._detentHeights();
+        const expanded = this._detentIndex >= detents.length - 1;
+        setAriaAttributes(this._dragHandle, {
+            role: 'button',
+            expanded: expanded ? 'true' : 'false',
+            label: expanded ? 'Replier la feuille' : 'Déployer la feuille',
+        });
+    }
+
+    /** Clic / Entrée : bascule entre détente basse et haute. */
+    private _toggleDetentExtremes(): void {
+        const detents = this._detentHeights();
+        const top = detents.length - 1;
+        this._detentIndex = this._detentIndex >= top ? 0 : top;
+        this._snapToHeight(detents[this._detentIndex], 0);
+        this._syncHandleAria();
+    }
+
+    private _handleDetentKey(event: KeyboardEvent, key: string): void {
+        const detents = this._detentHeights();
+        const expandKey = this.options.position === 'top' ? 'ArrowDown' : 'ArrowUp';
+        const collapseKey = this.options.position === 'top' ? 'ArrowUp' : 'ArrowDown';
+        let next: number | null = null;
+
+        if (key === expandKey) {
+            next = Math.min(this._detentIndex + 1, detents.length - 1);
+        } else if (key === collapseKey) {
+            if (this._detentIndex === 0 && this.options.dismissible) {
+                event.preventDefault();
+                this.close();
+                return;
+            }
+            next = Math.max(this._detentIndex - 1, 0);
+        } else if (key === 'Home') {
+            next = 0;
+        } else if (key === 'End') {
+            next = detents.length - 1;
+        } else {
+            return;
+        }
+
+        event.preventDefault();
+        if (next !== null && next !== this._detentIndex) {
+            this._detentIndex = next;
+            this._snapToHeight(detents[next], 0);
+            this._syncHandleAria();
+        }
+    }
+
+    private _cycleDetent(): void {
+        this._toggleDetentExtremes();
+    }
+
+    private _applySheetHeight(height: number): void {
+        const h = Math.max(0, height);
+        this.el.style.setProperty('height', `${h}px`, 'important');
+        this.el.style.setProperty('max-height', `${h}px`, 'important');
+
+        const container = this.el.querySelector('.sheet-container, .sheet-content') as HTMLElement | null;
+        if (container) {
+            container.style.height = `${h}px`;
+            container.style.maxHeight = `${h}px`;
+        }
+    }
+
+    /**
+     * Snap animé vers une hauteur (ressort default / fast selon la vitesse).
+     */
+    private _snapToHeight(target: number, velocityPxPerSec: number): void {
+        this._cancelSpring?.();
+        this.el.style.transition = 'none';
+        const from = this.el.offsetHeight || target;
+        this._cancelSpring = animateSpring({
+            from,
+            to: target,
+            velocity: velocityPxPerSec,
+            spec: springSpecForVelocity(velocityPxPerSec),
+            onUpdate: (value) => this._applySheetHeight(value),
+            onComplete: () => {
+                this._cancelSpring = null;
+                this._syncHandleAria();
+                const container = this.el.querySelector('.sheet-container, .sheet-content') as HTMLElement | null;
+                if (container) container.style.overflowY = 'auto';
+            },
+        });
     }
 
     private _handleDragStart = (e: PointerLikeEvent): void => {
@@ -502,9 +636,14 @@ export class Sheet extends OpenableComponent<SheetOptions> {
         e.preventDefault();
         e.stopPropagation();
 
+        this._cancelSpring?.();
+        this._cancelSpring = null;
+
         this._isDragging = true;
         const { y: clientY } = getPointerCoords(e);
         this._startY = clientY;
+        this._velocityTracker.reset();
+        this._velocityTracker.add(clientY, e instanceof PointerEvent ? e.timeStamp : performance.now());
 
         const rect = this.el.getBoundingClientRect();
         this._startHeight = rect.height;
@@ -545,23 +684,36 @@ export class Sheet extends OpenableComponent<SheetOptions> {
         e.stopPropagation();
 
         const { y: clientY } = getPointerCoords(e);
-        const deltaY = this._startY - clientY;
+        this._velocityTracker.add(
+            clientY,
+            e instanceof PointerEvent ? e.timeStamp : performance.now()
+        );
 
-        let newHeight: number;
-        if (edge === 'bottom') {
-            newHeight = Math.max(this._minHeight, Math.min(this._maxHeight, this._startHeight + deltaY));
-        } else {
-            newHeight = Math.max(this._minHeight, Math.min(this._maxHeight, this._startHeight - deltaY));
+        const dirY = this._dirY();
+        const delta = (this._startY - clientY) * dirY;
+        let newHeight = this._startHeight + delta;
+
+        const min = this._minHeight;
+        const max = this._maxHeight;
+        if (newHeight < min) {
+            newHeight = min - rubberBand(min - newHeight, max);
+        } else if (newHeight > max) {
+            newHeight = max + rubberBand(newHeight - max, max);
         }
 
-        this.el.style.setProperty('height', `${newHeight}px`, 'important');
-        this.el.style.setProperty('max-height', `${newHeight}px`, 'important');
+        this._applySheetHeight(newHeight);
 
-        const container = this.el.querySelector('.sheet-container, .sheet-content') as HTMLElement;
-        if (container) {
-            container.style.height = `${newHeight}px`;
-            container.style.maxHeight = `${newHeight}px`;
-            container.style.overflowY = 'hidden';
+        const container = this.el.querySelector('.sheet-container, .sheet-content') as HTMLElement | null;
+        if (container) container.style.overflowY = 'hidden';
+
+        if (this.options.dismissible && newHeight < min) {
+            const travel = Math.max(1, min);
+            const dismissProgress = Math.min(1, Math.max(0, (min - newHeight) / travel));
+            const base =
+                this.options.opacity !== undefined
+                    ? this.options.opacity
+                    : (ThemeManager.isDark() ? 0.64 : (this.options.overlayOpacity ?? 0.32));
+            this._overlay.style.opacity = String(base * (1 - dismissProgress));
         }
     };
 
@@ -576,20 +728,28 @@ export class Sheet extends OpenableComponent<SheetOptions> {
         this._dragSessionCleanup?.();
         this._dragSessionCleanup = null;
 
+        const dirY = this._dirY();
+        const rawV = this._velocityTracker.velocity;
+        const closeVelocity = rawV * dirY;
+        const heightVelocity = -rawV * dirY;
         const currentHeight = this.el.offsetHeight;
-        const dismissThreshold = this._minHeight * 0.8;
+        const projected = projectFling(currentHeight, heightVelocity);
+        const detents = this._detentHeights();
+        const dismissLine = this._minHeight * DISMISS_RATIO;
 
-        if (this.options.dismissible && currentHeight < dismissThreshold) {
+        if (
+            this.options.dismissible &&
+            (closeVelocity > FLING_THRESHOLD || projected < dismissLine)
+        ) {
             this.close();
             return;
         }
 
-        this.el.style.transition = 'height 300ms cubic-bezier(0.38, 1.21, 0.22, 1)';
-
-        const container = this.el.querySelector('.sheet-container, .sheet-content') as HTMLElement;
-        if (container) {
-            container.style.overflowY = 'auto';
-        }
+        const sample =
+            Math.abs(heightVelocity) > FLING_THRESHOLD ? projected : currentHeight;
+        this._detentIndex = nearestDetentIndex(sample, detents);
+        this._snapToHeight(detents[this._detentIndex], heightVelocity);
+        this._syncHandleAria();
     };
 
     private _computeVerticalLimits(): void {
@@ -599,6 +759,8 @@ export class Sheet extends OpenableComponent<SheetOptions> {
     }
 
     private _teardownDrag(): void {
+        this._cancelSpring?.();
+        this._cancelSpring = null;
         this._handleKeyboard?.destroy();
         this._handleKeyboard = null;
         this._unbindDragPointer?.();
@@ -874,13 +1036,17 @@ class K3UISheetElement extends HTMLElement {
             options.preventScrolling = this.getAttribute('prevent-scrolling') === 'true';
         }
 
+        if (this.hasAttribute('full-width')) {
+            options.fullWidth = this.getAttribute('full-width') !== 'false';
+        }
+
         new Sheet(this, options);
     }
 
     static get observedAttributes() {
         return [
             'position', 'size', 'opacity', 'in-duration', 'out-duration',
-            'dismissible', 'prevent-scrolling'
+            'dismissible', 'prevent-scrolling', 'full-width'
         ];
     }
 

@@ -65,6 +65,12 @@ export const frFR: Translations = {
     openDrawer: 'Ouvrir le sommaire',
     closeDrawer: 'Fermer le sommaire',
   },
+  indexList: {
+    railAriaLabel: 'Index alphabétique',
+    sectionJump: 'Aller à la section {key}',
+    sectionActive: 'Section active',
+    sectionEmpty: 'Section vide',
+  },
   pagination: {
     firstPage: 'Première page',
     lastPage: 'Dernière page',

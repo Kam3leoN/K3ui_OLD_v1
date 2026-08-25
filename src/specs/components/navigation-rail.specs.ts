@@ -27,6 +27,18 @@ export const NavigationRailSpecs = {
          * Passer `border: true` pour le trait outline.
          */
         defaultBorder: false,
+        /**
+         * Mode d’expansion :
+         * - `push` : élargit le rail et pousse le contenu (padding container)
+         * - `modal` : élargit le rail en overlay + scrim, sans pousser (comme Drawer)
+         */
+        defaultExpandMode: 'push' as const,
+        /** Opacité du scrim en mode modal (0–1) */
+        defaultOverlayOpacity: 0.32,
+        /** Clic scrim → collapse en mode modal */
+        defaultDismissible: true,
+        /** Bloque le scroll body quand le rail modal est ouvert */
+        defaultPreventScrolling: true,
         /** Plafond footer : destinations + actions (ex. Paramètres, Crédits, API). */
         footerMaxItems: 3,
     },
@@ -86,6 +98,10 @@ export function getNavigationRailDefaults(): NavigationRailOptions {
         id: undefined,
         activeIndex: NavigationRailSpecs.behaviors.defaultActiveIndex,
         expanded: NavigationRailSpecs.behaviors.defaultExpanded,
+        expandMode: NavigationRailSpecs.behaviors.defaultExpandMode,
+        overlayOpacity: NavigationRailSpecs.behaviors.defaultOverlayOpacity,
+        dismissible: NavigationRailSpecs.behaviors.defaultDismissible,
+        preventScrolling: NavigationRailSpecs.behaviors.defaultPreventScrolling,
         footerDividerEnabled: NavigationRailSpecs.behaviors.defaultFooterDividerEnabled,
         border: NavigationRailSpecs.behaviors.defaultBorder,
         onChange: null,

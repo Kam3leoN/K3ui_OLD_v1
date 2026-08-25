@@ -53,6 +53,7 @@ import { getPricingDefaults } from '../specs/components/pricing.specs';
 import { getRadioDefaults } from '../specs/components/radio.specs';
 import { getTileDefaults } from '../specs/components/tile.specs';
 import { getScrollSpyDefaults } from '../specs/components/scrollspy.specs';
+import { getIndexListDefaults } from '../specs/components/index-list.specs';
 import { getScrollToTopDefaults } from '../specs/components/scroll-to-top.specs';
 import { getSelectDefaults } from '../specs/components/select.specs';
 import { getShapeDefaults } from '../specs/components/shape.specs';
@@ -159,6 +160,7 @@ export interface SoundFXManagerConfig {
  */
 export interface ComponentDefaultOptions {
     ScrollSpy: ReturnType<typeof getScrollSpyDefaults>;
+    IndexList: ReturnType<typeof getIndexListDefaults>;
     ScrollToTop: ReturnType<typeof getScrollToTopDefaults>;
     Snackbar: {
         displayLength: number;
@@ -674,6 +676,9 @@ export const DEFAULT_COMPONENT_OPTIONS: ComponentDefaultOptions = {
     },
     ScrollSpy: {
         ...getScrollSpyDefaults()
+    },
+    IndexList: {
+        ...getIndexListDefaults()
     },
     ScrollToTop: {
         ...getScrollToTopDefaults(),

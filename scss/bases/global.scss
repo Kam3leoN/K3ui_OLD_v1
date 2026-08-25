@@ -7,11 +7,11 @@
  * @description Styles globaux pour le body, incluant la gestion du thème light/dark via tokens CSS.
  */
 
-// Règles de base pour empêcher les scrollbars horizontales
+// Scroll : ne pas coupler overflow-x sur html+body ni max-width:100vw
+// (scroll/touch figés sur Safari iOS et Chrome Android).
 html {
   font-family: fontface.$font-family-main;
   box-sizing: border-box;
-  overflow-x: hidden; // Empêche les scrollbars horizontales
   line-height: 1.5;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -29,9 +29,9 @@ body {
   --k3ui-field-outlined-notch-bg: var(--md-sys-color-surface);
   margin: 0;
   padding: 0;
-  overflow-x: hidden; // Empêche les scrollbars horizontales
-  width: 100%; // Assure que le body ne dépasse pas
-  max-width: 100vw; // Empêche le débordement
+  /* Pas d’overflow-x: clip/hidden ici : Chrome Android fige le scroll vertical
+   * dès qu’un enfant (ex. pills FAB fermées en 100vw) déborde légèrement. */
+  width: 100%;
 }
 
 // Préférence système : réduire les animations décoratives (sans dépendre du toggle JS)

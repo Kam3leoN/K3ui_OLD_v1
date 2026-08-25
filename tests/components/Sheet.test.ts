@@ -147,7 +147,7 @@ describe('Sheet', () => {
             expect(el.getAttribute('aria-hidden')).toBe('false');
         });
 
-        test('poignée : role=button, label Drag handle, premier enfant (bottom)', () => {
+        test('poignée : role=button, aria-expanded, label FR, premier enfant (bottom)', () => {
             const el = document.getElementById('sheet-el') as HTMLElement;
             new Sheet(el, { position: 'bottom', draggable: true });
 
@@ -155,7 +155,8 @@ describe('Sheet', () => {
             expect(handle).toBeTruthy();
             expect(el.firstElementChild).toBe(handle);
             expect(handle.getAttribute('role')).toBe('button');
-            expect(handle.getAttribute('aria-label')).toBe('Drag handle');
+            expect(handle.getAttribute('aria-expanded')).toBe('false');
+            expect(handle.getAttribute('aria-label')).toBe('Déployer la feuille');
             expect(handle.getAttribute('tabindex')).toBe('0');
         });
 
@@ -220,6 +221,53 @@ describe('Sheet', () => {
             instance.setSize('small');
             expect(instance.options.size).toBe('small');
             expect(el.classList.contains('sheet--small')).toBe(true);
+        });
+    });
+
+    describe('physique de geste (M3 Expressive)', () => {
+        test('defaults overlayOpacity aligné scrim M3 (0.32)', () => {
+            expect(Sheet.defaults.overlayOpacity).toBe(0.32);
+        });
+
+        test('poignée expose aria-expanded pour les détentes', () => {
+            const el = document.getElementById('sheet-el') as HTMLElement;
+            new Sheet(el, { position: 'bottom', draggable: true });
+            const handle = el.querySelector('.sheet-drag-handle') as HTMLElement;
+            expect(handle.getAttribute('aria-expanded')).toBe('false');
+            expect(['Déployer la feuille', 'Replier la feuille']).toContain(
+                handle.getAttribute('aria-label')
+            );
+        });
+    });
+
+    describe('fullWidth', () => {
+        test('defaults.fullWidth est false (plafond M3 640)', () => {
+            expect(Sheet.defaults.fullWidth).toBe(false);
+        });
+
+        test('option fullWidth ajoute sheet--full-width', () => {
+            const el = document.getElementById('sheet-el') as HTMLElement;
+            const instance = new Sheet(el, { fullWidth: true });
+            expect(instance.options.fullWidth).toBe(true);
+            expect(el.classList.contains('sheet--full-width')).toBe(true);
+            expect(el.hasAttribute('full-width')).toBe(true);
+        });
+
+        test('setFullWidth(false) retire la classe', () => {
+            const el = document.getElementById('sheet-el') as HTMLElement;
+            const instance = new Sheet(el, { fullWidth: true });
+            instance.setFullWidth(false);
+            expect(instance.options.fullWidth).toBe(false);
+            expect(el.classList.contains('sheet--full-width')).toBe(false);
+        });
+
+        test('classe markup sheet--full-width est respectée', () => {
+            const el = document.createElement('div');
+            el.className = 'sheet sheet--bottom sheet--full-width';
+            el.innerHTML = '<div class="sheet-container"><div class="sheet-content">x</div></div>';
+            document.body.appendChild(el);
+            const instance = new Sheet(el);
+            expect(instance.options.fullWidth).toBe(true);
         });
     });
 });

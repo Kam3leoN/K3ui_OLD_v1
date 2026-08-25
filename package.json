@@ -3,6 +3,26 @@
   "version": "0.1.0",
   "description": "Librairie UI forkée de material-web, Material You 3, SCSS+TS.",
   "homepage": "https://k3ui-docs.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kam3leoN/K3ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Kam3leoN/K3ui/issues"
+  },
+  "keywords": [
+    "material-design",
+    "material-you",
+    "material-3",
+    "ui",
+    "css",
+    "scss",
+    "typescript",
+    "k3ui"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/js/k3ui.js",
   "unpkg": "dist/js/k3ui.min.js",
   "jsdelivr": "dist/js/k3ui.min.js",
@@ -39,7 +59,9 @@
   "files": [
     "dist",
     "scss",
-    "src"
+    "src",
+    "LICENSE",
+    "README.md"
   ],
   "scripts": {
     "dev": "vite",

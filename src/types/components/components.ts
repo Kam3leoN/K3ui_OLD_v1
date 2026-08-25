@@ -1246,8 +1246,8 @@ export interface DrawerOptions extends BaseOptions {
     modal: boolean;
 
     /**
-     * Opacité de l'overlay (0.0 à 1.0).
-     * @default 0.5
+     * Opacité de l'overlay (0.0 à 1.0). Aligné scrim M3 (32 %).
+     * @default 0.32
      */
     overlayOpacity: number;
 
@@ -1287,6 +1287,13 @@ export interface SheetOptions extends BaseOptions {
      * @default 'medium'
      */
     size: 'small' | 'medium' | 'large' | 'half' | 'full';
+
+    /**
+     * Si true, la feuille occupe toute la largeur (ignore le plafond M3 640 dp).
+     * Classe CSS : `sheet--full-width` — attribut HTML : `full-width`.
+     * @default false
+     */
+    fullWidth: boolean;
 
     /**
      * Si true, le sheet est ouvert par défaut
@@ -6114,6 +6121,28 @@ export interface NavigationRailOptions extends BaseOptions {
     activeIndex: number;
     expanded: boolean;
     /**
+     * Mode d’expansion du rail.
+     * - `push` : pousse le contenu (comportement historique)
+     * - `modal` : overlay + scrim, sans pousser (comme Drawer)
+     * @default 'push'
+     */
+    expandMode: 'push' | 'modal';
+    /**
+     * Opacité du scrim en mode `modal` (0–1).
+     * @default 0.32
+     */
+    overlayOpacity: number;
+    /**
+     * En mode `modal`, un clic sur le scrim referme le rail.
+     * @default true
+     */
+    dismissible: boolean;
+    /**
+     * En mode `modal`, bloque le scroll du document tant que le rail est étendu.
+     * @default true
+     */
+    preventScrolling: boolean;
+    /**
      * Affiche un divider trait au-dessus du footer (destinations secondaires).
      * Par défaut `false` : séparation par gap 4px (même modèle que `.menu-group`).
      * @default false
@@ -8902,4 +8931,88 @@ export interface SwipeDeckInstance {
     swipe(direction: 'left' | 'right' | 'up'): void;
     undo(): boolean;
     getRemainingCount(): number;
+}
+
+/**
+ * Données d'une entrée IndexList (mode data-driven)
+ */
+export interface IndexListItemData {
+    /** Libellé affiché */
+    label: string;
+    /** Clé de groupe explicite (sinon dérivée du libellé) */
+    key?: string;
+    /** HTML optionnel pour le contenu de l'item */
+    html?: string;
+}
+
+/**
+ * Options pour le composant IndexList (annuaire sticky + rail)
+ */
+export interface IndexListOptions extends BaseOptions {
+    /**
+     * Entrées data-driven ; si absent, le markup existant est enrichi
+     */
+    items?: IndexListItemData[];
+    /**
+     * Attribut DOM pour la clé d'indexation sur un item
+     * @default 'data-index-key'
+     */
+    indexKeyAttr: string;
+    /**
+     * Locale pour uppercase / tri
+     * @default 'fr-FR'
+     */
+    locale: string;
+    /**
+     * Afficher le rail latéral de navigation
+     * @default true
+     */
+    showRail: boolean;
+    /**
+     * En-têtes de section sticky (effet push)
+     * @default true
+     */
+    stickyHeaders: boolean;
+    /**
+     * Offset sticky sous AppBar (px)
+     * @default 0
+     */
+    stickyOffset: number;
+    /**
+     * Comportement de scroll lors d'un jump rail
+     * @default 'smooth'
+     */
+    scrollBehavior: ScrollBehavior;
+    /**
+     * Masquer les clés absentes dans le rail
+     * @default true
+     */
+    hideEmptyKeys: boolean;
+    /**
+     * Glisser le doigt sur le rail pour naviguer
+     * @default true
+     */
+    railScrub: boolean;
+    /**
+     * Résolution personnalisée de la clé depuis un item DOM ou data
+     */
+    getKey: ((item: HTMLElement | IndexListItemData) => string) | null;
+    /**
+     * Conteneur scrollable ; null = `.index-list__content`
+     * @default null
+     */
+    scrollRoot: string | HTMLElement | null;
+    /**
+     * Callback changement de section active au scroll
+     */
+    onSectionChange: ((key: string, section: HTMLElement) => void) | null;
+    /**
+     * Callback sélection rail
+     */
+    onRailSelect: ((key: string) => void) | null;
+    /**
+     * Niveau de priorité pour la gestion des instances
+     * @default PriorityLevel.MEDIUM
+     */
+    priorityLevel: PriorityLevel;
 }

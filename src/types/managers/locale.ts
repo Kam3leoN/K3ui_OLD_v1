@@ -364,6 +364,17 @@ export interface ScrollSpyTranslations {
   closeDrawer: string;
 }
 
+export interface IndexListTranslations {
+  /** ARIA : label du rail d'index */
+  railAriaLabel: string;
+  /** ARIA : aller à la section {key} */
+  sectionJump: string;
+  /** ARIA : section active */
+  sectionActive: string;
+  /** ARIA : clé sans entrée */
+  sectionEmpty: string;
+}
+
 export interface SkeletonTranslations {
   /** ARIA : placeholder de chargement */
   ariaLabel: string;
@@ -618,6 +629,7 @@ export interface Translations {
   scrollToTop: ScrollToTopTranslations;
   page: PageTranslations;
   scrollspy: ScrollSpyTranslations;
+  indexList: IndexListTranslations;
   pagination: PaginationTranslations;
   paginationNav: PaginationNavTranslations;
   table: TableTranslations;

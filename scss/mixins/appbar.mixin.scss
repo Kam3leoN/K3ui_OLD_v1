@@ -17,15 +17,30 @@
   z-index: $z-index;
   display: block;
   color: appbar.$appbar-color-on-container;
-  background-color: appbar.$appbar-color-container;
-  /* Encoche Field outlined = fond AppBar (surface) */
-  --k3ui-field-outlined-notch-bg: #{appbar.$appbar-color-container};
+  background-color: appbar.$appbar-glass-bg;
+  /* Encoche Field outlined = surface opaque (pas le mix translucide) */
+  --k3ui-field-outlined-notch-bg: #{appbar.$appbar-glass-notch-bg};
   box-shadow: appbar.$appbar-elevation-rest;
+  border-block-end: 1px solid appbar.$appbar-glass-border;
+  -webkit-backdrop-filter: saturate(appbar.$appbar-glass-saturate) blur(appbar.$appbar-glass-blur);
+  backdrop-filter: saturate(appbar.$appbar-glass-saturate) blur(appbar.$appbar-glass-blur);
   transition:
     background-color appbar.$appbar-lift-duration appbar.$appbar-lift-easing,
     box-shadow appbar.$appbar-lift-duration appbar.$appbar-lift-easing,
+    border-color appbar.$appbar-lift-duration appbar.$appbar-lift-easing,
+    backdrop-filter appbar.$appbar-lift-duration appbar.$appbar-lift-easing,
     transform appbar.$appbar-hide-duration appbar.$appbar-hide-easing;
   will-change: background-color, box-shadow, transform;
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    background-color: appbar.$appbar-color-container;
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    background-color: appbar.$appbar-color-container;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 @mixin appbar-variant-small {
@@ -314,9 +329,20 @@
 }
 
 @mixin appbar-scrolled {
-  background-color: appbar.$appbar-color-container-scrolled;
-  --k3ui-field-outlined-notch-bg: #{appbar.$appbar-color-container-scrolled};
+  background-color: appbar.$appbar-glass-bg-scrolled;
+  --k3ui-field-outlined-notch-bg: #{appbar.$appbar-glass-notch-bg};
   box-shadow: appbar.$appbar-elevation-scrolled;
+  border-block-end-color: appbar.$appbar-glass-border;
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    background-color: appbar.$appbar-color-container-scrolled;
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    background-color: appbar.$appbar-color-container-scrolled;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 @mixin appbar-flexible-layout($expanded-title-size, $expanded-title-lh) {

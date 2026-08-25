@@ -449,6 +449,26 @@
  * Host flex : rail + scrollbar dans le gutter (hors surface du rail),
  * même modèle que docs-layout-scrollbar / panel content.
  */
+@mixin navigation-rail-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: rail.$navigation-rail-overlay-z-index;
+  display: none;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, var(--navigation-rail-overlay-opacity, #{rail.$navigation-rail-overlay-opacity}));
+  transition: rail.$navigation-rail-overlay-transition;
+  pointer-events: auto;
+  touch-action: none;
+
+  &.is-visible {
+    opacity: 1;
+  }
+}
+
+/**
+ * Host flex : rail + scrollbar dans le gutter (hors surface du rail),
+ * même modèle que docs-layout-scrollbar / panel content.
+ */
 @mixin navigation-rail-stack {
   --k3-navigation-rail-scrollbar-gutter: #{rail.$navigation-rail-scrollbar-gutter};
   position: relative;
@@ -474,8 +494,8 @@
     top: 0;
     inset-inline-start: 0;
     bottom: 0;
-    /* Au-dessus du header docs (z 1100) pour éviter un décrochage si pad container désync */
-    z-index: 1200;
+    /* Au-dessus du header docs (~1100), sous Dialog/scrim (2000) */
+    z-index: rail.$navigation-rail-stack-z-index;
     height: 100vh;
     height: 100dvh;
     margin-inline-end: 0;

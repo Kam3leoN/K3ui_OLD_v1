@@ -16,6 +16,8 @@
 export interface ComponentSelectors {
     /** Sélecteur pour le composant ScrollSpy */
     ScrollSpy: string;
+    /** Sélecteur pour le composant IndexList */
+    IndexList: string;
     /** Sélecteur pour le composant ScrollToTop */
     ScrollToTop: string;
     /** Sélecteur pour le composant Ticker */
@@ -237,6 +239,7 @@ export interface ComponentSelectors {
  */
 export const DEFAULT_SELECTORS: ComponentSelectors = {
     ScrollSpy: '.scrollspy:not(.no-autoinit), k3ui-scrollspy:not(.no-autoinit)',
+    IndexList: '.index-list:not(.no-autoinit), k3ui-index-list:not(.no-autoinit)',
     ScrollToTop: '.scroll-to-top:not(.no-autoinit), .scrolltotop:not(.no-autoinit), k3ui-scroll-to-top:not(.no-autoinit)',
     Ticker: '.ticker:not(.no-autoinit), k3ui-ticker:not(.no-autoinit)',
     Snackbar: '.snackbar:not(.no-autoinit), k3ui-snackbar:not(.no-autoinit)',

@@ -280,9 +280,15 @@
   padding-inline-start: #{tokens.$navigation-rail-width-collapsed};
   transition: padding-inline-start tokens.$navigation-rail-expand-duration tokens.$navigation-rail-expand-easing;
 
-  &:has(.navigation-rail--expanded) {
+  /* Push : élargit le flux. Modal : padding reste collapsed. */
+  &:has(.navigation-rail--expanded:not(.navigation-rail--expand-modal)) {
     --k3-navigation-rail-width: #{tokens.$navigation-rail-width-expanded};
     padding-inline-start: #{tokens.$navigation-rail-width-expanded};
+  }
+
+  &:has(.navigation-rail--expand-modal) {
+    --k3-navigation-rail-width: #{tokens.$navigation-rail-width-collapsed};
+    padding-inline-start: #{tokens.$navigation-rail-width-collapsed};
   }
 }
 
@@ -290,6 +296,19 @@ body:has(.navigation-rail-container) {
   --k3ui-rail-inset-left-default: #{tokens.$navigation-rail-width-collapsed};
 }
 
-body:has(.navigation-rail-container .navigation-rail--expanded) {
+body:has(.navigation-rail-container .navigation-rail--expanded:not(.navigation-rail--expand-modal)) {
   --k3ui-rail-inset-left-default: #{tokens.$navigation-rail-width-expanded};
+}
+
+body.navigation-rail-modal-open {
+  overflow: hidden;
+}
+
+.navigation-rail-overlay {
+  @include rail.navigation-rail-overlay;
+}
+
+/* Elevation légère quand le rail modal est ouvert au-dessus du contenu */
+.navigation-rail.navigation-rail--expand-modal.navigation-rail--expanded {
+  box-shadow: var(--md-sys-elevation-level2, 0 2px 6px rgba(0, 0, 0, 0.2));
 }

@@ -38,6 +38,7 @@ export * from './collapse.specs';
 export * from './card.specs';
 export * from './shape.specs';
 export * from './scrollspy.specs';
+export * from './index-list.specs';
 export * from './skeleton.specs';
 export * from './countdown.specs';
 export * from './codeblock.specs';

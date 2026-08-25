@@ -377,6 +377,7 @@ export function getSheetDefaults(): SheetOptions {
         dismissible: SheetSpecs.behaviors.closeOnEscape || SheetSpecs.behaviors.closeOnClickOutside,
         draggable: SheetSpecs.behaviors.draggable,
         border: SheetSpecs.behaviors.defaultBorder,
+        fullWidth: false,
         priorityLevel: PriorityLevel.MEDIUM,
         onOpenStart: null,
         onOpenEnd: null,

@@ -121,6 +121,55 @@ describe('NavigationRail', () => {
         expect(instance.getExpanded()).toBe(false);
     });
 
+    test('defaults incluent expandMode push', () => {
+        expect(NavigationRail.defaults.expandMode).toBe('push');
+        expect(NavigationRail.defaults.overlayOpacity).toBe(0.32);
+        expect(NavigationRail.defaults.dismissible).toBe(true);
+    });
+
+    test('expandMode modal : pas de push + scrim au expand', () => {
+        const container = document.createElement('div');
+        container.className = 'navigation-rail-container';
+        const el = createNavigationRail();
+        el.id = 'nav-rail-modal-test';
+        container.appendChild(el);
+        document.body.appendChild(container);
+
+        const instance = new NavigationRail(el, {
+            expandMode: 'modal',
+            expanded: false,
+        });
+        expect(instance.getExpandMode()).toBe('modal');
+        expect(el.classList.contains('navigation-rail--expand-modal')).toBe(true);
+        expect(container.style.paddingInlineStart).toBe('96px');
+
+        instance.setExpanded(true);
+        expect(el.classList.contains('navigation-rail--expanded')).toBe(true);
+        expect(container.style.paddingInlineStart).toBe('96px');
+        expect(document.querySelector('.navigation-rail-overlay')).toBeTruthy();
+
+        instance.destroy();
+        expect(document.querySelector('.navigation-rail-overlay')).toBeFalsy();
+        expect(document.body.classList.contains('navigation-rail-modal-open')).toBe(false);
+        container.remove();
+    });
+
+    test('expandMode push : pousse le container', () => {
+        const container = document.createElement('div');
+        container.className = 'navigation-rail-container';
+        const el = createNavigationRail();
+        el.id = 'nav-rail-push-test';
+        container.appendChild(el);
+        document.body.appendChild(container);
+
+        const instance = new NavigationRail(el, { expandMode: 'push', expanded: false });
+        instance.setExpanded(true);
+        expect(container.style.paddingInlineStart).toBe('256px');
+        expect(document.querySelector('.navigation-rail-overlay')).toBeFalsy();
+        instance.destroy();
+        container.remove();
+    });
+
     test('getId retourne l\'identifiant', () => {
         const el = createNavigationRail();
         document.body.appendChild(el);

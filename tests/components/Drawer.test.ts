@@ -209,4 +209,26 @@ describe('Drawer', () => {
             host.remove();
         });
     });
+
+    describe('M3 Expressive (alignement sheets2)', () => {
+        test('overlayOpacity par défaut = 0.32 (scrim M3)', () => {
+            expect(Drawer.defaults.overlayOpacity).toBe(0.32);
+        });
+
+        test('edge left / right inchangés (pas de top / bottom)', () => {
+            const elLeft = document.getElementById('drawer-el') as HTMLElement;
+            const left = new Drawer(elLeft, { edge: 'left' });
+            expect(left.options.edge).toBe('left');
+            left.destroy();
+
+            document.body.innerHTML =
+                '<div class="drawer drawer--right" id="drawer-right">' +
+                '<div class="drawer-wrapper"><div class="drawer-content">Contenu</div></div>' +
+                '</div>';
+            const elRight = document.getElementById('drawer-right') as HTMLElement;
+            const right = new Drawer(elRight, { edge: 'right' });
+            expect(right.options.edge).toBe('right');
+            right.destroy();
+        });
+    });
 });
