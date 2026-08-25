@@ -121,13 +121,14 @@ describe('NavigationRail', () => {
         expect(instance.getExpanded()).toBe(false);
     });
 
-    test('defaults incluent expandMode push', () => {
-        expect(NavigationRail.defaults.expandMode).toBe('push');
+    test('defaults incluent expandMode standard', () => {
+        expect(NavigationRail.defaults.expandMode).toBe('standard');
+        expect(NavigationRail.defaults.hideOnCollapse).toBe(false);
         expect(NavigationRail.defaults.overlayOpacity).toBe(0.32);
         expect(NavigationRail.defaults.dismissible).toBe(true);
     });
 
-    test('expandMode modal : pas de push + scrim au expand', () => {
+    test('expandMode modal : pas de push + scrim + compensation scrollbar', () => {
         const container = document.createElement('div');
         container.className = 'navigation-rail-container';
         const el = createNavigationRail();
@@ -147,25 +148,52 @@ describe('NavigationRail', () => {
         expect(el.classList.contains('navigation-rail--expanded')).toBe(true);
         expect(container.style.paddingInlineStart).toBe('96px');
         expect(document.querySelector('.navigation-rail-overlay')).toBeTruthy();
+        expect(document.body.classList.contains('navigation-rail-modal-open')).toBe(true);
+        expect(document.documentElement.style.getPropertyValue('--k3ui-scrollbar-compensation')).toMatch(/px$/);
 
         instance.destroy();
         expect(document.querySelector('.navigation-rail-overlay')).toBeFalsy();
         expect(document.body.classList.contains('navigation-rail-modal-open')).toBe(false);
+        expect(document.documentElement.style.getPropertyValue('--k3ui-scrollbar-compensation')).toBe('0px');
         container.remove();
     });
 
-    test('expandMode push : pousse le container', () => {
+    test('expandMode standard (et alias push) : pousse le container', () => {
         const container = document.createElement('div');
         container.className = 'navigation-rail-container';
         const el = createNavigationRail();
-        el.id = 'nav-rail-push-test';
+        el.id = 'nav-rail-standard-test';
         container.appendChild(el);
         document.body.appendChild(container);
 
         const instance = new NavigationRail(el, { expandMode: 'push', expanded: false });
+        expect(instance.getExpandMode()).toBe('standard');
         instance.setExpanded(true);
         expect(container.style.paddingInlineStart).toBe('256px');
         expect(document.querySelector('.navigation-rail-overlay')).toBeFalsy();
+        instance.destroy();
+        container.remove();
+    });
+
+    test('hideOnCollapse : flux à 0 quand collapsed', () => {
+        const container = document.createElement('div');
+        container.className = 'navigation-rail-container';
+        const el = createNavigationRail();
+        el.id = 'nav-rail-hide-test';
+        container.appendChild(el);
+        document.body.appendChild(container);
+
+        const instance = new NavigationRail(el, {
+            expandMode: 'standard',
+            hideOnCollapse: true,
+            expanded: false,
+        });
+        expect(instance.getHideOnCollapse()).toBe(true);
+        expect(el.classList.contains('navigation-rail--hide-on-collapse')).toBe(true);
+        expect(container.style.paddingInlineStart).toBe('0px');
+
+        instance.setExpanded(true);
+        expect(container.style.paddingInlineStart).toBe('256px');
         instance.destroy();
         container.remove();
     });

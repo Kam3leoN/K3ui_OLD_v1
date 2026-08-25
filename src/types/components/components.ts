@@ -6121,14 +6121,21 @@ export interface NavigationRailOptions extends BaseOptions {
     activeIndex: number;
     expanded: boolean;
     /**
-     * Mode d’expansion du rail.
-     * - `push` : pousse le contenu (comportement historique)
-     * - `modal` : overlay + scrim, sans pousser (comme Drawer)
-     * @default 'push'
+     * Mode d’expansion du rail (M3 Expressive).
+     * - `standard` : pousse le contenu (défaut M3)
+     * - `modal` : overlay + scrim, sans pousser
+     * - `push` : alias historique de `standard`
+     * @default 'standard'
      */
-    expandMode: 'push' | 'modal';
+    expandMode: 'standard' | 'modal' | 'push';
     /**
-     * Opacité du scrim en mode `modal` (0–1).
+     * M3 Expressive « Hide when collapsed » : le rail sort entièrement hors écran
+     * quand il est replié (plus de réserve 96px).
+     * @default false
+     */
+    hideOnCollapse: boolean;
+    /**
+     * Opacité du scrim en mode `modal` (0–1). ScrimTokens.ContainerOpacity.
      * @default 0.32
      */
     overlayOpacity: number;

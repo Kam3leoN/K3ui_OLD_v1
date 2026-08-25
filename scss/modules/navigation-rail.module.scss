@@ -280,7 +280,7 @@
   padding-inline-start: #{tokens.$navigation-rail-width-collapsed};
   transition: padding-inline-start tokens.$navigation-rail-expand-duration tokens.$navigation-rail-expand-easing;
 
-  /* Push : élargit le flux. Modal : padding reste collapsed. */
+  /* Standard : élargit le flux. Modal : padding reste collapsed. */
   &:has(.navigation-rail--expanded:not(.navigation-rail--expand-modal)) {
     --k3-navigation-rail-width: #{tokens.$navigation-rail-width-expanded};
     padding-inline-start: #{tokens.$navigation-rail-width-expanded};
@@ -289,6 +289,24 @@
   &:has(.navigation-rail--expand-modal) {
     --k3-navigation-rail-width: #{tokens.$navigation-rail-width-collapsed};
     padding-inline-start: #{tokens.$navigation-rail-width-collapsed};
+  }
+
+  /* Hide when collapsed : contenu full-bleed (pas de réserve 96px) */
+  &:has(.navigation-rail--hide-on-collapse:not(.navigation-rail--expanded)) {
+    --k3-navigation-rail-width: 0px;
+    padding-inline-start: 0;
+  }
+
+  /* Standard + hide + expanded : push 256 */
+  &:has(.navigation-rail--hide-on-collapse.navigation-rail--expanded:not(.navigation-rail--expand-modal)) {
+    --k3-navigation-rail-width: #{tokens.$navigation-rail-width-expanded};
+    padding-inline-start: #{tokens.$navigation-rail-width-expanded};
+  }
+
+  /* Modal + hide + expanded : pas de push */
+  &:has(.navigation-rail--hide-on-collapse.navigation-rail--expand-modal.navigation-rail--expanded) {
+    --k3-navigation-rail-width: 0px;
+    padding-inline-start: 0;
   }
 }
 
@@ -300,15 +318,19 @@ body:has(.navigation-rail-container .navigation-rail--expanded:not(.navigation-r
   --k3ui-rail-inset-left-default: #{tokens.$navigation-rail-width-expanded};
 }
 
+body:has(.navigation-rail-container .navigation-rail--hide-on-collapse:not(.navigation-rail--expanded)) {
+  --k3ui-rail-inset-left-default: 0px;
+}
+
 body.navigation-rail-modal-open {
+  overflow: hidden;
+  /* padding-right posé en inline par JS (= largeur scrollbar) */
+}
+
+html:has(body.navigation-rail-modal-open) {
   overflow: hidden;
 }
 
 .navigation-rail-overlay {
   @include rail.navigation-rail-overlay;
-}
-
-/* Elevation légère quand le rail modal est ouvert au-dessus du contenu */
-.navigation-rail.navigation-rail--expand-modal.navigation-rail--expanded {
-  box-shadow: var(--md-sys-elevation-level2, 0 2px 6px rgba(0, 0, 0, 0.2));
 }

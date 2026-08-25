@@ -28,12 +28,17 @@ export const NavigationRailSpecs = {
          */
         defaultBorder: false,
         /**
-         * Mode d’expansion :
-         * - `push` : élargit le rail et pousse le contenu (padding container)
-         * - `modal` : élargit le rail en overlay + scrim, sans pousser (comme Drawer)
+         * Mode d’expansion (M3 Expressive) :
+         * - `standard` : élargit le rail et pousse le contenu (défaut)
+         * - `modal` : overlay + scrim, sans pousser
+         * - `push` : alias de `standard`
          */
-        defaultExpandMode: 'push' as const,
-        /** Opacité du scrim en mode modal (0–1) */
+        defaultExpandMode: 'standard' as const,
+        /**
+         * Hide when collapsed — rail hors écran quand replié (M3 Expressive).
+         */
+        defaultHideOnCollapse: false,
+        /** Opacité du scrim en mode modal (ScrimTokens.ContainerOpacity) */
         defaultOverlayOpacity: 0.32,
         /** Clic scrim → collapse en mode modal */
         defaultDismissible: true,
@@ -99,6 +104,7 @@ export function getNavigationRailDefaults(): NavigationRailOptions {
         activeIndex: NavigationRailSpecs.behaviors.defaultActiveIndex,
         expanded: NavigationRailSpecs.behaviors.defaultExpanded,
         expandMode: NavigationRailSpecs.behaviors.defaultExpandMode,
+        hideOnCollapse: NavigationRailSpecs.behaviors.defaultHideOnCollapse,
         overlayOpacity: NavigationRailSpecs.behaviors.defaultOverlayOpacity,
         dismissible: NavigationRailSpecs.behaviors.defaultDismissible,
         preventScrolling: NavigationRailSpecs.behaviors.defaultPreventScrolling,

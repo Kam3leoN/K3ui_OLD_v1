@@ -39,6 +39,8 @@
   overflow-x: hidden;
   overflow-y: visible;
 
+  @include navigation-rail-expand-modes;
+
   &.navigation-rail--border,
   &--border {
     border-inline-end: 1px solid rail.$navigation-rail-border;
@@ -455,13 +457,62 @@
   z-index: rail.$navigation-rail-overlay-z-index;
   display: none;
   opacity: 0;
-  background-color: rgba(0, 0, 0, var(--navigation-rail-overlay-opacity, #{rail.$navigation-rail-overlay-opacity}));
+  /* ScrimTokens.ContainerColor — l’opacité est portée par `opacity` (ContainerOpacity) */
+  background-color: var(--md-sys-color-scrim, #{rail.$navigation-rail-overlay-color});
   transition: rail.$navigation-rail-overlay-transition;
   pointer-events: auto;
   touch-action: none;
 
   &.is-visible {
-    opacity: 1;
+    opacity: var(--navigation-rail-overlay-opacity, #{rail.$navigation-rail-overlay-opacity});
+  }
+}
+
+/**
+ * Styles modal / hide-on-collapse (M3 Expressive WideNavigationRail).
+ */
+@mixin navigation-rail-expand-modes {
+  transition:
+    width rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing,
+    transform rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing,
+    border-radius rail.$navigation-rail-expand-duration rail.$navigation-rail-expand-easing,
+    box-shadow rail.$navigation-rail-effects-duration rail.$navigation-rail-effects-easing,
+    background-color rail.$navigation-rail-color-duration rail.$navigation-rail-effects-easing;
+
+  &.navigation-rail--expand-modal {
+    background-color: rail.$navigation-rail-modal-container-color;
+    --k3ui-field-outlined-notch-bg: #{rail.$navigation-rail-modal-container-color};
+  }
+
+  &.navigation-rail--expand-modal.navigation-rail--expanded {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+    border-start-end-radius: rail.$navigation-rail-modal-expanded-radius-trailing;
+    border-end-end-radius: rail.$navigation-rail-modal-expanded-radius-trailing;
+    box-shadow: rail.$navigation-rail-modal-elevation;
+    /* Encoche Field = fond modal opaque */
+    --k3ui-field-outlined-notch-bg: #{rail.$navigation-rail-modal-container-color};
+  }
+
+  &.navigation-rail--expand-modal:not(.navigation-rail--expanded) {
+    border-radius: rail.$navigation-rail-modal-collapsed-radius;
+    box-shadow: none;
+  }
+
+  /* Hide when collapsed — sort entièrement hors écran (M3 Expressive) */
+  &.navigation-rail--hide-on-collapse:not(.navigation-rail--expanded) {
+    transform: translate3d(-100%, 0, 0);
+    pointer-events: none;
+  }
+
+  &.navigation-rail--hide-on-collapse.navigation-rail--expanded {
+    transform: translate3d(0, 0, 0);
+    pointer-events: auto;
+  }
+
+  [dir='rtl'] &.navigation-rail--hide-on-collapse:not(.navigation-rail--expanded),
+  &:dir(rtl).navigation-rail--hide-on-collapse:not(.navigation-rail--expanded) {
+    transform: translate3d(100%, 0, 0);
   }
 }
 

@@ -19,13 +19,27 @@ $navigation-rail-z-index: 500;
 $navigation-rail-stack-z-index: 1200;
 /**
  * Scrim expand modal — sous le stack rail (1200), au-dessus du contenu.
+ * M3 ScrimTokens : `md-sys-color-scrim` × ContainerOpacity (0.32).
  */
 $navigation-rail-overlay-z-index: 1190;
 $navigation-rail-overlay-opacity: 0.32;
+$navigation-rail-overlay-color: var(--md-sys-color-scrim, #000000);
 /** Largeur rail compact (M3 nav rail) */
 $navigation-rail-width-collapsed: 96px;
 /** Largeur rail étendu (M3 nav drawer rail : 220–360dp) */
 $navigation-rail-width-expanded: 256px;
+/**
+ * Formes modal (WideNavigationRailDefaults.modalCollapsed / modalExpanded).
+ * Expanded : coins arrondis côté contenu (inline-end), comme Drawer left.
+ */
+$navigation-rail-modal-collapsed-radius: 0;
+$navigation-rail-modal-expanded-radius-trailing: var(--md-sys-shape-corner-extra-large, 28px);
+/** Couleur conteneur modal — NavigationRailExpandedTokens.ModalContainerColor */
+$navigation-rail-modal-container-color: var(--md-sys-color-surface-container-low, #f7f2fa);
+/** Élévation modal — au-dessus de l’UI (miroir Drawer level1) */
+$navigation-rail-modal-elevation: var(--md-sys-elevation-level1, 0px 1px 2px 0px rgba(0, 0, 0, 0.3));
+/** Inset vertical modal expanded (respire vs bords viewport) */
+$navigation-rail-modal-inset-block: 0px;
 $navigation-rail-toggle-size: 40px;
 $navigation-rail-fab-size: 56px;
 $navigation-rail-fab-radius: 16px;

@@ -23,7 +23,18 @@ const _defaults: NavigationRailOptions = getNavigationRailDefaults();
 const BODY_MODAL_OPEN_CLASS = 'navigation-rail-modal-open';
 const OVERLAY_CLASS = 'navigation-rail-overlay';
 const EXPAND_MODAL_CLASS = 'navigation-rail--expand-modal';
+const EXPAND_STANDARD_CLASS = 'navigation-rail--expand-standard';
+/** @deprecated alias CSS — `push` = `standard` */
 const EXPAND_PUSH_CLASS = 'navigation-rail--expand-push';
+const HIDE_ON_COLLAPSE_CLASS = 'navigation-rail--hide-on-collapse';
+
+type NavigationRailExpandMode = 'standard' | 'modal';
+
+function normalizeExpandMode(mode: string | null | undefined): NavigationRailExpandMode {
+    if (mode === 'modal') return 'modal';
+    /* `push` conservé comme alias historique de `standard` (M3) */
+    return 'standard';
+}
 
 /**
  * Classe NavigationRail — MD3 Expressive Wide Navigation Rail
@@ -72,6 +83,7 @@ export class NavigationRail extends Component<NavigationRailOptions> {
             ...NavigationRail.defaults,
             ...options,
         };
+        this.options.expandMode = normalizeExpandMode(this.options.expandMode as string);
 
         if (el.hasAttribute('data-active-index')) {
             const v = parseInt(el.getAttribute('data-active-index')!, 10);
@@ -81,10 +93,11 @@ export class NavigationRail extends Component<NavigationRailOptions> {
             this.options.expanded = el.getAttribute('data-expanded') !== 'false' && el.getAttribute('data-expanded') !== '0';
         }
         if (el.hasAttribute('data-expand-mode')) {
-            const mode = el.getAttribute('data-expand-mode');
-            if (mode === 'modal' || mode === 'push') {
-                this.options.expandMode = mode;
-            }
+            this.options.expandMode = normalizeExpandMode(el.getAttribute('data-expand-mode'));
+        }
+        if (el.hasAttribute('data-hide-on-collapse')) {
+            const v = el.getAttribute('data-hide-on-collapse');
+            this.options.hideOnCollapse = v !== 'false' && v !== '0';
         }
 
         if (!this.options.id) this.options.id = generateGuid();
@@ -95,7 +108,7 @@ export class NavigationRail extends Component<NavigationRailOptions> {
     }
 
     private isModalExpand(): boolean {
-        return this.options.expandMode === 'modal';
+        return normalizeExpandMode(this.options.expandMode) === 'modal';
     }
 
     private init(): void {
@@ -104,9 +117,9 @@ export class NavigationRail extends Component<NavigationRailOptions> {
         this.ensureMainGroupStructure();
         this.resolveStructure();
         this.el.classList.toggle('navigation-rail--border', this.options.border === true);
-        this.el.classList.toggle(EXPAND_MODAL_CLASS, this.isModalExpand());
-        this.el.classList.toggle(EXPAND_PUSH_CLASS, !this.isModalExpand());
-        this.el.setAttribute('data-expand-mode', this.isModalExpand() ? 'modal' : 'push');
+        this.syncExpandModeClasses();
+        this.el.classList.toggle(HIDE_ON_COLLAPSE_CLASS, this.options.hideOnCollapse === true);
+        this.el.setAttribute('data-hide-on-collapse', String(this.options.hideOnCollapse === true));
         if (this.items.length === 0) {
             this.logger.warn('NavigationRail: aucun .navigation-rail__item trouvé');
             return;
@@ -122,6 +135,14 @@ export class NavigationRail extends Component<NavigationRailOptions> {
         this.logger.info('NavigationRail initialized');
     }
 
+    private syncExpandModeClasses(): void {
+        const modal = this.isModalExpand();
+        this.el.classList.toggle(EXPAND_MODAL_CLASS, modal);
+        this.el.classList.toggle(EXPAND_STANDARD_CLASS, !modal);
+        this.el.classList.toggle(EXPAND_PUSH_CLASS, !modal);
+        this.el.setAttribute('data-expand-mode', modal ? 'modal' : 'standard');
+    }
+
     /**
      * Applique collapsed/expanded.
      * M3 WideNavigationRail : le mode layout change immédiatement ; la largeur
@@ -132,11 +153,24 @@ export class NavigationRail extends Component<NavigationRailOptions> {
     private applyExpanded(animate = true): void {
         const expanding = this.options.expanded;
         const modal = this.isModalExpand();
+        const hideOnCollapse = this.options.hideOnCollapse === true;
         const widthCollapsed = `${NavigationRailSpecs.dimensions.widthCollapsed}px`;
         const widthExpanded = `${NavigationRailSpecs.dimensions.widthExpanded}px`;
         const targetWidth = expanding ? widthExpanded : widthCollapsed;
-        /* En modal, le flux garde toujours la largeur collapsed (pas de push). */
-        const flowWidth = modal ? widthCollapsed : targetWidth;
+        /*
+         * Flux (padding container) :
+         * - standard : suit la largeur rail
+         * - modal : reste collapsed (pas de push)
+         * - hideOnCollapse + collapsed : 0 (full-bleed)
+         * - hideOnCollapse + modal + expanded : 0 (overlay)
+         */
+        let flowWidth = modal ? widthCollapsed : targetWidth;
+        if (hideOnCollapse && !expanding) {
+            flowWidth = '0px';
+        }
+        if (hideOnCollapse && modal && expanding) {
+            flowWidth = '0px';
+        }
         const durationMs = expanding
             ? NavigationRailSpecs.dimensions.expandDurationMs
             : NavigationRailSpecs.dimensions.collapseDurationMs;
@@ -233,6 +267,7 @@ export class NavigationRail extends Component<NavigationRailOptions> {
 
     /**
      * Scrim + scroll-lock + Escape — uniquement en expandMode modal.
+     * Compensation scrollbar = même pattern qu’OpenableComponent (anti-décalage).
      */
     private syncModalChrome(expanded: boolean, animate: boolean): void {
         if (!this.isModalExpand()) {
@@ -244,14 +279,40 @@ export class NavigationRail extends Component<NavigationRailOptions> {
             this.ensureOverlay();
             this.showOverlay(animate);
             if (this.options.preventScrolling) {
-                document.body.classList.add(BODY_MODAL_OPEN_CLASS);
+                this.lockBodyScroll();
             }
             this.bindModalEscape();
         } else {
             this.hideOverlay(animate);
-            document.body.classList.remove(BODY_MODAL_OPEN_CLASS);
+            this.unlockBodyScroll();
             this.unbindModalEscape();
         }
+    }
+
+    /**
+     * Verrouille le scroll et compense la largeur de scrollbar
+     * pour éviter le jump de layout (contenu qui se décale).
+     */
+    private lockBodyScroll(): void {
+        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.setProperty(
+            '--k3ui-scrollbar-compensation',
+            `${Math.max(0, scrollbarWidth)}px`
+        );
+        if (scrollbarWidth > 0) {
+            document.body.style.paddingRight = `${scrollbarWidth}px`;
+        }
+        document.body.classList.add(BODY_MODAL_OPEN_CLASS);
+    }
+
+    private unlockBodyScroll(): void {
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+        document.documentElement.style.setProperty('--k3ui-scrollbar-compensation', '0px');
+        document.body.classList.remove(BODY_MODAL_OPEN_CLASS);
     }
 
     private ensureOverlay(): void {
@@ -322,7 +383,7 @@ export class NavigationRail extends Component<NavigationRailOptions> {
 
     private teardownModalChrome(): void {
         this.unbindModalEscape();
-        document.body.classList.remove(BODY_MODAL_OPEN_CLASS);
+        this.unlockBodyScroll();
         if (this.overlayCleanup) {
             this.overlayCleanup();
             this.overlayCleanup = null;
@@ -763,10 +824,41 @@ export class NavigationRail extends Component<NavigationRailOptions> {
     }
 
     /**
-     * Mode d’expansion actuel (`push` | `modal`).
+     * Mode d’expansion actuel (`standard` | `modal`).
+     * `push` est normalisé en `standard`.
      */
-    getExpandMode(): 'push' | 'modal' {
-        return this.isModalExpand() ? 'modal' : 'push';
+    getExpandMode(): NavigationRailExpandMode {
+        return this.isModalExpand() ? 'modal' : 'standard';
+    }
+
+    /**
+     * Change le mode d’expansion (`standard` | `modal`). Alias `push` → `standard`.
+     */
+    setExpandMode(mode: 'standard' | 'modal' | 'push'): void {
+        const next = normalizeExpandMode(mode);
+        if (normalizeExpandMode(this.options.expandMode) === next) return;
+        const wasModal = this.isModalExpand();
+        this.options.expandMode = next;
+        this.syncExpandModeClasses();
+        if (wasModal && next !== 'modal') {
+            this.teardownModalChrome();
+        }
+        this.applyExpanded(false);
+    }
+
+    /**
+     * Active/désactive le comportement M3 « hide when collapsed ».
+     */
+    setHideOnCollapse(hide: boolean): void {
+        if (this.options.hideOnCollapse === hide) return;
+        this.options.hideOnCollapse = hide;
+        this.el.classList.toggle(HIDE_ON_COLLAPSE_CLASS, hide);
+        this.el.setAttribute('data-hide-on-collapse', String(hide));
+        this.applyExpanded(false);
+    }
+
+    getHideOnCollapse(): boolean {
+        return this.options.hideOnCollapse === true;
     }
 
     public override destroy(): void {
